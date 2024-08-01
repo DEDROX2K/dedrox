@@ -27,7 +27,7 @@ body {
 body {
     text-rendering: optimizeSpeed;
     overflow-x: hidden;
-    background-image: radial-gradient(#000fba, #010080 80%);
+    background-image: radial-gradient(#0e1dc4, #010080 80%);
 
 }
 
@@ -77,4 +77,17 @@ mark {
     padding-top: 0%;
     padding-bottom: 0%;
     cursor: crosshair;
+}
+
+@media (max-width: 480px) {
+    .custom-container {
+        max-width: 200px;
+        padding: 0 10px;
+    }
+
+    .link-download {
+        width: 100%;
+        line-height: 50px;
+        align-items: center;
+    }
 }
