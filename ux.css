@@ -650,45 +650,28 @@ mark {
 
 
 
+
+
+
     @media (max-width: 480px) {
         .custom-container {
             max-width: 320px;
         }
 
         .ylo {
-            width: 294px;
-            height: 331px;
-            left: 20px;
-            top: 211px;
-        }
-
-        .ylotext {
-            width: 250px;
-        }
-
-        .i-m-up-for {
-            font-size: 30px;
-            line-height: 101%;
-            font-weight: 800;
-        }
-
-        .strategic-thinking-purposeful {
-            font-size: 30px;
-            line-height: 101%;
-            font-weight: 800;
+            display: none;
         }
 
         .nav-link {
             font-size: 9px;
         }
 
-        .navsubtex {
-            font-size: 9px;
+        .nextnav {
+            display: none;
         }
 
-        .navheadtex {
-            color: #1e49a5;
-
+        .quotesec {
+            display: none;
         }
     }
 }
