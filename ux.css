@@ -566,6 +566,22 @@ mark {
 }
 
 
+
+.striptext {
+    width: 100%;
+    background-color: #ffc800;
+    color: #000000;
+    font-family: "Archivo-ExtraBold", sans-serif;
+    font-size: 30px;
+    letter-spacing: -0.08em;
+    font-weight: 800;
+    text-transform: uppercase;
+    text-align: justify;
+    display: flex;
+    line-height: 90%;
+
+}
+
 @media (max-width: 1302px) {
     .custom-container {
         max-width: 960px;
@@ -645,33 +661,26 @@ mark {
     .quotesec {
         padding-top: 130px;
     }
+}
 
+@media (max-width: 480px) {
+    .custom-container {
+        max-width: 320px;
+    }
 
+    .ylo {
+        display: none;
+    }
 
+    .nav-link {
+        font-size: 9px;
+    }
 
+    .nextnav {
+        display: none;
+    }
 
-
-
-
-    @media (max-width: 480px) {
-        .custom-container {
-            max-width: 320px;
-        }
-
-        .ylo {
-            display: none;
-        }
-
-        .nav-link {
-            font-size: 9px;
-        }
-
-        .nextnav {
-            display: none;
-        }
-
-        .quotesec {
-            display: none;
-        }
+    .quotesec {
+        display: none;
     }
 }
