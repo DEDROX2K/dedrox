@@ -565,7 +565,20 @@ mark {
     cursor: pointer;
 }
 
+.readmore {
+    width: 100%;
+    background-color: #8d503f;
+    color: #000000;
+    font-family: "Archivo-ExtraBold", sans-serif;
+    font-size: 30px;
+    letter-spacing: -0.08em;
+    font-weight: 800;
+    text-transform: uppercase;
+    text-align: justify;
+    display: flex;
+    line-height: 90%;
 
+}
 
 .striptext {
     width: 100%;
@@ -579,7 +592,50 @@ mark {
     text-align: justify;
     display: flex;
     line-height: 90%;
+}
 
+.mobbody {
+    height: 900px;
+    background-color: #030303;
+    padding: 5px
+}
+
+.arch-part {
+    width: 100%;
+    background-color: #50945a;
+    color: #ffffff;
+    font-size: 30px;
+    letter-spacing: -0.08em;
+    font-family: "Archivo-ExtraBold", sans-serif;
+
+    font-weight: 400;
+    text-transform: uppercase;
+    overflow: hidden;
+    box-sizing: border-box;
+    align-items: end;
+    height: 300px;
+    text-align: justify;
+    display: flex;
+    line-height: 90%;
+
+}
+
+.arch-whatdo {
+    width: 100%;
+    background-color: #f8ecd5;
+    color: #000000;
+    font-size: 30px;
+    letter-spacing: -0.08em;
+    font-weight: 400;
+    text-transform: uppercase;
+    overflow: hidden;
+    box-sizing: border-box;
+    align-items: end;
+    border-radius: 200px 200px 0% 0%;
+    height: 300px;
+    text-align: justify;
+    display: flex;
+    line-height: 90%;
 }
 
 @media (max-width: 1302px) {
@@ -683,4 +739,9 @@ mark {
     .quotesec {
         display: none;
     }
+
+    .body {
+        background-color: black;
+    }
+
 }
