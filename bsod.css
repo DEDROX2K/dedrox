@@ -1,0 +1,80 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    overflow-x: hidden;
+}
+
+body {
+    background-color: #010080;
+    /* BSOD blue */
+    color: white;
+    font-family: Monaco, monospace;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* .h3 {
+    padding: 20px;
+} */
+
+body {
+    text-rendering: optimizeSpeed;
+    overflow-x: hidden;
+    background-image: radial-gradient(#000fba, #010080 80%);
+
+}
+
+
+.bsdoinfo {
+    background-color: beige
+}
+
+
+.choosebutton {
+    margin-top: 50px;
+}
+
+
+
+/* Make images easier to work with */
+img {
+    display: block;
+    max-width: 100%;
+}
+
+
+/* Links here */
+a:link,
+a:visited,
+a:active {
+    color: white;
+    border-bottom: 2px solid;
+}
+
+a:hover {
+    text-shadow: 3px 1px 0px black;
+}
+
+.link-download {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: darkgrey;
+    box-shadow: 1px 2px 0px 0px #1d1d21;
+}
+
+.mark,
+mark {
+    background-color: black;
+    padding-right: 6px;
+    padding-left: 6px;
+    padding-top: 0%;
+    padding-bottom: 0%;
+    cursor: crosshair;
+}
