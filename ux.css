@@ -577,7 +577,7 @@ mark {
     text-transform: uppercase;
     display: flex;
     line-height: 90%;
-    padding-bottom: 10px;
+    padding-bottom: 50px;
     padding-top: 2px;
     padding-left: 10px;
     padding-right: 10px;
@@ -616,7 +616,7 @@ mark {
 
 
 .mobbody {
-    height: 2000px;
+    height: 1300px;
     background-color: #EEEDE4;
     padding: 10px
 }
@@ -690,6 +690,21 @@ mark {
 }
 
 .mobportofosec {
+    width: 100%;
+    background-color: white;
+    color: #000000;
+    font-family: "Archivo";
+    font-size: 25px;
+    letter-spacing: -0.08em;
+    font-weight: 800;
+    text-transform: uppercase;
+    display: flex;
+    line-height: 0%;
+    padding: 20px;
+    border-bottom: solid 2px;
+}
+
+.pcportofosec {
     width: 100%;
     background-color: white;
     color: #000000;
@@ -810,6 +825,10 @@ mark {
 
     .body {
         background-color: black;
+    }
+
+    .pcportofosec {
+        display: none;
     }
 
 }
