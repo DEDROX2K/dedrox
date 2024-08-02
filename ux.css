@@ -621,6 +621,26 @@ mark {
     padding: 10px
 }
 
+.arch-whatdo {
+    width: 100%;
+    background-color: #476B44;
+    color: #ffffff;
+    font-size: 25px;
+    letter-spacing: -0.08em;
+    font-family: "Archivo";
+    font-weight: 400;
+    text-transform: uppercase;
+    overflow: hidden;
+    box-sizing: border-box;
+    align-items: end;
+    border-radius: 200px 200px 0% 0%;
+    height: 300px;
+    padding: 5px;
+    display: flex;
+    line-height: 90%;
+    text-align: justify;
+}
+
 .arch-part {
     width: 100%;
     background-color: #FFAB02;
@@ -632,33 +652,16 @@ mark {
     text-transform: uppercase;
     overflow: hidden;
     box-sizing: border-box;
-    align-items: flex-start;
-    height: 300px;
+    height: 200px;
     text-align: justify;
     display: flex;
     line-height: 90%;
     padding: 5px;
-
 }
 
-.arch-whatdo {
-    width: 100%;
-    background-color: #476B44;
-    color: #ffffff;
-    font-size: 25px;
-    letter-spacing: -0.08em;
-    font-family: "Archivo";
-    font-weight: 600;
-    text-transform: uppercase;
-    overflow: hidden;
-    box-sizing: border-box;
-    align-items: end;
-    border-radius: 200px 200px 0% 0%;
-    height: 300px;
-    text-align: justify;
-    padding: 5px;
-    display: flex;
-    line-height: 90%;
+.me {
+    border-top: #FE5202 10px;
+    padding-top: 10px;
 }
 
 @media (max-width: 1302px) {
@@ -779,4 +782,13 @@ mark {
     .mobtopnav {
         display: none;
     }
+}
+
+html {
+    overflow-x: hidden;
+}
+
+img {
+    display: block;
+    max-width: 100%;
 }
