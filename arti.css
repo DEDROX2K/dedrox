@@ -58,7 +58,7 @@ html {
 
 .sottex {
     color: #fffdec;
-    font-family: "Archivo-ExtraBold", sans-serif;
+    font-family: "Archivo";
     font-size: 150px;
     line-height: 101.5%;
     letter-spacing: -0.08em;
@@ -80,7 +80,7 @@ html {
 
 .arti-thum-num {
     color: #ecebe5;
-    font-family: sans-serif;
+    font-family: "Archivo";
     font-size: 20px;
     line-height: 101.5%;
     padding-top: 10px;
@@ -89,7 +89,7 @@ html {
 
 .arti-thum-tex {
     color: #ecebe5;
-    font-family: sans-serif;
+    font-family: "Archivo";
     font-size: 13px;
     font-style: regular;
     line-height: 101.5%;
@@ -110,7 +110,7 @@ html {
 
 .heading {
     color: #000;
-    font-family: "Archivo-ExtraBold", sans-serif;
+    font-family: "Archivo";
     font-size: 3rem;
     font-style: normal;
     font-weight: 800;
@@ -123,7 +123,7 @@ html {
 
 .subheading {
     color: #616161;
-    font-family: sans-serif;
+    font-family: "Archivo";
     font-size: 2rem;
     font-style: regular;
     line-height: 101.5%;
@@ -137,7 +137,7 @@ html {
 
 .ssuubbheading {
     color: #313131;
-    font-family: sans-serif;
+    font-family: "Archivo";
     font-size: 1.3rem;
     font-style: bold;
     line-height: 101.5%;
@@ -150,7 +150,7 @@ html {
 
 .bodytext {
     color: #616161;
-    font-family: sans-serif;
+    font-family: "Archivo";
     font-size: 20px;
     font-style: regular;
     line-height: 101.5%;
