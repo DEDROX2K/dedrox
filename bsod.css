@@ -16,7 +16,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100dvh;
+    height: 100lvh;
     margin: 0;
     text-rendering: optimizeSpeed;
     overflow-x: hidden;
