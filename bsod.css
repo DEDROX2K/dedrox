@@ -16,20 +16,16 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 100dvh;
     margin: 0;
+    text-rendering: optimizeSpeed;
+    overflow-x: hidden;
+    background-image: radial-gradient(#0e1dc4, #010080 80%);
 }
 
 /* .h3 {
     padding: 20px;
 } */
-
-body {
-    text-rendering: optimizeSpeed;
-    overflow-x: hidden;
-    background-image: radial-gradient(#0e1dc4, #010080 80%);
-
-}
 
 
 .bsdoinfo {
@@ -79,6 +75,13 @@ mark {
     cursor: crosshair;
 }
 
+@media (width > 480px) {
+
+    .mob-click-button {
+        display: none;
+    }
+}
+
 @media (max-width: 480px) {
     .custom-container {
         max-width: 200px;
@@ -87,7 +90,12 @@ mark {
 
     .link-download {
         width: 100%;
-        line-height: 50px;
+        line-height: 20px;
         align-items: center;
+        text-align: center;
+    }
+
+    .pc-click-button {
+        display: none;
     }
 }
