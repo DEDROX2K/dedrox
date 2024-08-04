@@ -46,16 +46,19 @@
         font-size: 2rem;
         font-weight: bold;
         margin-bottom: 20px;
+        text-shadow: 0 0px 4px #001bff;
     }
 
     .error-message {
         font-size: 1rem;
         margin-bottom: 20px;
+        text-shadow: 0 0px 4px #001bff;
     }
 
     .instruction {
         font-size: 0.9rem;
         line-height: 15px;
+        text-shadow: 0 0px 4px #001bff;
     }
 
     .emaillink {
@@ -70,13 +73,22 @@
 
     .emaillink:hover {
         padding: 30px;
-        transition: 9s;
+        transition: 7s;
+    }
+
+    .scan {
+        position: fixed;
+        width: 100%;
+        height: 140%;
+        opacity: 30%;
     }
 </style>
 
 
 
 <body>
+    <img class="scan" src="images/scanlines.png" alt="">
+
     <div class="container animate__animated animate__flash animate__faster">
         <div class="error-code" href="index.html">:(</div>
         <div class="error-message" style="text-align: left;">A critical error has occurred due to
@@ -100,7 +112,9 @@
             <div class="emaillink">RAGHAVPRASANNA2000@GMAIL.COM</div><br><br>
 
             <div class="error-message" style="text-align: left;">Nothing to worry about, just follow below:
-                <div class="instruction"><br> <mark>Woahh! Congratulations on finding this hidden message! <br>Let that
+                <div class="error-message" style="text-shadow: 0 0px 0px #000000;"><br> <mark>Woahh! Congratulations on
+                        finding this hidden message! <br>Let
+                        that
                         curiosity prevail. Have a nice day</mark><br><br> WHAT_NOW?:
                     CLICK-THE-BELOW-BUTTONS-TO-SEE-MY-PORTFOLIO
                 </div>
