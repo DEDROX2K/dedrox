@@ -43,8 +43,8 @@
 
 
 const logo = document.getElementById('logo');
-const fonts = ['Pixelify Sans', 'Staatliches', 'Instrument Serif'];
-const letterSpacings = ['-10px', '-2px', '-5px'];
+const fonts = ['DotGothic16', 'west', 'onyx', 'vtk', 'brwsr'];
+const letterSpacings = ['0px', '-2px', '-5px', '-0px', '-0px'];
 
 let index = 0;
 

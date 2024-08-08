@@ -1,6 +1,68 @@
+@font-face {
+    font-family: Cheltm;
+    src: url(Fonts/Roboto-Medium.ttf);
+}
+
+@font-face {
+    font-family: Gnu;
+    src: url(Fonts/gnuolane\ rg.otf);
+}
+
+@font-face {
+    font-family: vcr;
+    src: url(Fonts/VCR.ttf);
+}
+
+@font-face {
+    font-family: ass;
+    src: url(Fonts/Astral\ Ink.ttf);
+}
+
+@font-face {
+    font-family: west;
+    src: url(Fonts/Durango\ Western\ Eroded\ Demo.otf);
+}
+
+@font-face {
+    font-family: onyx;
+    src: url(Fonts/stereofidelic.otf);
+}
+
+@font-face {
+    font-family: vtk;
+    src: url(Fonts/VTKS\ CHOICE.ttf);
+}
+
+@font-face {
+    font-family: brwsr;
+    src: url(Fonts/BrowessSovar-GOWAO.otf);
+}
+
 a:link,
 a:visited,
 a:active {
+    color: rgb(0, 0, 0);
+    border-bottom: none;
+    text-decoration: none;
+    /* transition: font-weight 0.5s, letter-spacing 0.8s; */
+}
+
+.uk:hover,
+a:hover {
+    letter-spacing: -1px;
+    transition: 0.5s;
+    /* color: rgb(146, 146, 146); */
+}
+
+
+.s-t:link,
+.s-t:visited,
+.s-t:active,
+.w-t,
+.d-t,
+.a-t,
+.ab-t,
+.s-t {
     color: rgb(0, 0, 0);
     border-bottom: none;
     text-decoration: none;
@@ -8,11 +70,17 @@ a:active {
 }
 
 .uk:hover,
-a:hover {
+.w-t:hover,
+.d-t:hover,
+.a-t:hover,
+.ab-t:hover,
+.s-t:hover {
     letter-spacing: -1px;
     transition: 0.5s;
     color: rgb(146, 146, 146);
 }
+
+
 
 
 *,
@@ -20,6 +88,7 @@ a:hover {
 *::after {
     box-sizing: border-box;
 }
+
 
 html {
     overflow-x: hidden;
@@ -58,11 +127,10 @@ body {
 
 
 #logo {
-    font-size: 180px;
-    font-weight: 800;
+    font-size: 240px;
+    /* font-weight: 800; */
     margin-top: 15%;
     overflow: hidden;
-    /* letter-spacing: -10px; */
     /* background-color: rgb(227, 143, 40); */
 }
 
@@ -78,13 +146,14 @@ body {
 }
 
 #miniabt {
-    font-size: 58px;
-    margin-top: 15%;
-    word-spacing: 10px;
+    font-size: 95px;
+    margin-top: 20%;
+    word-spacing: 8px;
     overflow: hidden;
-    font-family: CheltenhamStdBold;
+    font-family: Gnu;
 
-    line-height: 68px;
+    line-height: 100px;
+    letter-spacing: -3px;
 }
 
 
