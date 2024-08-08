@@ -44,7 +44,7 @@ a:active {
     color: rgb(0, 0, 0);
     border-bottom: none;
     text-decoration: none;
-    /* transition: font-weight 0.5s, letter-spacing 0.8s; */
+    transition: font-weight 0.5s, letter-spacing 0.8s;
 }
 
 .uk:hover,
@@ -150,11 +150,35 @@ body {
     margin-top: 20%;
     word-spacing: 8px;
     overflow: hidden;
-    font-family: Gnu;
+    font-family: Instrument Serif;
 
     line-height: 100px;
     letter-spacing: -3px;
 }
+
+#second-section {
+    margin-top: 100px;
+    border-top: solid;
+    background-color: brown;
+    color: #000;
+    font-family: gnu;
+    height: 300px;
+    width: 100%;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
