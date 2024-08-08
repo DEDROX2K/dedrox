@@ -56,3 +56,4 @@ function changeFont() {
 
 setInterval(changeFont, 800); // Change font every 0.8 seconds
 
+
