@@ -88,6 +88,11 @@
     }
 }
 
+.consu {
+    background-color: #ffffff;
+    height: 500px;
+}
+
 .material-symbols-outlined {
     padding-left: 5px;
     font-variation-settings:
@@ -166,6 +171,7 @@ html {
 }
 
 body {
+    cursor: url('images/cur.png');
     background-color: #f5f5f5;
     color: rgb(17, 16, 16);
     /* display: flex;
@@ -178,6 +184,7 @@ body {
 }
 
 .custom-container {
+    cursor: url('images/cur.png');
     width: 100%;
     max-width: 1360px;
     margin: 0 auto;
