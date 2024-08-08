@@ -7,12 +7,12 @@ a:active {
     transition: font-weight 0.5s, letter-spacing 0.8s;
 }
 
+.uk:hover,
 a:hover {
     letter-spacing: -1px;
     transition: 0.5s;
     color: rgb(146, 146, 146);
 }
-
 
 
 *,
@@ -66,9 +66,18 @@ body {
     /* background-color: rgb(227, 143, 40); */
 }
 
-#miniabt {
-    width: 1000px;
+.uk {
+    font-family: DotGothic16;
+    display: flex;
+    color: #000;
+    font-size: 20px;
+    letter-spacing: 3px;
+    transition: font-weight 0.5s, letter-spacing 0.8s;
+    margin-left: 20%;
+    margin-top: -42px;
+}
 
+#miniabt {
     font-size: 58px;
     margin-top: 15%;
     word-spacing: 10px;
@@ -97,6 +106,10 @@ body {
 
     .navtext {
         font-size: 11px;
+    }
+
+    .uk {
+        margin-left: 75px;
     }
 }
 
