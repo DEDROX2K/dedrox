@@ -171,7 +171,7 @@ html {
 }
 
 body {
-    cursor: url('images/cur.png');
+    cursor: ('images/cur.png');
     background-color: #f5f5f5;
     color: rgb(17, 16, 16);
     /* display: flex;
