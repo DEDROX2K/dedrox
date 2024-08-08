@@ -41,14 +41,18 @@
 
 
 
+
 const logo = document.getElementById('logo');
-const fonts = ['Pixelify Sans', 'Staatliches', 'Instrument Serif', 'arial narrow'];
+const fonts = ['Pixelify Sans', 'Staatliches', 'Instrument Serif'];
+const letterSpacings = ['-10px', '-2px', '-5px'];
 
 let index = 0;
 
 function changeFont() {
     logo.style.fontFamily = fonts[index];
+    logo.style.letterSpacing = letterSpacings[index];
     index = (index + 1) % fonts.length;
 }
 
-setInterval(changeFont, 800); // Change font every 1 second
+setInterval(changeFont, 800); // Change font every 0.8 seconds
+
