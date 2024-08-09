@@ -172,7 +172,7 @@ html {
 
 body {
     cursor: ('images/cur.png');
-    background-color: #f5f5f5;
+    background-color: #ececec;
     color: rgb(17, 16, 16);
     /* display: flex;
     justify-content: center;
@@ -184,7 +184,6 @@ body {
 }
 
 .custom-container {
-    cursor: url('images/cur.png');
     width: 100%;
     max-width: 1360px;
     margin: 0 auto;
@@ -236,7 +235,7 @@ body {
 }
 
 .minihead {
-    border-top: solid;
+    border-top: solid 30px;
     font-family: Archivo;
     font-size: 30px;
     font-weight: 800;
@@ -247,7 +246,7 @@ body {
 #third-section {
     border-top: solid;
     border-bottom: solid;
-    background-color: rgb(236, 213, 64);
+    background-color: rgb(255, 255, 255);
     color: #000;
     height: 715px;
     width: 100%;
@@ -261,11 +260,17 @@ body {
 
 
 
+.li {
+    list-style-type: square;
+}
 
 
 
-
-
+.a-custom-container {
+    width: 100%;
+    max-width: 1024px;
+    margin: 0 auto;
+}
 
 
 
