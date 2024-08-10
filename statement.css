@@ -1,0 +1,154 @@
+@font-face {
+    font-family: Cheltm;
+    src: url(Fonts/Roboto-Medium.ttf);
+}
+
+@font-face {
+    font-family: Gnu;
+    src: url(Fonts/gnuolane\ rg.otf);
+}
+
+@font-face {
+    font-family: vcr;
+    src: url(Fonts/VCR.ttf);
+}
+
+@font-face {
+    font-family: ass;
+    src: url(Fonts/Astral\ Ink.ttf);
+}
+
+@font-face {
+    font-family: west;
+    src: url(Fonts/Durango\ Western\ Eroded\ Demo.otf);
+}
+
+@font-face {
+    font-family: onyx;
+    src: url(Fonts/stereofidelic.otf);
+}
+
+@font-face {
+    font-family: vtk;
+    src: url(Fonts/VTKS\ CHOICE.ttf);
+}
+
+@font-face {
+    font-family: brwsr;
+    src: url(Fonts/BrowessSovar-GOWAO.otf);
+}
+
+@font-face {
+    font-family: fallsend;
+    src: url(Fonts/fallsend.ttf);
+}
+
+a:link,
+a:visited,
+a:active {
+    color: rgb(0, 0, 0);
+    border-bottom: none;
+    text-decoration: none;
+    transition: font-weight 0.5s, letter-spacing 0.8s;
+}
+
+.uk:hover,
+a:hover {
+    letter-spacing: -1px;
+    transition: 0.5s;
+    /* color: rgb(146, 146, 146); */
+}
+
+
+.s-t:link,
+.s-t:visited,
+.s-t:active,
+.w-t,
+.d-t,
+.a-t,
+.ab-t,
+.s-t {
+    color: rgb(0, 0, 0);
+    border-bottom: none;
+    text-decoration: none;
+    transition: font-weight 0.5s, letter-spacing 0.8s;
+}
+
+.uk:hover,
+.w-t:hover,
+.d-t:hover,
+.a-t:hover,
+.ab-t:hover,
+.s-t:hover {
+    letter-spacing: -1px;
+    transition: 0.5s;
+    color: rgb(146, 146, 146);
+}
+
+.mood-changeable {
+    position: fixed;
+    background-color: #ffffff00;
+    bottom: 20px;
+    right: 20px;
+    padding: 3px 10px;
+    cursor: pointer;
+    z-index: 999;
+    font-family: DotGothic16;
+    border: solid 2px;
+    border-radius: 90px;
+    /* Ensure it's on top */
+}
+
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+
+
+body {
+    background-color: #e1e1e1;
+    color: rgb(17, 16, 16);
+    /* display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100lvh;*/
+
+
+    /* margin: 0;
+    text-rendering: optimizeSpeed;
+    overflow-x: hidden; */
+}
+
+.custom-container {
+    width: 100%;
+    max-width: 1360px;
+    margin: 0 auto;
+}
+
+.navbar {
+    height: 80px;
+    width: 100%;
+    position: fixed;
+    /* Optional: if you want it to stay fixed at the top */
+    top: 0;
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+
+    background: rgba(225, 225, 225, 0.05);
+
+    mask-image: linear-gradient(rgb(0, 0, 0) 50%, rgba(0, 0, 0, 0.8) 70%, rgba(0, 0, 0, 0) 100%);
+
+    -webkit-mask-image: linear-gradient(rgb(0, 0, 0) 50%, rgba(0, 0, 0, 0.8) 70%, rgba(0, 0, 0, 0) 100%);
+}
+
+
+.navtext {
+    font-family: DotGothic16;
+    text-align: center;
+    color: #000;
+    font-size: 20px;
+    letter-spacing: 3px;
+}
