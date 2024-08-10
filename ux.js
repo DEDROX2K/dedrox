@@ -43,8 +43,8 @@
 
 
 const logo = document.getElementById('logo');
-const fonts = ['DotGothic16', 'west', 'onyx', 'vtk', 'brwsr'];
-const letterSpacings = ['0px', '-2px', '-5px', '-0px', '-0px'];
+const fonts = ['DotGothic16', 'west', 'onyx', 'vtk', 'brwsr', 'fallsend', 'Pixelify Sans'];
+const letterSpacings = ['0px', '-2px', '-5px', '-0px', '-0px', '-25px'];
 
 let index = 0;
 
