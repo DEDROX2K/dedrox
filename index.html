@@ -90,6 +90,61 @@
 
 
 <body>
+
+
+    <script>
+
+        function randomPosition(shape) {
+            const maxWidth = window.innerWidth - shape.clientWidth;
+            const maxHeight = window.innerHeight - shape.clientHeight;
+
+            const newX = Math.floor(Math.random() * maxWidth);
+            const newY = Math.floor(Math.random() * maxHeight);
+
+            shape.style.left = `${newX}px`;
+            shape.style.top = `${newY}px`;
+        }
+
+        function changeShapePosition() {
+            const shapes = document.querySelectorAll('.shape');
+            shapes.forEach(randomPosition);
+        }
+
+        // Call the function initially and set an interval to call it every 1000ms (1 second)
+        changeShapePosition();
+        setInterval(changeShapePosition, 200);
+
+    </script>
+
+    <style>
+        .shape {
+            position: absolute;
+            background-color: #bababa;
+            width: 5px;
+            height: 5px;
+        }
+    </style>
+
+    <div class="shape" style="left: 329px; top: 133px;"></div>
+    <div class="shape" style="left: 329px; top: 133px;"></div>
+    <div class="shape" style="left: 329px; top: 133px;"></div>
+    <div class="shape" style="left: 329px; top: 133px;"></div>
+    <div class="shape" style="left: 329px; top: 133px;"></div>
+    <div class="shape" style="left: 329px; top: 133px;"></div>
+    <div class="shape" style="left: 329px; top: 133px;"></div>
+    <div class="shape" style="left: 329px; top: 133px;"></div>
+    <div class="shape" style="left: 329px; top: 133px;"></div>
+    <div class="shape" style="left: 329px; top: 133px;"></div>
+    <div class="shape" style="left: 329px; top: 133px;"></div>
+    <div class="shape" style="left: 329px; top: 133px;"></div>
+    <div class="shape" style="left: 329px; top: 133px;"></div>
+    <div class="shape" style="left: 329px; top: 133px;"></div>
+
+
+
+
+
+
     <img class="scan" src="images/scanlines.png" alt="">
 
     <div class="container animate__animated animate__flash animate__faster">
@@ -104,7 +159,7 @@
                 // Initialize Typed.js
                 document.addEventListener('DOMContentLoaded', function () {
                     var typed = new Typed("#typed", {
-                        strings: ["If you think Comic Sans is acceptable, we need to talk...", "I'm not kidding btw.", "Uhhh sorry", "Got a bit over-excited there, "],
+                        strings: ["If you think Comic Sans is acceptable, we need to talk...", "I'm not kidding btw.", "Uhhh sorry where was I?", "Got a bit over-excited there, Hi! "],
                         typeSpeed: 90,
                         backSpeed: 25,
                         loop: true
@@ -121,7 +176,8 @@
             </div>
 
         </div>
-        <div class="instruction" style="text-align: left;">If you continue to experience issues, please reach
+        <div class="instruction animate__animated animate__fadeInDown animate__slower" style="text-align: left;">If you
+            continue to experience issues, please reach
             out directly to the mail below for assistance. (Trustable guy ------> 100%)
 
             <div class="emaillink">RAGHAVPRASANNA2000@GMAIL.COM</div><br><br>
@@ -158,6 +214,8 @@
                 <div class='link-download'>3D & Game design</div>
             </a>
         </div>
+
+
 </body>
 
 

@@ -175,10 +175,9 @@ a:hover {
 
 
 body {
-    cursor: ('images/cur.png');
     background-color: #e1e1e1;
-    color: rgb(17, 16, 16);
     text-rendering: optimizeSpeed;
+
 
     /* display: flex;
     justify-content: center;
@@ -225,7 +224,7 @@ body {
     position: fixed;
     /* Optional: if you want it to stay fixed at the top */
     top: 0;
-    backdrop-filter: blur(3px);
+    backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(3px);
 
     background: rgba(225, 225, 225, 0.05);
@@ -247,11 +246,12 @@ body {
 
 #logo {
     font-size: 15rem;
-    /* font-weight: 800; */
-    margin-top: 16%;
+    margin-top: 15%;
     overflow: hidden;
-    /* background-color: rgb(227, 143, 40); */
+    transition: none;
+    padding: 10px;
 }
+
 
 .uk {
     font-family: DotGothic16;

@@ -38,14 +38,13 @@
 
 // updatePath();
 
-
+// onyx
 
 
 
 const logo = document.getElementById('logo');
-const fonts = ['DotGothic16', 'west', 'onyx', 'vtk', 'brwsr', 'fallsend', 'Pixelify Sans'];
-const letterSpacings = ['0px', '-2px', '-5px', '-0px', '-0px', '-25px'];
-
+const fonts = ['DotGothic16', 'west', 'vtk', 'brwsr', 'Pixelify Sans'];
+const letterSpacings = ['0px', '-2px', '-0px', '-0px', '0px'];
 let index = 0;
 
 function changeFont() {
