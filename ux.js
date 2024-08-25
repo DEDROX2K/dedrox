@@ -38,20 +38,45 @@
 
 // updatePath();
 
-// onyx
-
-
 
 const logo = document.getElementById('logo');
-const fonts = ['DotGothic16', 'west', 'vtk', 'brwsr', 'Pixelify Sans'];
-const letterSpacings = ['0px', '-2px', '-0px', '-0px', '0px'];
+const svgUrls = [
+    'images/DEDROX.DSGN/IT.svg', 'images/DEDROX.DSGN/ROC.svg', 'images/DEDROX.DSGN/SCI.svg', 'images/DEDROX.DSGN/SRTK.svg', 'images/DEDROX.DSGN/NRML.svg',
+    'images/DEDROX.DSGN/PIX.svg'
+    // Add more SVG file paths here...
+];
 let index = 0;
 
-function changeFont() {
-    logo.style.fontFamily = fonts[index];
-    logo.style.letterSpacing = letterSpacings[index];
-    index = (index + 1) % fonts.length;
+function loadSVG(url, callback) {
+    fetch(url)
+        .then(response => response.text())
+        .then(data => {
+            callback(data);
+        })
+        .catch(error => console.error('Error loading SVG:', error));
 }
 
-setInterval(changeFont, 800); // Change font every 0.8 seconds
+function changeSVG() {
+    loadSVG(svgUrls[index], function (svgContent) {
+        logo.innerHTML = svgContent;
+    });
+    index = (index + 1) % svgUrls.length;
+}
+
+setInterval(changeSVG, 800); // Change SVG every 0.8 seconds
+
+
+
+// const logo = document.getElementById('logo');
+// const fonts = ['DotGothic16', 'west', 'vtk', 'brwsr', 'Pixelify Sans'];
+// const letterSpacings = ['0px', '-2px', '-0px', '-0px', '0px'];
+// let index = 0;
+
+// function changeFont() {
+//     logo.style.fontFamily = fonts[index];
+//     logo.style.letterSpacing = letterSpacings[index];
+//     index = (index + 1) % fonts.length;
+// }
+
+// setInterval(changeFont, 800); // Change font every 0.8 seconds
 

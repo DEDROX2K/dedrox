@@ -238,20 +238,29 @@ body {
 .navtext {
     font-family: DotGothic16;
     text-align: center;
-    color: #000;
+    /* mix-blend-mode: difference; */
+    /* Invert color based on background */
     font-size: 20px;
     letter-spacing: 3px;
 }
 
 
-#logo {
-    font-size: 15rem;
-    margin-top: 15%;
-    overflow: hidden;
-    transition: none;
-    padding: 10px;
+#logo svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    /* Ensures no unexpected extra space around the SVG */
 }
 
+.image-strip img {
+    position: fixed;
+    width: 100%;
+    /* Ensures the image scales to fit the width of the page */
+    height: 4px;
+    /* Maintains the image's aspect ratio */
+    display: block;
+    /* Removes any extra space around the image */
+}
 
 .uk {
     font-family: DotGothic16;
