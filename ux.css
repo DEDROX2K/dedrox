@@ -132,7 +132,6 @@ a:hover {
 .w-t,
 .d-t,
 .a-t,
-.ab-t,
 .s-t {
     color: rgb(0, 0, 0);
     border-bottom: none;
@@ -144,7 +143,6 @@ a:hover {
 .w-t:hover,
 .d-t:hover,
 .a-t:hover,
-.ab-t:hover,
 .s-t:hover {
     letter-spacing: -1px;
     transition: 0.5s;
@@ -208,8 +206,6 @@ body {
     height: 100%;
     object-fit: contain;
 }
-
-
 
 
 .custom-container {
