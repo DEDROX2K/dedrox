@@ -24,7 +24,19 @@
 
     <link rel="stylesheet" href="bsod.css">
 </head>
+
 <style>
+    header {
+        position: fixed;
+        margin: 0%;
+        top: 0%;
+        padding: 0%;
+        width: 100%;
+        /* background-color: black; */
+        color: aliceblue;
+        padding: 5px;
+    }
+
     body {
         background-color: #010080;
         /* BSOD blue */
@@ -85,7 +97,32 @@
         height: 140%;
         opacity: 30%;
     }
+
+    .realtime {
+        align-items: end;
+    }
+
+    .time {
+        background-color: white;
+        color: #000000;
+        border: solid gray;
+    }
+
+    .statusrn {
+        color: rgb(53, 247, 19);
+    }
 </style>
+
+<header style="display: flex; justify-content: space-between; align-items: center;">
+    <!-- First div sticks to the left -->
+    <div class="statusrn" style="text-align: left;">Currently online|Available to chat</div>
+
+    <!-- This div contains the other elements, sticking to the right -->
+    <div style="display: flex; gap: 10px; justify-content: flex-end;">
+        <div>london-time-zone-------></div>
+        <div id="london-time" class="time">12:34:28</div>
+    </div>
+</header>
 
 
 
@@ -141,7 +178,24 @@
     <div class="shape" style="left: 329px; top: 133px;"></div>
 
 
+    <!-- Timezone live -->
+    <script>
+        function updateLondonTime() {
+            const londonTimeElement = document.getElementById('london-time');
+            const now = new Date();
+            const options = {
+                timeZone: 'Europe/London',
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            };
+            londonTimeElement.textContent = now.toLocaleTimeString('en-GB', options);
+        }
 
+        setInterval(updateLondonTime, 1000);
+        updateLondonTime(); // Initial call to set the time immediately on load
+    </script>
 
 
 
