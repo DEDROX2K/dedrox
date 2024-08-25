@@ -133,7 +133,7 @@ a:hover {
 .d-t,
 .a-t,
 .s-t {
-    color: rgb(0, 0, 0);
+    color: black;
     border-bottom: none;
     text-decoration: none;
     transition: font-weight 0.5s, letter-spacing 0.8s;
@@ -185,27 +185,6 @@ body {
     overflow-x: hidden; */
 }
 
-.swiper {
-    margin-top: 10%;
-    width: 80%;
-    height: 300px;
-}
-
-.swiper-slide {
-    text-align: center;
-    font-size: 18px;
-    background: #EEEEEE;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.swiper-slide img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
 
 
 .custom-container {
@@ -257,6 +236,24 @@ body {
     display: block;
     /* Removes any extra space around the image */
 }
+
+#pagesec2 {
+    height: 100vh;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin: 60px;
+    border: solid rgb(213, 213, 213) 2px;
+    border-radius: 14px;
+    transition: background-color 1s, border-radius 1s;
+}
+
+/* 
+#pagesec2:hover {
+    background-color: rgb(233, 233, 233);
+    border-radius: 27px;
+    transition: 2s;
+    border: solid rgb(213, 213, 213) 2px;
+} */
 
 .uk {
     font-family: DotGothic16;
