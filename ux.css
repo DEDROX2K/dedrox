@@ -59,7 +59,7 @@
     border: 0;
     color: #242424;
     border-radius: 300px;
-    font-size: 2rem;
+    font-size: 4rem;
     padding: 2rem 1rem;
     font-weight: 600;
     width: 90%;
@@ -331,11 +331,23 @@ body {
 
 
 
+
+
+
+
+
+
 @media (max-width: 1360px) {
     .custom-container {
         max-width: 960px;
     }
 }
+
+
+
+
+
+
 
 @media (max-width: 768px) {
     .custom-container {
@@ -354,7 +366,20 @@ body {
     .uk {
         margin-left: 75px;
     }
+
+    #miniabt {
+        font-size: 75px;
+        margin-top: 20%;
+        word-spacing: 8px;
+        line-height: 70px;
+        letter-spacing: -3px;
+    }
+
 }
+
+
+
+
 
 @media (max-width: 480px) {
     .custom-container {
@@ -366,7 +391,16 @@ body {
         letter-spacing: normal;
     }
 
-    #logo {
-        font-size: 70px;
+
+    .consutex {
+        font-size: 1.4rem;
+        padding: 0.375em 1em;
+        font-weight: 500;
+        width: 800px;
+        line-height: 40px;
+    }
+
+    .consubtn {
+        font-size: 2rem;
     }
 }
