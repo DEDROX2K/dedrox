@@ -26,17 +26,6 @@
 </head>
 
 <style>
-    header {
-        position: fixed;
-        margin: 0%;
-        top: 0%;
-        padding: 0%;
-        width: 100%;
-        /* background-color: black; */
-        color: aliceblue;
-        padding: 5px;
-    }
-
     body {
         background-color: #010080;
         /* BSOD blue */
@@ -97,41 +86,17 @@
         height: 140%;
         opacity: 30%;
     }
-
-    .realtime {
-        align-items: end;
-    }
-
-    .time {
-        background-color: white;
-        color: #000000;
-        border: solid gray;
-        padding-left: 10px;
-        padding-right: 10px;
-    }
-
-    .statusrn {
-        color: black;
-        background-color: rgb(53, 247, 19);
-        cursor: cell;
-        z-index: 100;
-    }
-
-    @media (max-width: 425px) {
-        header {
-            display: none;
-        }
-    }
 </style>
 
-<header style="display: flex; justify-content: space-between; align-items: center;">
+<header class="d-none d-md-flex" style="display: flex; justify-content: space-between; align-items: center;">
     <!-- First div sticks to the left -->
-    <div class="statusrn" style="text-align: left;">Currently online | Available to chat*</div>
 
     <!-- This div contains the other elements, sticking to the right -->
     <div style="display: flex; gap: 10px; justify-content: flex-end;">
-        <div>london--time-zone------------------></div>
+        <!-- <div style="        text-shadow: 0 0px 4px white;
+">london--time-zone------------------</div> -->
         <div id="london-time" class="time">12:34:28</div>
+        <div class="statusrn" style="text-align: left;">Currently online | Available to chat*</div>
     </div>
 </header>
 

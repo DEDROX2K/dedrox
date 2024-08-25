@@ -65,6 +65,56 @@ a:hover {
     box-shadow: 1px 2px 0px 0px #1d1d21;
 }
 
+.link-download:hover {
+    box-shadow: 10px 10px 0px 0px #000000;
+    border: solid 5px black;
+}
+
+
+
+header {
+    position: fixed;
+    margin: 0%;
+    top: 0%;
+    padding: 0%;
+    width: 100%;
+    /* background-color: rgb(212, 19, 237); */
+    color: aliceblue;
+    padding: 5px;
+}
+
+
+.realtime {
+    align-items: end;
+}
+
+.time {
+    background-color: white;
+    color: #000000;
+    border: solid gray;
+    padding-left: 10px;
+    padding-right: 10px;
+
+}
+
+.statusrn {
+    color: black;
+    background-color: rgb(53, 247, 19);
+    cursor: cell;
+    z-index: 100;
+    text-shadow: 0 0px 4px #ffffff;
+}
+
+@media (max-width: 800px) {
+    header {
+        font-size: 10px;
+    }
+}
+
+
+
+
+
 .mark,
 mark {
     background-color: black;
