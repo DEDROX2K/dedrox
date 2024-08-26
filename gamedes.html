@@ -12,46 +12,68 @@
         rel="stylesheet">
     <link rel="icon" href="logo.png" type="png">
     <meta name="theme-color" content="#ffc800">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/three@0.167.1/build/three.module.min.js"></script>
+
+
+
+
+
+
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
 
+    <script async src="https://ga.jspm.io/npm:es-module-shims@1.7.1/dist/es-module-shims.js"></script>
+    <script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.167.1/build/three.module.min.js"
+  }
+}
+</script>
+    <script type="module"
+        src="https://cdn.jsdelivr.net/npm/@google/model-viewer/dist/model-viewer-module.min.js"></script>
+
+    <script type="module"
+        src="https://cdn.jsdelivr.net/npm/@google/model-viewer-effects/dist/model-viewer-effects.min.js"></script>
+
+
+
+    <link rel="stylesheet" href="gamedes.css">
+    <link rel="icon" href="logo.png" type="png">
+    <meta name="theme-color" content="#ffc800">
 
     <title>Still in WIP</title>
 </head>
 
-<body style="background-color: rgb(45, 45, 45);">
 
-    <model-viewer camera-controls touch-action="pan-y" disable-zoom src="threeD/Tintanic.glb">
+<!-- BODY-BODY-BODY-BODY -->
 
-        <pixelate-effect granularity="10"></pixelate-effect>
+<body>
 
-    </model-viewer>
+    <div class="d-flex">
+
+        <model-viewer camera-controls pixelate-effect touch-action="pan-y" disable-zoom autoplay ar
+            src="threeD/Tintanic.glb">
+
+            <effect-composer>
+                <!-- <pixelate-effect granularity="3"></pixelate-effect> -->
+                <outline-effect color="black" strength="5" smoothing="0"></outline-effect>
+                <smaa-effect strength="100"> </smaa-effect>
+
+            </effect-composer>
+
+        </model-viewer>
+
+    </div>
+
+    <div class="threetit">3D models with fresh 3JS code is about to be deployed, hold up & check the other things
+    </div>
 
 
-    <style>
-        .model-viewer {
-            width: 100%;
-            height: 500px;
-            background-color: #f0f0f0;
-        }
-    </style>
-
-
-
-    <!-- <style>
-        .threetit {
-            font-family: "Archivo";
-            font-size: 150px;
-            line-height: 101.5%;
-            letter-spacing: -0.08em;
-            font-weight: 800;
-            text-transform: uppercase;
-            text-align: justify;
-            display: flex;
-            color: rgb(0, 0, 0);
-        }
-    </style>
-
-    <div class="threetit">3D models with fresh 3JS code is about to be deployed, hold up & check the other things</div> -->
 </body>
+
+<footer>
+</footer>
 
 </html>
