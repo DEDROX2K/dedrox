@@ -11,7 +11,7 @@ model-viewer {
 .threetit {
     font-family: "Archivo";
     font-size: 150px;
-    line-height: 80%;
+    line-height: 90%;
     letter-spacing: -0.08em;
     font-weight: 800;
     text-transform: uppercase;
@@ -19,4 +19,49 @@ model-viewer {
     display: flex;
     color: rgb(0, 0, 0);
     z-index: 100;
+    width: 90%;
+    margin: 90px;
+    background-color: white;
+}
+
+.Back {
+    position: fixed;
+    /* background-color: fill #ffffff00; */
+    background-blend-mode: difference;
+    top: 10px;
+    left: 10px;
+    padding: 3px 10px;
+    cursor: pointer;
+    z-index: 999;
+    font-family: Archivo;
+    font-weight: 800;
+    border: solid 2px;
+    border-radius: 90px;
+}
+
+.mood-changeable {
+    position: fixed;
+    background-color: #ffffff00;
+    bottom: 20px;
+    right: 20px;
+    padding: 3px 10px;
+    cursor: pointer;
+    z-index: 999;
+    font-family: Archivo;
+    font-weight: 800;
+    border: solid 2px;
+    border-radius: 90px;
+    /* Ensure it's on top */
+}
+
+a {
+    color: black;
+    font-size: 16px;
+}
+
+
+@media (max-width: 480px) {
+    .threetit {
+        font-size: 70px;
+    }
 }
