@@ -172,3 +172,18 @@ body {
     width: 5px;
     height: 3px;
 }
+
+.Back {
+    position: fixed;
+    /* background-color: fill #ffffff00; */
+    /* background-blend-mode: difference; */
+    top: 10px;
+    left: 10px;
+    padding: 3px 10px;
+    cursor: pointer;
+    z-index: 999;
+    font-family: Archivo;
+    font-weight: 800;
+    border: solid 2px;
+    border-radius: 90px;
+}

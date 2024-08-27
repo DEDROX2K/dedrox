@@ -175,6 +175,7 @@ a:hover {
 body {
     background-color: #e1e1e1;
     text-rendering: optimizeSpeed;
+    /* overflow: hidden; */
 
 
     /* display: flex;
@@ -185,6 +186,20 @@ body {
     overflow-x: hidden; */
 }
 
+.sticker {
+    position: absolute;
+    cursor: grab;
+    width: auto;
+    height: 100px;
+    user-select: none;
+}
+
+.sticker img {
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    /* Prevent image selection */
+}
 
 
 .custom-container {
@@ -236,6 +251,7 @@ body {
     display: block;
     /* Removes any extra space around the image */
 }
+
 
 #pagesec2 {
     height: 100vh;
