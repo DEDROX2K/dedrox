@@ -1,43 +1,7 @@
-// const trails = document.querySelectorAll(".trail")
-// const smoothPointer = {
-//     x: window.innerWidth / 2,
-//     y: window.innerHeight / 2,
-// };
-
-// const totalPointsArray = [40, 35, 30, 25, 20, 15, 10];
-
-// Window.addEventListerner("mousemove", (evemt) => {
-//     gsap.to(smoothPointer, {
-//         x: event.clientX,
-//         y: event.clientX,
-//         duration: 0.5,
-//         ease: "power2.out",
-//     });
-// });
-
-// function updatePath() {
-//     trails.forEach((path, index) => {
-//         let points = path.points || [];
-//         points.unshift({ ...smoothPointer });
-//         while (points.length > totalPointsArray[index])
-//             points.pop();
-
-//         path.points = points;
-
-//         if (points.length > 1) {
-//             let d = `M ${points[0].x} ${points[0].y}`;
-//             for (let i = 1; i < points.length; i++) {
-//                 d += `L ${points[i].x} ${points[i].y}`;
-//             }
-//             path.setAttribute("d", d);
-//         }
-//     });
-
-//     requestAnimationFrame(updatePath);
-// }
-
-// updatePath();
-
+// Logo SVG loooop
+// Logo SVG loooop
+// Logo SVG loooop
+// Logo SVG loooop
 
 const logo = document.getElementById('logo');
 const svgUrls = [
@@ -62,10 +26,14 @@ function changeSVG() {
     });
     index = (index + 1) % svgUrls.length;
 }
-
 setInterval(changeSVG, 600); // Change SVG every 0.8 seconds
 
 
+// dragdrop.js
+// dragdrop.js
+// dragdrop.js
+// dragdrop.js
+// dragdrop.js
 // dragdrop.js
 
 class Draggable {
@@ -90,16 +58,17 @@ class Draggable {
 
     onMouseDown(e) {
         this.currentElement = this.element;
-        this.offsetX = e.clientX - this.currentElement.getBoundingClientRect().left;
-        this.offsetY = e.clientY - this.currentElement.getBoundingClientRect().top;
+        const rect = this.currentElement.getBoundingClientRect();
+        this.offsetX = e.clientX - rect.left;
+        this.offsetY = e.clientY - rect.top;
         this.currentElement.style.cursor = 'grabbing';
     }
 
     onMouseMove(e) {
         if (this.currentElement) {
             e.preventDefault();
-            this.currentElement.style.left = `${e.clientX - this.offsetX}px`;
-            this.currentElement.style.top = `${e.clientY - this.offsetY}px`;
+            this.currentElement.style.left = `${e.clientX - this.offsetX + window.pageXOffset}px`;
+            this.currentElement.style.top = `${e.clientY - this.offsetY + window.pageYOffset}px`;
         }
     }
 
@@ -113,16 +82,17 @@ class Draggable {
     onTouchStart(e) {
         const touch = e.touches[0];
         this.currentElement = this.element;
-        this.offsetX = touch.clientX - this.currentElement.getBoundingClientRect().left;
-        this.offsetY = touch.clientY - this.currentElement.getBoundingClientRect().top;
+        const rect = this.currentElement.getBoundingClientRect();
+        this.offsetX = touch.clientX - rect.left;
+        this.offsetY = touch.clientY - rect.top;
     }
 
     onTouchMove(e) {
         if (this.currentElement) {
             e.preventDefault();
             const touch = e.touches[0];
-            this.currentElement.style.left = `${touch.clientX - this.offsetX}px`;
-            this.currentElement.style.top = `${touch.clientY - this.offsetY}px`;
+            this.currentElement.style.left = `${touch.clientX - this.offsetX + window.pageXOffset}px`;
+            this.currentElement.style.top = `${touch.clientY - this.offsetY + window.pageYOffset}px`;
         }
     }
 
@@ -131,11 +101,11 @@ class Draggable {
     }
 }
 
-// Initialize draggable stickers
+// Initialize draggable stickers with custom positions
 document.addEventListener('DOMContentLoaded', () => {
-    new Draggable(document.getElementById('sticker1'));
-    new Draggable(document.getElementById('sticker2'));
-    new Draggable(document.getElementById('sticker3'));
-    new Draggable(document.getElementById('sticker4'));
-    new Draggable(document.getElementById('sticker5'));
+    new Draggable(document.getElementById('sticker1'), 30, 30);
+    new Draggable(document.getElementById('sticker2'), 300, 150);
+    new Draggable(document.getElementById('sticker3'), 400, 300);
+    new Draggable(document.getElementById('sticker4'), 50, 500);
+    new Draggable(document.getElementById('sticker5'), 650, 450);
 });

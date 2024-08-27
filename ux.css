@@ -190,7 +190,7 @@ body {
     position: absolute;
     cursor: grab;
     width: auto;
-    height: 100px;
+    height: 120px;
     user-select: none;
 }
 
@@ -200,6 +200,7 @@ body {
     pointer-events: none;
     /* Prevent image selection */
 }
+
 
 
 .custom-container {
@@ -233,6 +234,7 @@ body {
     font-size: 20px;
     letter-spacing: 3px;
 }
+
 
 
 #logo svg {
