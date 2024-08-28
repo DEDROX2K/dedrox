@@ -29,7 +29,7 @@
     <div class="container-fluid">
         <div class="row">
             <!-- Left Side (Fixed) -->
-            <div id="left-side" class="col-md-5 position-fixed vh-100">
+            <div id="left-side" class="col-md-5 position-fixed vh-100" style="background-color: #FFC800;">
                 <h1 style="width: 100%;   text-transform: uppercase;
 ">Where Do Stories Really Begin and really End?</h1>
                 <br><br>
@@ -76,10 +76,11 @@
                         By writing, we clarify our thoughts, communicate our vision, and ultimately, help people
                         navigate the complexities of modern life.
                     </p>
+                    <div id="img"></div>
                     <h2>UX RELATED STUFFS</h2>
 
                     <!-- First article here -->
-                    <a id="img"
+                    <a
                         href="https://medium.com/@raghavprasanna2000/how-one-falls-into-the-state-of-admiration-878558a4a31d">
                         <img src="images/ari1.png" class="img-fluid" alt="Article 1">
                     </a>
@@ -157,6 +158,8 @@
                 start: "top center",  // when the top of the image hits the center of the viewport
                 end: "bottom center", // when the bottom of the image hits the center of the viewport
                 toggleActions: "play none none reverse", // play when entering, reverse when leaving
+                markers: true, // Enable markers for debugging
+
             }
         });
     </script>
