@@ -98,8 +98,8 @@ header {
 }
 
 .statusrn {
-    color: black;
-    background-color: rgb(53, 247, 19);
+    color: rgb(255, 255, 255);
+    /* background-color: rgb(53, 247, 19); */
     cursor: cell;
     z-index: 100;
     text-shadow: 0 0px 4px #ffffff;
