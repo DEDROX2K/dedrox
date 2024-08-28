@@ -148,23 +148,15 @@
 
     <!-- GSAP Animation Script -->
     <script>
-
-        gsap.from("#uxarti", {
-            backgroundColor: black,
-            markers: true // You can remove this line when you're done testing
-
-        })
-
         gsap.registerPlugin(ScrollTrigger);
 
-        gsap.to(".left-side", {
-            backgroundColor: "black",
+        gsap.to("#left-side", {
+            backgroundColor: "#A2A2A2",  // Updated color to #A2A2A2
             scrollTrigger: {
                 trigger: "#img",
-                start: "top center",
-                end: "bottom center",
-                toggleActions: "play none none reverse",
-                markers: true // You can remove this line when you're done testing
+                start: "top center",  // when the top of the image hits the center of the viewport
+                end: "bottom center", // when the bottom of the image hits the center of the viewport
+                toggleActions: "play none none reverse", // play when entering, reverse when leaving
             }
         });
     </script>
