@@ -5,7 +5,7 @@ body {
 
 /* Ensure the right side is scrollable */
 /* Ensure the right side is scrollable */
-.left-side {
+#left-side {
     background-color: #FFC800;
     color: #000000;
     border-left: solid 50px black;
