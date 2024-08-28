@@ -264,12 +264,17 @@ img:hover {
 
 @media (max-width: 768px) {
     h1 {
-        font-size: 40px;
+        font-size: 30px;
+        text-align: justify;
     }
 
     h2 {
         font-size: 30px;
         padding: 0%;
+    }
+
+    .left-side {
+        padding: 20px;
     }
 
     .navtext {
