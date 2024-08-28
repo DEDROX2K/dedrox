@@ -103,9 +103,9 @@ class Draggable {
 
 // Initialize draggable stickers with custom positions
 document.addEventListener('DOMContentLoaded', () => {
-    new Draggable(document.getElementById('sticker1'), 30, 30);
-    new Draggable(document.getElementById('sticker2'), 300, 150);
-    new Draggable(document.getElementById('sticker3'), 400, 300);
-    new Draggable(document.getElementById('sticker4'), 50, 500);
-    new Draggable(document.getElementById('sticker5'), 650, 450);
+    new Draggable(document.getElementById('sticker1'), 240, 140);
+    new Draggable(document.getElementById('sticker2'), 1200, 150);
+    new Draggable(document.getElementById('sticker3'), 70, 450);
+    new Draggable(document.getElementById('sticker4'), 880, 340);
+    new Draggable(document.getElementById('sticker5'), 1000, 450);
 });

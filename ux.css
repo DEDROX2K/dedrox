@@ -192,6 +192,9 @@ body {
     width: auto;
     height: 120px;
     user-select: none;
+    transition: transform 0.1s ease, filter 0.9s ease;
+    /* Horizontal offset: 10px, Vertical offset: 5px */
+
 }
 
 .sticker img {
@@ -201,6 +204,9 @@ body {
     /* Prevent image selection */
 }
 
+.sticker:hover {
+    transform: translateY(-1px) rotate(0.1deg);
+}
 
 
 .custom-container {
@@ -215,16 +221,21 @@ body {
     position: fixed;
     /* Optional: if you want it to stay fixed at the top */
     top: 0;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(3px);
-
-    background: rgba(225, 225, 225, 0.05);
-
-    mask-image: linear-gradient(rgb(0, 0, 0) 50%, rgba(0, 0, 0, 0.8) 70%, rgba(0, 0, 0, 0) 100%);
-
-    -webkit-mask-image: linear-gradient(rgb(0, 0, 0) 50%, rgba(0, 0, 0, 0.8) 70%, rgba(0, 0, 0, 0) 100%);
+    z-index: 999;
 }
 
+.blurtop {
+    height: 80px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+
+    background: rgba(225, 225, 225, 0.05);
+    mask-image: linear-gradient(rgb(0, 0, 0) 50%, rgba(0, 0, 0, 0.8) 70%, rgba(0, 0, 0, 0) 100%);
+    -webkit-mask-image: linear-gradient(rgb(0, 0, 0) 50%, rgba(0, 0, 0, 0.8) 70%, rgba(0, 0, 0, 0) 100%);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(3px);
+}
 
 .navtext {
     font-family: DotGothic16;
