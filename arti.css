@@ -32,6 +32,9 @@ body {
     letter-spacing: 2px;
     color: #212121;
     text-align: justify;
+
+    width: 100%;
+
     font-family: DotGothic16;
     font-size: 30px;
     font-style: normal;
@@ -122,6 +125,9 @@ p {
     font-style: normal;
     font-weight: 400;
     line-height: 100%;
+
+    width: 50%;
+
     /* 36px */
     letter-spacing: 0px;
     text-align: justify;
@@ -136,7 +142,7 @@ p {
 a:link,
 a:visited,
 a:active {
-    color: rgb(0, 0, 0);
+    color: #ffffff;
     border-bottom: none;
     text-decoration: none;
     transition: font-weight 0.5s, letter-spacing 0.8s;
@@ -156,7 +162,7 @@ a:hover {
 .d-t,
 .a-t,
 .s-t {
-    color: black;
+    color: white;
     border-bottom: none;
     text-decoration: none;
     transition: font-weight 0.5s, letter-spacing 0.8s;
@@ -218,8 +224,9 @@ a:hover {
 
 .navtext {
     font-family: DotGothic16;
+
     text-align: center;
-    /* mix-blend-mode: difference; */
+    mix-blend-mode: difference;
     /* Invert color based on background */
     font-size: 20px;
     letter-spacing: 3px;
@@ -233,6 +240,18 @@ a:hover {
     width: 100%;
 }
 
+img {
+    transition: transform 0.9s ease-in-out;
+
+}
+
+img:hover {
+    transform: translateY(-6px) rotate(-0.7deg);
+
+    border-radius: 5px;
+    transition: 1s;
+}
+
 #uxarti {
     margin-top: 40px;
     margin-bottom: 100px;
@@ -240,4 +259,32 @@ a:hover {
 
 #Perarti {
     margin-top: 10%;
+}
+
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 40px;
+    }
+
+    h2 {
+        font-size: 30px;
+        padding: 0%;
+    }
+
+    .navtext {
+        font-family: DotGothic16;
+        font-size: 13px;
+        letter-spacing: 3px;
+        color: white;
+    }
+
+    p {
+        font-size: 15px;
+        width: 100%;
+    }
+
+    .lefte {
+        font-size: 25px;
+    }
 }

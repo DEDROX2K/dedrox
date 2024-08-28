@@ -117,7 +117,7 @@
 a:link,
 a:visited,
 a:active {
-    color: rgb(0, 0, 0);
+    color: #ffffff;
     border-bottom: none;
     text-decoration: none;
     transition: font-weight 0.5s, letter-spacing 0.8s;
@@ -138,7 +138,7 @@ a:hover {
 .d-t,
 .a-t,
 .s-t {
-    color: black;
+    color: white;
     border-bottom: none;
     text-decoration: none;
     transition: font-weight 0.5s, letter-spacing 0.8s;
@@ -244,8 +244,9 @@ body {
 
 .navtext {
     font-family: DotGothic16;
+    color: white;
     text-align: center;
-    /* mix-blend-mode: difference; */
+    mix-blend-mode: difference;
     /* Invert color based on background */
     font-size: 20px;
     letter-spacing: 3px;
