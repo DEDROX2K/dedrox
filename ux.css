@@ -43,6 +43,11 @@
     src: url(Fonts/fallsend.ttf);
 }
 
+@font-face {
+    font-family: condense;
+    src: url(Fonts/gloucester-mt-extra-condensed.ttf);
+}
+
 .consutex {
     font-family: gnu;
     color: #242424;

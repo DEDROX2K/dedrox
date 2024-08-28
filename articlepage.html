@@ -4,248 +4,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Articles</title>
+    <title>Split Layout Website with Bootstrap</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="arti.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:ital,wght@0,100..900;1,100..900&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&family=Bebas+Neue&family=Calistoga&family=DotGothic16&family=Instrument+Serif:ital@0;1&family=Maiden+Orange&family=Pixelify+Sans:wght@400..700&family=Staatliches&display=swap"
         rel="stylesheet">
-
-    <script src="https://kit.fontawesome.com/965164f042.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="arti.css">
     <link rel="icon" href="logo.png" type="png">
     <meta name="theme-color" content="#ffc800">
 
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
-    <link rel="stylesheet" href="Jsscript.js">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <!-- GSAP and ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/ScrollTrigger.min.js"></script>
 </head>
 
-<!-- header -->
-<header>
-    <div class="topnav fixed-top">
-        <div class="custom-container">
-            <div class="row" style="align-items: center;">
-                <div class="col-3 logowittext">
-                    <a href="ux.html">
-                        <img src="logo.png" style="width: 1.3rem; height: 1.3rem;">
-                    </a>
-                </div>
-                <div class="col-3">
-                    <a class="nav-link" href="#">Projects</a>
-                </div>
-                <div class="col-3">
-                    <a class="nav-link" href="gamedes.html">3D & game design</a>
-                </div>
-                <div class="col-3">
-                    <a class="nav-link" href="bsod.html">About</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</header>
-
-<div id="scroll-container">
-</div>
-
-
-<!-- body -->
-
 <body>
-    <div class="sot sottex container-fluid">
-        Where do thoughts begin, and really end?
-    </div>
-
-    <div class="custom-container article-thumnails" style="margin-top: 60px;">
+    <div class="container-fluid">
         <div class="row">
-            <div class="col-md-2 col-sm-4" style="padding-top: 20px;">
-                <img src="images/arti-thum1.png" class="img-fluid">
-                <div class=" col-md-2 quobar">
-                </div>
-                <div class="arti-thum-num">1</div>
-                <div class="arti-thum-tex">
-                    Common Mistakes Everyone Makes in Personas and Scenarios. TLDR: They lack emotion. Personas are not
-                    just a wall of text about a person.
-                    Its not just about their demographics
-                    Its not just about their behavior
-
-                </div>
-            </div>
-
-            <div class="col-md-2 col-sm-2" style="padding-top: 50px;">
-                <img src="images/arti-thum2.png" class="img-fluid">
-                <div class=" col-md-2 quobar">
-                </div>
-                <div class="arti-thum-num">2</div>
-                <div class="arti-thum-tex">
-                    Common Mistakes Everyone Makes in Personas and Scenarios. TLDR: They lack emotion. Personas are not
-                    just a wall of text about a person.
-                    Its not just about their demographics
-                    Its not just about their behavior
-                    Its not just about their background.
-                </div>
-            </div>
-
-            <div class="col-md-2 col-sm-2" style="padding-top: 10px;">
-                <img src="images/arti-thum3.png" class="img-fluid">
-                <div class=" col-md-2 quobar">
-                </div>
-                <div class="arti-thum-num">3</div>
-                <div class="arti-thum-tex">
-                    Common Mistakes Everyone Makes in Personas and Scenarios. TLDR: They lack emotion. Personas are not
-                    just a wall of text about a person.
-                    Its not just about their demographics
-                    Its not just about their behavior
-                    Its not just about their background.
-                </div>
-            </div>
-
-            <div class="col-md-2 col-sm-2" style="padding-top: 90px;">
-                <img src="images/arti-thum4.png" class="img-fluid">
-                <div class=" col-md-2 quobar">
-                </div>
-                <div class="arti-thum-num">4</div>
-                <div class="arti-thum-tex">
-                    Common Mistakes Everyone Makes in Personas and Scenarios. TLDR: They lack emotion. Personas are not
-                    just a wall of text about a person.
-                    Its not just about their demographics
-                    Its not just about their behavior
-                    Its not just about their background.
-                </div>
-            </div>
-
-            <div class="col-md-2 col-sm-2" style="padding-top: 40px;">
-                <img src="images/arti-thum5.png" class="img-fluid">
-                <div class=" col-md-2 quobar">
-                </div>
-                <div class="arti-thum-num">5</div>
-                <div class="arti-thum-tex">
-                    Common Mistakes Everyone Makes in Personas and Scenarios. TLDR: They lack emotion. Personas are not
-                    just a wall of text about a person.
-                    Its not just about their demographics
-                    Its not just about their behavior
-                    Its not just about their background.
-
-                </div>
-            </div>
-
-            <div class="col-md-2 col-sm-2" style="padding-top: 20px;">
-                <img src="images/arti-thum6.png" class="img-fluid">
-                <div class=" col-md-2 quobar">
-                </div>
-                <div class="arti-thum-num">6</div>
-                <div class="arti-thum-tex">
-                    Common Mistakes Everyone Makes in Personas and Scenarios. TLDR: They lack emotion. Personas are not
-                    just a wall of text about a person.
-                    Its not just about their demographics
-                    Its not just about their behavior
-                    Its not just about their background.
-
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <!-- <div class="container-fluid">
-        <div class="row d-flex flex-column">
-            <div class="col-6 lftimg" style="padding-right: 0px; padding-left: 0%; padding-top: 50px;">
-                <img src="images/personaimg.png">
+            <!-- Left Side (Fixed) -->
+            <div class="col-md-5 left-side position-fixed vh-100">
+                <h1 style="width: 100%;   text-transform: uppercase;
+">Where Do Stories Really Begin and really End?</h1>
+                <br><br>
+                <button class="Back"><a href="ux.html"> Home page? </a></button>
+                <br><br>
+                <button class="Back"><a href="ux.html">Home page?</a></button>
+                <br><br>
+                <a href="https://medium.com/@RaghavPrasannaUX" target="_blank" class="d-t d-flex text-center"
+                    style="font-family: DotGothic16; right: 0%; align-items: end; position: relative; margin-top: 10%; font-size: 20px;">UX
+                    related Medium* /</a>
+                <a href="https://medium.com/@raghavprasanna2000" target="_blank" class="d-t d-flex text-center"
+                    style="font-family: DotGothic16; right: 0%; align-items: end; position: relative; margin-top: -5px; font-size: 20px;">Personal
+                    Medium blogs* /</a>
             </div>
         </div>
-        <div class="row">
-            <div class="col-6" style="padding-top: 530px; line-height: 15px; z-index: -1;">
-                <div class="body" style="color: aliceblue;">
-                    2 min read
-                    <br />
-                    ·
-                    <br />
-                    Jun 26, 2024
-                </div>
-                <div class="body" style="text-align: end; padding-top: 10px; line-height: 15px; color: aliceblue;">
-                    Writer on Bootcamp
-                    <br />
-                    Link to Medium site
-                </div>
 
-                <div class="subheading" style="color:aliceblue;">
-                    UX
-                    <br />
-                    User Experience
-                    <br />
-                    UX Design
-                    <br />
-                    Leadership
-                    <br />
-                    Product Management
-                </div>
-            </div>
-            <div class="col-6 artisect">
-                <div>
-
-                    <div class="heading">Common Mistakes Everyone Makes in Personas and Scenarios<br /></div>
-                    <div class="subheading">Personas are not just a wall of text about a person.</div>
-                    <div class="bodytext">Its not just about their demographics <br />
-
-                        Its not just about their behavior <br />
-                        Its not just about their background. <br />
-                        <br />
-                        It has to have a emotional connection so that everyone in the team can empathize with the
-                        persona.
-                        Emotions creates values. Emotions creates importance. Neglecting the emotional background of
-                        users
-                        can lead to products that miss the mark. <br />
-                        <br />
-
-
-                        Plus, everyone who is not a UX designer is going to completely understand personas straight away
-                        (there is no reason to). You make them understand it thru emotions. <br />
-                        <br />
-
-
-                        <div class="ssuubbheading">Persona structure:</div>
-                        Imagine a persona outlining <br />
-
-
-                        user’s age, <br />
-
-                        occupation, and <br />
-
-                        tech savviness. <br />
-
-                        While these being helpful, it doesn’t tell the whole story. <br />
-
-
-                        Why? what’s left in-nit? <br />
-
-                        What if this user feels frustrated navigating a complex interface, or anxious about online
-                        security?
-                        Understanding these emotional snippets provides a richer picture and allows designers to address
-                        them directly.
+        <!-- Right Side (Scrollable) -->
+        <div class="col-md-7 offset-md-5 right-side">
+            <nav class="navbar fixed-top offset-5">
+                <div class="custom-container">
+                    <div class="row">
+                        <div class="col-1" style="text-align: start; margin-top: 20px">
+                            <a href="index.html">
+                                <img src="images/DEDROX.DSGN/dedroxLogo.svg"
+                                    style="width: 30px; height: auto; z-index: 100;">
+                            </a>
+                        </div>
+                        <div class="col-6" style="margin-top: 20px; text-align: end;">
+                            <a href="Statement.html" class="s-t">Statement* /</a>
+                            <a href="work.html" class="w-t">Work* /</a>
+                            <a href="gamedes.html" class="d-t">3D & game-design* /</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div> -->
+            </nav>
 
-    <!-- <div class="desktop-2">
-        <div class="topnav">
-            <div class="articles">Articles</div>
-            <div class="projects">Projects</div>
-            <div class="_3-d-game-design">3D &amp; game design</div>
-            <div class="about">About</div>
-        </div>
+            <div class="blurtop"></div>
 
-        <img class="personaimg-1" src="images\personaimg.webp" />
-        <div class="scroll">
-            <div class="rectangle-404"></div>
+            <!-- Main Content -->
+            <main class="p-5 mt-5">
+                <section id="uxarti" class="uxarti">
+                    <p class="lefte">
+                        Writing is not just about expressing ideas and notions; it’s to make sense of the reality around
+                        you. --------&gt; As UX designers, our words can influence how people interact with the world.
+                        By writing, we clarify our thoughts, communicate our vision, and ultimately, help people
+                        navigate the complexities of modern life.
+                    </p>
+                    <h2>UX RELATED STUFFS</h2>
+
+                    <!-- First article here -->
+                    <a id="img"
+                        href="https://medium.com/@raghavprasanna2000/how-one-falls-into-the-state-of-admiration-878558a4a31d">
+                        <img src="images/ari1.png" class="img-fluid" alt="Article 1">
+                    </a>
+                    <br>
+                    <p style="width: 50%;">3 min read · Jun 28, 2024
+                        <br><br>A phone could not be a computer, no? I just brought a RTX_1080P_4K_RGB_GAMING_GIGACHAD
+                        of a laptop. I call it, my computer. Sounds wrong to call that a “computer” right?...
+                    </p>
+
+                    <a
+                        href="https://medium.com/@raghavprasanna2000/how-one-falls-into-the-state-of-admiration-878558a4a31d">
+                        <img src="images/ari2.png" class="img-fluid" style="margin-top: 15%;" alt="Article 2">
+                    </a>
+                    <br>
+                    <p style="width: 50%;">2 min read · Jun 26, 2024
+                        <br><br>Personas are not just a wall of text about a person...<br> Its not just about their
+                        demographics Its not just about their behavior... <br>Its not just about their background...
+                    </p>
+
+                    <a
+                        href="https://medium.com/@raghavprasanna2000/how-one-falls-into-the-state-of-admiration-878558a4a31d"><img
+                            src="images/ari3.png" class="img-fluid" style="margin-top: 15%;"></a>
+                    <br>
+                    <p style="width: 50%;">4 min read
+                        ·
+                        Mar 30, 2024
+                        <br><br>What is considered eye-opening? To which should I offer my undivided
+                        attention? And, what are
+                        those things that are truly worth admiring?
+                    </p>
+                </section>
+
+                <section id="Perarti" class="mb-5">
+                    <h2 style="margin-top: 40%;">OFF-TOPIC STUFFS</h2>
+                    <img src="images/per1.png" class="img-fluid">
+                    <p style="width: 60%;">What is considered eye-opening? To which should I offer my undivided
+                        attention? And, what are
+                        those things that are truly worth admiring?
+                    </p>
+
+                    <img src="images/per2.png" class="img-fluid" style="margin-top: 3%;">
+                    <p style="width: 60%;">What is considered eye-opening? To which should I offer my undivided
+                        attention? And, what are
+                        those things that are truly worth admiring?
+                    </p>
+
+                    <img src="images/per3.png" class="img-fluid" style="margin-top: 3%;">
+                    <p style="width: 60%;">What is considered eye-opening? To which should I offer my undivided
+                        attention? And, what are
+                        those things that are truly worth admiring?
+                    </p>
+                </section>
+            </main>
+
+            <!-- Footer -->
+            <footer class="bg-light text-center py-4">
+                <p>&copy; 2024 Your Website. All rights reserved.</p>
+            </footer>
         </div>
-    </div>   -->
+    </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+    <!-- GSAP Animation Script -->
+    <script>
+
+        gsap.from("#uxarti", {
+            backgroundColor: black,
+            markers: true // You can remove this line when you're done testing
+
+        })
+
+        gsap.registerPlugin(ScrollTrigger);
+
+        gsap.to(".left-side", {
+            backgroundColor: "black",
+            scrollTrigger: {
+                trigger: "#img",
+                start: "top center",
+                end: "bottom center",
+                toggleActions: "play none none reverse",
+                markers: true // You can remove this line when you're done testing
+            }
+        });
+    </script>
 </body>
-
-
-
 
 </html>

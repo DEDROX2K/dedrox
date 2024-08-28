@@ -1,196 +1,245 @@
 body {
-    background-color: #1e49a5;
+    padding: 0%;
+    margin: 0%;
 }
 
-html {
-    scroll-behavior: smooth;
+/* Ensure the right side is scrollable */
+/* Ensure the right side is scrollable */
+.left-side {
+    background-color: #FFC800;
+    color: #000000;
+    border-left: solid 50px black;
+    padding: 50px;
+    border-right: solid 2px black;
+
 }
 
 
-.col-3 {
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
+/* Ensure the right side is scrollable */
+/* Ensure the right side is scrollable */
+.right-side {
+    background-color: #ffffff;
+    /* Adjust to avoid navbar overlap */
+    overflow-y: auto;
+    /* border-left: solid 5px black; */
 }
 
+
+
+.lefte {
+    margin-top: 20%;
+    margin-bottom: 300px;
+    letter-spacing: 2px;
+    color: #212121;
+    text-align: justify;
+    font-family: DotGothic16;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 100%;
+    border-bottom: solid;
+}
+
+@font-face {
+    font-family: Cheltm;
+    src: url(Fonts/Roboto-Medium.ttf);
+}
+
+@font-face {
+    font-family: Gnu;
+    src: url(Fonts/gnuolane\ rg.otf);
+}
+
+@font-face {
+    font-family: vcr;
+    src: url(Fonts/VCR.ttf);
+}
+
+@font-face {
+    font-family: ass;
+    src: url(Fonts/Astral\ Ink.ttf);
+}
+
+@font-face {
+    font-family: west;
+    src: url(Fonts/Durango\ Western\ Eroded\ Demo.otf);
+}
+
+@font-face {
+    font-family: onyx;
+    src: url(Fonts/stereofidelic.otf);
+}
+
+@font-face {
+    font-family: vtk;
+    src: url(Fonts/VTKS\ CHOICE.ttf);
+}
+
+@font-face {
+    font-family: brwsr;
+    src: url(Fonts/BrowessSovar-GOWAO.otf);
+}
+
+@font-face {
+    font-family: fallsend;
+    src: url(Fonts/fallsend.ttf);
+}
+
+@font-face {
+    font-family: condense;
+    src: url(Fonts/gloucester-mt-extra-condensed.ttf);
+}
+
+h1 {
+    color: #000;
+    font-family: DotGothic16;
+    font-weight: 800;
+    font-size: 80px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 89%;
+    letter-spacing: 3px;
+    /* 64px */
+}
+
+h2 {
+    color: rgb(45, 45, 45);
+    font-family: DotGothic16;
+    font-weight: 800;
+    font-size: 80px;
+
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: 3px;
+
+    padding-bottom: 20px;
+    padding-left: 30px;
+    background-color: #e6e6e6;
+}
+
+p {
+    color: #000;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 100%;
+    /* 36px */
+    letter-spacing: 0px;
+    text-align: justify;
+    font-family: 'Franklin Gothic', 'Arial Narrow', Arial, sans-serif;
+    /* font-family: "Cascadia Code"; */
+    margin-top: 10px;
+    padding-bottom: 20px;
+    border-bottom: solid 2px;
+
+}
+
+a:link,
+a:visited,
+a:active {
+    color: rgb(0, 0, 0);
+    border-bottom: none;
+    text-decoration: none;
+    transition: font-weight 0.5s, letter-spacing 0.8s;
+}
+
+.uk:hover,
+a:hover {
+    letter-spacing: -1px;
+    transition: 0.6s;
+    /* color: rgb(146, 146, 146); */
+}
+
+
+.s-t:link,
+.s-t:visited,
+.s-t:active,
+.w-t,
+.d-t,
+.a-t,
+.s-t {
+    color: black;
+    border-bottom: none;
+    text-decoration: none;
+    transition: font-weight 0.5s, letter-spacing 0.8s;
+}
+
+.uk:hover,
+.w-t:hover,
+.d-t:hover,
+.a-t:hover,
+.s-t:hover {
+    letter-spacing: -1px;
+    transition: 0.5s;
+    color: rgb(146, 146, 146);
+}
+
+
+.Back {
+    background-color: fill #ffffff00;
+    background-blend-mode: difference;
+    top: 10px;
+    left: 10px;
+    padding: 3px 15px;
+    cursor: pointer;
+    z-index: 999;
+    font-family: DotGothic16;
+    border: solid 2px;
+    border-radius: 90px;
+    font-size: 20px;
+}
 
 .custom-container {
     width: 100%;
-    max-width: 1360px;
     margin: 0 auto;
 }
 
-
-
-.topnav {
-    background-color: black;
-    height: 50px;
-    padding-top: 0.6rem;
-    top: 0;
-    left: 0;
-    overflow: hidden;
-}
-
-.nav-link {
-    font-family: "Archivo-ExtraBold", sans-serif;
-    line-height: 100%;
-    font-weight: 400;
-    text-transform: uppercase;
-    position: relative;
-    padding: 0rem;
-    font-size: 15px;
-    font-weight: 300;
-    color: #fff;
-
-    display: inline-flex;
-}
-
-.logowittext {
-    flex-direction: column;
-}
-
-/* End of top black navigation */
-
-.sot {
-    padding-top: 100px;
-    padding-bottom: 100px;
-    background-color: #fec700;
-}
-
-.sottex {
-    color: #fffdec;
-    font-family: "Archivo";
-    font-size: 150px;
-    line-height: 101.5%;
-    letter-spacing: -0.08em;
-    font-weight: 800;
-    text-transform: uppercase;
-    padding-top: 50px;
-
-    text-align: justify;
-
-    display: flex;
-
-}
-
-.quobar {
-    background-color: #fef8ee;
-    height: 4px;
-    margin-top: 20px;
-}
-
-.arti-thum-num {
-    color: #ecebe5;
-    font-family: "Archivo";
-    font-size: 20px;
-    line-height: 101.5%;
-    padding-top: 10px;
-    font-weight: 900;
-}
-
-.arti-thum-tex {
-    color: #ecebe5;
-    font-family: "Archivo";
-    font-size: 13px;
-    font-style: regular;
-    line-height: 101.5%;
-    padding-top: 20px;
-}
-
-
-.lftimg {
-    position: fixed;
-}
-
-.artisect {
-    background: #FEF8EE;
+.navbar {
+    height: 0px;
     width: 100%;
-    height: 100%;
-    padding-top: 80px;
+    padding-left: 3rem;
+    padding-right: 7rem;
+    position: fixed;
+    /* Optional: if you want it to stay fixed at the top */
+    top: 0;
+    z-index: 999;
 }
 
-.heading {
-    color: #000;
-    font-family: "Archivo";
-    font-size: 3rem;
-    font-style: normal;
-    font-weight: 800;
-    line-height: 101.5%;
-    /* 2.5375rem */
-    letter-spacing: -0.2rem;
-    text-transform: uppercase;
-    padding: 10px;
+.blurtop {
+    height: 80px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+
+    background: rgba(225, 225, 225, 0.05);
+    mask-image: linear-gradient(rgb(0, 0, 0) 50%, rgba(0, 0, 0, 0.8) 70%, rgba(0, 0, 0, 0) 100%);
+    -webkit-mask-image: linear-gradient(rgb(0, 0, 0) 50%, rgba(0, 0, 0, 0.8) 70%, rgba(0, 0, 0, 0) 100%);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(3px);
 }
 
-.subheading {
-    color: #616161;
-    font-family: "Archivo";
-    font-size: 2rem;
-    font-style: regular;
-    line-height: 101.5%;
-    letter-spacing: -0.1rem;
-    text-transform: uppercase;
-    font-weight: 600;
-
-    padding-left: 10px;
-    padding-right: 20px;
-}
-
-.ssuubbheading {
-    color: #313131;
-    font-family: "Archivo";
-    font-size: 1.3rem;
-    font-style: bold;
-    line-height: 101.5%;
-    letter-spacing: -0.1rem;
-    text-transform: uppercase;
-    font-weight: 600;
-    padding-bottom: 5px;
-    padding-top: 10px;
-}
-
-.bodytext {
-    color: #616161;
-    font-family: "Archivo";
+.navtext {
+    font-family: DotGothic16;
+    text-align: center;
+    /* mix-blend-mode: difference; */
+    /* Invert color based on background */
     font-size: 20px;
-    font-style: regular;
-    line-height: 101.5%;
-    padding-top: 50px;
-    padding-right: 20px;
-    padding-left: 10px;
+    letter-spacing: 3px;
 }
 
 
-@media (max-width: 1360px) {
-    .custom-container {
-        max-width: 960px;
-    }
+.image-strip img {
+    position: fixed;
+    top: 0%;
+    height: 3px;
+    width: 100%;
 }
 
-@media (max-width: 768px) {
-    .custom-container {
-        max-width: 720px;
-    }
-
-    .sottex {
-        font-size: 70px;
-    }
-
-    .sot {
-        padding-bottom: 40px;
-    }
+#uxarti {
+    margin-top: 40px;
+    margin-bottom: 100px;
 }
 
-@media (max-width: 480px) {
-    .custom-container {
-        max-width: 400px;
-        padding: 0 10px;
-    }
-
-    .sottex {
-        font-size: 60px;
-    }
-
-    .nav-link {
-        font-size: 10px;
-    }
+#Perarti {
+    margin-top: 10%;
 }

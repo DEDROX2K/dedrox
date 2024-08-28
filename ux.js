@@ -5,10 +5,9 @@
 
 const logo = document.getElementById('logo');
 const svgUrls = [
-    'images/DEDROX.DSGN/IT.svg', 'images/DEDROX.DSGN/PIX.svg', 'images/DEDROX.DSGN/SRTK.svg', 'images/DEDROX.DSGN/NRML.svg', 'images/DEDROX.DSGN/SCI.svg',
-    'images/DEDROX.DSGN/ROC.svg'
-    // Add more SVG file paths here...
-];
+    'images/DEDROX.DSGN/SRTK.svg', 'images/DEDROX.DSGN/IT.svg', 'images/DEDROX.DSGN/CONS.svg', 'images/DEDROX.DSGN/PIX.svg', 'images/DEDROX.DSGN/CRL.svg', 'images/DEDROX.DSGN/NRML.svg', 'images/DEDROX.DSGN/SCI.svg', 'images/DEDROX.DSGN/STRP.svg',
+    'images/DEDROX.DSGN/ROC.svg'];
+// Add more SVG file paths here...
 let index = 0;
 
 function loadSVG(url, callback) {
