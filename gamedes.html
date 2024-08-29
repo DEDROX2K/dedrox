@@ -17,31 +17,46 @@
     <script src="https://cdn.jsdelivr.net/npm/three@0.167.1/build/three.module.min.js"></script>
 
 
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&family=Bebas+Neue&family=Calistoga&family=DotGothic16&family=Instrument+Serif:ital@0;1&family=Maiden+Orange&family=Pixelify+Sans:wght@400..700&family=Staatliches&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
+    <!--
+    Maiden Orange
+    Staatliches
+    Pixelify Sans
+    DotGothic16
+    Instrument Serif
+    Bebas Neue
+    Archivo
+    fallsend
+     -->
 
-
+    <link rel="icon" href="logo.png" type="png">
+    <meta name="theme-color" content="#ffc800">
 
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
 
     <script async src="https://ga.jspm.io/npm:es-module-shims@1.7.1/dist/es-module-shims.js"></script>
-    <script type="importmap">
-{
-  "imports": {
-    "three": "https://cdn.jsdelivr.net/npm/three@0.167.1/build/three.module.min.js"
-  }
-}
-</script>
+    <script type="importmap"></script>
     <script type="module"
         src="https://cdn.jsdelivr.net/npm/@google/model-viewer/dist/model-viewer-module.min.js"></script>
+
 
     <script type="module"
         src="https://cdn.jsdelivr.net/npm/@google/model-viewer-effects/dist/model-viewer-effects.min.js"></script>
 
 
-
     <link rel="stylesheet" href="gamedes.css">
     <link rel="icon" href="logo.png" type="png">
     <meta name="theme-color" content="#ffc800">
+
+
 
     <title>Still in WIP</title>
 </head>
@@ -55,16 +70,58 @@
 
     <div class="d-flex">
 
-        <model-viewer camera-controls pixelate-effect touch-action="pan-y" autoplay ar src="threeD/Tintanic.glb">
+
+        <!--     <model-viewer camera-controls touch-action="pan-y" ar src="threeD/Tintanic.glb" shadow-intensity="0"
+            field-of-view="40deg">
 
             <effect-composer>
-                <!-- <pixelate-effect granularity="3"></pixelate-effect> -->
-                <outline-effect color="black" strength="5" smoothing="0"></outline-effect>
-
+                   <pixelate-effect granularity="3"></pixelate-effect>
+                   <outline-effect color="black" strength="5" smoothing="0"></outline-effect>
             </effect-composer>
 
-        </model-viewer>
+            
+            <button class="Hotspot" slot="hotspot-2"
+                data-position="-7.537987819484087m 3.825878073977887m -0.4853095676474692m"
+                data-normal="-0.9999510676766102m 5.8030366248813935e-9m 0.009892535186057871m"
+                data-visibility-attribute="visible">
 
+                <div class="HotspotAnnotation">Artstation</div>
+            </button>
+
+
+            <button class="Hotspot" slot="hotspot-4"
+                data-position="3.3677092495322967m 1.1753540196893328m -6.0983862876892045m" data-normal="0m 0m -1m"
+                data-visibility-attribute="visible">
+
+                <div class="HotspotAnnotation">Behance</div>
+            </button>
+
+
+            <button class="Hotspot" slot="hotspot-6"
+                data-position="4.735335783103609m 3.2675780535560177m 2.371596254370815m"
+                data-normal="0.9951838132668385m 0m -0.0980264138468532m" data-visibility-attribute="visible">
+
+                <div class="HotspotAnnotation">Articles</div>
+            </button>
+
+
+            <button class="Hotspot" slot="hotspot-7"
+                data-position="1.9855644794145983m 1.165587706953045m 7.383639877189007m"
+                data-normal="-0.8819207038428757m 0m 0.471397785456494m" data-visibility-attribute="visible">
+
+                <div class="HotspotAnnotation">You tube</div>
+            </button>
+
+
+            <div class="progress-bar hide" slot="progress-bar">
+                <div class="update-bar"></div>
+            </div>
+
+            <button slot="ar-button" id="ar-button">
+                View in your space
+            </button>
+
+        </model-viewer> -->
     </div>
 
     <div class="threetit">3D models with fresh 3JS code is about to be deployed, hold up & check the other things

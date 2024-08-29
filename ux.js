@@ -35,11 +35,17 @@ setInterval(changeSVG, 600); // Change SVG every 0.8 seconds
 // dragdrop.js
 // dragdrop.js
 
+
+
 class Draggable {
-    constructor(element, initialX = 0, initialY = 0) {
+    constructor(element) {
         this.element = element;
-        this.element.style.left = `${initialX}px`;
-        this.element.style.top = `${initialY}px`;
+
+        // Use existing CSS values if they exist
+        const rect = this.element.getBoundingClientRect();
+        const computedStyle = window.getComputedStyle(this.element);
+        this.element.style.left = computedStyle.left !== 'auto' ? computedStyle.left : `${rect.left}px`;
+        this.element.style.top = computedStyle.top !== 'auto' ? computedStyle.top : `${rect.top}px`;
 
         this.element.addEventListener('mousedown', this.onMouseDown.bind(this));
         this.element.addEventListener('touchstart', this.onTouchStart.bind(this));
@@ -54,6 +60,9 @@ class Draggable {
         this.offsetX = 0;
         this.offsetY = 0;
     }
+
+    // Other methods remain the same...
+
 
     onMouseDown(e) {
         this.currentElement = this.element;
@@ -102,9 +111,15 @@ class Draggable {
 
 // Initialize draggable stickers with custom positions
 document.addEventListener('DOMContentLoaded', () => {
-    new Draggable(document.getElementById('sticker1'), 240, 140);
-    new Draggable(document.getElementById('sticker2'), 1200, 150);
-    new Draggable(document.getElementById('sticker3'), 70, 450);
-    new Draggable(document.getElementById('sticker4'), 880, 340);
-    new Draggable(document.getElementById('sticker5'), 1000, 450);
+    new Draggable(document.getElementById('sticker1'));
+    new Draggable(document.getElementById('sticker2'));
+    new Draggable(document.getElementById('sticker3'));
+    new Draggable(document.getElementById('sticker4'));
+    new Draggable(document.getElementById('sticker5'));
+    new Draggable(document.getElementById('sticker6'));
+    new Draggable(document.getElementById('sticker7'));
+    new Draggable(document.getElementById('sticker8'));
+    new Draggable(document.getElementById('sticker9'));
+    new Draggable(document.getElementById('sticker11'));
+    new Draggable(document.getElementById('sticker10'));
 });

@@ -117,7 +117,7 @@
 a:link,
 a:visited,
 a:active {
-    color: #ffffff;
+    color: #343434;
     border-bottom: none;
     text-decoration: none;
     transition: font-weight 0.5s, letter-spacing 0.8s;
@@ -138,7 +138,7 @@ a:hover {
 .d-t,
 .a-t,
 .s-t {
-    color: white;
+    color: #343434;
     border-bottom: none;
     text-decoration: none;
     transition: font-weight 0.5s, letter-spacing 0.8s;
@@ -195,15 +195,48 @@ body {
     position: absolute;
     cursor: grab;
     width: auto;
-    height: 120px;
+    height: auto;
     user-select: none;
     transition: transform 0.1s ease, filter 0.9s ease;
     /* Horizontal offset: 10px, Vertical offset: 5px */
 
 }
 
+.Back {
+    /* background-color: fill #ffffff00; */
+    /* background-blend-mode: difference; */
+    top: 10px;
+    left: 10px;
+    padding: 3px 10px;
+    cursor: pointer;
+    z-index: 999;
+    font-family: Archivo;
+    font-weight: 800;
+    border: solid 2px;
+    border-radius: 90px;
+}
+
+
+
+.draggable {
+    touch-action: none;
+    /* Prevent scrolling while touching */
+    cursor: grab;
+}
+
+
+#sticker1 {
+    left: 150px;
+    top: 100px;
+}
+
+#sticker2 {
+    left: 800px;
+    top: 120px;
+}
+
 .sticker img {
-    width: 100%;
+    overflow: hidden;
     height: 100%;
     pointer-events: none;
     /* Prevent image selection */
@@ -213,6 +246,19 @@ body {
     transform: translateY(-1px) rotate(0.1deg);
 }
 
+
+
+.sm-stic img {
+    height: 60px;
+}
+
+.md-stic img {
+    height: 120px;
+}
+
+.lg-stic img {
+    height: 200px;
+}
 
 .custom-container {
     width: 100%;
@@ -244,22 +290,20 @@ body {
 
 .navtext {
     font-family: DotGothic16;
-    color: white;
+    /* color: white; */
     text-align: center;
-    mix-blend-mode: difference;
+    /* mix-blend-mode: difference; */
     /* Invert color based on background */
     font-size: 20px;
     letter-spacing: 3px;
 }
 
 
-
-#logo svg {
+/* #logo svg {
     width: 100%;
     height: auto;
     display: block;
-    /* Ensures no unexpected extra space around the SVG */
-}
+} */
 
 .image-strip img {
     position: fixed;
@@ -359,13 +403,32 @@ body {
     margin: 0 auto;
 }
 
+#pagesec1 {
+    height: 100vh;
+    width: 100%;
+    padding: 7% 5% 3% 5%;
+
+    color: #e3da9e;
+}
 
 
+.redbox {
+    width: 100%;
+    height: 100%;
+
+    padding: 30px;
+    background-color: rgb(46, 75, 34);
+    color: #e3da9e;
+    border-radius: 20px;
+}
 
 
-
-
-
+.canva {
+    padding: 50px;
+    height: auto;
+    width: 50%;
+    transform: rotate(-3deg);
+}
 
 
 
@@ -446,7 +509,5 @@ body {
         height: auto;
     }
 
-    img {
-        display: none;
-    }
+
 }
