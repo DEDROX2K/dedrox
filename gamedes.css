@@ -99,7 +99,6 @@ model-viewer {
 button {
     background-color: transparent;
     border: none;
-
 }
 
 .HotspotAnnotation {
@@ -109,7 +108,7 @@ button {
     border-radius: 30px;
     font-size: 20px;
     padding: 3px 20px 3px 20px;
-    transition: padding 0.80s, font-size 0.80s;
+    transition: padding 0.80s, font-size 0.80s, letter-spacing 0.2s, border 0.8s;
 }
 
 .HotspotAnnotation:hover {
@@ -120,6 +119,8 @@ button {
     font-size: 30px;
     padding: 10px 40px 10px 40px;
     transition: 0.5s;
+    border: solid #332222 5px;
+    border-radius: 50px;
 }
 
 .mood-changeable {
