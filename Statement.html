@@ -2,16 +2,130 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/src/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Draggable Stickers with Custom Initial Position</title>
+    <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
 </head>
 
-<body>
-    <div id="root"></div>
-    <script type="module" src="example-jsx.jsx"></script>
+<body class="hold-transition sidebar-mini">
+    <div class="wrapper">
+        <div class="content-wrapper">
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1>Draggable Stickers</h1>
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item active">Draggable Stickers</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content">
+                <div class="card">
+                    <div class="card-body">
+                        <div id="sticker1" class="draggable badge badge-info"> <img src="images/Arrow-sign.png" alt="">
+                        </div>
+                        <div id="sticker2" class="draggable badge badge-warning"> <img src="images/tape.png" alt="">
+                        </div>
+                        <div id="sticker3" class="draggable badge badge-success"><img src="images/londonuk.png" alt="">
+                        </div>
+                    </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="../../plugins/jquery/jquery.min.js"></script>
+    <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../../dist/js/adminlte.min.js"></script>
+
+    <script>
+        class Draggable {
+            constructor(element, initialLeft = null, initialTop = null) {
+                this.element = element;
+
+                // Set initial position if provided, else use the computed style or bounding rect
+                const rect = this.element.getBoundingClientRect();
+                const computedStyle = window.getComputedStyle(this.element);
+
+                this.element.style.position = 'absolute';
+                this.element.style.left = initialLeft !== null ? `${initialLeft}px` : (computedStyle.left !== 'auto' ? computedStyle.left : `${rect.left}px`);
+                this.element.style.top = initialTop !== null ? `${initialTop}px` : (computedStyle.top !== 'auto' ? computedStyle.top : `${rect.top}px`);
+
+                this.element.addEventListener('mousedown', this.onMouseDown.bind(this));
+                this.element.addEventListener('touchstart', this.onTouchStart.bind(this));
+
+                document.addEventListener('mousemove', this.onMouseMove.bind(this));
+                document.addEventListener('touchmove', this.onTouchMove.bind(this));
+
+                document.addEventListener('mouseup', this.onMouseUp.bind(this));
+                document.addEventListener('touchend', this.onTouchEnd.bind(this));
+
+                this.currentElement = null;
+                this.offsetX = 0;
+                this.offsetY = 0;
+            }
+
+            onMouseDown(e) {
+                this.currentElement = this.element;
+                const rect = this.currentElement.getBoundingClientRect();
+                this.offsetX = e.clientX - rect.left;
+                this.offsetY = e.clientY - rect.top;
+                this.currentElement.style.cursor = 'grabbing';
+            }
+
+            onMouseMove(e) {
+                if (this.currentElement) {
+                    e.preventDefault();
+                    this.currentElement.style.left = `${e.clientX - this.offsetX + window.pageXOffset}px`;
+                    this.currentElement.style.top = `${e.clientY - this.offsetY + window.pageYOffset}px`;
+                }
+            }
+
+            onMouseUp() {
+                if (this.currentElement) {
+                    this.currentElement.style.cursor = 'grab';
+                    this.currentElement = null;
+                }
+            }
+
+            onTouchStart(e) {
+                const touch = e.touches[0];
+                this.currentElement = this.element;
+                const rect = this.currentElement.getBoundingClientRect();
+                this.offsetX = touch.clientX - rect.left;
+                this.offsetY = touch.clientY - rect.top;
+            }
+
+            onTouchMove(e) {
+                if (this.currentElement) {
+                    e.preventDefault();
+                    const touch = e.touches[0];
+                    this.currentElement.style.left = `${touch.clientX - this.offsetX + window.pageXOffset}px`;
+                    this.currentElement.style.top = `${touch.clientY - this.offsetY + window.pageYOffset}px`;
+                }
+            }
+
+            onTouchEnd() {
+                this.currentElement = null;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize draggable stickers with custom initial positions
+            new Draggable(document.getElementById('sticker1'), 100, 150); // Positioned at (100px, 150px)
+            new Draggable(document.getElementById('sticker2'), 200, 250); // Positioned at (200px, 250px)
+            new Draggable(document.getElementById('sticker3'), 300, 350); // Positioned at (300px, 350px)
+        });
+    </script>
+
 </body>
 
 </html>

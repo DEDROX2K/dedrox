@@ -34,19 +34,33 @@ setInterval(changeSVG, 600); // Change SVG every 0.8 seconds
 // dragdrop.js
 // dragdrop.js
 // dragdrop.js
-
-
-
 class Draggable {
-    constructor(element) {
+    constructor(element, initialLeftPercent = null, initialTopPercent = null) {
         this.element = element;
+        this.parent = this.element.parentElement;
 
-        // Use existing CSS values if they exist
-        const rect = this.element.getBoundingClientRect();
-        const computedStyle = window.getComputedStyle(this.element);
-        this.element.style.left = computedStyle.left !== 'auto' ? computedStyle.left : `${rect.left}px`;
-        this.element.style.top = computedStyle.top !== 'auto' ? computedStyle.top : `${rect.top}px`;
+        // Ensure the parent element is relatively positioned
+        this.parent.style.position = 'relative';
 
+        // Function to convert percentage to pixel value
+        const toPixels = (percentage, totalSize) => (percentage / 100) * totalSize;
+
+        // Function to set position based on percentage
+        const setPosition = () => {
+            const parentRect = this.parent.getBoundingClientRect();
+            const initialLeft = initialLeftPercent !== null ? toPixels(initialLeftPercent, parentRect.width) : 0;
+            const initialTop = initialTopPercent !== null ? toPixels(initialTopPercent, parentRect.height) : 0;
+            this.element.style.left = `${initialLeft}px`;
+            this.element.style.top = `${initialTop}px`;
+        };
+
+        // Set initial position
+        setPosition();
+
+        // Update position on resize
+        window.addEventListener('resize', setPosition);
+
+        // Event listeners for dragging
         this.element.addEventListener('mousedown', this.onMouseDown.bind(this));
         this.element.addEventListener('touchstart', this.onTouchStart.bind(this));
 
@@ -61,9 +75,6 @@ class Draggable {
         this.offsetY = 0;
     }
 
-    // Other methods remain the same...
-
-
     onMouseDown(e) {
         this.currentElement = this.element;
         const rect = this.currentElement.getBoundingClientRect();
@@ -75,8 +86,9 @@ class Draggable {
     onMouseMove(e) {
         if (this.currentElement) {
             e.preventDefault();
-            this.currentElement.style.left = `${e.clientX - this.offsetX + window.pageXOffset}px`;
-            this.currentElement.style.top = `${e.clientY - this.offsetY + window.pageYOffset}px`;
+            const parentRect = this.parent.getBoundingClientRect();
+            this.currentElement.style.left = `${e.clientX - this.offsetX - parentRect.left}px`;
+            this.currentElement.style.top = `${e.clientY - this.offsetY - parentRect.top}px`;
         }
     }
 
@@ -99,8 +111,9 @@ class Draggable {
         if (this.currentElement) {
             e.preventDefault();
             const touch = e.touches[0];
-            this.currentElement.style.left = `${touch.clientX - this.offsetX + window.pageXOffset}px`;
-            this.currentElement.style.top = `${touch.clientY - this.offsetY + window.pageYOffset}px`;
+            const parentRect = this.parent.getBoundingClientRect();
+            this.currentElement.style.left = `${touch.clientX - this.offsetX - parentRect.left}px`;
+            this.currentElement.style.top = `${touch.clientY - this.offsetY - parentRect.top}px`;
         }
     }
 
@@ -109,17 +122,29 @@ class Draggable {
     }
 }
 
-// Initialize draggable stickers with custom positions
 document.addEventListener('DOMContentLoaded', () => {
-    new Draggable(document.getElementById('sticker1'));
-    new Draggable(document.getElementById('sticker2'));
-    new Draggable(document.getElementById('sticker3'));
-    new Draggable(document.getElementById('sticker4'));
-    new Draggable(document.getElementById('sticker5'));
-    new Draggable(document.getElementById('sticker6'));
-    new Draggable(document.getElementById('sticker7'));
-    new Draggable(document.getElementById('sticker8'));
-    new Draggable(document.getElementById('sticker9'));
-    new Draggable(document.getElementById('sticker11'));
-    new Draggable(document.getElementById('sticker10'));
+    const container = document.querySelector('.sticker-container');
+
+    function getPercentagePosition(element) {
+        const parentRect = container.getBoundingClientRect();
+        const rect = element.getBoundingClientRect();
+        const left = ((rect.left - parentRect.left) / parentRect.width) * 100;
+        const top = ((rect.top - parentRect.top) / parentRect.height) * 100;
+        return { left, top };
+    }
+
+    const stickers = [
+        { id: 'sticker1', left: 40, top: 40 },
+        { id: 'sticker2', left: 40, top: 40 },
+        { id: 'sticker3', left: 40, top: 40 },
+        { id: 'sticker4', left: 40, top: 40 },
+        { id: 'sticker5', left: 40, top: 40 },
+        { id: 'sticker6', left: 40, top: 40 },
+    ];
+
+    stickers.forEach(({ id, left, top }) => {
+        const sticker = document.getElementById(id);
+        new Draggable(sticker, left, top);
+    });
 });
+
