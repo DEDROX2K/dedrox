@@ -134,11 +134,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const stickers = [
-        { id: 'sticker1', left: 40, top: 40 },
-        { id: 'sticker2', left: 40, top: 40 },
-        { id: 'sticker3', left: 40, top: 40 },
-        { id: 'sticker4', left: 40, top: 40 },
-        { id: 'sticker5', left: 40, top: 40 },
+        { id: 'sticker1', left: 60, top: 30 },
+        { id: 'sticker2', left: 40, top: 20 },
+        { id: 'sticker3', left: 20, top: 40 },
+        { id: 'sticker4', left: 10, top: 30 },
+        { id: 'sticker5', left: 60, top: 40 },
         { id: 'sticker6', left: 40, top: 40 },
     ];
 
