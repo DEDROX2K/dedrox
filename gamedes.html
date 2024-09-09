@@ -26,6 +26,21 @@
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
+    <script type="importmap">
+            {
+              "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@^0.167.1/build/three.module.min.js"
+              }
+            }
+            </script>
+
+    <script type="module"
+        src="https://cdn.jsdelivr.net/npm/@google/model-viewer/dist/model-viewer-module.min.js"></script>
+
+    <script type="module"
+        src="https://cdn.jsdelivr.net/npm/@google/model-viewer-effects/dist/model-viewer-effects.min.js"></script>
+
+    <script async src="https://ga.jspm.io/npm:es-module-shims@1.7.1/dist/es-module-shims.js"></script>
     <!--
     Maiden Orange
     Staatliches
@@ -77,7 +92,7 @@
 
 <!-- BODY-BODY-BODY-BODY -->
 
-<body style="background-color: #2a2976;">
+<body style="background-color: #295ca7;">
     <button class="mood-changeable"><a href="compressed.html">"A Short Summary"</a></button>
     <button class="Back"><a href="ux.html"> back </a></button>
 
@@ -85,12 +100,13 @@
 
 
 
-            <model-viewer camera-controls touch-action="pan-y" ar src="threeD/Tintanic.glb" shadow-intensity="0"
+            <model-viewer camera-controls autoplay ar src="threeD/Tintanic.glb" shadow-intensity="0"
             field-of-view="40deg">
 
             <effect-composer>
-                   <pixelate-effect granularity="3"></pixelate-effect>
-                   <outline-effect color="black" strength="5" smoothing="0"></outline-effect>
+                <!-- <ssao-effect></ssao-effect> -->
+                <!--    <pixelate-effect granularity="3"></pixelate-effect> -->
+                <!--    <outline-effect color="black" strength="5" smoothing="0"></outline-effect> -->
             </effect-composer>
 
 

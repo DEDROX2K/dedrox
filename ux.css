@@ -161,7 +161,7 @@ a:hover {
     border-bottom: none;
     text-decoration: none;
     transition: font-weight 0.5s, letter-spacing 0.8s, border-bottom 0.8s;
-    border-bottom: solid #575757 0px;
+    border-bottom: solid #dcdcdc 0px;
 }
 
 .uk:hover,
@@ -170,9 +170,9 @@ a:hover {
 .a-t:hover,
 .s-t:hover {
     letter-spacing: -1px;
-    transition: 0.5s;
-    color: #3f3f3f;
-    border-bottom: solid #353535 2px;
+    transition: 0.1s;
+    color: #1f1f1f;
+    border-bottom: solid #1f1f1f 10px;
 }
 
 .summary {
@@ -199,7 +199,7 @@ a:hover {
 
 
 body {
-    /* background-color: #e1e1e1; */
+    background-color: #D9D9D9;
     text-rendering: optimizeSpeed;
     /* overflow: hidden; */
 
@@ -313,6 +313,11 @@ body {
     /* Prevent image selection */
 }
 
+.sticker {
+    overflow: hidden;
+    scrollbar-color: red;
+}
+
 .sticker:hover {
     transform: translateY(-1px) rotate(0.1deg);
 }
@@ -322,7 +327,7 @@ body {
 
 .custom-container {
     width: 100%;
-    max-width: 1360px;
+    max-width: 95%;
     margin: 0 auto;
 }
 
@@ -333,6 +338,7 @@ body {
     /* Optional: if you want it to stay fixed at the top */
     top: 0;
     z-index: 999;
+    /* background-color: #ead625; */
 }
 
 .blurtop {
@@ -358,16 +364,11 @@ body {
     text-align: center;
     /* mix-blend-mode: difference; */
     /* Invert color based on background */
-    font-size: 16px;
+    font-size: 19px;
     letter-spacing: 2px;
 }
 
 
-#logo svg {
-    width: 100%;
-    height: auto;
-    display: block;
-}
 
 .image-strip img {
     position: fixed;
@@ -379,14 +380,45 @@ body {
     /* Removes any extra space around the image */
 }
 
+#logo svg {
+    width: 80%;
+    height: 90vh;
+    display: block;
+    position: relative;
+    pointer-events: none;
+    z-index: -987;
+}
+
+.logosec {
+    height: 100vh;
+    padding-top: 20px;
+
+}
+
+
+.a-custom-container {
+    width: 100%;
+    max-width: 1024px;
+    margin: 0 auto;
+}
+
+#pagesec1 {
+    height: 100vh;
+    width: 100%;
+
+    padding: 6% 5% 5% 5%;
+
+    background-color: none;
+}
 
 #pagesec2 {
+    margin-top: 300px;
+
     height: 100vh;
     padding-top: 20px;
     padding-bottom: 20px;
-    margin: 60px;
-    border: solid rgb(255, 255, 255) 2px;
-    /* background-color: #FF763E; */
+    /* border: solid rgb(206, 98, 98) 2px; */
+    background-color: #FF763E;
     border-radius: 14px;
 }
 
@@ -479,7 +511,7 @@ body {
     position: relative;
     width: 45%;
     text-align: justify;
-    background-image: url(images/canvasBLAK.png);
+    background-image: url(images/canvas2.jpg);
 
 }
 
@@ -546,26 +578,11 @@ body {
 
 
 
-.a-custom-container {
-    width: 100%;
-    max-width: 1024px;
-    margin: 0 auto;
-}
-
-#pagesec1 {
-    height: 100vh;
-    width: 100%;
-    padding: 6% 5% 5% 5%;
-
-    /* background-color: #ffffff; */
-}
-
-
 .redbox {
     height: 100vmin;
     width: 100%;
     background-size: cover;
-    /* or contain */
+
     background-position: center center;
     background-image: url("images/canvasbluline.png");
     border-radius: 20px;
@@ -598,10 +615,6 @@ body {
         max-width: 960px;
     }
 }
-
-
-
-
 
 
 

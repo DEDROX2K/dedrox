@@ -3,29 +3,35 @@
 // Logo SVG loooop
 // Logo SVG loooop
 
-const logo = document.getElementById('logo');
-const svgUrls = [
-    'images/DEDROX.DSGN/SRTK.svg', 'images/DEDROX.DSGN/IT.svg', 'images/DEDROX.DSGN/CONS.svg', 'images/DEDROX.DSGN/PIX.svg', 'images/DEDROX.DSGN/CRL.svg', 'images/DEDROX.DSGN/NRML.svg', 'images/DEDROX.DSGN/SCI.svg', 'images/DEDROX.DSGN/STRP.svg',
-    'images/DEDROX.DSGN/ROC.svg'];
-// Add more SVG file paths here...
-let index = 0;
+document.addEventListener("DOMContentLoaded", function () {
+    const logo = document.getElementById('logo');
+    const svgUrls = [
+        'images/DEDROX.DSGN/SRTK.svg', 'images/DEDROX.DSGN/IT.svg',
+        'images/DEDROX.DSGN/CONS.svg', 'images/DEDROX.DSGN/PIX.svg', 'images/DEDROX.DSGN/NRML.svg',
+        'images/DEDROX.DSGN/SCI.svg', 'images/DEDROX.DSGN/STRP.svg',
+        'images/DEDROX.DSGN/ROC.svg'
+    ];
+    let index = 0;
 
-function loadSVG(url, callback) {
-    fetch(url)
-        .then(response => response.text())
-        .then(data => {
-            callback(data);
-        })
-        .catch(error => console.error('Error loading SVG:', error));
-}
+    function loadSVG(url, callback) {
+        fetch(url)
+            .then(response => response.text())
+            .then(data => {
+                callback(data);
+            })
+            .catch(error => console.error('Error loading SVG:', error));
+    }
 
-function changeSVG() {
-    loadSVG(svgUrls[index], function (svgContent) {
-        logo.innerHTML = svgContent;
-    });
-    index = (index + 1) % svgUrls.length;
-}
-setInterval(changeSVG, 600); // Change SVG every 0.8 seconds
+    function changeSVG() {
+        loadSVG(svgUrls[index], function (svgContent) {
+            logo.innerHTML = svgContent;
+        });
+        index = (index + 1) % svgUrls.length;
+    }
+
+    setInterval(changeSVG, 600);
+});
+
 
 
 // dragdrop.js
@@ -134,9 +140,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const stickers = [
-        { id: 'sticker1', left: 60, top: 30 },
-        { id: 'sticker2', left: 40, top: 20 },
-        { id: 'sticker3', left: 20, top: 40 },
+        { id: 'sticker1', left: 45, top: 39 },
+        { id: 'sticker2', left: 40, top: 39 },
+        { id: 'sticker3', left: 35, top: 43 },
         { id: 'sticker4', left: 10, top: 30 },
         { id: 'sticker5', left: 60, top: 40 },
         { id: 'sticker6', left: 40, top: 40 },
