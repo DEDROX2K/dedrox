@@ -140,12 +140,26 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const stickers = [
-        { id: 'sticker1', left: 45, top: 39 },
-        { id: 'sticker2', left: 40, top: 39 },
-        { id: 'sticker3', left: 35, top: 43 },
-        { id: 'sticker4', left: 10, top: 30 },
+        { id: 'sticker1', left: 35, top: 55 },
+        { id: 'sticker2', left: 10, top: 50 },
+
+        { id: 'sticker2.1', left: 30, top: 40 },
+        // { id: 'sticker2.2', left: 30, top: 40 },
+        { id: 'sticker3', left: 65, top: 38 },
+
+        { id: 'sticker3.1', left: 59, top: 42 },
+        { id: 'sticker3.2', left: 75, top: 38 },
+        { id: 'sticker3.3', left: 85, top: 28 },
+        { id: 'sticker3.4', left: 85, top: 51 },
+        { id: 'sticker3.5', left: 70, top: 58 },
+        { id: 'sticker3.6', left: 69, top: 28 },
+
+        { id: 'sticker4', left: 46, top: 30 },
         { id: 'sticker5', left: 60, top: 40 },
         { id: 'sticker6', left: 40, top: 40 },
+        { id: 'sticker7', left: 40, top: 40 },
+        { id: 'sticker8', left: 40, top: 40 },
+
     ];
 
     stickers.forEach(({ id, left, top }) => {
@@ -154,3 +168,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+gsap.registerPlugin(ScrollSmoother)
+ScrollSmoother.create({
+    smooth: 1,
+    effects: true,
+});

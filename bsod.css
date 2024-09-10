@@ -68,6 +68,7 @@ a:hover {
 .link-download:hover {
     box-shadow: 10px 10px 0px 0px #000000;
     border: solid 5px black;
+    z-index: 1000;
 }
 
 

@@ -2,57 +2,205 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Draggable Stickers with Custom Initial Position</title>
-    <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
-    <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
-    <script src="statement.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UX raghav prasanna</title>
+
+
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&family=Bebas+Neue&family=Calistoga&family=DotGothic16&family=Instrument+Serif:ital@0;1&family=Maiden+Orange&family=Pixelify+Sans:wght@400..700&family=Staatliches&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+
+    <!--
+    Barlow Semi Condensed
+    Maiden Orange
+    Staatliches
+    Pixelify Sans
+    DotGothic16
+    Instrument Serif
+    Bebas Neue
+    Archivo
+    fallsend
+     -->
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="ux.css">
+    <script src="ux.js"></script>
+
+    <!-- Logo and bar color -->
+    <link rel="icon" href="logo.png" type="png">
+    <meta name="theme-color" content="#ffc800">
 </head>
 
 
 
-
-
-
-
-
-<style>
-    #logo svg {
-        width: 100%;
-        height: 100vh;
-        display: block;
-        /* Ensures no unexpected extra space around the SVG */
-    }
-
-    .page1 {
-        background-color: blanchedalmond;
-        height: 30vh;
-    }
-</style>
-
-
-
-
-
-
-
+<!-- navbar and the logo-->
 <header>
-    <div id="logo">
-    </div>
+
+    <!-- <div class="image-strip">
+      <img src="images/Line1.png" alt="Image Strip">
+    </div> -->
+
+    <nav class="navtext navbar fixed-top">
+        <div class="custom-container">
+            <div class="row margin-top: 20px" style="align-content: center;">
+                <div class="col-2" style="text-align: start; margin-top: 20px">
+                    <a href="index.html">
+                        <img src="images/DEDROX.DSGN/dedroxLogo.svg" style="width: 40px; height: auto; z-index: 100;">
+                    </a>
+                </div>
+
+                <div class="col-8 black-link" style="margin-top: 20px">
+                    <a href="Statement.html" class="s-t">Statement* /</a>
+                    <a href="work.html" class="w-t">Work* /</a>
+                    <a href="gamedes.html" class="d-t">3D & Game design* /</a>
+                </div>
+
+                <div class="col-2" style="text-align: end; margin-top: 20px">
+                    <a href="articlepage.html" class="a-t"> ARTICLES*</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="blurtop"></div>
 </header>
 
 
-
-
-
-
-
-
 <body>
-    <div class="page1">
-        gagagaga
+
+    <!-- DEDROX.DESGN HEE! -->
+    <div class="logosec">
+
+        <div class="sticker" id="sticker1">
+            <img src="images/lessgoo.png">
+        </div>
+
+        <div class="sticker" id="sticker2">
+            <img src="images/londonuk.png">
+        </div>
+
+        <div class="sticker" id="sticker2.1">
+            <img src="images/yesthatme.png">
+        </div>
+
+        <!-- <div class="sticker" id="sticker2.2">
+        <img src="images/cat.png">
+      </div> -->
+
+        <div class="sticker" id="sticker3">
+            <img src="images/since.png">
+        </div>
+
+
+        <div id="logo" class="d-flex justify-content-center align-items-center"> </div>
     </div>
+
+
+
+    <div id="pagesec1">
+        <div class="custom-container">
+            <div class="row">
+
+                <div class="col-md-6">  
+                    <div class="info">
+                        <span>
+                            <span class="info-span">A UX/UI designer</span>
+                            <span class="info-span2">
+                                with 2 years of experience working with companies and around 5 years of
+                                freelance work. Previously focused on
+                            </span>
+                            <span class="info-span3">gaming side of product design</span>
+                            <span class="info-span4">
+                                , now gradually expanding into various other markets.
+                                <br />
+                                <br />
+                                I&#039;m soo gravitated to UX mainly by a
+                            </span>
+                            <span class="info-span5">fascination with human psychology</span>
+                            <span class="info-span6">
+                                and a belief that demand for a genuinely good user experience.
+                            </span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div id="pagesec2">
+        <div class="redbox d-flex justify-content-center align-items-center" style="z-index: 998;">
+        </div>
+
+        <div class="sticker" id="sticker4">
+            <img src="images/frontend.png">
+        </div>
+        <div class="sticker" id="sticker5">
+            <img src="images/gamedesign.png">
+        </div>
+        <div class="sticker" id="sticker6">
+            <img src="images/uxdes.png">
+        </div>
+        <div class="sticker" id="sticker7">
+            <img src="images/prod.png">
+        </div>
+        <div class="sticker" id="sticker8">
+            <img src="images/me.png">
+        </div>
+    </div>
+
+
+
+    <div id="pagesec3">
+        <div class="blur-box" style="    
+    height: 110px;
+    opacity: 90%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: none; backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); user-select: none;     pointer-events: none;
+  
+  
+      background: rgba(225, 225, 225, 0.05);
+      mask-image: linear-gradient(rgb(255 255 255 / 0%) 0%, rgb(223 223 223) 100%, rgb(255 255 255 / 0%) 50%);">
+        </div>
+        <!-- Consultation button -->
+        <div class="consu">
+
+            <div class="custom-container text-center consutex" style="padding-top: 17%; margin-bottom: 30px;">
+                <span style="font-family: Instrument Serif; font-weight: 700;">Do you want to rant? Cry? repent? Share a
+                    happy
+                    news? </span> <i> Discuss <br>about a new idea? </i>Want to collaborate and make cool stuffs?
+                <br>Then, lets
+                get
+                on a <span style="font-family: Pixelify Sans;">Quick call</span><span class="material-symbols-outlined">
+                    send
+                </span>
+            </div>
+            <div class="consubtn mx-auto text-center ">
+                BOOK A FREE CONSULTATION
+            </div>
+        </div>
+    </div>
+
+    <button class="summary" style="z-index: 100;"><a href="compressed.html">"A Short Summary"</a></button>
 </body>
 
 </html>
