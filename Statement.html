@@ -18,9 +18,17 @@
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Onest:wght@100..900&display=swap" rel="stylesheet">
     <link
         href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
         rel="stylesheet">
+
+    <!-- GSAP and ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/ScrollTrigger.min.js"></script>
+
 
     <!--
     Barlow Semi Condensed
@@ -32,6 +40,7 @@
     Bebas Neue
     Archivo
     fallsend
+    Onest
      -->
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -42,16 +51,141 @@
     <!-- Logo and bar color -->
     <link rel="icon" href="logo.png" type="png">
     <meta name="theme-color" content="#ffc800">
+
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Styling for the font preview section */
+        .font-preview-section {
+            padding: 50px;
+        }
+
+        .font-box {
+            margin-bottom: 20px;
+            /* border: 4px solid #ccc; */
+            border-radius: 10px;
+            padding: 30px;
+            height: 70vh;
+            overflow-y: auto;
+            background-color: #e3e3e3;
+            outline: none;
+            /* Remove outline when focused */
+            white-space: pre-wrap;
+            /* Ensure line breaks are handled */
+            text-align: left;
+            font-size: 140px;
+        }
+
+        button {
+            background-color: transparent;
+            border: none;
+        }
+
+
+        .downlo a {
+            /* background-color: fill #ffffff00; */
+            /* background-blend-mode: difference; */
+            top: 10px;
+            left: 10px;
+            padding: 3px 10px;
+            cursor: pointer;
+            z-index: 989;
+            font-family: vcr;
+            /* border: solid 2px; */
+            border-radius: 90px;
+            padding: 0.6rem 1rem 0.6rem 1rem;
+            text-decoration: none;
+
+            font-size: 20px;
+            letter-spacing: 1px;
+            color: #376cb6;
+        }
+
+        .downlo {
+            transition: transform 0.9s;
+
+        }
+
+        .downlo:hover {
+            color: #888888;
+            transition: 0.3s;
+            transform: translateY(-5px);
+        }
+
+        .font-box[contenteditable="true"]:empty:before {
+            content: attr(data-placeholder);
+            color: #888;
+            /* Placeholder color */
+        }
+
+        /* Different font styles for the font testing boxes */
+        .font-archivo {
+            font-family: ass;
+            letter-spacing: -9px;
+            line-height: normal;
+            font-size: 190px;
+        }
+
+        .font-bebas {
+            font-family: fallsend;
+            letter-spacing: -9px;
+            line-height: 8rem;
+        }
+
+        .font-staatliches {
+            font-family: zora;
+            font-size: 100px;
+            line-height: 6rem;
+        }
+
+        /* Styling the download button */
+        .download-button {
+            margin-top: 20px;
+        }
+
+        .scan {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-size: cover;
+            background-position: center;
+            z-index: -1;
+            opacity: 0.8;
+            pointer-events: none;
+        }
+
+
+        .info {
+            color: #000000;
+            padding-top: 12%;
+            padding-bottom: 15%;
+
+            font-family: Onest;
+            font-size: 20px;
+            font-weight: 600;
+            text-align: left;
+
+            line-height: 100%;
+            /* text-transform: uppercase; */
+            position: relative;
+        }
+    </style>
 </head>
-
-
 
 <!-- navbar and the logo-->
 <header>
 
+
+
     <!-- <div class="image-strip">
-      <img src="images/Line1.png" alt="Image Strip">
-    </div> -->
+    <img src="images/Line1.png" alt="Image Strip">
+  </div> -->
 
     <nav class="navtext navbar fixed-top">
         <div class="custom-container">
@@ -63,9 +197,9 @@
                 </div>
 
                 <div class="col-8 black-link" style="margin-top: 20px">
-                    <a href="Statement.html" class="s-t">Statement* /</a>
-                    <a href="work.html" class="w-t">Work* /</a>
-                    <a href="gamedes.html" class="d-t">3D & Game design* /</a>
+                    <a href="Statement.html" class="s-t">FREE FONTS* /</a>
+                    <a href="work.html" class="w-t">WORK* /</a>
+                    <a href="gamedes.html" class="d-t">3D & GAME-DESIGN* /</a>
                 </div>
 
                 <div class="col-2" style="text-align: end; margin-top: 20px">
@@ -79,128 +213,125 @@
 
 
 <body>
-
-    <!-- DEDROX.DESGN HEE! -->
-    <div class="logosec">
-
-        <div class="sticker" id="sticker1">
-            <img src="images/lessgoo.png">
-        </div>
-
-        <div class="sticker" id="sticker2">
-            <img src="images/londonuk.png">
-        </div>
-
-        <div class="sticker" id="sticker2.1">
-            <img src="images/yesthatme.png">
-        </div>
-
-        <!-- <div class="sticker" id="sticker2.2">
-        <img src="images/cat.png">
-      </div> -->
-
-        <div class="sticker" id="sticker3">
-            <img src="images/since.png">
-        </div>
-
-
-        <div id="logo" class="d-flex justify-content-center align-items-center"> </div>
+    <div class="sticker" id="stickerBannerAd1">
+        <img src="images/lessgoo.png">
     </div>
 
+    <div class="sticker" id="stickerBannerAd2">
+        <img src="images/londonuk.png">
+    </div>
 
+    <div class="sticker" id="stickerBannerAd3">
+        <img src="images/yesthatme.png">
+    </div>
+
+    <div class="sticker" id="stickerBannerAd4">
+        <img src="images/since.png">
+    </div>
+
+    <!-- Image Overlay -->
+    <!-- <img class="scan" src="images/scanlines.png" alt="Background Image"> -->
 
     <div id="pagesec1">
         <div class="custom-container">
-            <div class="row">
-
-                <div class="col-md-6">  
-                    <div class="info">
-                        <span>
-                            <span class="info-span">A UX/UI designer</span>
-                            <span class="info-span2">
-                                with 2 years of experience working with companies and around 5 years of
-                                freelance work. Previously focused on
-                            </span>
-                            <span class="info-span3">gaming side of product design</span>
-                            <span class="info-span4">
-                                , now gradually expanding into various other markets.
-                                <br />
-                                <br />
-                                I&#039;m soo gravitated to UX mainly by a
-                            </span>
-                            <span class="info-span5">fascination with human psychology</span>
-                            <span class="info-span6">
-                                and a belief that demand for a genuinely good user experience.
-                            </span>
+            <div class="rown">
+                <div class="info" style="z-index: -100; font-size: 30px; width: 70%;">
+                    <div>
+                        <span style="font-weight: 700; color: rgb(36, 36, 36);">Don’t leave
+                            empty-handed!<br /><br /></span>
+                        <span style="font-weight: 400;">I've been freelancing as a font designer for about 3 years now,
+                            and right now I'm working with a client on the fonts for his music album.<br /> <span
+                                style="font-style: italic;">
+                                "Designing
+                                fonts
+                                can be a slow, detailed process, but for me, it’s both challenging and calming at the
+                                same
+                                time. In my free time, I also like to create fonts that anyone can use for free."</span>
+                            <br /><br />
+                            Thanks for stopping by the site. Feel free to download these fonts at no cost! <br />
                         </span>
                     </div>
                 </div>
+            </div>
+        </div>
 
-                <div class="col-md-6">
+
+        <!-- Font Testing Section -->
+        <section class="font-preview-section text-center">
+            <div class="custom-container">
+                <!-- Row 1 - Font: Archivo -->
+                <div class="row" style="margin-bottom: 160px;">
+                    <div class="info" style="padding-bottom: 10px; text-align: left; color: #888;">
+                        Typeface: Astral Ink
+                        <button class="downlo"><a href="ux.html"> Download ZIP </a></button>
+                    </div>
+                    <div class="col-md-12 font-box font-archivo" contenteditable="true" data-placeholder="Type here">
+                    </div>
+                    <p> Inspired by the timeless elegance of Art Deco. This glittery font captures the essence of the
+                        1920s with its geometric shapes and luxurious accents. Perfect for adding a touch of glamour to
+                        any project, from invitations to social media graphics.
+
+                    </p>
+                </div>
+
+                <!-- Row 2 - Font: Bebas Neue -->
+                <div class="row" style="margin-bottom: 160px;">
+                    <div class="info" style="padding-bottom: 10px; padding-top: 0px; text-align: left; color: #888;">
+                        Typeface: Falls End
+                        <button class="downlo"><a href="ux.html"> Download ZIP </a></button>
+
+                    </div>
+                    <div class="col-md-12 font-box font-bebas" contenteditable="true" data-placeholder="Type here">
+                    </div>
+                    <p>Elements of the design strongly reference Cyrillic typefaces of the early Soviet era, but with a
+                        distinctly modern look. Excellent for many uses including posters, banners, and logos.
+                    </p>
+                </div>
+
+                <!-- Row 3 - Font: Staatliches -->
+                <div class="row" style="margin-bottom: 160px;">
+                    <div class="info" style="padding-bottom: 10px; padding-top: 0px; text-align: left; color: #888;">
+                        Typeface: ZORA
+                        <button class="downlo"><a href="ux.html"> Download ZIP </a></button>
+
+                    </div>
+                    <div class="col-md-12 font-box font-staatliches" contenteditable="true"
+                        data-placeholder="Type here"></div>
+                    <p>ZORA is a display typeface inspired by the sci fi movies from the 70's and 80's. Made to carry
+                        you to those nostalgic futures that we never lived, but look familiar to us. 
+
+                    </p>
+                </div>
+
+
+
+
+                <!-- Download Button -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <a href="download/fonts.zip" class="btn btn-warning download-button">Take me to Gumroad
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </section>
 
-
-
-    <div id="pagesec2">
-        <div class="redbox d-flex justify-content-center align-items-center" style="z-index: 998;">
-        </div>
-
-        <div class="sticker" id="sticker4">
-            <img src="images/frontend.png">
-        </div>
-        <div class="sticker" id="sticker5">
-            <img src="images/gamedesign.png">
-        </div>
-        <div class="sticker" id="sticker6">
-            <img src="images/uxdes.png">
-        </div>
-        <div class="sticker" id="sticker7">
-            <img src="images/prod.png">
-        </div>
-        <div class="sticker" id="sticker8">
-            <img src="images/me.png">
-        </div>
-    </div>
-
-
-
-    <div id="pagesec3">
         <div class="blur-box" style="    
-    height: 110px;
-    opacity: 90%;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: none; backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); user-select: none;     pointer-events: none;
-  
-  
-      background: rgba(225, 225, 225, 0.05);
-      mask-image: linear-gradient(rgb(255 255 255 / 0%) 0%, rgb(223 223 223) 100%, rgb(255 255 255 / 0%) 50%);">
+        height: 110px;
+        opacity: 90%;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: none; backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); user-select: none;     pointer-events: none;
+      
+      
+          background: rgba(225, 225, 225, 0.05);
+          mask-image: linear-gradient(rgb(255 255 255 / 0%) 0%, rgb(223 223 223) 100%, rgb(255 255 255 / 0%) 50%);">
         </div>
-        <!-- Consultation button -->
-        <div class="consu">
 
-            <div class="custom-container text-center consutex" style="padding-top: 17%; margin-bottom: 30px;">
-                <span style="font-family: Instrument Serif; font-weight: 700;">Do you want to rant? Cry? repent? Share a
-                    happy
-                    news? </span> <i> Discuss <br>about a new idea? </i>Want to collaborate and make cool stuffs?
-                <br>Then, lets
-                get
-                on a <span style="font-family: Pixelify Sans;">Quick call</span><span class="material-symbols-outlined">
-                    send
-                </span>
-            </div>
-            <div class="consubtn mx-auto text-center ">
-                BOOK A FREE CONSULTATION
-            </div>
-        </div>
-    </div>
-
-    <button class="summary" style="z-index: 100;"><a href="compressed.html">"A Short Summary"</a></button>
+        <!-- Bootstrap JS and Popper.js -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

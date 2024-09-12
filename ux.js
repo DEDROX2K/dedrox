@@ -41,6 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
 // dragdrop.js
 // dragdrop.js
 class Draggable {
+
     constructor(element, initialLeftPercent = null, initialTopPercent = null) {
         this.element = element;
         this.parent = this.element.parentElement;
@@ -155,6 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'sticker3.6', left: 69, top: 28 },
 
         { id: 'sticker3.7', left: 40, top: 35 },
+        { id: 'sticker3.8', left: 20, top: 55 },
 
         { id: 'sticker4', left: 46, top: 30 },
         { id: 'sticker5', left: 60, top: 40 },
@@ -162,11 +164,20 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'sticker7', left: 40, top: 40 },
         { id: 'sticker8', left: 40, top: 40 },
 
+        { id: 'stickerBannerAd1', left: 50, top: 20 },
+        { id: 'stickerBannerAd2', left: 50, top: 20 },
+        { id: 'stickerBannerAd3', left: 50, top: 20 },
+        { id: 'stickerBannerAd4', left: 50, top: 20 },
     ];
 
     stickers.forEach(({ id, left, top }) => {
         const sticker = document.getElementById(id);
-        new Draggable(sticker, left, top);
+        if (sticker) {
+            console.log(`Initializing draggable for: ${id}`);
+            new Draggable(sticker, left, top);
+        } else {
+            console.error(`Sticker with id ${id} not found.`);
+        }
     });
 });
 

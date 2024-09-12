@@ -48,6 +48,11 @@
     src: url(Fonts/gloucester-mt-extra-condensed.ttf);
 }
 
+@font-face {
+    font-family: zora;
+    src: url(Fonts/ZORA.otf);
+}
+
 
 .material-symbols-outlined {
     padding-left: 5px;
@@ -60,18 +65,9 @@
 
 a:link,
 a:visited,
-a:active {
-    color: #000000;
-    border-bottom: none;
-    text-decoration: none;
-    transition: font-weight 0.5s, letter-spacing 0.8s;
-}
+a:active {}
 
-a:hover {
-    letter-spacing: -1px;
-    transition: 0.5s;
-    /* color: rgb(146, 146, 146); */
-}
+a:hover {}
 
 
 .s-t:link,
@@ -101,8 +97,14 @@ a:hover {
     color: #000000;
     border-bottom: none;
     text-decoration: none;
+    transition: font-weight 0.5s, letter-spacing 0.8s;
+
+    color: #000000;
+    border-bottom: none;
+    text-decoration: none;
     transition: font-weight 0.5s, letter-spacing 0.8s, border-bottom 0.4s;
     border-bottom: solid #00000000 0px;
+    transform: translateY(0px);
 }
 
 .uk:hover,
@@ -113,7 +115,13 @@ a:hover {
     letter-spacing: -1px;
     transition: 0.1s;
     color: #1f1f1f;
-    border-bottom: solid #1f1f1f 10px;
+    /* border-bottom: solid #1f1f1f 10px; */
+    transform: translateX(-50px);
+
+
+    letter-spacing: -1px;
+    transition: 0.5s;
+    /* color: rgb(146, 146, 146); */
 }
 
 .summary {
@@ -124,8 +132,7 @@ a:hover {
     padding: 3px 10px;
     cursor: pointer;
     z-index: 990;
-    font-family: DotGothic16;
-    font-weight: 600;
+    font-family: vcr;
     border: solid 2px;
     border-radius: 90px;
 }
@@ -142,6 +149,8 @@ a:hover {
 body {
     background-color: #D9D9D9;
     text-rendering: optimizeSpeed;
+    margin: 0%;
+    padding: 0%;
 }
 
 .sticker {
@@ -185,10 +194,28 @@ body {
     transform: translateY(-1px) rotate(0.1deg);
 }
 
+.scan {
+    position: fixed;
+    /* Stay fixed in place even while scrolling */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    /* Full width */
+    height: 100vh;
+    /* Full height */
+    background-size: cover;
+    /* Cover the entire area */
+    background-position: center;
+    z-index: -100;
+    /* Place behind all other content */
+    opacity: 10%;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+}
 
 
 ::-webkit-scrollbar {
-    width: 10px;
+    width: 5px;
     height: 1em;
 }
 
@@ -207,6 +234,127 @@ body {
     /* border-radius: 100vw; */
     margin-block: 0.5em;
 }
+
+p {
+    color: #494949;
+    font-size: 18px;
+    font-weight: 200;
+    margin: 0%;
+    text-align: left;
+    font-family: onest;
+    /* border-bottom: solid 1px #494949; */
+}
+
+.content-section {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+}
+
+/* Styling for the font preview section */
+/* .font-preview-section {
+    padding: 100px;
+    background-color: #f8f9fa;
+    border-radius: 30px;
+} */
+
+.font-box {
+    background-color: none;
+    vertical-align: top;
+}
+
+.font-box input {
+    width: 100%;
+    height: 20vh;
+    text-align: left;
+    /* Align text to the top */
+    display: block;
+    line-height: normal;
+    /* Ensure normal line height for text */
+}
+
+.font-box textarea {
+    width: 100%;
+    height: 80vh;
+    /* Set the height to 80% of the viewport */
+    padding: 10px;
+    font-size: 24px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: left;
+    /* Align text to the left */
+    display: block;
+    line-height: normal;
+    /* Ensure normal line height for text */
+    resize: none;
+    /* Disable resizing of textarea */
+    overflow-y: auto;
+    /* Add scrollbar if needed */
+}
+
+
+/* Styling the download button */
+.download-button {
+    margin-top: 20px;
+}
+
+
+.scan {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    z-index: -1;
+    opacity: 0.8;
+    pointer-events: none;
+}
+
+#portfolio {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    /* max-width: 60%; */
+    margin: auto auto 1rem;
+    padding: 7% 10% 2% 10%;
+}
+
+#portfolio a {
+    color: #000000;
+    border-bottom: none;
+    text-decoration: none;
+
+    letter-spacing: 0.3px;
+    font-size: 20px;
+    font-weight: 400;
+
+    transition: letter-spacing 0.8s;
+    font-family: DotGothic16;
+}
+
+#portfolio a :hover {
+    color: #5e5e5e;
+    transition: 0.5s;
+}
+
+.portfolio-item img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    padding: 5%;
+
+    filter: grayscale(100%);
+    transition: filter 0.5s ease, transform 0.2s;
+    transform: translateY(0);
+    /* Initial transform for the hover effect */
+}
+
+.portfolio-item img:hover {
+    filter: grayscale(0%);
+    transform: translateY(-2px);
+}
+
 
 
 /* #sticker1 img {
@@ -291,7 +439,7 @@ body {
     text-align: center;
     /* mix-blend-mode: difference; */
     /* Invert color based on background */
-    font-size: 22px;
+    font-size: 20px;
     letter-spacing: 2px;
 }
 
@@ -393,14 +541,13 @@ body {
 
 
 
-
 .info {
     color: #000000;
     padding-top: 18%;
     text-align: justify;
 
     font-family: Onest;
-    font-size: 26px;
+    font-size: 30px;
     font-weight: 600;
 
     line-height: 100%;
@@ -488,10 +635,13 @@ body {
     cursor: pointer;
     z-index: 989;
     font-family: DotGothic16;
-    font-weight: 800;
-    border: solid 2px;
+    /* border: solid 2px; */
     border-radius: 90px;
+    font-size: 16px;
+    letter-spacing: 1px;
 }
+
+
 
 
 
