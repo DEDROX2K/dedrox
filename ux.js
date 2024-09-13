@@ -3,6 +3,7 @@
 // Logo SVG loooop
 // Logo SVG loooop
 
+
 document.addEventListener("DOMContentLoaded", function () {
     const logo = document.getElementById('logo');
     const svgUrls = [
@@ -31,6 +32,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     setInterval(changeSVG, 600);
 });
+
+
 
 
 

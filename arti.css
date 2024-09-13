@@ -211,7 +211,7 @@ a:hover {
 .blurtop {
     height: 80px;
     width: 100%;
-    position: fixed;
+    /* position: fixed; */
     top: 0;
 
     background: rgba(225, 225, 225, 0.05);
@@ -223,9 +223,7 @@ a:hover {
 
 .navtext {
     font-family: DotGothic16;
-
     text-align: center;
-    mix-blend-mode: difference;
     /* Invert color based on background */
     font-size: 20px;
     letter-spacing: 3px;
