@@ -270,9 +270,7 @@ img:hover {
         padding: 0%;
     }
 
-    #left-side {
-        padding: 20px;
-    }
+
 
     .navtext {
         font-family: DotGothic16;
@@ -281,10 +279,7 @@ img:hover {
         color: white;
     }
 
-    p {
-        font-size: 15px;
-        width: 100%;
-    }
+
 
     .lefte {
         font-size: 25px;
