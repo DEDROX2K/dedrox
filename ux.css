@@ -496,6 +496,11 @@ p {
     margin-top: 20px;
 }
 
+::selection {
+    background-color: #FFD700;
+    color: #000000;
+}
+
 
 .scan {
     position: fixed;
