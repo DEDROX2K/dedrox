@@ -90,7 +90,8 @@ class Draggable {
         const rect = this.currentElement.getBoundingClientRect();
         this.offsetX = e.clientX - rect.left;
         this.offsetY = e.clientY - rect.top;
-        this.currentElement.style.cursor = 'grabbing';
+        // this.currentElement.style.cursor = 'grabbing';
+        this.currentElement.style.cursor = 'url("ggrabbingcursor.png"), grabbing';
     }
 
     onMouseMove(e) {
@@ -104,7 +105,9 @@ class Draggable {
 
     onMouseUp() {
         if (this.currentElement) {
-            this.currentElement.style.cursor = 'grab';
+            // this.currentElement.style.cursor = 'grab';
+            this.currentElement.style.cursor = 'url("grabcursor.png"), grab';
+
             this.currentElement = null;
         }
     }
@@ -148,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'sticker2', left: 10, top: 50 },
 
         { id: 'sticker2.1', left: 30, top: 30 },
-        // { id: 'sticker2.2', left: 30, top: 40 },
+        { id: 'sticker2.2', left: 2, top: 12 },
         { id: 'sticker3', left: 65, top: 38 },
 
         { id: 'sticker3.1', left: 59, top: 42 },

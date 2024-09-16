@@ -142,17 +142,42 @@ a:hover {
 body {
     background-color: #D9D9D9;
     text-rendering: optimizeSpeed;
+    cursor: url("pointercursor.png"), auto;
 }
+
+a,
+button {
+    cursor: url('linkcursor.png'), pointer;
+}
+
+.font-box {
+    cursor: url('textcursor.png'), text;
+}
+
+/* Custom cursor for grab state */
+.draggable {
+    cursor: url('ggrabbingcursor.png'), grab;
+}
+
+/* Custom cursor for grabbing state */
+.grabbing {
+    cursor: url('grabcursor.png'), grabbing;
+}
+
+
 
 .sticker {
     position: absolute;
-    cursor: grab;
+    cursor: url('grabcursor.png'), grab;
     width: auto;
     height: auto;
     user-select: none;
     transition: transform 0.1s ease, filter 0.9s ease;
     /* Horizontal offset: 10px, Vertical offset: 5px */
+}
 
+#sticker1 {
+    touch-action: auto;
 }
 
 .draggable {
@@ -182,7 +207,7 @@ body {
 }
 
 .sticker:hover {
-    transform: translateY(-1px) rotate(0.1deg);
+    transform: translateY(-2px) rotate(0.1deg);
 }
 
 
@@ -570,7 +595,7 @@ p {
     transition: 0.25s ease;
     touch-action: manipulation;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    cursor: pointer;
+    cursor: url('linkcursor.png'), pointer;
 
     &:active,
     &:hover {
@@ -602,7 +627,7 @@ p {
     top: 10px;
     left: 10px;
     padding: 3px 10px;
-    cursor: pointer;
+    cursor: url('linkcursor.png'), pointer;
     z-index: 989;
     font-family: DotGothic16;
     font-weight: 800;

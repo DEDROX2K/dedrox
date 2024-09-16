@@ -32,10 +32,10 @@
         .lefte {
             color: #000000;
             padding-top: 17%;
-            text-align: justify;
+            /* text-align: justify; */
 
             font-family: Onest;
-            font-size: 30px;
+            font-size: 33px;
             font-weight: 500;
 
             line-height: 100%;
@@ -46,8 +46,8 @@
         #left-side {
             background-color: #FFC800;
             color: #000000;
-            border-left: solid 60px black;
-            padding: 50px;
+            border-left: solid 30px black;
+            padding: 20px;
             border-right: solid 2px black;
         }
 
@@ -55,13 +55,13 @@
             color: #000;
             font-family: vcr;
 
-            font-size: 70px;
+            font-size: 40px;
             /* font-weight: 800; */
             /* text-align: justify; */
             line-height: 75%;
             letter-spacing: 0px;
             /* 64px */
-            padding-top: 20%;
+            padding-top: 5%;
         }
 
 
@@ -118,7 +118,7 @@
     <div class="container-fluid">
         <div class="row">
             <!-- Left Side (Fixed) -->
-            <div id="left-side" class="col-md-4 position-fixed vh-100" style="background-color: #FFC800;">
+            <div id="left-side" class="col-md-3 position-fixed vh-100" style="background-color: #FFC800;">
                 <h1 style="width: 100%; padding-top: 0; text-transform: uppercase;
 ">Where Do Stories Really Begin and really End?</h1>
                 <br><br>
@@ -135,7 +135,7 @@
         </div>
 
         <!-- Right Side (Scrollable) -->
-        <div class="col-md-8 offset-md-4 right-side">
+        <div class="col-md-9 offset-md-3 right-side">
             <nav class="navbar navtext fixed-top offset-4">
                 <div class="custom-container">
                     <div class="row">
@@ -162,8 +162,11 @@
 
 
                 <p class="lefte">
-                    Writing is not just about expressing ideas and notions; it’s to make sense of the reality around
-                    you. --------&gt; As UX designers, our words can influence how people interact with the world.
+                    Writing is not just about expressing ideas and notions; <span style="font-weight: 700;"> it’s to
+                        make sense of the reality
+                        around
+                        you.</span><br><br>
+                    As UX designers, our words can influence how people interact with the world.
                     By writing, we clarify our thoughts, communicate our vision, and ultimately, help people
                     navigate the complexities of modern life.
                 </p>
@@ -281,12 +284,12 @@
                         </div>
                     </div>
                 </section>
+            </main>
         </div>
     </div>
 
 
 
-    </main>
 
     <!-- Footer -->
     <footer class="bg-light text-center py-4">
@@ -300,7 +303,7 @@
         gsap.registerPlugin(ScrollTrigger);
 
         gsap.to("#left-side", {
-            backgroundColor: "#EEEEEE",  // Updated color to #A2A2A2
+            backgroundColor: "#a0a0a0",  // Updated color to #A2A2A2
             scrollTrigger: {
                 trigger: "#portfolio",
                 start: "top center",  // when the top of the image hits the center of the viewport

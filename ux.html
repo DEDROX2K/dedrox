@@ -73,7 +73,7 @@
 
         <div class="col-8 black-link" style="margin-top: 20px">
           <a href="Statement.html" class="s-t">FREE FONTS* /</a>
-          <a href="work.html" class="w-t">ETHOS* /</a>
+          <a href="ethos.html" class="w-t">ETHOS* /</a>
           <a href="gamedes.html" class="d-t">3D & GAME-DESIGN* /</a>
         </div>
 
@@ -98,7 +98,9 @@
   <div class="logosec">
 
     <div class="sticker" id="sticker1">
-      <img src="images/lessgoo.png">
+      <a href="#pagesecshort">
+        <img src="images/lessgoo.png">
+      </a>
     </div>
 
     <div class="sticker" id="sticker2">
@@ -109,14 +111,24 @@
       <img src="images/yesthatme.png">
     </div>
 
-    <!-- <div class="sticker" id="sticker2.2">
+    <div class="sticker" id="sticker2.2">
       <img src="images/cat.png">
-    </div> -->
+    </div>
 
     <div class="sticker" id="sticker3">
       <img src="images/since.png">
     </div>
 
+    <script>
+      const clickableImages = document.querySelectorAll('#sticker1');
+      const targetDivs = document.querySelectorAll('#pagesecshort');
+
+      clickableImages.forEach((image, index) => {
+        image.addEventListener('click', () => {
+          targetDivs[index].scrollIntoView({ behavior: 'smooth' });
+        });
+      });
+    </script>
 
     <div id="logo" class="d-flex justify-content-center align-items-center"> </div>
   </div>
@@ -159,21 +171,24 @@
     <div class="container px-4 px-lg-5">
       <div class="row gx-0">
         <div class="col-lg-4">
-          <a class="portfolio-item text-center" href="#!">
+          <a class="portfolio-item text-center"
+            href="https://www.behance.net/gallery/178339927/Gym-finder-app-design-Case-study">
             <img class="img-fluid" src="images/portpie 1.png" />
             <p style="padding: 10px;
 " class="mb-0">App designed for folks who travel a lot and wants a quick gym sessions</p>
           </a>
         </div>
         <div class="col-lg-4">
-          <a class="portfolio-item text-center" href="#!">
+          <a class="portfolio-item text-center"
+            href="https://www.behance.net/gallery/200529521/CLEAR-BREATH-case-study-No-smoking-app">
             <img class="img-fluid" src="images/portpie 2.png" />
             <p style="padding: 10px;
 " class="mb-0">A well detailed project on tackling smoking addiction</p>
           </a>
         </div>
         <div class="col-lg-4">
-          <a class="portfolio-item text-center" href="#!">
+          <a class="portfolio-item text-center"
+            href="https://www.behance.net/gallery/175170719/Dashboard-design-UI-Mondaycom-redesign">
             <img class="img-fluid" src="images/portpie 3.png" />
             <p style="padding: 10px;
 " class="mb-0">Sets of UI designs explorations</p>
@@ -184,30 +199,32 @@
 
       <div class="row gx-0">
         <div class="col-lg-4">
-          <a class="portfolio-item text-center" href="#!">
+          <a class="portfolio-item text-center"
+            href="https://medium.com/design-bootcamp/ux-case-study-ai-voice-replicating-app-dbfe831b9ece">
             <img class="img-fluid" src="images/portpie 4.png" />
             <p style="padding: 10px;
 " class="mb-0">App designed for folks who travel a lot and wants a quick gym sessions</p>
           </a>
         </div>
         <div class="col-lg-4">
-          <a class="portfolio-item text-center" href="#!">
+          <a class="portfolio-item text-center" href="https://www.behance.net/gallery/162446167/Free-font-falls-end">
             <img class="img-fluid" src="images/portpie 5.png" />
             <p style="padding: 10px;
 " class="mb-0">A well detailed project on tackling smoking addiction</p>
           </a>
         </div>
         <div class="col-lg-4">
-          <a class="portfolio-item text-center" href="#!">
+          <a class="portfolio-item text-center"
+            href="https://www.behance.net/gallery/184315285/Currency-Converter-app-Case-Study">
             <img class="img-fluid" src="images/portpie 6.png" />
             <p style="padding: 10px;
 " class="mb-0">Sets of UI designs explorations</p>
           </a>
         </div>
       </div>
-
     </div>
   </section>
+
 
 
 
@@ -292,7 +309,6 @@
 
 
   <div id="pagesec3">
-    <a href="Statement.html">hello</a>
     <div class="blur-box" style="    
   height: 110px;
   opacity: 90%;
