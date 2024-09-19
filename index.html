@@ -10,7 +10,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Frijole&family=Micro+5+Charted&display=swap" rel="stylesheet">
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
+        rel="stylesheet">
     <script src="https://kit.fontawesome.com/965164f042.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="arti.css">
@@ -25,247 +29,306 @@
 </head>
 
 <style>
-    body {
-        background-color: #010080;
-        /* BSOD blue */
-        color: rgb(230, 238, 255);
-        font-family: Monac, monospace;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        /* height: 100vh; */
-        margin: 0;
-        text-align: center;
-        cursor: wait;
-    }
-
-    .container {
-        max-width: 600px;
-        /* border: solid 1px; */
-
-    }
-
-    .error-code {
-        font-size: 2rem;
-        font-weight: bold;
-        margin-bottom: 20px;
-        text-shadow: 0 0px 4px #001bff;
-    }
-
-    .error-message {
-        font-size: 1rem;
-        margin-bottom: 20px;
-        text-shadow: 0 0px 4px #001bff;
-    }
-
-    .instruction {
-        font-size: 0.9rem;
-        line-height: 15px;
-        text-shadow: 0 0px 4px #001bff;
-    }
-
-    .emaillink {
-        font-size: 1rem;
-        font-weight: bold;
-        margin-bottom: 20px;
-        border: solid 1px;
-        padding: 5px;
-        cursor: pointer;
-        transition: padding 2s;
-    }
-
-    .emaillink:hover {
-        padding: 30px;
-        transition: 7s;
-    }
-
-    .scan {
-        position: fixed;
-        width: 100%;
-        height: 140%;
-        opacity: 30%;
-        pointer-events: none;
-
-    }
 </style>
-
-<header class="d-none d-md-flex" style="display: flex; justify-content: space-between; align-items: center;">
-    <!-- First div sticks to the left -->
-
-    <!-- This div contains the other elements, sticking to the right -->
-    <div style="display: flex; gap: 10px; justify-content: flex-end;">
-        <!-- <div style="        text-shadow: 0 0px 4px white;
-">london--time-zone------------------</div> -->
-        <div id="london-time" class="time">12:34:28</div>
-        <div class="statusrn" style="text-align: left;">Currently online | Available to chat*</div>
-    </div>
-</header>
-
-
 
 <body>
 
+    <div class="screen">
+        <div class="menu-top">
+            <div id="london-time" class="time">12:34:28</div>
+            <div class="help">| Currently online*</div>
 
-    <!-- <script>
-
-        function randomPosition(shape) {
-            const maxWidth = window.innerWidth - shape.clientWidth;
-            const maxHeight = window.innerHeight - shape.clientHeight;
-
-            const newX = Math.floor(Math.random() * maxWidth);
-            const newY = Math.floor(Math.random() * maxHeight);
-
-            shape.style.left = `${newX}px`;
-            shape.style.top = `${newY}px`;
-        }
-
-        function changeShapePosition() {
-            const shapes = document.querySelectorAll('.shape');
-            shapes.forEach(randomPosition);
-        }
-
-        // Call the function initially and set an interval to call it every 1000ms (1 second)
-        changeShapePosition();
-        setInterval(changeShapePosition, 200);
-
-    </script>
-
-    <style>
-        .shape {
-            position: absolute;
-            background-color: #bababa;
-            width: 4px;
-            height: 3px;
-        }
-    </style>
-
-    <div class="shape" style="left: 329px; top: 133px;"></div>
-    <div class="shape" style="left: 329px; top: 133px;"></div>
-    <div class="shape" style="left: 329px; top: 133px;"></div>
-    <div class="shape" style="left: 329px; top: 133px;"></div>
-    <div class="shape" style="left: 329px; top: 133px;"></div>
-    <div class="shape" style="left: 329px; top: 133px;"></div>
-    <div class="shape" style="left: 329px; top: 133px;"></div>
-    <div class="shape" style="left: 329px; top: 133px;"></div>
-    <div class="shape" style="left: 329px; top: 133px;"></div>
-    <div class="shape" style="left: 329px; top: 133px;"></div>
-    <div class="shape" style="left: 329px; top: 133px;"></div>
-    <div class="shape" style="left: 329px; top: 133px;"></div>
-    <div class="shape" style="left: 329px; top: 133px;"></div>
-    <div class="shape" style="left: 329px; top: 133px;"></div>
-    <div class="shape" style="left: 329px; top: 133px;"></div>
-    <div class="shape" style="left: 329px; top: 133px;"></div>
-    <div class="shape" style="left: 329px; top: 133px;"></div>
-    <div class="shape" style="left: 329px; top: 133px;"></div>
-    <div class="shape" style="left: 329px; top: 133px;"></div>
-    <div class="shape" style="left: 329px; top: 133px;"></div>
-    <div class="shape" style="left: 329px; top: 133px;"></div>
-    <div class="shape" style="left: 329px; top: 133px;"></div>
-    <div class="shape" style="left: 329px; top: 133px;"></div>
-    <div class="shape" style="left: 329px; top: 133px;"></div> -->
-
-
-    <!-- Timezone live -->
-    <script>
-        function updateLondonTime() {
-            const londonTimeElement = document.getElementById('london-time');
-            const now = new Date();
-            const options = {
-                timeZone: 'Europe/London',
-                hour12: true,
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-            };
-            londonTimeElement.textContent = now.toLocaleTimeString('en-GB', options);
-        }
-
-        setInterval(updateLondonTime, 1000);
-        updateLondonTime(); // Initial call to set the time immediately on load
-    </script>
-
-
-
-    <img class="scan" src="images/nighttv.jpg" style="background-size: cover;
-    background-position: center;">
-
-    <div class="container animate__animated animate__flash animate__faster">
-        <div class="error-code" href="index.html">:(</div>
-        <div class="error-message" style="text-align: left;">A critical error has occurred due to
-            excessive creativity and innovation. Click on the bellow buttons to see my portfolio!
-
-            <div>
-                ----/<span class="value"><span id="typed"></span></span>
-            </div>
+            <!-- Timezone live -->
             <script>
-                // Initialize Typed.js
-                document.addEventListener('DOMContentLoaded', function () {
-                    var typed = new Typed("#typed", {
-                        strings: ["If you think Comic Sans is acceptable, we need to talk...", "I'm not kidding btw.", "Uhhh sorry where was I?", "Got a bit over-excited there, Hi! "],
-                        typeSpeed: 90,
-                        backSpeed: 25,
-                        loop: true
-                    });
-                });
+                function updateLondonTime() {
+                    const londonTimeElement = document.getElementById('london-time');
+                    const now = new Date();
+                    const options = {
+                        timeZone: 'Europe/London',
+                        hour12: true,
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit'
+                    };
+                    londonTimeElement.textContent = now.toLocaleTimeString('en-GB', options);
+                }
+
+                setInterval(updateLondonTime, 1000);
+                updateLondonTime(); // Initial call to set the time immediately on load
             </script>
-
-
-
-            <div class="instruction"><br>
-                Select: 0x000000UX (0x00000010, 0x00000020, 0x00000040) <br>
-                Select: 0x000000UX (0x00000010, 0x00000020, 0x00000040) <br>
-                Select: 0x000000UX (0x00000010, 0x00000020, 0x00000040) <br>
-                Select: 0x000000UX (0x00000010, 0x00000020, 0x00000040) <br>
-                Select: 0x000000UX (0x00000010, 0x00000020, 0x00000040) <br>
-                Select: 0x000000UX (0x00000010, 0x00000020, 0x00000040) <br>
-                Select: 0x000000UX (0x00000010, 0x00000020, 0x00000040) <br>
-            </div>
-
         </div>
-        <div class="instruction" style="text-align: left;">If you
-            continue to experience issues, please reach
-            out directly to the mail below for assistance. (Trustable guy ------> 100%)
 
-            <div class="emaillink">RAGHAVPRASANNA2000@GMAIL.COM</div><br><br>
 
-            <div class="error-message" style="text-align: left;">Nothing to worry about, just follow below:
-                <div class="error-message" style="text-shadow: 0 0px 0px #000000;"><br>
-                    <!-- <mark>Woahh! Congratulations on
-                        finding this hidden message! <br>Let
-                        that
-                        curiosity prevail. Have a nice day<br><br></mark> -->
 
+        <div class="info off">
+            <div class="container">
+                <div class="error-code" href="index.html">:)</div>
+
+
+
+                <div style="text-align: left;     color: #bee1ff;
+">
+                    ----/<span class="value"><span id="typed"></span></span>
+                </div>
+
+                <div class="error-message" style="text-align: left;">
+                    Explore my work in Product/UX design & 3D design. Select a path below to dive into the
+                    portfolio that inspires you most.
+
+
+
+                    <script>
+                        // Initialize Typed.js
+                        document.addEventListener('DOMContentLoaded', function () {
+                            var typed = new Typed("#typed", {
+                                strings: ["If you think Comic Sans is acceptable, we need to talk...", "I'm not kidding btw.", "Uhhh sorry where was I?", "Got a bit over-excited there, Hi! "],
+                                typeSpeed: 30,
+                                backSpeed: 15,
+                                loop: true
+                            });
+                        });
+                    </script>
+                </div>
+
+                <div class="emaillink d-flex align-items-center">RAGHAVPRASANNA2000@GMAIL.COM</div>
+
+                <div class="sm-message">
                     WHAT_NOW?:
                     CLICK-THE-BELOW-BUTTONS-TO-SEE-MY-PORTFOLIO
                 </div>
+                <div class="container">
+                    <a href="ux.html" class="link-download">Product design/UX</a>
+                    <a href='gamedes.html' class='link-download'>3D & Game design</a>
+                </div>
             </div>
+
         </div>
 
 
 
-        <div class="custom-container choosebutton pc-click-button">
-            <h3>CLICK HERE^</h3>
-            <a href="ux.html" class="link-download">Product design/UX</a>
-            <a class='link-download' href='gamedes.html'>3D & Game design</a>
+        <div class="menu-bottom">
+            <div><span>Press</span> F11 <span>to activate full immersion</span></div>
+            <div>| <span> <a style="
+            background: none;
+                text-decoration: none;
+                padding: 0px;
+                margin: 0;
+                border: 0;
+                box-shadow: none;
+
+" href="ux.html">Skip ></a></span></div>
         </div>
 
-        <div class="container mob-click-button choosebutton ">
-            <h3 class="text-align center"> CLICK HERE^ </h3>
-            <a href="ux.html">
-                <div class="link-download"> Product design/UX </div>
-            </a>
 
-            <a href="gamedes.html">
-                <div class='link-download'>3D & Game design</div>
-            </a>
-        </div>
+
+        <section class="modals">
+            <div class="testing dialog">
+                <p>Testing system memory...</p>
+            </div>
+
+            <div class="reading dialog" hidden>
+                <p>Reading disk information...</p>
+            </div>
+
+            <div class="analyzing dialog" hidden>
+                <p>Analyzing disk information...</p>
+                <p class="folders center">GAMES</p>
+            </div>
+
+            <div class="finished dialog" hidden>
+                <p class="center">Optimization for Your Screen: Complete</p>
+                <div>
+                    <p class="center">You may optimize another drive or reconfigure optimization for the current
+                        drive.
+                    </p>
+                </div>
+                <div>
+                    <a href="https://twitter.com/Manz/status/1130789484726038529" target="_blank">More info</a>
+                    <a href="https://manzdev.github.io/" target="_blank">Exit DEFRAG</a>
+                </div>
+            </div>
+        </section>
     </div>
+
 </body>
 
 
 
-<footer>
-    <!-- <Div style="height: 20px; background-color: aliceblue; width: 100%;">`</Div> -->
-</footer>
+<script>
+    // DOM references for modals and screens
+    const modals = document.querySelectorAll('.testing.dialog, .reading.dialog, .analyzing.dialog, .finished.dialog');
+    const screens = document.querySelectorAll('.surface, .info');
+
+    // Tags to display during the "Analyzing" phase
+    const TAGS = ['UX', 'PRODUCT DESIGN', 'GAME DESIGN', 'UI GRAPHIC', 'FIGMA', 'EMPATHY', 'DONE'];
+    const folders = document.querySelector('.folders');
+
+    // Function to extract and show tags
+    const extractTags = (tags) => {
+        if (tags.length > 0) {
+            setTimeout(() => {
+                folders.textContent = tags.shift();
+                extractTags(tags);
+            }, 100);
+        }
+    }
+
+    // Function to handle modal transitions
+    const startDialogs = () => {
+        // Show "Reading disk information" after "Testing system memory"
+        setTimeout(() => {
+            modals[0].hidden = true;
+            modals[1].hidden = false;
+        }, 1000);
+
+        // Show "Analyzing disk information" after "Reading disk information"
+        setTimeout(() => {
+            modals[1].hidden = true;
+            modals[2].hidden = false;
+            extractTags(TAGS); // Start showing tags like GAMES, WINDOWS, etc.
+        }, 3000);
+
+        // Hide "Analyzing" and show the main screens after 2 seconds
+        setTimeout(() => {
+            modals[2].hidden = true;
+            screens[0].classList.remove('off');
+            screens[1].classList.remove('off');
+        }, 5000);
+    }
+
+    // Start the modal sequence when the page loads
+    startDialogs();
+
+</script>
+
+<!-- <script>
+    // Constants
+    const TOTAL_BLOCKS = 1300;
+    const TOTALCLUSTERS = 12600 + ~~(Math.random() * 4250);
+    const CLUSTERSPERBLOCK = ~~(TOTALCLUSTERS / TOTAL_BLOCKS);
+
+    // DOM
+    const modals = document.querySelectorAll('.testing.dialog, .reading.dialog, .analyzing.dialog, .finished.dialog');
+    const screens = document.querySelectorAll('.surface, .info');
+    const surface = document.querySelector('.surface');
+    const currentCluster = document.querySelector('.currentcluster');
+    const percent = document.querySelector('.percent');
+    const fill = document.querySelector('.fill');
+    const elapsedTime = document.querySelector('.elapsedtime');
+
+    // Block generator
+    const genBlock = () => {
+        const num = ~~(Math.random() * 500);
+
+        if (num < 1)
+            return 'bad';
+        if (num < 2)
+            return 'unmovable';
+        if (num < 175)
+            return 'used frag';
+        else
+            return 'unused';
+    };
+
+    // Generate surface
+    for (let i = 0; i < TOTAL_BLOCKS; i++) {
+        const span = document.createElement('span');
+        span.className = `block ${genBlock()}`;
+        surface.appendChild(span);
+    }
+
+    document.querySelector('.clustersperblock').textContent = CLUSTERSPERBLOCK.toLocaleString('en');
+
+    // Time Counter
+    let time = 0;
+    const updateTime = () => {
+        elapsedTime.textContent = new Date(time * 1000).toISOString().substr(11, 8);
+        time++;
+    }
+
+    // Ending phase
+    const endDefrag = () => {
+        modals[3].hidden = false;
+        clearInterval(timer);
+    }
+
+    // Reading phase
+    const readBlock = () => {
+        currentCluster.textContent = CLUSTERSPERBLOCK * currentBlock;
+        if (blocks[currentBlock].classList.contains('frag')) {
+            console.log(currentBlock, 'fragment detected');
+            blocks[currentBlock].classList.remove('frag');
+        }
+        else if (blocks[currentBlock].classList.contains('unused')) {
+            const fragments = document.querySelectorAll('.used.frag');
+            const p = ~~((currentBlock * 100) / totalBlocks);
+            percent.textContent = p;
+            fill.style.setProperty('width', `${p}%`);
+            if (fragments.length == 0) {
+                endDefrag();
+                return;
+            }
+            const num = ~~(Math.random() * fragments.length);
+            fragments[num].classList.remove('used', 'frag');
+            fragments[num].classList.add('unused', 'reading');
+            setTimeout(() => fragments[num].classList.remove('reading'), 200 + ~~(Math.random() * 800));
+            blocks[currentBlock].classList.remove('unused');
+            blocks[currentBlock].classList.add('used');
+        }
+        else
+            currentBlock++;
+
+        setTimeout(readBlock, 50 + ~~(Math.random() * 50) + [0, 0, 0, 50, 200][~~(Math.random() * 5)]);
+    }
+
+    let currentBlock = 0;
+    const totalBlocks = document.querySelectorAll('.used.frag').length;
+    const blocks = document.querySelectorAll('.block');
+    const folders = document.querySelector('.folders');
+
+    const startDefrag = () => {
+        timer = setInterval(updateTime, 1000);
+        setTimeout(readBlock, 500);
+    }
+
+    const TAGS = ['GAMES', 'DOS', 'WINDOWS', 'AUTODESK', 'EMM386', 'PCSHELL',
+        'ZIP', 'RAR', 'PORN', 'COREL', 'WOLF3D', 'TRACKERS', 'WORM',
+        'NORTON', 'DOSHELL', 'INDY', 'MONKEY', 'SIMON', 'WORKS', '2DISK'];
+
+    const startDialogs = () => {
+        setTimeout(() => {
+            modals[0].hidden = true;
+            modals[1].hidden = false;
+        }, 3000);
+
+        setTimeout(() => {
+            modals[1].hidden = true;
+            modals[2].hidden = false;
+            extractTags(TAGS);
+        }, 5000);
+
+        setTimeout(() => {
+            modals[2].hidden = true;
+            screens[0].classList.remove('off');
+            screens[1].classList.remove('off');
+            startDefrag();
+        }, 7000);
+    }
+
+    const extractTags = tags => {
+        if (tags.length > 0)
+            setTimeout(() => {
+                folders.textContent = tags.shift();
+                extractTags(tags);
+            }, 100);
+    }
+
+    startDialogs();
+
+    document.addEventListener('keydown', function (event) {
+        if ((event.altKey) || (event.code == 'F10'))
+            location.href = '#';
+    });
+</script> -->
 
 </html>
