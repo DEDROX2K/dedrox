@@ -230,6 +230,8 @@ p {
     padding: 5px;
     /* cursor: pointer; */
     transition: padding 2s;
+    cursor: url('pixlink.png'), pointer;
+
 }
 
 .emaillink:hover {
@@ -261,11 +263,11 @@ a {
     }
 }
 
-/* body {
+body {
     cursor: url("pixcur.png"), auto;
 }
 
 a,
 button {
     cursor: url('pixlink.png'), pointer;
-} */
+}

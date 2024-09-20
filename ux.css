@@ -384,7 +384,7 @@ button {
 }
 
 #pagesec1 {
-    height: 100vh;
+    height: 160vh;
     width: 100%;
 
     padding: 6% 5% 5% 5%;
@@ -412,7 +412,7 @@ button {
 
 #pagesec3 {
     /* background-color: #ffffff; */
-    height: 750px;
+    height: 450px;
     /* background: linear-gradient(to top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1)); */
 }
 
@@ -425,10 +425,10 @@ button {
     /* text-align: justify; */
 
     font-family: Onest;
-    font-size: 27px;
+    font-size: 38px;
     font-weight: 600;
 
-    line-height: 100%;
+    line-height: 125%;
     /* text-transform: uppercase; */
     position: relative;
 
@@ -447,6 +447,10 @@ p {
 .content-section {
     padding-top: 2.5rem;
     padding-bottom: 2.5rem;
+}
+
+#pagesec4 {
+    padding: 10% 0% 0% 0%;
 }
 
 /* Styling for the font preview section */

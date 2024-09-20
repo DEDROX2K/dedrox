@@ -150,16 +150,16 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'sticker1', left: 35, top: 55 },
         { id: 'sticker2', left: 10, top: 50 },
 
-        { id: 'sticker2.1', left: 30, top: 30 },
+        { id: 'sticker2.1', left: 20, top: 30 },
         { id: 'sticker2.2', left: 2, top: 12 },
         { id: 'sticker3', left: 65, top: 38 },
 
-        { id: 'sticker3.1', left: 59, top: 42 },
-        { id: 'sticker3.2', left: 75, top: 38 },
+        { id: 'sticker3.1', left: 59, top: 82 },
+        { id: 'sticker3.2', left: 65, top: 38 },
         { id: 'sticker3.3', left: 85, top: 28 },
         { id: 'sticker3.4', left: 85, top: 51 },
-        { id: 'sticker3.5', left: 70, top: 58 },
-        { id: 'sticker3.6', left: 69, top: 28 },
+        { id: 'sticker3.5', left: 80, top: 68 },
+        { id: 'sticker3.6', left: 69, top: 18 },
 
         { id: 'sticker3.7', left: 40, top: 35 },
         { id: 'sticker3.8', left: 20, top: 55 },
