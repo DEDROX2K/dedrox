@@ -171,9 +171,9 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'sticker8', left: 40, top: 40 },
 
         { id: 'stickerBannerAd1', left: 20, top: 20 },
-        { id: 'stickerBannerAd2', left: 4, top: 130 },
+        { id: 'stickerBannerAd2', left: 17, top: 40 },
         { id: 'stickerBannerAd3', left: 50, top: 20 },
-        { id: 'stickerBannerAd4', left: 20, top: 50 },
+        { id: 'stickerBannerAd4', left: 70, top: 40 },
     ];
 
     stickers.forEach(({ id, left, top }) => {
