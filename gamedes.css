@@ -49,6 +49,53 @@
 }
 
 
+
+
+#pagesecshort {
+    height: 100vh;
+    width: 100%;
+    max-width: 1024px;
+
+    font-family: Onest;
+    font-size: 60px;
+    line-height: 110%;
+
+    padding: 10% 0% 0% 10%;
+    font-weight: 500;
+    color: #ffffff;
+}
+
+
+.custom-container {
+    width: 100%;
+    max-width: 90%;
+    margin: 0 auto;
+}
+
+
+.navbar {
+    height: 80px;
+    width: 100%;
+    position: fixed;
+    /* Optional: if you want it to stay fixed at the top */
+    top: 0;
+    z-index: 999;
+    /* background-color: #ead625; */
+}
+
+
+.navtext {
+    font-family: vcr;
+    /* font-weight: 600; */
+    /* color: white; */
+    text-align: center;
+    /* mix-blend-mode: difference; */
+    /* Invert color based on background */
+    font-size: 22px;
+    letter-spacing: 2px;
+}
+
+
 model-viewer {
     background-color: none;
     overflow-x: hidden;
@@ -61,7 +108,7 @@ model-viewer {
     border-radius: 10px;
     border: dotted 6px rgb(150, 178, 223);
 
-    margin-top: 3%;
+    margin-top: 5%;
 
     position: absolute;
     display: flex;
@@ -185,7 +232,101 @@ button {
 a {
     color: black;
     font-size: 16px;
+    border-bottom: none;
 }
+
+
+p {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 200;
+    margin: 0%;
+    text-align: left;
+    font-family: onest;
+    /* border-bottom: solid 1px #494949; */
+}
+
+.content-section {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+}
+
+
+
+#portfolio {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    /* max-width: 60%; */
+    margin: auto auto 1rem;
+    padding: 7% 10% 2% 10%;
+}
+
+#portfolio a {
+    color: #000000;
+    border-bottom: none;
+    text-decoration: none;
+
+    letter-spacing: 0.3px;
+    font-size: 20px;
+    font-weight: 400;
+
+    transition: letter-spacing 0.8s;
+    font-family: DotGothic16;
+}
+
+#portfolio a :hover {
+    color: #5e5e5e;
+    transition: 0.5s;
+}
+
+.portfolio-item img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    padding: 5%;
+
+    filter: grayscale(100%);
+    transition: filter 0.5s ease, transform 0.2s;
+    transform: translateY(0);
+    /* Initial transform for the hover effect */
+}
+
+.portfolio-item img:hover {
+    filter: grayscale(0%);
+    transform: translateY(-2px);
+}
+
+
+
+.canva {
+    padding: 50px;
+    height: auto;
+    width: 50%;
+    transform: rotate(-3deg);
+}
+
+#sket {
+    width: 80%;
+    height: 20rem;
+    margin: 0 auto;
+
+
+    border-radius: 10px;
+    border: dotted 6px rgb(150, 178, 223);
+
+    margin-top: 30%;
+
+    /* position: absolute; */
+    display: flex;
+    align-items: center;
+}
+
+
+
+
+
+
 
 
 @media (max-width: 480px) {
@@ -206,5 +347,19 @@ a {
     .pixborder img {
         opacity: 60%;
         height: 40px;
+    }
+
+    #pagesecshort {
+        height: 100vh;
+        width: 100%;
+        max-width: 1024px;
+
+        font-family: Onest;
+        font-size: 20px;
+        line-height: 110%;
+
+        padding: 5% 30% 0% 3%;
+        font-weight: 500;
+        color: #ffffff;
     }
 }

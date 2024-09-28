@@ -23,6 +23,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&family=Bebas+Neue&family=Calistoga&family=DotGothic16&family=Instrument+Serif:ital@0;1&family=Maiden+Orange&family=Pixelify+Sans:wght@400..700&family=Staatliches&display=swap"
         rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Onest:wght@100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
@@ -70,6 +71,7 @@
     <link rel="stylesheet" href="gamedes.css">
     <link rel="icon" href="logo.png" type="png">
     <meta name="theme-color" content="#ffc800">
+    <script src="ux.js"></script>
 
 
 
@@ -77,14 +79,42 @@
 </head>
 
 
+
+<!-- navbar and the logo-->
 <header>
+    <!-- <nav class="navtext navbar fixed-top">
+        <div class="custom-container">
+            <div class="row" style="align-content: center; margin-top: 20px;">
+                <div class="col-2" style="text-align: start; margin-top: 20px">
+                    <a href="index.html">
+                        <img src="images/DEDROX.DSGN/dedroxLogo.svg" style="width: 40px; height: auto; z-index: 100;">
+                    </a>
+                </div>
+
+                <div class="col-8 black-link" style="margin-top: 20px">
+                    <a href="Statement.html" class="s-t">FREE FONTS* /</a>
+                    <a href="ethos.html" class="w-t">ETHOS* /</a>
+                    <a href="gamedes.html" class="d-t">3D & GAME-DESIGN* /</a>
+                </div>
+
+                <div class="col-2" style="text-align: end; margin-top: 20px">
+                    <a href="articlepage.html" class="a-t"> ARTICLES*</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="blurtop"></div> -->
+
     <div class="pixborder">
         <img class="lefpix" src="images/pixel-border.png">
         <img class="ritpix" src="images/pixel-border.png">
         <img class="ritdownpix" src="images/pixel-border.png">
         <img class="lefdownpix" src="images/pixel-border.png">
     </div>
+
 </header>
+
 
 
 
@@ -134,21 +164,13 @@
                 display: none;
             }
         </style>
+
         <model-viewer src="threeD/Tintanic.glb" ar ar-modes="scene-viewer webxr quick-look" camera-controls
             tone-mapping="neutral" poster="poster.webp" auto-rotate autoplay>
             <button class="Hotspot" slot="hotspot-1" data-surface="52 0 1 17 19 0.618 0.112 0.271"
                 data-visibility-attribute="visible">
                 <div class="HotspotAnnotation">Portfolio</div>
             </button>
-            <div class="progress-bar hide" slot="progress-bar">
-                <div class="update-bar"></div>
-            </div>
-            <button slot="ar-button" id="ar-button">
-                View in your space
-            </button>
-            <div id="ar-prompt">
-                <img src="https://modelviewer.dev/shared-assets/icons/hand.png">
-            </div>
 
 
             <effect-composer>
@@ -159,11 +181,96 @@
         </model-viewer>
 
 
+
     </div>
 
+    <div id="pagesecshort">
+        <div class="custom-container">
+            Hey, Hi! i’m Raghav.
+            3D artist/designer
+            based in London. Been in the industry from 2018. I make 3D tutorials and teach beginner 3D artists. Most of
+            my projects are up in artstation.
+        </div>
+    </div>
     <div class="threetit d-none">3D models with fresh 3JS code is about to be deployed, hold up & check the other things
     </div>
 
+    <!-- Portfolio-->
+    <section class="content-section" id="portfolio">
+
+
+
+
+
+
+        <h1 class="text-center"
+            style="font-family: Onest; font-size: 60px; font-weight: bold; color: black; margin-bottom: 30px;">Recent
+            projects</h1>
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-0">
+                <div class="col-lg-4">
+                    <a class="portfolio-item text-center"
+                        href="https://www.behance.net/gallery/178339927/Gym-finder-app-design-Case-study">
+                        <img class="img-fluid" src="images/treepie 1.png" />
+                        <p style="padding: 10px;
+" class="mb-0">App designed for folks who travel a lot and wants a quick gym sessions</p>
+                    </a>
+                </div>
+                <div class="col-lg-4">
+                    <a class="portfolio-item text-center"
+                        href="https://www.behance.net/gallery/200529521/CLEAR-BREATH-case-study-No-smoking-app">
+                        <img class="img-fluid" src="images/treepie  2.png" />
+                        <p style="padding: 10px;
+" class="mb-0">A well detailed project on tackling smoking addiction</p>
+                    </a>
+                </div>
+                <div class="col-lg-4">
+                    <a class="portfolio-item text-center"
+                        href="https://www.behance.net/gallery/175170719/Dashboard-design-UI-Mondaycom-redesign">
+                        <img class="img-fluid" src="images/treepie  3.png" />
+                        <p style="padding: 10px;
+" class="mb-0">Sets of UI designs explorations</p>
+                    </a>
+                </div>
+            </div>
+
+
+            <div class="row gx-0">
+                <div class="col-lg-4">
+                    <a class="portfolio-item text-center"
+                        href="https://medium.com/design-bootcamp/ux-case-study-ai-voice-replicating-app-dbfe831b9ece">
+                        <img class="img-fluid" src="images/treepie  4.png" />
+                        <p style="padding: 10px;
+" class="mb-0">App designed for folks who travel a lot and wants a quick gym sessions</p>
+                    </a>
+                </div>
+                <div class="col-lg-4">
+                    <a class="portfolio-item text-center"
+                        href="https://www.behance.net/gallery/162446167/Free-font-falls-end">
+                        <img class="img-fluid" src="images/treepie  5.png" />
+                        <p style="padding: 10px;
+" class="mb-0">A well detailed project on tackling smoking addiction</p>
+                    </a>
+                </div>
+                <div class="col-lg-4">
+                    <a class="portfolio-item text-center"
+                        href="https://www.behance.net/gallery/184315285/Currency-Converter-app-Case-Study">
+                        <img class="img-fluid" src="images/treepie  6.png" />
+                        <p style="padding: 10px;
+" class="mb-0">Sets of UI designs explorations</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="sketchfab-embed-wrapper">
+            <iframe id="sket" title="vintage-wagon cartoon car" frameborder="0" allowfullscreen
+                mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking"
+                xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share
+                src="https://sketchfab.com/models/1d411863389742ba8e1f700e8ec3c017/embed"> </iframe>
+        </div>
+
+    </section>
 
 </body>
 

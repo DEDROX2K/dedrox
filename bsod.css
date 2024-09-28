@@ -271,3 +271,10 @@ a,
 button {
     cursor: url('pixlink.png'), pointer;
 }
+
+
+@media (max-width: 480px) {
+    body {
+        font-size: 15px;
+    }
+}
