@@ -59,6 +59,8 @@ model-viewer {
 
 
     border-radius: 10px;
+    border: dotted 6px rgb(150, 178, 223);
+
     margin-top: 3%;
 
     position: absolute;

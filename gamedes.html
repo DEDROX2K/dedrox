@@ -99,19 +99,66 @@
     <div class="d-flex justify-content-center threee">
 
 
+        <style>
+            .hotspot {
+                display: block;
+                width: 20px;
+                height: 20px;
+                border-radius: 10px;
+                border: none;
+                background-color: blue;
+                box-sizing: border-box;
+                pointer-events: none;
+            }
 
-            <model-viewer camera-controls autoplay ar src="threeD/Tintanic.glb" shadow-intensity="0"
-            field-of-view="40deg">
+            .hotspot[slot="hotspot-hand"] {
+                --min-hotspot-opacity: 0;
+                background-color: red;
+            }
+
+            .hotspot[slot="hotspot-foot"]:not([data-visible]) {
+                background-color: transparent;
+                border: 3px solid blue;
+            }
+
+            .annotation {
+                background-color: #888888;
+                position: absolute;
+                transform: translate(10px, 10px);
+                border-radius: 10px;
+                padding: 10px;
+            }
+
+            /* This keeps child nodes hidden while the element loads */
+            :not(:defined)>* {
+                display: none;
+            }
+        </style>
+        <model-viewer src="threeD/Tintanic.glb" ar ar-modes="scene-viewer webxr quick-look" camera-controls
+            tone-mapping="neutral" poster="poster.webp" auto-rotate autoplay>
+            <button class="Hotspot" slot="hotspot-1" data-surface="52 0 1 17 19 0.618 0.112 0.271"
+                data-visibility-attribute="visible">
+                <div class="HotspotAnnotation">Portfolio</div>
+            </button>
+            <div class="progress-bar hide" slot="progress-bar">
+                <div class="update-bar"></div>
+            </div>
+            <button slot="ar-button" id="ar-button">
+                View in your space
+            </button>
+            <div id="ar-prompt">
+                <img src="https://modelviewer.dev/shared-assets/icons/hand.png">
+            </div>
+
 
             <effect-composer>
                 <!-- <ssao-effect></ssao-effect> -->
-                <!--    <pixelate-effect granularity="3"></pixelate-effect> -->
+                <!--    <pixelate-effect granularity="4"></pixelate-effect> -->
                 <!--    <outline-effect color="black" strength="5" smoothing="0"></outline-effect> -->
             </effect-composer>
-
-
-
         </model-viewer>
+
+
     </div>
 
     <div class="threetit d-none">3D models with fresh 3JS code is about to be deployed, hold up & check the other things
