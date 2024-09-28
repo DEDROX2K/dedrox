@@ -377,17 +377,17 @@ button {
     font-size: 60px;
     line-height: 110%;
 
-    padding: 10% 12% 0% 10%;
+    padding: 10% 0% 0% 10%;
     font-weight: 500;
     color: #000000;
 
 }
 
 #pagesec1 {
-    height: 160vh;
+    height: 110vh;
     width: 100%;
 
-    padding: 6% 5% 5% 5%;
+    padding: 4% 5% 10% 5%;
 }
 
 
@@ -397,6 +397,15 @@ button {
     height: 100vh;
     padding-top: 30px;
     margin-bottom: 40px;
+}
+
+
+#pagesec3 {
+    /* background-color: #ffffff; */
+    padding: 13% 0% 0% 6%;
+
+    height: 70%;
+    /* background: linear-gradient(to top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1)); */
 }
 
 .redbox {
@@ -410,14 +419,10 @@ button {
     border-radius: 30px;
 }
 
-#pagesec3 {
-    /* background-color: #ffffff; */
-    height: 450px;
-    /* background: linear-gradient(to top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1)); */
+.fadeemg {
+    border-radius: 20px;
+    box-shadow: 6px 4px 50px #0000000e
 }
-
-
-
 
 .info {
     color: #000000;
@@ -425,7 +430,7 @@ button {
     /* text-align: justify; */
 
     font-family: Onest;
-    font-size: 38px;
+    font-size: 28px;
     font-weight: 600;
 
     line-height: 125%;
