@@ -524,6 +524,7 @@ p {
     pointer-events: none;
 }
 
+
 #portfolio {
     display: block;
     position: relative;
@@ -726,4 +727,9 @@ p {
 .panel {
     background-color: #26272b;
     color: wheat;
+}
+
+footer {
+    z-index: 100;
+    position: relative;
 }
