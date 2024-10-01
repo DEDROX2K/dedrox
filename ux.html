@@ -165,6 +165,9 @@
     <div class="sticker" id="sticker3.7">
       <img src="images/cat.png">
     </div>
+    <div class="sticker" id="sticker3.9">
+      <img src="images/me.png">
+    </div>
   </div>
 
 
@@ -374,17 +377,20 @@
     <div class="redbox d-flex justify-content-center align-items-center" style="z-index: 998;">
     </div>
 
-    <div class="sticker" id="sticker4">
-      <img src="images/frontend.png">
-    </div>
-    <div class="sticker" id="sticker5">
-      <img src="images/gamedesign.png">
-    </div>
+
+
+
     <div class="sticker" id="sticker6">
       <img src="images/uxdes.png">
     </div>
     <div class="sticker" id="sticker7">
       <img src="images/prod.png">
+    </div>
+    <div class="sticker" id="sticker5">
+      <img src="images/gamedesign.png">
+    </div>
+    <div class="sticker" id="sticker4">
+      <img src="images/frontend.png">
     </div>
     <!-- <div class="sticker" id="sticker8">
       <img src="images/pinkhead.png">
@@ -392,6 +398,37 @@
   </div>
 
 
+  <style>
+    /* Keyframe animation for stop-motion rotation */
+    @keyframes stopMotionRotate {
+      0% {
+        transform: rotate(-10deg);
+      }
+
+      100% {
+        transform: rotate(30deg);
+      }
+    }
+
+    /* Apply the stop-motion animation to the image */
+    .rotate-img {
+      animation: stopMotionRotate 1s steps(2) infinite;
+    }
+
+    /* Ensure the image is responsive */
+    .img-fluid {
+      max-width: 100%;
+      height: auto;
+    }
+  </style>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-12 d-flex justify-content-center align-items-center">
+        <img src="images/dumme.png" alt="Rotating Image" class="img-fluid rotate-img">
+      </div>
+    </div>
+  </div>
 
 
   <div id="pagesec3">
@@ -470,7 +507,8 @@
     </div>
     <div class="row">
       <div class="col-md-12">
-        <img src="images/footerhand.png" alt="Footer Image" class="img-fluid" style="padding-top: 50px; z-index: 100;">
+        <img src="images/footerhand.png" alt="Footer Image" class="img-fluid"
+          style="padding-top: 50px; z-index: 100; opacity: 85%;">
       </div>
     </div>
   </div>

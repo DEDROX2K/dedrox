@@ -163,6 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         { id: 'sticker3.7', left: 40, top: 35 },
         { id: 'sticker3.8', left: 20, top: 55 },
+        { id: 'sticker3.9', left: 40, top: 35 },
 
         { id: 'sticker4', left: 46, top: 30 },
         { id: 'sticker5', left: 60, top: 40 },
