@@ -123,54 +123,24 @@
 <!-- BODY-BODY-BODY-BODY -->
 
 <body style="background-color: #295ca7;">
+
     <button class="mood-changeable"><a href="compressed.html">"A Short Summary"</a></button>
     <button class="Back"><a href="ux.html"> back </a></button>
 
     <div class="d-flex justify-content-center threee">
 
 
-        <style>
-            .hotspot {
-                display: block;
-                width: 20px;
-                height: 20px;
-                border-radius: 10px;
-                border: none;
-                background-color: blue;
-                box-sizing: border-box;
-                pointer-events: none;
-            }
-
-            .hotspot[slot="hotspot-hand"] {
-                --min-hotspot-opacity: 0;
-                background-color: red;
-            }
-
-            .hotspot[slot="hotspot-foot"]:not([data-visible]) {
-                background-color: transparent;
-                border: 3px solid blue;
-            }
-
-            .annotation {
-                background-color: #888888;
-                position: absolute;
-                transform: translate(10px, 10px);
-                border-radius: 10px;
-                padding: 10px;
-            }
-
-            /* This keeps child nodes hidden while the element loads */
-            :not(:defined)>* {
-                display: none;
-            }
-        </style>
 
         <model-viewer src="threeD/Tintanic.glb" ar ar-modes="scene-viewer webxr quick-look" camera-controls
-            tone-mapping="neutral" poster="poster.webp" auto-rotate autoplay>
-            <button class="Hotspot" slot="hotspot-1" data-surface="52 0 1 17 19 0.618 0.112 0.271"
-                data-visibility-attribute="visible">
-                <div class="HotspotAnnotation">Portfolio</div>
-            </button>
+            tone-mapping="neutral" poster="poster.webp" auto-rotate autoplay
+            style="cursor: url('pixlink.png'), pointer;">
+            <!-- Hotspot for linking to the portfolio -->
+            <a href="https://www.artstation.com/raghavprasanna" target="_blank" slot="hotspot-1"
+                data-surface="52 0 1 17 19 0.618 0.112 0.271" data-visibility-attribute="auto">
+                <button class="Hotspot">
+                    <div class="HotspotAnnotation">Portfolio</div>
+                </button>
+            </a>
 
 
             <effect-composer>
@@ -181,88 +151,113 @@
         </model-viewer>
 
 
-
     </div>
 
-    <div id="pagesecshort">
-        <div class="custom-container">
-            Hey, Hi! i’m Raghav.
-            3D artist/designer
-            based in London. Been in the industry from 2018. I make 3D tutorials and teach beginner 3D artists. Most of
-            my projects are up in artstation.
+
+    <div class="sec1">
+        <div id="pagesecshort">
+            <div class="sticker" id="sticker1">
+                <img src="images/lessgoo.png">
+            </div>
+
+            <div class="sticker" id="sticker2">
+                <img src="images/londonuk.png">
+            </div>
+
+            <div class="sticker" id="sticker2.1">
+                <img src="images/yesthatme.png">
+            </div>
+            <div class="custom-container">
+                Hey, Hi! i’m Raghav.
+                3D artist/designer
+                based in London. Been in the industry from 2018. I make 3D tutorials and teach beginner 3D artists. Most
+                of
+                my projects are up in artstation.
+            </div>
+        </div>
+        <div class="threetit d-none">3D models with fresh 3JS code is about to be deployed, hold up & check the other
+            things
         </div>
     </div>
-    <div class="threetit d-none">3D models with fresh 3JS code is about to be deployed, hold up & check the other things
+
+
+    <div class="sec2">
+
+        <!-- Portfolio-->
+        <section class="content-section" id="portfolio">
+            <h1 class="text-center"
+                style="font-family: Onest; font-size: 60px; font-weight: bold; color: black; margin-bottom: 30px;">
+                Recent
+                projects</h1>
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-0">
+                    <div class="col-lg-4">
+                        <a class="portfolio-item text-center"
+                            href="https://www.behance.net/gallery/178339927/Gym-finder-app-design-Case-study">
+                            <img class="img-fluid" src="images/treepie 1.png" />
+                            <p style="padding: 10px;" class="mb-0">App designed for folks who travel a lot and wants a
+                                quick gym sessions</p>
+                        </a>
+                    </div>
+                    <div class="col-lg-4">
+                        <a class="portfolio-item text-center"
+                            href="https://www.behance.net/gallery/200529521/CLEAR-BREATH-case-study-No-smoking-app">
+                            <img class="img-fluid" src="images/treepie  2.png" />
+                            <p style="padding: 10px;" class="mb-0">A well detailed project on tackling smoking addiction
+                            </p>
+                        </a>
+                    </div>
+                    <div class="col-lg-4">
+                        <a class="portfolio-item text-center"
+                            href="https://www.behance.net/gallery/175170719/Dashboard-design-UI-Mondaycom-redesign">
+                            <img class="img-fluid" src="images/treepie  3.png" />
+                            <p style="padding: 10px;" class="mb-0">Sets of UI designs explorations</p>
+                        </a>
+                    </div>
+                </div>
+
+
+                <div class="row gx-0">
+                    <div class="col-lg-4">
+                        <a class="portfolio-item text-center"
+                            href="https://medium.com/design-bootcamp/ux-case-study-ai-voice-replicating-app-dbfe831b9ece">
+                            <img class="img-fluid" src="images/treepie  4.png" />
+                            <p style="padding: 10px;" class="mb-0">App designed for folks who travel a lot and wants a
+                                quick gym sessions</p>
+                        </a>
+                    </div>
+                    <div class="col-lg-4">
+                        <a class="portfolio-item text-center"
+                            href="https://www.behance.net/gallery/162446167/Free-font-falls-end">
+                            <img class="img-fluid" src="images/treepie  5.png" />
+                            <p style="padding: 10px;" class="mb-0">A well detailed project on tackling smoking addiction
+                            </p>
+                        </a>
+                    </div>
+                    <div class="col-lg-4">
+                        <a class="portfolio-item text-center"
+                            href="https://www.behance.net/gallery/184315285/Currency-Converter-app-Case-Study">
+                            <img class="img-fluid" src="images/treepie  6.png" />
+                            <p style="padding: 10px;" class="mb-0">Sets of UI designs explorations</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
 
-    <!-- Portfolio-->
-    <section class="content-section" id="portfolio">
 
 
 
 
 
+    <!-- Sketchfab model -->
+    <div class="sec3" style="padding-bottom: 10%; padding-top: 10%">
 
         <h1 class="text-center"
-            style="font-family: Onest; font-size: 60px; font-weight: bold; color: black; margin-bottom: 30px;">Recent
-            projects</h1>
-        <div class="container px-4 px-lg-5">
-            <div class="row gx-0">
-                <div class="col-lg-4">
-                    <a class="portfolio-item text-center"
-                        href="https://www.behance.net/gallery/178339927/Gym-finder-app-design-Case-study">
-                        <img class="img-fluid" src="images/treepie 1.png" />
-                        <p style="padding: 10px;
-" class="mb-0">App designed for folks who travel a lot and wants a quick gym sessions</p>
-                    </a>
-                </div>
-                <div class="col-lg-4">
-                    <a class="portfolio-item text-center"
-                        href="https://www.behance.net/gallery/200529521/CLEAR-BREATH-case-study-No-smoking-app">
-                        <img class="img-fluid" src="images/treepie  2.png" />
-                        <p style="padding: 10px;
-" class="mb-0">A well detailed project on tackling smoking addiction</p>
-                    </a>
-                </div>
-                <div class="col-lg-4">
-                    <a class="portfolio-item text-center"
-                        href="https://www.behance.net/gallery/175170719/Dashboard-design-UI-Mondaycom-redesign">
-                        <img class="img-fluid" src="images/treepie  3.png" />
-                        <p style="padding: 10px;
-" class="mb-0">Sets of UI designs explorations</p>
-                    </a>
-                </div>
-            </div>
-
-
-            <div class="row gx-0">
-                <div class="col-lg-4">
-                    <a class="portfolio-item text-center"
-                        href="https://medium.com/design-bootcamp/ux-case-study-ai-voice-replicating-app-dbfe831b9ece">
-                        <img class="img-fluid" src="images/treepie  4.png" />
-                        <p style="padding: 10px;
-" class="mb-0">App designed for folks who travel a lot and wants a quick gym sessions</p>
-                    </a>
-                </div>
-                <div class="col-lg-4">
-                    <a class="portfolio-item text-center"
-                        href="https://www.behance.net/gallery/162446167/Free-font-falls-end">
-                        <img class="img-fluid" src="images/treepie  5.png" />
-                        <p style="padding: 10px;
-" class="mb-0">A well detailed project on tackling smoking addiction</p>
-                    </a>
-                </div>
-                <div class="col-lg-4">
-                    <a class="portfolio-item text-center"
-                        href="https://www.behance.net/gallery/184315285/Currency-Converter-app-Case-Study">
-                        <img class="img-fluid" src="images/treepie  6.png" />
-                        <p style="padding: 10px;
-" class="mb-0">Sets of UI designs explorations</p>
-                    </a>
-                </div>
-            </div>
-        </div>
-
+            style="font-family: Onest; font-size: 60px; font-weight: bold; color: black; margin-bottom: 30px;">My
+            favourite
+            sketchfab models</h1>
         <div class="sketchfab-embed-wrapper">
             <iframe id="sket" title="vintage-wagon cartoon car" frameborder="0" allowfullscreen
                 mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking"
@@ -270,11 +265,126 @@
                 src="https://sketchfab.com/models/1d411863389742ba8e1f700e8ec3c017/embed"> </iframe>
         </div>
 
-    </section>
+        <div class="sketchfab-embed-wrapper"> <iframe id="sket" title="Apex legends sidearm (Free)" frameborder="0"
+                allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true"
+                allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport
+                execution-while-not-rendered web-share
+                src="https://sketchfab.com/models/4645fa257d9e436f943adf2c5be600e2/embed"> </iframe>
+
+        </div>
+
+        <div class="sketchfab-embed-wrapper"> <iframe id="sket" title="Mini bike vintage and cartoonish looking"
+                frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true"
+                allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport
+                execution-while-not-rendered web-share
+                src="https://sketchfab.com/models/618dbb73305640e4a6399e20b78b69b0/embed"> </iframe> </div>
+
+
+        <div class="sketchfab-embed-wrapper"> <iframe id="sket" title="spideeee" frameborder="0" allowfullscreen
+                mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking"
+                xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share
+                src="https://sketchfab.com/models/e66f0bd1f13f41dd9648a69d5b82865f/embed"> </iframe> </div>
+    </div>
+
+
+    <div id="pagesecshort">
+        <div class="custom-container">
+            I don't want you to leave empty handed. Here you can get some free fonts.
+        </div>
+        <a href="Statement.html"> <img style="padding: 5%;" src="images/font-download.png" alt=""> </a>
+
+        <!-- <div class="sticker" id="sticker3.7">
+        <img src="images/cat.png">
+      </div> -->
+    </div>
 
 </body>
 
-<footer>
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h3>Contact Me</h3>
+                <p> <a href="https://www.linkedin.com/in/raghav-prasanna-b530621b0/"
+                        target="_blank">linkedin.com/raghav-prasanna</a><br>
+                    raghavprasanna2000@gmail.com<br>
+                    +44 7553 433334<br>
+                </p>
+            </div>
+            <div class="col-md-6">
+                <h3 style="text-align: end;">Follow Me</h3>
+                <ul class="list-inline" style="text-align: end;">
+                    <li><a href="https://www.artstation.com/raghavprasanna" target="_blank">Artstation</a></li>
+                    <li><a href="https://www.instagram.com/dedrox__/?hl=en" target="_blank">Instagram</a></li>
+                    <li><a href="https://sketchfab.com/Raghavprasanna" target="_blank">'Free models' Sketchfab</a></li>
+
+                    <li><a href="https://www.behance.net/raghavprasanna" target="_blank">Behance</a></li>
+                    <li><a href="https://medium.com/@RaghavPrasannaUX" target="_blank">Medium</a></li>
+
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <img src="images/footerhand.png" alt="Footer Image" class="img-fluid"
+                    style="padding-top: 50px; z-index: 100;">
+            </div>
+        </div>
+    </div>
+
+
+    <style>
+        footer h3 {
+            font-family: Onest;
+            font-weight: 800;
+            font-size: 30px;
+            color: #424242;
+        }
+
+
+        footer p {
+            font-family: Onest;
+            font-size: 20px;
+            font-weight: 500;
+
+            color: #424242;
+        }
+
+        .footer a {
+            color: #424242;
+            border-bottom: none;
+            text-decoration: none;
+            border-bottom: #424242 solid;
+
+            letter-spacing: 0.3px;
+            font-size: 25px;
+            font-weight: 400;
+
+            transition: letter-spacing 0.8s;
+            font-family: vcr;
+
+
+        }
+
+        .footer a :hover {
+            color: #5e5e5e;
+            transition: 0.5s;
+
+            letter-spacing: -1px;
+            transition: 0.5s;
+            border: solid #000000;
+        }
+
+        footer {
+            padding-top: 80px;
+            background-color: rgb(240, 240, 240);
+            border-top: solid #424242 3px;
+        }
+    </style>
+
+
 </footer>
+
+
 
 </html>

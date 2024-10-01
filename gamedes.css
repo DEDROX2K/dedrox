@@ -50,6 +50,19 @@
 
 
 
+.sec1 {
+    background-color: #ffffff;
+}
+
+.sec2 {
+    background-color: #ecb34a;
+    height: 100vh;
+}
+
+.sec3 {
+    background-color: #FF763E;
+    /* height: 90vh; */
+}
 
 #pagesecshort {
     height: 100vh;
@@ -62,7 +75,6 @@
 
     padding: 10% 0% 0% 10%;
     font-weight: 500;
-    color: #ffffff;
 }
 
 
@@ -103,16 +115,13 @@ model-viewer {
     width: 70%;
     height: 80%;
     margin: 0 auto;
-
-
     border-radius: 10px;
     border: dotted 6px rgb(150, 178, 223);
-
     margin-top: 5%;
-
     position: absolute;
     display: flex;
     align-items: center;
+    cursor: url('pixlink.png'), pointer;
 }
 
 .threee {
@@ -167,7 +176,30 @@ model-viewer {
     overflow: hidden;
 }
 
+::-webkit-scrollbar {
+    width: 5px;
+    height: 1em;
+}
+
+::-webkit-scrollbar-track {
+    background: none;
+    background-image: url("images/stripend.png");
+}
+
+::-webkit-scrollbar-thumb {
+    background: #000000;
+    border-radius: 10px 0px 0px 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #7e7e7e;
+    /* border-radius: 100vw; */
+    margin-block: 0.5em;
+}
+
 .Back {
+    cursor: url('pixlink.png'), pointer;
+
     position: fixed;
     background-color: white;
 
@@ -190,6 +222,8 @@ model-viewer {
 button {
     background-color: transparent;
     border: none;
+    cursor: url('pixlink.png'), pointer;
+
 }
 
 .HotspotAnnotation {
@@ -220,7 +254,8 @@ button {
     bottom: 20px;
     right: 20px;
     padding: 3px 10px;
-    cursor: pointer;
+    cursor: url('pixlink.png'), pointer;
+
     z-index: 999;
     font-family: Archivo;
     font-weight: 800;
@@ -233,11 +268,12 @@ a {
     color: black;
     font-size: 16px;
     border-bottom: none;
+    cursor: url('pixlink.png'), pointer;
 }
 
 
 p {
-    color: #ffffff;
+    color: #000000;
     font-size: 18px;
     font-weight: 200;
     margin: 0%;
@@ -308,14 +344,15 @@ p {
 
 #sket {
     width: 80%;
-    height: 20rem;
+    height: 40rem;
     margin: 0 auto;
 
 
     border-radius: 10px;
     border: dotted 6px rgb(150, 178, 223);
 
-    margin-top: 30%;
+    margin-top: 3%;
+    margin-bottom: 3%;
 
     /* position: absolute; */
     display: flex;
@@ -362,4 +399,24 @@ p {
         font-weight: 500;
         color: #ffffff;
     }
+}
+
+
+.panel {
+    background-color: #26272b;
+    color: wheat;
+}
+
+footer {
+    z-index: 100;
+    position: relative;
+}
+
+body {
+    cursor: url("pixcur.png"), auto;
+}
+
+a,
+button {
+    cursor: url('pixlink.png'), pointer;
 }
