@@ -123,9 +123,7 @@ a:hover {
     right: 20px;
     padding: 3px 10px;
     cursor: pointer;
-    z-index: 990;
-    font-family: DotGothic16;
-    font-weight: 600;
+    font-family: vcr;
     border: solid 2px;
     border-radius: 90px;
 }
@@ -380,14 +378,13 @@ button {
     padding: 10% 0% 0% 10%;
     font-weight: 500;
     color: #000000;
-
 }
 
 #pagesec1 {
-    height: 110vh;
+    height: 130vh;
     width: 100%;
 
-    padding: 4% 5% 10% 5%;
+    padding: 4% 10% 10% 5%;
 }
 
 
@@ -408,16 +405,58 @@ button {
     /* background: linear-gradient(to top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1)); */
 }
 
+#pagesec4 {
+    padding: 10% 0% 0% 0%;
+}
+
 .redbox {
     height: 100vmin;
     width: 100%;
     background-size: cover;
     overflow: hidden;
 
+    opacity: 50%;
+
     background-position: center center;
     background-image: url("images/dottedpattern.png");
-    border-radius: 30px;
 }
+
+.modern-button {
+    display: inline-block;
+    margin-top: 2%;
+    font-size: 1rem;
+    border-radius: 12px;
+    padding: 0.5rem 0.8rem;
+    font-weight: 400;
+    text-transform: uppercase;
+    margin-left: 5%;
+    margin-right: 5px;
+    line-height: normal;
+
+    box-shadow: 0px 8px 0px #000000;
+    /* Strong shadow */
+
+    color: #313131;
+    background-color: #f1a116;
+    text-align: center;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-family: Onest;
+}
+
+.modern-button:hover {
+    background-color: #dab881;
+    /* Darker green on hover */
+    transform: translateY(-2px);
+    /* Slight upward movement for an interactive feel */
+}
+
+.modern-button:active {
+    background-color: #3e8e41;
+    /* Even darker green when clicked */
+    transform: translateY(0);
+    /* Remove movement when clicked */
+}
+
 
 .fadeemg {
     border-radius: 20px;
@@ -454,9 +493,7 @@ p {
     padding-bottom: 2.5rem;
 }
 
-#pagesec4 {
-    padding: 10% 0% 0% 0%;
-}
+
 
 /* Styling for the font preview section */
 /* .font-preview-section {
@@ -503,6 +540,35 @@ p {
 /* Styling the download button */
 .download-button {
     margin-top: 20px;
+}
+
+.font-box[contenteditable="true"]:empty:before {
+    content: attr(data-placeholder);
+    color: #888;
+    /* Placeholder color */
+}
+
+/* Different font styles for the font testing boxes */
+.font-archivo {
+    font-family: 'ass';
+    letter-spacing: -9px;
+    line-height: normal;
+    font-size: 190px;
+    /* white-space: nowrap; */
+
+}
+
+.font-fall {
+    font-family: 'FallSend';
+    font-size: 100px;
+    /* white-space: nowrap; */
+    /* Prevent new lines */
+}
+
+.font-staatliches {
+    font-family: zora;
+    font-size: 100px;
+    line-height: 6rem;
 }
 
 ::selection {
@@ -552,11 +618,14 @@ p {
     transition: 0.5s;
 }
 
+
+
+
 .portfolio-item img {
     width: 100%;
     height: auto;
     object-fit: cover;
-    padding: 5%;
+    padding: 8% 8% 4% 7%;
 
     filter: grayscale(100%);
     transition: filter 0.5s ease, transform 0.2s;
@@ -569,6 +638,21 @@ p {
     transform: translateY(-2px);
 }
 
+.indicator-highli {
+    display: inline-block;
+    margin-top: 2%;
+    font-size: 15px;
+    border-radius: 12px;
+    padding: 0px 9px;
+    font-weight: 400;
+    text-transform: uppercase;
+    margin-left: 5px;
+    margin-right: 5px;
+
+    color: #313131;
+    background-color: #e9e9e9;
+    text-align: center;
+}
 
 
 .canva {
