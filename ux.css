@@ -383,10 +383,23 @@ button {
 #pagesec1 {
     height: 130vh;
     width: 100%;
-
-    padding: 4% 10% 10% 5%;
+    /*padding: 4% 10% 10% 5%;  */
+    /* padding-top: 4%; */
 }
 
+.info {
+    color: #000000;
+    /* text-align: justify; */
+
+    font-family: Onest;
+    font-size: 28px;
+    font-weight: 600;
+
+    line-height: 125%;
+    /* text-transform: uppercase; */
+    position: relative;
+
+}
 
 #pagesec2 {
     width: 100%;
@@ -463,20 +476,7 @@ button {
     box-shadow: 6px 4px 50px #0000000e
 }
 
-.info {
-    color: #000000;
-    padding-top: 17%;
-    /* text-align: justify; */
 
-    font-family: Onest;
-    font-size: 28px;
-    font-weight: 600;
-
-    line-height: 125%;
-    /* text-transform: uppercase; */
-    position: relative;
-
-}
 
 p {
     color: #494949;
@@ -548,6 +548,8 @@ p {
     /* Placeholder color */
 }
 
+
+
 /* Different font styles for the font testing boxes */
 .font-archivo {
     font-family: 'ass';
@@ -560,7 +562,10 @@ p {
 
 .font-fall {
     font-family: 'FallSend';
-    font-size: 100px;
+    font-size: 110px;
+    letter-spacing: -0.2rem;
+    line-height: 5rem;
+
     /* white-space: nowrap; */
     /* Prevent new lines */
 }

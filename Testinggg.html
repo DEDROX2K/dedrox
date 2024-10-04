@@ -2,40 +2,109 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="Windows 95 UI Kit crafted by Themesberg.com">
-    <meta name="author" content="Themesberg">
-    <title>Windows 95 UI Kit</title>
-    <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="60x60" href="img/favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon/favicon-16x16.png">
-    <link rel="manifest" href="img/favicon/site.webmanifest">
-    <link rel="mask-icon" href="img/favicon/safari-pinned-tab.svg" color="#5bbad5">
-    <meta name="msapplication-TileColor" content="#2d89ef">
-    <meta name="theme-color" content="#ffffff">
-    <!-- Bootstrap CSS -->
-    <link type="text/css" rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <!-- Pixel CSS -->
-    <link type="text/css" rel="stylesheet" href="pixel.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fashion Website with 3D Model</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .fashion-item {
+            display: flex;
+            background-color: white;
+            max-width: 1200px;
+            width: 100%;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .image-container {
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .details-container {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .details-container h1 {
+            font-size: 36px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .details-container p {
+            font-size: 18px;
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 30px;
+        }
+
+        .btn-purchase {
+            padding: 15px 30px;
+            background-color: #ff6347;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-purchase:hover {
+            background-color: #ff2e1a;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .fashion-item {
+                flex-direction: column;
+            }
+
+            .image-container {
+                height: 400px;
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <div class="card">
-        <div class="card-header">
-            Default Primary Card Header Title
-        </div>
-        <div class="card-body">
-            <p class="card-text">Windows 95 sold for $89.99 as an upgrade or $179.99 for the full
-                version.</p>
-            <div class="d-flex justify-content-end mt-3">
-                <button class="btn btn-sm mr-2 btn-primary border-dark" type="button"><span
-                        class="btn-text">OK</span></button>
-                <button class="btn btn-sm btn-primary" type="button"><span class="btn-text">Cancel</span></button>
+
+    <div class="container">
+        <div class="fashion-item">
+            <!-- 3D Model Viewer on the Left -->
+            <div class="image-container" style="border: #333 2px solid;">
+                <model-viewer src="threeD/Tintanic.glb" alt="3D Character" ar ar-modes="webxr scene-viewer quick-look"
+                    environment-image="neutral" auto-rotate camera-controls style="width: 100%; height: 100%;">
+                </model-viewer>
+            </div>
+
+            <!-- Text and Button on the Right -->
+            <div class="details-container">
+                <h1>3D Fashion Model</h1>
+                <p>Explore our exclusive 3D-rendered fashion model. See every detail with 360° rotation, zoom, and even
+                    augmented reality.</p>
+                <button class="btn-purchase">Purchase Now</button>
             </div>
         </div>
     </div>
+
 </body>
 
 </html>
