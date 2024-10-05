@@ -48,6 +48,10 @@
     src: url(Fonts/gloucester-mt-extra-condensed.ttf);
 }
 
+@font-face {
+    font-family: zora;
+    src: url(Fonts/ZORA.otf.ttf);
+}
 
 .material-symbols-outlined {
     padding-left: 5px;
@@ -380,6 +384,32 @@ button {
     color: #000000;
 }
 
+#pagesecshort2 {
+    height: 100vh;
+    width: 100%;
+    max-width: 1024px;
+
+    font-family: Onest;
+
+    font-size: 2.6rem;
+    font-weight: 500;
+    line-height: 2.8rem;
+    padding: 10% 0% 0% 10%;
+}
+
+#pagesecshort3 {
+    height: 100vh;
+    width: 100%;
+    max-width: 1024px;
+
+    font-family: Onest;
+
+    font-size: 2.6rem;
+    font-weight: 500;
+    line-height: 2.8rem;
+    padding: 10% 0% 0% 10%;
+}
+
 #pagesec1 {
     height: 130vh;
     width: 100%;
@@ -400,6 +430,12 @@ button {
     position: relative;
 
 }
+
+
+.textboxsize {
+    padding: 0% 7%;
+}
+
 
 #pagesec2 {
     width: 100%;
@@ -538,8 +574,10 @@ p {
 
 
 /* Styling the download button */
-.download-button {
-    margin-top: 20px;
+.downlo:hover {
+    color: #888888;
+    transition: 0.3s;
+    transform: translateY(-5px);
 }
 
 .font-box[contenteditable="true"]:empty:before {
@@ -571,7 +609,7 @@ p {
 }
 
 .font-staatliches {
-    font-family: zora;
+    font-family: 'zora';
     font-size: 100px;
     line-height: 6rem;
 }
@@ -659,6 +697,14 @@ p {
     text-align: center;
 }
 
+.experience-section {
+    font-family: Onest;
+    padding: 10% 0% 0% 10%;
+}
+
+.job-title {
+    font-size: 1.2rem;
+}
 
 .canva {
     padding: 50px;
@@ -739,6 +785,12 @@ p {
     border-radius: 90px;
 }
 
+.he1mob {
+    font-family: Onest;
+    font-size: 60px;
+    color: #000000;
+    margin-bottom: 3%;
+}
 
 
 
@@ -754,7 +806,7 @@ p {
     }
 
     .navtext {
-        font-size: 11px;
+        font-size: 15px;
     }
 
     .uk {
@@ -773,7 +825,7 @@ p {
 
 @media (max-width: 480px) {
     .custom-container {
-        max-width: 400px;
+        max-width: 75%;
         padding: 0 10px;
     }
 
@@ -809,8 +861,46 @@ p {
         height: auto;
     }
 
+    .sticker,
+    .w-t,
+    .a-t,
+    .experience-section {
+        display: none;
+    }
 
+    .navtext {
+        font-size: 18px;
+        text-align: end;
+    }
+
+    #pagesecshort {
+        font-size: 2.4rem;
+
+        height: 100vh;
+        width: 100%;
+        max-width: 1024px;
+
+        line-height: 110%;
+
+        padding: 00% 0% 0% 0%;
+    }
+
+    #pagesecshort2 {
+        font-size: 1.5rem;
+        padding: 75% 0% 0% 0%;
+        line-height: 110%;
+        height: 100%;
+
+    }
+
+    .he1mob {
+        font-size: 2rem;
+    }
 }
+
+
+
+
 
 
 .panel {
