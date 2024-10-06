@@ -1,5 +1,60 @@
 @use postcss-nested;
 
+@font-face {
+    font-family: Cheltm;
+    src: url(Fonts/Roboto-Medium.ttf);
+}
+
+@font-face {
+    font-family: Gnu;
+    src: url(Fonts/gnuolane\ rg.otf);
+}
+
+@font-face {
+    font-family: vcr;
+    src: url(Fonts/VCR.ttf);
+}
+
+@font-face {
+    font-family: ass;
+    src: url(Fonts/Astral\ Ink.ttf);
+}
+
+@font-face {
+    font-family: west;
+    src: url(Fonts/Durango\ Western\ Eroded\ Demo.otf);
+}
+
+@font-face {
+    font-family: onyx;
+    src: url(Fonts/stereofidelic.otf);
+}
+
+@font-face {
+    font-family: vtk;
+    src: url(Fonts/VTKS\ CHOICE.ttf);
+}
+
+@font-face {
+    font-family: brwsr;
+    src: url(Fonts/BrowessSovar-GOWAO.otf);
+}
+
+@font-face {
+    font-family: fallsend;
+    src: url(Fonts/fallsend.ttf);
+}
+
+@font-face {
+    font-family: condense;
+    src: url(Fonts/gloucester-mt-extra-condensed.ttf);
+}
+
+@font-face {
+    font-family: zora;
+    src: url(Fonts/ZORA.otf.ttf);
+}
+
 :root {
     --bgColor: #5561ff;
     --cyanColor: #b1b1b1;
@@ -42,9 +97,10 @@ body {
     height: 100vh;
     background-size: cover;
     background-position: center;
-    z-index: -1;
-    opacity: 0.8;
+    z-index: 1;
+    opacity: 20%;
     pointer-events: none;
+    /* mix-blend-mode: difference; */
 }
 
 .menu-top {
@@ -218,6 +274,7 @@ p {
     font-size: 40px;
     color: #bee1ff;
     margin-top: -50px;
+    font-family: vcr;
 }
 
 .error-message {
@@ -268,7 +325,7 @@ a {
     border: 0;
     box-shadow: 8px 8px 0 black;
 
-    &:active {
+    &:hover {
         box-shadow: none;
         position: relative;
         top: 8px;

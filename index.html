@@ -66,7 +66,7 @@
 
         <div class="info off">
             <div class="container">
-                <div class="error-code" href="index.html" style="font-size: 4rem;">:)</div>
+                <!-- <div class="error-code" href="index.html" style="font-size: 4rem;">:)</div> -->
 
 
 
@@ -96,7 +96,7 @@
                 <div class="emaillink d-flex align-items-center">RAGHAVPRASANNA2000@GMAIL.COM</div>
 
                 <div class="error-message">
-                    INSTRUCTIONS:
+
                     CLICK-THE-BELOW-BUTTONS-TO-SEE-MY-PORTFOLIO
                 </div>
                 <div class="container">
@@ -124,15 +124,15 @@
 
         <section class="modals">
             <div class="testing dialog">
-                <p>Testing system memory...</p>
+                <p>Preparing portfolio...</p>
             </div>
 
             <div class="reading dialog" hidden>
-                <p>Reading disk information...</p>
+                <p>Creating 2 links...</p>
             </div>
 
             <div class="analyzing dialog" hidden>
-                <p>Analyzing disk information...</p>
+                <p>Loading easter eggs</p>
                 <p class="folders center">GAMES</p>
             </div>
 
@@ -150,7 +150,7 @@
             </div>
         </section>
     </div>
-    <img class="scan" src="images/scanlines.png" alt="Background Image">
+    <!-- <img class="scan" src="images/scanlines.png" alt="Background Image"> -->
 
 </body>
 
@@ -162,7 +162,7 @@
     const screens = document.querySelectorAll('.surface, .info');
 
     // Tags to display during the "Analyzing" phase
-    const TAGS = ['UX', 'PRODUCT DESIGN', 'GAME DESIGN', 'UI GRAPHIC', 'FIGMA', 'EMPATHY', 'DONE'];
+    const TAGS = ['UX', 'PRODUCT DESIGN', 'GAME DESIGN', 'UI GRAPHIC', 'FREELANCE', 'JNR.FRONT END', 'FIGMA', 'DONE', 'DONE'];
     const folders = document.querySelector('.folders');
 
     // Function to extract and show tags
@@ -171,7 +171,7 @@
             setTimeout(() => {
                 folders.textContent = tags.shift();
                 extractTags(tags);
-            }, 100);
+            }, 200);
         }
     }
 
