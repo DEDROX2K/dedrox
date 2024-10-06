@@ -446,9 +446,9 @@ button {
 }
 
 
-#pagesec3 {
+#puzzle {
     /* background-color: #ffffff; */
-    padding: 13% 0% 0% 0%;
+    /* padding: 13% 0% 0% 0%; */
 
     height: 70%;
     /* background: linear-gradient(to top, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1)); */
@@ -593,23 +593,23 @@ p {
     font-family: 'ass';
     letter-spacing: -9px;
     line-height: normal;
-    font-size: 190px;
+    font-size: 14rem;
     /* white-space: nowrap; */
 
 }
 
 .font-fall {
     font-family: 'FallSend';
-    font-size: 110px;
-    letter-spacing: -0.2rem;
-    line-height: 5rem;
+    font-size: 11rem;
+    letter-spacing: -0.6rem;
+    line-height: 12rem;
 
     /* white-space: nowrap; */
     /* Prevent new lines */
 }
 
 .font-staatliches {
-    font-family: 'zora';
+    font-family: zora;
     font-size: 100px;
     line-height: 6rem;
 }
