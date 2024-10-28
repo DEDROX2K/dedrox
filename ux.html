@@ -50,6 +50,20 @@
   <link rel="stylesheet" href="ux.css">
   <script src="ux.js"></script>
 
+  <!-- Add this script to ux.html, gamedes.html, and any other pages where you want the sound to play on load -->
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      // Create an audio object
+      const pageLoadSound = new Audio('threeD/sfx-accent-eye-glitter-tinkle-1-6342.mp3');
+
+      // Play the sound
+      pageLoadSound.play().catch(error => {
+        console.log('Sound play prevented by browser autoplay policy:', error);
+      });
+    });
+  </script>
+
+
   <!-- Logo and bar color -->
   <link rel="icon" href="logo.png" type="png">
   <meta name="theme-color" content="#ffc800">
@@ -341,13 +355,10 @@
     </div>
 
     <div class="row mb-3">
-      <div class="col-md-8 job-title"> Design generalist </div>
-      <div class="col-md-4 text-md-right">From 2019 (Current)</div>
-      <p class="w-100" style="font-weight: 800;">Fiverr · Freelance <span style="font-weight: 500;">(Remote)</span></p>
-      <!-- <p class="w-50" style="padding-left: 2%;">From my early teen I started my freelancing journey. <a
-          href="https://youtu.be/fWZTuIvpyEE?si=1042FWnZJR-SoBrK">Click here! </a>to see
-        the
-        profile</p> -->
+      <div class="col-md-8 job-title"> Product designer </div>
+      <div class="col-md-4 text-md-right">October - (Current)</div>
+      <p class="w-100" style="font-weight: 800;">Opendatabay · Internship <span
+          style="font-weight: 500;">(Remote)</span></p>
     </div>
 
     <div class="row mb-3">
@@ -386,6 +397,17 @@
         including menus, settings,
         and main screens. </p> -->
     </div>
+
+    <div class="row mb-3">
+      <div class="col-md-8 job-title"> Design generalist </div>
+      <div class="col-md-4 text-md-right">From 2019</div>
+      <p class="w-100" style="font-weight: 800;">Fiverr · Freelance <span style="font-weight: 500;">(Remote)</span></p>
+      <p class="w-50" style="padding-left: 2%;">From my early teen I started my freelancing journey. <a
+          href="https://youtu.be/fWZTuIvpyEE?si=1042FWnZJR-SoBrK">Click here! </a>to see
+        the
+        profile</p>
+    </div>
+
   </div>
 
 
@@ -511,6 +533,7 @@
           <li><a href="https://www.behance.net/raghavprasanna" target="_blank">Behance</a></li>
           <li><a href="https://www.instagram.com/dedrox__/?hl=en" target="_blank">Instagram</a></li>
           <li><a href="https://medium.com/@RaghavPrasannaUX" target="_blank">Medium</a></li>
+          <li><a href="https://www.youtube.com/@dedrox3d491/videos" target="_blank">Youtube</a></li>
           <li><a href="https://codepen.io/Raghav-Prasanna-Lakshminarayanan" target="_blank">Codepen</a></li>
           <li><a href="https://dribbble.com/DEDROX2K" target="_blank">Dribbble</a></li>
           <li><a href="https://www.artstation.com/raghavprasanna" target="_blank">Artstation</a></li>

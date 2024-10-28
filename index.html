@@ -84,7 +84,7 @@
                         // Initialize Typed.js
                         document.addEventListener('DOMContentLoaded', function () {
                             var typed = new Typed("#typed", {
-                                strings: ["If you think Comic Sans is acceptable, we need to talk...", "I'm not kidding btw.", "Uhhh sorry where was I?", "Got a bit over-excited there, Hi! "],
+                                strings: [":( If you think Comic Sans is acceptable, we need to talk...", ":( I'm not kidding btw.", "Uhhh sorry where was I?", ":( Got a bit over-excited there, Hi! "],
                                 typeSpeed: 30,
                                 backSpeed: 15,
                                 loop: true
@@ -117,7 +117,7 @@
                 padding: 0px;
                 margin: 0;
                 border: 0;
-                box-shadow: none;" href="ux.html">Skip ></a></span></div>
+                box-shadow: none;" href="ux.html" class="link-download">Skip ></a></span></div>
         </div>
 
 
@@ -188,7 +188,7 @@
             modals[1].hidden = true;
             modals[2].hidden = false;
             extractTags(TAGS); // Start showing tags like GAMES, WINDOWS, etc.
-        }, 3000);
+        }, 2000);
 
         // Hide "Analyzing" and show the main screens after 2 seconds
         setTimeout(() => {
@@ -201,6 +201,23 @@
     // Start the modal sequence when the page loads
     startDialogs();
 
+</script>
+
+
+<script>
+    // Select all links with the class 'link-download'
+    const links = document.querySelectorAll('.link-download');
+
+    // Create an audio object
+    const hoverSound = new Audio('threeD/old-computer-click-152513.mp3');
+
+    // Add hover event listeners to each link
+    links.forEach(link => {
+        link.addEventListener('mouseenter', () => {
+            hoverSound.currentTime = 0;  // Reset the sound to the beginning
+            hoverSound.play();
+        });
+    });
 </script>
 
 <!-- <script>
