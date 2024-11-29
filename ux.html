@@ -77,7 +77,7 @@
 
   <!-- Logo and bar color -->
   <link rel="icon" href="logo.png" type="png">
-  <meta name="theme-color" content="#ffc800">
+  <meta name="theme-color" content="#ff3f3f">
 </head>
 
 
@@ -87,26 +87,26 @@
 
 
 
-<!-- navbar and the logo-->
+<!-- navbar and the logo pc-->
 <header>
-  <nav class="navtext navbar fixed-top">
+  <nav class="navtext navbar fixed-top nodispmob">
     <div class="custom-container">
       <div class="row" style="align-content: center;">
-        <div class="col-2" style="text-align: start; margin-top: 1.9%">
+        <div class="col-2 col-sm-3" style="text-align: start; margin-top: 1.9%">
           <a href="ux.html">
             <img src="images/DEDROX.DSGN/dedroxLogo.svg"
               style="width: 40px; height: auto; z-index: 100; transform: rotate(-10deg);">
           </a>
         </div>
 
-        <div class="col-8 black-link" style="margin-top: 20px">
+        <div class="col-8 col-sm-6 black-link" style="margin-top: 20px">
           <a href="freefonts.html" class="s-t">FREE FONTS* /</a>
           <a href="articlepage.html" class="w-t">ARTICLES* /</a>
           <a href="https://linktr.ee/DEDROX2K?fbclid=PAZXh0bgNhZW0CMTEAAaZP3emUB4lnh49nipOVf1GTMFVFRwgV9UVSGlyt_aElFwHtX4BhnOSC56A_aem_BkgtfrVVU3k25D5khzj3UA"
             target="_blank" class="d-t">3D & GAME-DESIGN* /</a>
         </div>
 
-        <div class="col-2 d-none d-sm-block" style="text-align: end; margin-top: 20px">
+        <div class="col-2 col-sm-3" style="text-align: end; margin-top: 20px">
           <a href="threeD/CV_RESUME-RAGHAV.pdf" target="_blank" class="a-t"> ->RESUME*</a>
         </div>
       </div>
@@ -115,7 +115,33 @@
   <div class="blurtop"></div>
 </header>
 
+<!-- navbar and the logo mobile-->
+<header>
 
+  <div class="red-top-bar dispmob">--| This website is best viewed on a PC |--</div>
+  </nav>
+
+  <nav class="navtext navbar fixed-top dispmob">
+    <div class="custom-container">
+      <div class="row" style="align-content: center;">
+        <div class="col-2" style="align-content: center;">
+          <a href="ux.html">
+            <img src="images/DEDROX.DSGN/dedroxLogo.svg" style="width: 30px;">
+          </a>
+        </div>
+
+        <div class="col-6 black-link" style="align-content: center;">
+          <a href="https://linktr.ee/DEDROX2K?fbclid=PAZXh0bgNhZW0CMTEAAaZP3emUB4lnh49nipOVf1GTMFVFRwgV9UVSGlyt_aElFwHtX4BhnOSC56A_aem_BkgtfrVVU3k25D5khzj3UA"
+            target="_blank" class="d-t">3D & GAME-DESIGN*</a>
+        </div>
+
+        <div class="col-4" style="align-content: center;">
+          <a href="threeD/CV_RESUME-RAGHAV.pdf" target="_blank" class="a-t"> ->RESUME*</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
 
 
 <body>
@@ -162,14 +188,21 @@
 
   <div id="pagesecshort">
     <div class="custom-container">
-      <div>
-        <span style="color: #5a5a5a;">Hey,
-          Hi! i’m </span><span style="color: #2a2a2a;">Raghav.
-        </span><span style="color: #5a5a5a;">Mid
-          level </span><span style="color: #2a2a2a;">Digital
-          product designer </span><span style="color: #5a5a5a;">based
-          in London with a background in </span><span style="color: #2a2a2a;">game
-          mechanics.</span>
+      <div class="sticker" id="sticker3.1">
+        <img src="images/cat.png">
+      </div>
+
+      <div class="sticker" id="sticker3.9">
+        <img src="images/meee.png">
+      </div>
+      <!-- <div style="max-width: 60%; @media (max-width: 480px) { max-width: 90%; }"> -->
+      <div class="heyhiraghav">
+        <span style="color: #5a5a5a;">Hey, Hi! i’m </span>
+        <span style="color: #2a2a2a;">Raghav.</span>
+        <span style="color: #5a5a5a;">Mid level </span>
+        <span style="color: #2a2a2a;">Digital product designer </span>
+        <span style="color: #5a5a5a;">based in London with a background in </span>
+        <span style="color: #2a2a2a;">game mechanics.</span>
       </div>
 
 
@@ -191,13 +224,7 @@
         style="padding-right: 20px; color: #686868;">Freelance</a>
     </div>
 
-    <div class="sticker" id="sticker3.1">
-      <img src="images/cat.png">
-    </div>
 
-    <div class="sticker" id="sticker3.9">
-      <img src="images/meee.png">
-    </div>
   </div>
 
 
@@ -206,16 +233,9 @@
 
   <!-- Portfolio-->
   <section class="content-section" id="portfolio">
-    <div class="sticker" id="sticker9">
-      <img src="images/ylo-cir1.png">
-    </div>
-    <div class="sticker" id="sticker10">
-      <img src="images/ylo-cir2.png">
-    </div>
 
-    <h1 class="text-center he1mob">
-      Recent
-      projects
+
+    <h1 class="text-center he1mob"> Recent projects
       <div class="custom-container" style="font-size: 23px; padding-top: 10px; ">
 
         <a href="https://www.behance.net/raghavprasanna" target="_blank"
@@ -226,8 +246,81 @@
       </div>
     </h1>
 
+    <div class="sticker" id="sticker9">
+      <img src="images/ylo-cir1.png">
+    </div>
+    <div class="sticker" id="sticker10">
+      <img src="images/ylo-cir2.png">
+    </div>
+
+    <section id="portfolio" class="py-5">
+      <div class="container">
+        <h2 class="text-center mb-4">Portfolio</h2>
+        <div class="row justify-content-center">
+          <!-- Portfolio Item -->
+          <div class="col-md-12 col-lg-12 mb-4">
+            <div class="card shadow-sm">
+              <div class="image-container">
+                <img src="images/port1.jpg" alt="Portfolio Item" class="img-fluid">
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">A mini-identity for Lyxos</h5>
+                <p class="card-text text-muted">Process Breakdown</p>
+                <a href="#" class="btn btn-primary">Read more</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
 
+    <style>
+      #portfolio .card {
+        border: none;
+        border-radius: 8px;
+        padding: 20px;
+      }
+
+      #portfolio .card img {
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        object-fit: cover;
+        height: 200px;
+        /* Adjust height as needed */
+      }
+
+      #portfolio .card-body {
+        text-align: center;
+      }
+
+      #portfolio h2 {
+        font-weight: bold;
+      }
+
+      #portfolio .card-title {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+      }
+
+      #portfolio .card-text {
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+      }
+
+      /* Maintain aspect ratio */
+      .image-container {
+        aspect-ratio: 1080 / 430;
+        overflow: hidden;
+        display: block;
+      }
+
+      .image-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    </style>
 
     <div class="container px-4 px-lg-5">
       <div class="row gx-0">
@@ -370,7 +463,7 @@
     </div>
   </div>
 
-  <h1 class="text-center he1mob" style="    padding: 20% 0% 0% 0%;
+  <h1 class="text-center he1mob nodispmob" style="    padding: 20% 0% 0% 0%;
 ">
     My
     experience
@@ -442,7 +535,7 @@
 
 
 
-  <a class=" justify-content-center align-items-center" target="_blank"
+  <a class=" justify-content-center align-items-center nodispmob" target="_blank"
     href="https://www.fiverr.com/dedrox_?up_rollout=true">
     <img style="width: 100%; height: auto; display: block; margin-top: 17%;" src="images/allrevs.png">
   </a>
@@ -475,7 +568,7 @@
 
 
   <!-- Puzzle -->
-  <div id="puzzle">
+  <div id="puzzle" class="nodispmob">
     <div class="redbox d-flex justify-content-center align-items-center" style="z-index: 998;">
     </div>
 
@@ -497,6 +590,9 @@
   </div>
 
   <div id="pagesecshort2">
+    <div class="sticker" id="sticker14">
+      <img src="images/me2.png">
+    </div>
     <div class="custom-container">
       <span style="color: #5a5a5a;">
         I don't want you to leave empty handed. Here you can </span>
@@ -511,7 +607,7 @@
 
   <!-- Consultation button -->
   <div id="pagesec4">
-    <div class="consu">
+    <div class="consu nodispmob">
       <div class="custom-container text-center consutex" style="padding-top: 0%; margin-bottom: 30px;">
         <span style="font-family: Instrument Serif; font-weight: 700;">Do you want to rant? Cry? repent? Share a
           happy

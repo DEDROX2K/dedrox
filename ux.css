@@ -373,7 +373,7 @@ button {
 #pagesecshort {
     height: 100vh;
     width: 100%;
-    max-width: 1024px;
+    /* max-width: 1024px; */
 
     font-family: Onest;
     font-size: 60px;
@@ -821,15 +821,45 @@ p {
         letter-spacing: -3px;
     }
 
+    .sticker,
+    #pagesecshort2,
+    .nodispmob,
+    .experience-section {
+        display: none;
+    }
+
+}
+
+.heyhiraghav {
+    max-width: 60%;
+}
+
+.red-top-bar {
+    background-color: #ff3f3f;
+    color: rgb(0, 0, 0);
+    padding: 20px 20px;
+    /* font-family: vcr; */
+    font-weight: bold;
+    text-align: center;
+    z-index: 10;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
 }
 
 @media (max-width: 480px) {
     .custom-container {
-        max-width: 75%;
+        max-width: 90%;
         padding: 0 10px;
     }
 
+    .heyhiraghav {
+        max-width: 90%;
+    }
+
     .navtext {
+        text-align: end;
         letter-spacing: normal;
     }
 
@@ -863,18 +893,23 @@ p {
 
     .sticker,
     .w-t,
-    .a-t,
+    .s-t,
     .experience-section {
         display: none;
     }
 
-    .navtext {
-        font-size: 18px;
-        text-align: end;
+    .summary {
+        bottom: 60px;
+        right: 20px;
+        padding: 3px 10px;
+        cursor: pointer;
+        font-family: vcr;
+        border: solid 2px;
+        border-radius: 4px;
     }
 
     #pagesecshort {
-        font-size: 2.4rem;
+        font-size: 2rem;
 
         height: 100vh;
         width: 100%;
@@ -900,7 +935,17 @@ p {
 
 
 
+.dispmob {
+    display: none;
+    /* Initially hide the element on all screens */
+}
 
+@media (max-width: 768px) {
+    .dispmob {
+        display: block;
+        /* Display the element on screens with a maximum width of 768px */
+    }
+}
 
 
 .panel {

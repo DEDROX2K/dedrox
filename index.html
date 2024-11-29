@@ -34,12 +34,13 @@
     <link rel="stylesheet" href="arti.css">
 
     <link rel="icon" href="logo.png" type="png">
-    <meta name="theme-color" content="#010080">
+    <meta name="theme-color" content="#5561ff">
 
     <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
 
     <link rel="stylesheet" href="bsod.css">
-    <script src="ux.js"></script>
+    <!-- <script src="ux.js"></script> -->
+
 
 </head>
 
@@ -47,6 +48,29 @@
 
 
 <body>
+
+
+    <div class="sticker" id="stickerBannerAd1">
+        <img src="images/ba1.png">
+    </div>
+    <div class="sticker" id="stickerBannerAd2">
+        <img src="images/ba2.png">
+    </div>
+    <div class="sticker" id="stickerBannerAd3">
+        <img src="images/ba3.png">
+    </div>
+    <div class="sticker" id="stickerBannerAd4">
+        <img src="images/ba4.png">
+    </div>
+    <div class="sticker" id="stickerBannerAd5">
+        <img src="images/ba5.png">
+    </div>
+    <div class="sticker" id="stickerBannerAd6">
+        <img src="images/ba6.png">
+    </div>
+    <div class="sticker" id="stickerBannerAd7">
+        <img src="images/ba7.png">
+    </div>
     <!-- <a href="Testinggg.html">3D testing</a> -->
 
     <!-- Image Overlay -->
@@ -125,13 +149,17 @@
 
         <div class="menu-bottom">
             <div><span>Press</span> F11 <span>to activate full immersion</span></div>
-            <div>|<span> <a style="
+            <div>|<span>
+                    <a style="
             background: none;
                 text-decoration: none;
                 padding: 0px;
                 margin: 0;
                 border: 0;
-                box-shadow: none; color: var(--redColor);" href="ux.html" class="link-download">Skip ></a></span></div>
+                box-shadow: none; color: var(--redColor);" href="ux.html" class="link-download">Skip >
+                    </a>
+                </span>
+            </div>
         </div>
 
 
@@ -230,6 +258,133 @@
         link.addEventListener('mouseenter', () => {
             hoverSound.currentTime = 0;  // Reset the sound to the beginning
             hoverSound.play();
+        });
+    });
+</script>
+
+<script>
+
+    class Draggable {
+
+        constructor(element, initialLeftPercent = null, initialTopPercent = null) {
+            this.element = element;
+            this.parent = this.element.parentElement;
+
+            // Ensure the parent element is relatively positioned
+            this.parent.style.position = 'relative';
+
+            // Function to convert percentage to pixel value
+            const toPixels = (percentage, totalSize) => (percentage / 100) * totalSize;
+
+            // Function to set position based on percentage
+            const setPosition = () => {
+                const parentRect = this.parent.getBoundingClientRect();
+                const initialLeft = initialLeftPercent !== null ? toPixels(initialLeftPercent, parentRect.width) : 0;
+                const initialTop = initialTopPercent !== null ? toPixels(initialTopPercent, parentRect.height) : 0;
+                this.element.style.left = `${initialLeft}px`;
+                this.element.style.top = `${initialTop}px`;
+            };
+
+            // Set initial position
+            setPosition();
+
+            // Update position on resize
+            window.addEventListener('resize', setPosition);
+
+            // Event listeners for dragging
+            this.element.addEventListener('mousedown', this.onMouseDown.bind(this));
+            this.element.addEventListener('touchstart', this.onTouchStart.bind(this));
+
+            document.addEventListener('mousemove', this.onMouseMove.bind(this));
+            document.addEventListener('touchmove', this.onTouchMove.bind(this));
+
+            document.addEventListener('mouseup', this.onMouseUp.bind(this));
+            document.addEventListener('touchend', this.onTouchEnd.bind(this));
+
+            this.currentElement = null;
+            this.offsetX = 0;
+            this.offsetY = 0;
+        }
+
+        onMouseDown(e) {
+            this.currentElement = this.element;
+            const rect = this.currentElement.getBoundingClientRect();
+            this.offsetX = e.clientX - rect.left;
+            this.offsetY = e.clientY - rect.top;
+            // this.currentElement.style.cursor = 'grabbing';
+            this.currentElement.style.cursor = 'url("ggrabbingcursor.png"), grabbing';
+        }
+
+        onMouseMove(e) {
+            if (this.currentElement) {
+                e.preventDefault();
+                const parentRect = this.parent.getBoundingClientRect();
+                this.currentElement.style.left = `${e.clientX - this.offsetX - parentRect.left}px`;
+                this.currentElement.style.top = `${e.clientY - this.offsetY - parentRect.top}px`;
+            }
+        }
+
+        onMouseUp() {
+            if (this.currentElement) {
+                // this.currentElement.style.cursor = 'grab';
+                this.currentElement.style.cursor = 'url("grabcursor.png"), grab';
+
+                this.currentElement = null;
+            }
+        }
+
+        onTouchStart(e) {
+            const touch = e.touches[0];
+            this.currentElement = this.element;
+            const rect = this.currentElement.getBoundingClientRect();
+            this.offsetX = touch.clientX - rect.left;
+            this.offsetY = touch.clientY - rect.top;
+        }
+
+        onTouchMove(e) {
+            if (this.currentElement) {
+                e.preventDefault();
+                const touch = e.touches[0];
+                const parentRect = this.parent.getBoundingClientRect();
+                this.currentElement.style.left = `${touch.clientX - this.offsetX - parentRect.left}px`;
+                this.currentElement.style.top = `${touch.clientY - this.offsetY - parentRect.top}px`;
+            }
+        }
+
+        onTouchEnd() {
+            this.currentElement = null;
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const container = document.querySelector('.sticker-container');
+
+        function getPercentagePosition(element) {
+            const parentRect = container.getBoundingClientRect();
+            const rect = element.getBoundingClientRect();
+            const left = ((rect.left - parentRect.left) / parentRect.width) * 100;
+            const top = ((rect.top - parentRect.top) / parentRect.height) * 100;
+            return { left, top };
+        }
+
+        const stickers = [
+            { id: 'stickerBannerAd1', left: 85, top: 70 },
+            { id: 'stickerBannerAd2', left: 83, top: 84 },
+            { id: 'stickerBannerAd3', left: 70, top: 2 },
+            { id: 'stickerBannerAd4', left: 80, top: 88 },
+            { id: 'stickerBannerAd5', left: 77, top: 80 },
+            { id: 'stickerBannerAd6', left: 3, top: 71 },
+            { id: 'stickerBannerAd7', left: 2, top: 66 },
+        ];
+
+        stickers.forEach(({ id, left, top }) => {
+            const sticker = document.getElementById(id);
+            if (sticker) {
+                console.log(`Initializing draggable for: ${id}`);
+                new Draggable(sticker, left, top);
+            } else {
+                console.error(`Sticker with id ${id} not found.`);
+            }
         });
     });
 </script>

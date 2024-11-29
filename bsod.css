@@ -74,6 +74,7 @@ body {
     height: 98vh;
 }
 
+
 .screen {
     width: 950px;
     height: 650px;
@@ -88,6 +89,51 @@ body {
 
     font-weight: 700;
 }
+
+/* ------------------------------------------ */
+
+.sticker {
+    position: absolute;
+    z-index: 100;
+    cursor: url('grabcursor.png'), grab;
+    width: auto;
+    height: auto;
+    user-select: none;
+    transition: transform 0.1s ease, filter 0.9s ease;
+    /* Horizontal offset: 10px, Vertical offset: 5px */
+}
+
+.draggable {
+    touch-action: none;
+    /* Prevent scrolling while touching */
+    cursor: grab;
+}
+
+.draggable {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    cursor: grab;
+    /* Optional: changes cursor to grab icon */
+}
+
+
+.sticker img {
+    overflow: hidden;
+    height: 100%;
+    pointer-events: none;
+    /* Prevent image selection */
+}
+
+.sticker {
+    overflow: hidden;
+    scrollbar-color: red;
+}
+
+.sticker:hover {
+    transform: translateY(-2px) rotate(0.1deg);
+}
+
+/* ------------------------------------------ */
 
 .scan {
     position: fixed;
