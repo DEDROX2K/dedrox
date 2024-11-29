@@ -253,59 +253,109 @@
       <img src="images/ylo-cir2.png">
     </div>
 
-    <section id="portfolio" class="py-5">
+    <section id="portfoliooo">
       <div class="container">
-        <h2 class="text-center mb-4">Portfolio</h2>
         <div class="row justify-content-center">
-          <!-- Portfolio Item -->
-          <div class="col-md-12 col-lg-12 mb-4">
-            <div class="card shadow-sm">
+
+          <div class="col-md-12 col-lg-10 mb-4">
+            <div class="card" style="background-color: #fcf8ec;">
               <div class="image-container">
                 <img src="images/port1.jpg" alt="Portfolio Item" class="img-fluid">
               </div>
               <div class="card-body">
-                <h5 class="card-title">A mini-identity for Lyxos</h5>
-                <p class="card-text text-muted">Process Breakdown</p>
-                <a href="#" class="btn btn-primary">Read more</a>
+                <h5 class="card-title">Application for people trying to quit smoking</h5>
+                <p class="card-text text-muted">Case study</p>
               </div>
             </div>
           </div>
+
+        </div>
+      </div>
+    </section>
+    <section id="portfoliooo">
+      <div class="container">
+        <div class="row justify-content-center">
+
+          <div class="col-md-12 col-lg-10 mb-4">
+            <div class="card" style="background-color: #d8986c;">
+              <div class="image-container">
+                <img src="images/port2.jpg" alt="Portfolio Item" class="img-fluid">
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">Application for people trying to quit smoking</h5>
+                <p class="card-text text-muted">Process Breakdown</p>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
 
+    <section id="portfoliooo">
+      <div class="container">
+        <div class="row justify-content-center">
+
+          <div class="col-md-12 col-lg-10 mb-4">
+            <div class="card" style="background-color: #ca9b59;">
+              <div class="image-container">
+                <img src="images/port2.jpg" alt="Portfolio Item" class="img-fluid">
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">Application for people trying to quit smoking</h5>
+                <p class="card-text text-muted">Process Breakdown</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
 
     <style>
-      #portfolio .card {
+      #portfoliooo .card {
+        border-radius: 10px;
+        padding: 10px;
+        transition: filter 0.5s ease, transform 0.2s;
+        transform: translateY(0);
         border: none;
+      }
+
+
+      #portfoliooo .card img {
         border-radius: 8px;
-        padding: 20px;
-      }
-
-      #portfolio .card img {
-        border-top-left-radius: 8px;
-        border-top-right-radius: 8px;
         object-fit: cover;
-        height: 200px;
-        /* Adjust height as needed */
+        width: 100%;
+        aspect-ratio: 16 / 9;
       }
 
-      #portfolio .card-body {
+      /* Hover effect */
+      .card:hover {
+        border: 1px solid black;
+        transform: translateY(-2px);
+        cursor: url('linkcursor.png'), pointer;
+      }
+
+      #portfoliooo .card-body {
         text-align: center;
+        padding: 0%;
       }
 
-      #portfolio h2 {
-        font-weight: bold;
+      /* ... other styles ... */
+
+      #portfoliooo .card-title {
+        font-size: 1.5rem;
+        margin-top: 0.8rem;
+        margin-bottom: 0rem;
+        font-family: Onest;
+        text-align: left;
+        font-weight: 600;
       }
 
-      #portfolio .card-title {
+      #portfoliooo .card-text {
         font-size: 1.2rem;
-        margin-bottom: 0.5rem;
-      }
-
-      #portfolio .card-text {
-        font-size: 0.9rem;
-        margin-bottom: 1rem;
+        font-family: Onest;
+        font-weight: 500;
       }
 
       /* Maintain aspect ratio */
