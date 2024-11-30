@@ -170,17 +170,24 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'sticker6', left: 40, top: 40 },
         { id: 'sticker7', left: 40, top: 40 },
         { id: 'sticker8', left: 70, top: 40 },
-        { id: 'sticker9', left: 84, top: 20 },
+        { id: 'sticker9', left: 84, top: 60 },
         { id: 'sticker10', left: 90, top: 90 },
         { id: 'sticker11', left: 30, top: 40 },
         { id: 'sticker12', left: 70, top: 60 },
         { id: 'sticker13', left: 80, top: 80 },
-        { id: 'sticker14', left: 80, top: 80 },
+        { id: 'sticker14', left: 90, top: 80 },
 
         { id: 'stickerBannerAd1', left: 6, top: 70 },
         { id: 'stickerBannerAd2', left: 93, top: 24 },
         { id: 'stickerBannerAd3', left: 10, top: 10 },
         { id: 'stickerBannerAd4', left: 10, top: 48 },
+        { id: 'stickerBannerAd5', left: 70, top: 48 },
+        { id: 'stickerBannerAd6', left: 80, top: 38 },
+
+        { id: 'stickerfont1', left: 10, top: 29 },
+        { id: 'stickerfont2', left: 80, top: 20 },
+        { id: 'stickerfont3', left: 57, top: 7 },
+        { id: 'stickerfont4', left: 30, top: 15 },
     ];
 
     stickers.forEach(({ id, left, top }) => {

@@ -40,8 +40,6 @@
 
     <link rel="stylesheet" href="bsod.css">
     <!-- <script src="ux.js"></script> -->
-
-
 </head>
 
 
@@ -49,6 +47,34 @@
 
 <body>
 
+    <div class="red-top-bar dispmob">| This website is best viewed on a PC |</div>
+    <style>
+        .dispmob {
+            display: none;
+            /* Initially hide the element on all screens */
+        }
+
+        @media (max-width: 768px) {
+            .dispmob {
+                display: block;
+                /* Display the element on screens with a maximum width of 768px */
+            }
+        }
+
+        .red-top-bar {
+            background-color: #ff3f3f;
+            color: rgb(0, 0, 0);
+            padding: 10px 20px;
+            /* font-family: vcr; */
+            font-weight: bold;
+            text-align: center;
+            z-index: 10;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+        }
+    </style>
 
     <div class="sticker" id="stickerBannerAd1">
         <img src="images/ba1.png">
@@ -71,6 +97,14 @@
     <div class="sticker" id="stickerBannerAd7">
         <img src="images/ba7.png">
     </div>
+    <div class="sticker" id="stickerBannerAd8">
+        <img src="images/ba8.png">
+    </div>
+
+
+
+
+
     <!-- <a href="Testinggg.html">3D testing</a> -->
 
     <!-- Image Overlay -->
@@ -374,7 +408,8 @@
             { id: 'stickerBannerAd4', left: 80, top: 88 },
             { id: 'stickerBannerAd5', left: 77, top: 80 },
             { id: 'stickerBannerAd6', left: 3, top: 71 },
-            { id: 'stickerBannerAd7', left: 2, top: 66 },
+            { id: 'stickerBannerAd7', left: 5, top: 82 },
+            { id: 'stickerBannerAd8', left: 12, top: 16 },
         ];
 
         stickers.forEach(({ id, left, top }) => {
