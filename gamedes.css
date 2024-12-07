@@ -1,0 +1,469 @@
+@font-face {
+    font-family: Cheltm;
+    src: url(Fonts/Roboto-Medium.ttf);
+}
+
+@font-face {
+    font-family: Gnu;
+    src: url(Fonts/gnuolane\ rg.otf);
+}
+
+@font-face {
+    font-family: vcr;
+    src: url(Fonts/VCR.ttf);
+}
+
+@font-face {
+    font-family: ass;
+    src: url(Fonts/Astral\ Ink.ttf);
+}
+
+@font-face {
+    font-family: west;
+    src: url(Fonts/Durango\ Western\ Eroded\ Demo.otf);
+}
+
+@font-face {
+    font-family: onyx;
+    src: url(Fonts/stereofidelic.otf);
+}
+
+@font-face {
+    font-family: vtk;
+    src: url(Fonts/VTKS\ CHOICE.ttf);
+}
+
+@font-face {
+    font-family: brwsr;
+    src: url(Fonts/BrowessSovar-GOWAO.otf);
+}
+
+@font-face {
+    font-family: fallsend;
+    src: url(Fonts/fallsend.ttf);
+}
+
+@font-face {
+    font-family: condense;
+    src: url(Fonts/gloucester-mt-extra-condensed.ttf);
+}
+
+
+a:link,
+a:visited,
+a:active {
+    color: #000000;
+    border-bottom: none;
+    text-decoration: none;
+    transition: font-weight 0.5s, letter-spacing 0.8s;
+
+}
+
+.sec1 {
+    background-color: #ffffff;
+}
+
+.sec2 {
+    background-color: #ffc107;
+}
+
+.sec3 {
+    background-color: #0f0f0f;
+    /* height: 90vh; */
+}
+
+#pagesecshort {
+    height: 100vh;
+    width: 100%;
+    max-width: 1024px;
+
+    font-family: Onest;
+    font-size: 60px;
+    line-height: 110%;
+
+    padding: 10% 0% 0% 10%;
+    font-weight: 500;
+}
+
+
+.custom-container {
+    width: 100%;
+    max-width: 90%;
+    margin: 0 auto;
+}
+
+
+
+.navbar {
+    height: 80px;
+    width: 100%;
+    position: fixed;
+    /* Optional: if you want it to stay fixed at the top */
+    top: 0;
+    z-index: 999;
+    /* background-color: #ead625; */
+}
+
+.navtext {
+    font-family: Arial, Helvetica, sans-serif;
+    /* font-weight: 600; */
+    /* color: white; */
+    text-align: center;
+    /* mix-blend-mode: difference; */
+    /* Invert color based on background */
+    letter-spacing: 2px;
+}
+
+.blurtop {
+    height: 80px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    user-select: none;
+
+    background: rgba(225, 225, 225, 0.05);
+    mask-image: linear-gradient(rgb(0, 0, 0) 50%, rgba(0, 0, 0, 0.8) 70%, rgba(0, 0, 0, 0) 100%);
+    -webkit-mask-image: linear-gradient(rgb(0, 0, 0) 50%, rgba(0, 0, 0, 0.8) 70%, rgba(0, 0, 0, 0) 100%);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(3px);
+    z-index: 997;
+
+}
+
+
+.image-strip img {
+    position: fixed;
+    width: 100%;
+    /* Ensures the image scales to fit the width of the page */
+    height: 4px;
+    /* Maintains the image's aspect ratio */
+    display: block;
+    /* Removes any extra space around the image */
+}
+
+.summary {
+    position: fixed;
+    background-color: #ffffff00;
+    top: 20px;
+    left: 20px;
+    padding: 3px 10px;
+    cursor: pointer;
+    font-family: vcr;
+    border: solid 2px;
+    border-radius: 90px;
+    z-index: 1000;
+}
+
+.threee {
+    height: 100vh;
+    /* border: solid 2px white; */
+}
+
+model-viewer {
+    background-color: none;
+    overflow-x: hidden;
+    --poster-color: #ffffff;
+    width: 70%;
+    height: 80%;
+    margin: 0 auto;
+    border-radius: 10px;
+    border: dotted 6px rgb(150, 178, 223);
+    margin-top: 5%;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    cursor: url('pixlink.png'), pointer;
+}
+
+
+
+.pixborder img {
+    opacity: 30%;
+    height: 70px;
+    z-index: 1000;
+}
+
+.lefpix {
+    position: fixed;
+    transform: rotate(-90deg);
+}
+
+.ritpix {
+    position: fixed;
+    right: 0%;
+}
+
+.ritdownpix {
+    position: fixed;
+    right: 0%;
+    bottom: 0%;
+    transform: rotate(90deg);
+}
+
+.lefdownpix {
+    position: fixed;
+    left: 0%;
+    bottom: 0%;
+    transform: rotate(180deg);
+}
+
+.threetit {
+    font-family: "Archivo";
+    font-size: 110px;
+    line-height: 90%;
+    letter-spacing: -0.08em;
+    font-weight: 800;
+    text-transform: uppercase;
+    text-align: justify;
+    display: flex;
+    color: rgb(0, 0, 0);
+    z-index: 100;
+    width: 90%;
+    margin: 90px;
+    background-color: white;
+    overflow: hidden;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+    height: 1em;
+}
+
+::-webkit-scrollbar-track {
+    background: none;
+    background-image: url("images/stripend.png");
+}
+
+::-webkit-scrollbar-thumb {
+    background: #000000;
+    border-radius: 10px 0px 0px 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #7e7e7e;
+    /* border-radius: 100vw; */
+    margin-block: 0.5em;
+}
+
+.Back {
+    cursor: url('pixlink.png'), pointer;
+
+    position: fixed;
+    background-color: white;
+
+    top: 20px;
+    left: 20px;
+    padding: 4px 10px;
+    cursor: pointer;
+    z-index: 999;
+    font-family: Archivo;
+    font-weight: 800;
+    border: solid 2px;
+    border-radius: 90px;
+}
+
+.annotation-wrapper.hide ::slotted(*) {
+    opacity: var(--min-hotspot-opacity, 0);
+}
+
+
+button {
+    background-color: transparent;
+    border: none;
+    cursor: url('pixlink.png'), pointer;
+}
+
+.HotspotAnnotation {
+    color: #332222;
+    font-family: DotGothic16;
+    background-color: antiquewhite;
+    border-radius: 30px;
+    font-size: 20px;
+    padding: 3px 20px 3px 20px;
+    transition: padding 0.80s, font-size 0.80s, letter-spacing 0.2s, border 0.8s;
+}
+
+.HotspotAnnotation:hover {
+    color: black;
+    background-color: white;
+    border-radius: 30px;
+
+    font-size: 30px;
+    padding: 10px 40px 10px 40px;
+    transition: 0.5s;
+    border: solid #332222 5px;
+    border-radius: 50px;
+}
+
+.mood-changeable {
+    position: fixed;
+    background-color: #ffffff;
+    bottom: 20px;
+    right: 20px;
+    padding: 3px 10px;
+    cursor: url('pixlink.png'), pointer;
+
+    z-index: 999;
+    font-family: Archivo;
+    font-weight: 800;
+    border: solid 2px;
+    border-radius: 90px;
+    /* Ensure it's on top */
+}
+
+a {
+    color: black;
+    font-size: 16px;
+    border-bottom: none;
+    cursor: url('pixlink.png'), pointer;
+}
+
+
+p {
+    color: #000000;
+    font-size: 18px;
+    font-weight: 200;
+    margin: 0%;
+    text-align: left;
+    font-family: onest;
+    /* border-bottom: solid 1px #494949; */
+}
+
+.content-section {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+}
+
+
+
+#portfolio {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    /* max-width: 60%; */
+    /* margin: auto auto 1rem; */
+    padding: 7% 10% 2% 10%;
+}
+
+#portfolio a {
+    color: #000000;
+    border-bottom: none;
+    text-decoration: none;
+
+    letter-spacing: 0.3px;
+    font-size: 20px;
+    font-weight: 400;
+
+    transition: letter-spacing 0.8s;
+    font-family: DotGothic16;
+}
+
+#portfolio a :hover {
+    color: #5e5e5e;
+    transition: 0.5s;
+}
+
+.portfolio-item img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    padding: 5%;
+
+    filter: grayscale(100%);
+    transition: filter 0.5s ease, transform 0.2s;
+    transform: translateY(0);
+    /* Initial transform for the hover effect */
+}
+
+.portfolio-item img:hover {
+    filter: grayscale(0%);
+    transform: translateY(-2px);
+}
+
+
+
+.canva {
+    padding: 50px;
+    height: auto;
+    width: 50%;
+    transform: rotate(-3deg);
+}
+
+#sket {
+    width: 80%;
+    height: 40rem;
+    margin: 0 auto;
+
+
+    border-radius: 10px;
+    border: dotted 6px rgb(150, 178, 223);
+
+    margin-top: 3%;
+    margin-bottom: 3%;
+
+    /* position: absolute; */
+    display: flex;
+    align-items: center;
+}
+
+
+
+
+
+
+
+
+@media (max-width: 480px) {
+    .threetit {
+        font-size: 50px;
+        margin: 20px;
+    }
+
+    model-viewer {
+        width: 90%;
+        height: 80%;
+        margin: 0 auto;
+        border: dotted 6px rgb(150, 178, 223);
+        border-radius: 18px;
+        margin-top: 15%;
+    }
+
+    .pixborder img {
+        opacity: 60%;
+        height: 40px;
+    }
+
+    #pagesecshort {
+        height: 100vh;
+        width: 100%;
+        max-width: 1024px;
+
+        font-family: Onest;
+        font-size: 20px;
+        line-height: 110%;
+
+        padding: 5% 30% 0% 3%;
+        font-weight: 500;
+        color: #ffffff;
+    }
+}
+
+
+.panel {
+    background-color: #26272b;
+    color: wheat;
+}
+
+footer {
+    z-index: 100;
+    position: relative;
+}
+
+body {
+    cursor: url("pixcur.png"), auto;
+}
+
+a,
+button {
+    cursor: url('pixlink.png'), pointer;
+}
