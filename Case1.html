@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UX raghav prasanna</title>
+
+    <meta property="og:description"
+        content="Hey! I’m Raghav, Product designer. 1 person with an all-in-one production ability" />
+    <meta content="https://i.imgur.com/4Sz5x1Z.png" property="og:image">
+    <meta property="og:type" content="website" />
+
+    <meta name="twitter:card" content="https://i.imgur.com/4Sz5x1Z.png" />
+    <meta name="twitter:title" content="Select portfolio" />
+    <meta name="twitter:description"
+        content="Hey! I’m Raghav, Product designer. 1 person with an all-in-one production ability" />
+    <meta name="twitter:image" content="https://i.imgur.com/4Sz5x1Z.png" />
+
+
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&family=Bebas+Neue&family=Calistoga&family=DotGothic16&family=Instrument+Serif:ital@0;1&family=Maiden+Orange&family=Pixelify+Sans:wght@400..700&family=Staatliches&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Onest:wght@100..900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+
+    <!-- GSAP and ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/ScrollTrigger.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css">
+
+
+
+    <!--
+    Barlow Semi Condensed
+    Maiden Orange
+    Staatliches
+    Pixelify Sans
+    DotGothic16
+    Instrument Serif
+    Bebas Neue
+    Archivo
+    fallsend
+    Onest
+     -->
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="ux.css"> -->
+    <script src="ux.js"></script>
+
+
+    <!-- Logo and bar color -->
+    <link rel="icon" href="logo.png" type="png">
+    <meta name="theme-color" content="#ff3f3f">
+</head>
+
+
+
+<style>
+    body {
+        background-color: #D9D9D9;
+        text-rendering: optimizeSpeed;
+        cursor: url("pointercursor.png"), auto;
+        font-family: Onest;
+    }
+
+    #portfoliooo .card {
+        border-radius: 10px;
+        padding: 10px;
+        transition: filter 0.5s ease, transform 0.2s;
+        transform: translateY(0);
+        border: none;
+    }
+
+
+    #portfoliooo .card img {
+        border-radius: 8px;
+        object-fit: cover;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+    }
+
+    .card:hover {
+        /* border: 1px solid black; */
+        transform: translateY(-2px);
+        cursor: url('linkcursor.png'), pointer;
+    }
+
+    #portfoliooo .card-body {
+        text-align: center;
+        padding: 0%;
+    }
+
+    /* ... other styles ... */
+
+    #portfoliooo .card-title {
+        font-size: 1.5rem;
+        margin-top: 1.1rem;
+        margin-bottom: 0.1rem;
+        font-family: Onest;
+        text-align: left;
+        font-weight: 600;
+    }
+
+    #portfoliooo .card-text {
+        font-size: 0.9rem;
+        font-family: Onest;
+        font-weight: 500;
+        margin-bottom: 0.6rem;
+
+    }
+
+    /* Maintain aspect ratio */
+    .image-container {
+        aspect-ratio: 1080 / 430;
+        overflow: hidden;
+        display: block;
+    }
+
+    .image-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+</style>
+
+<body>
+
+    <section id="portfoliooo">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-12 col-lg-9 mb-4">
+                    <div class="card" style="background-color: #F3A6D9;">
+                        <a target="_blank"
+                            href="https://www.behance.net/gallery/200529521/CLEAR-BREATH-case-study-No-smoking-app">
+                            <div class="image-container">
+                                <img src="images/port1.jpg" alt="Portfolio Item" class="img-fluid">
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">A Mobile Application to Help You Quit Smoking</h5>
+                                <p class="card-text text-muted">Case study</p>
+                            </div>
+                    </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="case-preview">
+        <h1>No Smoking App for UK Users</h1>
+        <p>
+            <span class="highlight">Outcome:</span> Reduced smoking rates by <strong>X%</strong> in 6 months, achieving
+            <strong>Y downloads</strong>.
+        </p>
+        <p>
+            <span class="highlight">Problem Solved:</span> Addressed high smoking rates with a UK-specific,
+            research-driven app tailored to user needs.
+        </p>
+        <p>
+            <span class="highlight">Value:</span> Improved public health and created a cost-effective, scalable solution
+            for smoking cessation.
+        </p>
+        <a href="full-case-study.html" class="read-more">Read the Full Case Study</a>
+    </div>
+</body>
+
+</html>

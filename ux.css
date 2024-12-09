@@ -78,6 +78,7 @@ a:hover {
 }
 
 
+
 .s-t:link,
 .s-t:visited,
 .s-t:active,
@@ -147,14 +148,19 @@ body {
     cursor: url("pointercursor.png"), auto;
 }
 
+.font-box {
+    cursor: url('textcursor.png'), text;
+}
+
+.fivbanner {
+    cursor: url('viewreview.png'), auto;
+}
+
 a,
 button {
     cursor: url('linkcursor.png'), pointer;
 }
 
-.font-box {
-    cursor: url('textcursor.png'), text;
-}
 
 /* Custom cursor for grab state */
 .draggable {
@@ -166,7 +172,10 @@ button {
     cursor: url('grabcursor.png'), grabbing;
 }
 
+.d-t {
+    cursor: url('wip.png'), grabbing;
 
+}
 
 .sticker {
     position: absolute;
@@ -416,6 +425,7 @@ button {
     /*padding: 4% 10% 10% 5%;  */
     /* padding-top: 4%; */
 }
+
 
 .info {
     color: #000000;
@@ -832,6 +842,7 @@ p {
 
 .heyhiraghav {
     max-width: 60%;
+    cursor: url('yrsexp.png'), auto;
 }
 
 .red-top-bar {
@@ -902,10 +913,10 @@ p {
         bottom: 60px;
         right: 20px;
         padding: 3px 10px;
-        cursor: pointer;
         font-family: vcr;
-        border: solid 2px;
+        border: solid 3px;
         border-radius: 4px;
+        cursor: url('linkcursor.png'), auto;
     }
 
     #pagesecshort {
