@@ -394,3 +394,27 @@ button {
         font-size: 15px;
     }
 }
+
+
+@media (max-width: 768px) {
+
+    #pagesecshort2,
+    .sticker,
+    .nodispmob {
+        display: none;
+    }
+
+}
+
+
+.dispmob {
+    display: none;
+    /* Initially hide the element on all screens */
+}
+
+@media (max-width: 768px) {
+    .dispmob {
+        display: block;
+        /* Display the element on screens with a maximum width of 768px */
+    }
+}
