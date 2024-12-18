@@ -398,7 +398,6 @@ button {
 
 @media (max-width: 768px) {
 
-    #pagesecshort2,
     .sticker,
     .nodispmob {
         display: none;

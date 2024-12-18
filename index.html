@@ -142,41 +142,42 @@
 
 
 
+
+
+                <div class="error-message" style="text-align: left;">
+                    Hey there! This is an interactive site <br>fun—tap, click, and play around with stuffs!<br>
+                    They are all stickers<br><br>
+                </div>
+
+                <script>
+                    // Initialize Typed.js
+                    document.addEventListener('DOMContentLoaded', function () {
+                        var typed = new Typed("#typed", {
+                            strings: [" send a message to this mail.", " If you face any issues..."],
+                            typeSpeed: 30,
+                            backSpeed: 15,
+                            loop: true
+                        });
+                    });
+                </script>
+
+
                 <div style="text-align: left;     color: #bee1ff;">
                     ----/<span class="value"><span id="typed"></span></span>
                 </div>
 
-                <div class="error-message" style="text-align: left;">
-                    Welcome! I've crafted two distinct portfolios.
 
-
-
-
-                    <script>
-                        // Initialize Typed.js
-                        document.addEventListener('DOMContentLoaded', function () {
-                            var typed = new Typed("#typed", {
-                                strings: [":( If you think Comic Sans is acceptable, we need to talk...", ":( I'm not kidding btw.", "Uhhh sorry where was I?", ":( Got a bit over-excited there, Hi! "],
-                                typeSpeed: 30,
-                                backSpeed: 15,
-                                loop: true
-                            });
-                        });
-                    </script>
-                </div>
 
                 <div class="emaillink d-flex align-items-center">RAGHAVPRASANNA2000@GMAIL.COM</div>
 
-                <div class="error-message">
-
-                    CLICK-THE-BELOW-BUTTONS-TO-SEE-MY-PORTFOLIO
+                <div class="error-message"><br>
+                    I have 2 unique portfolios down here ->
                 </div>
+
                 <div style="display: flex; justify-content: center; align-items: center; padding: 10px;">
                     <a href='gamedes.html' class='link-download dispmob'>3D & Game design</a>
                 </div>
-                <div style="display: flex; justify-content: center; align-items: center; padding: 10px;">
-                    <a href="ux.html" class="link-download dispmob">Product design/UX</a>
-                </div>
+
 
 
 
@@ -185,6 +186,12 @@
                     <a href="ux.html" class="link-download">Product design/UX</a>
                     <a href='gamedes.html' class='link-download'>3D & Game design</a>
                 </div>
+                <div style="display: flex; justify-content: center; align-items: center; padding: 10px;">
+                    <a href="ux.html" class="link-download dispmob">Product design/UX</a>
+                </div>
+
+
+
             </div>
 
         </div>
@@ -281,7 +288,7 @@
             modals[2].hidden = true;
             screens[0].classList.remove('off');
             screens[1].classList.remove('off');
-        }, 5000);
+        }, 3000);
     }
 
     // Start the modal sequence when the page loads
