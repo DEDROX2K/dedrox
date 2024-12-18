@@ -66,7 +66,6 @@ a:link,
 a:visited,
 a:active {
     color: #000000;
-    border-bottom: none;
     text-decoration: none;
     transition: font-weight 0.5s, letter-spacing 0.8s;
 }
@@ -302,7 +301,10 @@ button {
 
 
 
-
+h4 {
+    font-family: Onest;
+    color: #4d4d4d;
+}
 
 .custom-container {
     width: 100%;
@@ -789,8 +791,7 @@ p {
     padding: 3px 10px;
     cursor: url('linkcursor.png'), pointer;
     z-index: 989;
-    font-family: DotGothic16;
-    font-weight: 800;
+    font-family: vcr;
     border: solid 2px;
     border-radius: 90px;
 }
