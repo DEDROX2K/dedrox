@@ -160,10 +160,10 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'sticker2', left: 10, top: 50 },
 
         { id: 'sticker2.1', left: 20, top: 30 },
-        { id: 'sticker2.2', left: 2, top: 12 },
+        { id: 'sticker2.2', left: 20, top: 62 }, //flower
         { id: 'sticker3', left: 65, top: 38 },
 
-        { id: 'sticker3.1', left: 80, top: 2 },
+        { id: 'sticker3.1', left: 65, top: 6 }, //Hi
         { id: 'sticker3.2', left: 65, top: 38 },
         { id: 'sticker3.3', left: 85, top: 28 },
         { id: 'sticker3.4', left: 85, top: 51 },
@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         { id: 'sticker3.7', left: 125, top: 21 },
         { id: 'sticker3.8', left: 20, top: -5 },
-        { id: 'sticker3.9', left: 70, top: 28 },
+        { id: 'sticker3.9', left: 88, top: 9 }, //my face
 
         { id: 'sticker4', left: 45, top: 40 },
         { id: 'sticker5', left: 38, top: 40 },
@@ -180,15 +180,15 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'sticker7', left: 40, top: 40 },
         { id: 'sticker8', left: 70, top: 40 },
         { id: 'sticker9', left: 84, top: 60 },
-        { id: 'sticker10', left: 90, top: 90 },
+        { id: 'sticker10', left: 2, top: 90 }, //egg
         { id: 'sticker11', left: 30, top: 40 },
         { id: 'sticker12', left: 70, top: 60 },
         { id: 'sticker13', left: 80, top: 80 },
-        { id: 'sticker14', left: 90, top: 80 },
+        { id: 'sticker14', left: 70, top: 60 }, //bulkybee
 
-        { id: 'stickerBannerAd1', left: 6, top: 6 },
-        { id: 'stickerBannerAd2', left: 3, top: 4 },
-        { id: 'stickerBannerAd3', left: 85, top: 6 },
+        { id: 'stickerBannerAd1', left: 85, top: 60 }, //ball
+        { id: 'stickerBannerAd2', left: 65, top: 55 }, //body
+        { id: 'stickerBannerAd3', left: 85, top: 6 }, //head
         { id: 'stickerBannerAd4', left: 10, top: 48 },
         { id: 'stickerBannerAd5', left: 70, top: 48 },
         { id: 'stickerBannerAd6', left: 80, top: 38 },
@@ -209,3 +209,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+
+let Scrollbar = window.scrollbar;
+
+const options = {
+    'damping': 0.001
+}
+
+Scrollbar.init(document.querySelector('body'), options);

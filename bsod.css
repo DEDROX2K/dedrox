@@ -47,7 +47,7 @@
 
 @font-face {
     font-family: condense;
-    src: url(Fonts/gloucester-mt-extra-condensed.ttf);
+    src: url("Fonts/gloucester-mt-extra-condensed.ttf");
 }
 
 @font-face {
@@ -294,15 +294,15 @@ p {
 }
  */
 .off {
-    opacity: 0
+    opacity: 0;
 }
 
 [hidden] {
-    display: none
+    display: none;
 }
 
 .center {
-    text-align: center
+    text-align: center;
 }
 
 
