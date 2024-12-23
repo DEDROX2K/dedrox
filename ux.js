@@ -121,12 +121,19 @@ class Draggable {
         }
     }
 
+    disableScroll(e) {
+        e.preventDefault();
+    }
+
     onTouchStart(e) {
         const touch = e.touches[0];
         this.currentElement = this.element;
         const rect = this.currentElement.getBoundingClientRect();
         this.offsetX = touch.clientX - rect.left;
         this.offsetY = touch.clientY - rect.top;
+
+        // Disable scrolling when dragging starts
+        document.addEventListener('touchmove', this.disableScroll, { passive: false });
     }
 
     onTouchMove(e) {
@@ -141,6 +148,9 @@ class Draggable {
 
     onTouchEnd() {
         this.currentElement = null;
+
+        // Re-enable scrolling when dragging ends
+        document.removeEventListener('touchmove', this.disableScroll);
     }
 }
 
