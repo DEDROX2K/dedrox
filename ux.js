@@ -189,8 +189,8 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'sticker6', left: 40, top: 40 },
         { id: 'sticker7', left: 40, top: 40 },
         { id: 'sticker8', left: 70, top: 40 },
-        { id: 'sticker9', left: 84, top: 60 },
-        { id: 'sticker10', left: 2, top: 90 }, //egg
+        { id: 'sticker9', left: 4, top: 60 }, //foo - smile
+        { id: 'sticker10', left: 2, top: 70 }, //foo - egg
         { id: 'sticker11', left: 30, top: 40 },
         { id: 'sticker12', left: 70, top: 60 },
         { id: 'sticker13', left: 80, top: 80 },
@@ -199,8 +199,8 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'stickerBannerAd1', left: 85, top: 60 }, //ball
         { id: 'stickerBannerAd2', left: 65, top: 55 }, //body
         { id: 'stickerBannerAd3', left: 85, top: 6 }, //head
-        { id: 'stickerBannerAd4', left: 10, top: 48 },
-        { id: 'stickerBannerAd5', left: 70, top: 48 },
+        { id: 'stickerBannerAd4', left: 7, top: 48 }, //foo - bomb
+        { id: 'stickerBannerAd5', left: 14, top: 48 }, //foo - purple
         { id: 'stickerBannerAd6', left: 80, top: 38 },
 
         { id: 'stickerfont1', left: 10, top: 29 },
