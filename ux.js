@@ -192,8 +192,8 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'sticker9', left: 4, top: 60 }, //foo - smile
         { id: 'sticker10', left: 2, top: 70 }, //foo - egg
         { id: 'sticker11', left: 30, top: 40 },
-        { id: 'sticker12', left: 70, top: 60 },
-        { id: 'sticker13', left: 80, top: 80 },
+        { id: 'sticker12', left: 25, top: 50 }, //fee - redrose
+        { id: 'sticker13', left: 20, top: 50 },
         { id: 'sticker14', left: 70, top: 60 }, //bulkybee
 
         { id: 'stickerBannerAd1', left: 85, top: 60 }, //ball
