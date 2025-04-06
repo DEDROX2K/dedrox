@@ -64,7 +64,7 @@ a:active {
 }
 
 .sec2 {
-    background-color: #ffc107;
+    /* background-color: #ffc107; */
 }
 
 .sec3 {
@@ -81,7 +81,7 @@ a:active {
     font-size: 60px;
     line-height: 110%;
 
-    padding: 10% 0% 0% 10%;
+    padding: 15% 0% 0% 10%;
     font-weight: 500;
 }
 
@@ -181,6 +181,7 @@ model-viewer {
     opacity: 30%;
     height: 70px;
     z-index: 1000;
+
 }
 
 .lefpix {
@@ -342,7 +343,7 @@ p {
     overflow: hidden;
     /* max-width: 60%; */
     /* margin: auto auto 1rem; */
-    padding: 7% 10% 2% 10%;
+    padding: 10% 10% 2% 10%;
 }
 
 #portfolio a {
