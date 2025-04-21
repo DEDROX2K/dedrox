@@ -182,23 +182,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
         { id: 'sticker3.7', left: 125, top: 21 },
         { id: 'sticker3.8', left: 20, top: -5 },
-        { id: 'sticker3.9', left: 88, top: 9 }, //my face
+        { id: 'sticker3.9', left: 88, top: 6 }, //my face
 
-        { id: 'sticker4', left: 45, top: 40 },
-        { id: 'sticker5', left: 38, top: 40 },
-        { id: 'sticker6', left: 40, top: 40 },
-        { id: 'sticker7', left: 40, top: 40 },
+        { id: 'sticker4', left: 65, top: 0 },
+        { id: 'sticker5', left: 68, top: 30 },
+        { id: 'sticker6', left: 70, top: 50 },
+        { id: 'sticker7', left: 60, top: 0 },
+
         { id: 'sticker8', left: 70, top: 40 },
-        { id: 'sticker9', left: 4, top: 60 }, //foo - smile
-        { id: 'sticker10', left: 2, top: 70 }, //foo - egg
+        { id: 'sticker9', left: 70, top: 60 }, //foo - smile
+        { id: 'sticker10', left: 80, top: 70 }, //foo - egg
         { id: 'sticker11', left: 30, top: 40 },
-        { id: 'sticker12', left: 25, top: 50 }, //fee - redrose
-        { id: 'sticker13', left: 20, top: 50 },
+        { id: 'sticker12', left: 75, top: 50 }, //fee - redrose
+        { id: 'sticker13', left: 90, top: 50 },
         { id: 'sticker14', left: 70, top: 60 }, //bulkybee
 
         { id: 'stickerBannerAd1', left: 85, top: 60 }, //ball
-        { id: 'stickerBannerAd2', left: 65, top: 55 }, //body
-        { id: 'stickerBannerAd3', left: 85, top: 6 }, //head
+        { id: 'stickerBannerAd2', left: 25, top: 55 }, //body
+        { id: 'stickerBannerAd3', left: 55, top: 30 }, //head
         { id: 'stickerBannerAd4', left: 7, top: 48 }, //foo - bomb
         { id: 'stickerBannerAd5', left: 14, top: 48 }, //foo - purple
         { id: 'stickerBannerAd6', left: 80, top: 38 },

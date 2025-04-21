@@ -144,12 +144,51 @@
   </nav>
 </header>
 
+<div class="pixborder">
+  <!-- <img class="lefpix" src="images/pixel-border.png">
+  <img class="ritpix" src="images/pixel-border.png">
+  <img class="ritdownpix" src="images/pixel-border.png"> -->
+  <img class="lefdownpix" src="images/pixel-border.png">
+</div>
+<style>
+  .pixborder img {
+    opacity: 50%;
+    height: 50px;
+    z-index: 1000;
+    filter: invert(100%);
+  }
+
+  .lefpix {
+    position: fixed;
+    transform: rotate(-90deg);
+  }
+
+  .ritpix {
+    position: fixed;
+    right: 0%;
+  }
+
+  .ritdownpix {
+    position: fixed;
+    right: 0%;
+    bottom: 0%;
+    transform: rotate(90deg);
+  }
+
+  .lefdownpix {
+    position: fixed;
+    left: 0%;
+    bottom: 0%;
+    transform: rotate(180deg);
+  }
+</style>
 
 <body>
 
 
+
   <!-- DEDROX.DESGN HEE! -->
-  <div class="logosec" data-aos="fade-down" data-aos-duration="700" data-aos-delay="500" data-aos-once="true">
+  <!-- <div class="logosec" data-aos="fade-down" data-aos-duration="700" data-aos-delay="500" data-aos-once="true">
 
     <div class="sticker" id="sticker1">
       <img src="images/lessgoo.png">
@@ -164,11 +203,11 @@
     </div>
 
 
-    <div class="sticker" id="sticker3.9">
-      <img src="images/meee.png">
-    </div>
+ 
 
-
+  <div class="sticker" id="sticker3.9">
+    <img src="images/flow5.png">
+  </div>
     <div class="sticker" id="sticker3">
       <img src="images/since.png">
     </div>
@@ -185,34 +224,58 @@
     </script>
 
     <div id="logo" class="d-flex justify-content-center align-items-center"> </div>
-  </div>
+  </div> -->
+
+
+
+
+
 
 
   <!-- About me -->
-  <div id="pagesecshort" data-aos="fade-top" data-aos-duration="2000" data-aos-once="false">
+  <div id="pagesecshort" data-aos="fade-down" data-aos-duration="700" data-aos-delay="500" data-aos-once="true">
     <div class="custom-container">
-      <div class="sticker" id="sticker3.1">
-        <img src="images/cat.png">
+
+      <div class="sticker" id="sticker6">
+        <img src="images/uxdes.png">
+      </div>
+      <div class="sticker" id="sticker7">
+        <img src="images/prod.png">
+      </div>
+      <div class="sticker" id="sticker5">
+        <img src="images/gamedesign.png">
+      </div>
+      <div class="sticker" id="sticker4">
+        <img src="images/frontend.png">
       </div>
 
-      <div class="sticker" id="stickerBannerAd2">
-        <img src="images/body.png">
-      </div>
-      <div class="sticker" id="stickerBannerAd3">
-        <img src="images/head.png">
-      </div>
-      <div class="sticker" id="stickerBannerAd1">
-        <img src="images/ba2.png">
-      </div>
+
       <!-- <div style="max-width: 60%; @media (max-width: 480px) { max-width: 90%; }"> -->
       <div class="heyhiraghav">
         <span style="color: #5a5a5a;">Hey, Hi! I’m </span>
-        <span style="color: #2a2a2a;">Raghav.</span>
+        <span style="color: #2a2a2a;">Raghav.</span> </br>
         <span style="color: #5a5a5a;">Mid level </span>
         <span style="color: #2a2a2a;">Digital product designer </span>
         <span style="color: #5a5a5a;">based in London with a background in </span>
         <span style="color: #2a2a2a;">game mechanics.</span>
       </div>
+
+      <!-- <button class="cta-button">Go to case study</button>
+      <style>
+        .cta-button {
+          font-family: Onest;
+          font-weight: light;
+          font-size: 23px;
+          padding: 1px 28px;
+          border: none;
+          border-radius: 3px;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+        }
+
+        .cta-button:hover {
+          background-color: #ffffff;}
+      </style> -->
 
 
     </div>
@@ -237,11 +300,11 @@
   </div>
 
 
+
   <!-- Case Study -->
   <section class="content-section" id="portfolio">
     <h1 class="text-center he1mob" data-aos="fade-top" data-aos-duration="1000" data-aos-once="false"> Case Studies
     </h1>
-
 
 
     <script>
@@ -336,8 +399,7 @@
     <section id="portfoliooo" data-aos="fade-top" data-aos-duration="700" data-aos-once="false">
       <div class="container">
         <div class="row justify-content-center">
-          <div class="col-md-12 col-lg-8 mb-4"><a target="_blank"
-              href="https://medium.com/@RaghavPrasannaUX/practical-use-cases-of-gamification-b8c659743168">
+          <div class="col-md-12 col-lg-8 mb-4"><a target="_blank" href="case3.html">
               <div class="card" style="background-color: #e4e4e4;  border: solid 2px #e8e8e8;">
                 <div class="image-container">
                   <img src="images/port4.jpg" alt="Portfolio Item" class="img-fluid">
@@ -345,16 +407,10 @@
                 <div class="card-body">
 
                   <h5 class="card-title" style="color: #000000; margin-bottom: 1rem;"> <span
-                      style=" font-weight: 700;">Summary: </span> An article showcasing how gamification can be
-                    effectively integrated into existing or newly
-                    developed apps.
-                  </h5>
-
-                  <h5 class="card-title" style="color: #000000; margin-bottom: 1rem;"> <span
-                      style=" font-weight: 700;">Value added: </span>
-                    This project serves as an example of how we could implement gamification into existing or newly
-                    developing apps. In a practical sense.
-
+                      style=" font-weight: 700;">Summary: </span> This project is designed to showcase how I would
+                    approach
+                    desk research, particularly for new application ideas that we develop from scratch.
+                    I'm presenting an ongoing project that I recently completed with a previous client.
                   </h5>
 
                 </div>
@@ -677,25 +733,71 @@
 
 
   <!-- Puzzle -->
-  <div id="puzzle" class="nodispmob" data-aos="fade-top" data-aos-duration="4000" data-aos-once="false"
+  <!-- <div id="puzzle" class="nodispmob" data-aos="fade-top" data-aos-duration="4000" data-aos-once="false"
     data-aos-delay="100">
     <div class="redbox d-flex justify-content-center align-items-center" style="z-index: 998;">
     </div>
 
+    <div class="sticker" id="stickerBannerAd2">
+      <img src="images/body.png">
+    </div>
+    <div class="sticker" id="stickerBannerAd3">
+      <img src="images/head.png">
+    </div>
+    <div class="sticker" id="stickerBannerAd1">
+      <img src="images/ba2.png">
+    </div>
 
-    <div class="sticker" id="sticker6">
-      <img src="images/uxdes.png">
+
+    <div class="sticker" id="sticker1">
+      <img src="images/tape.png">
     </div>
-    <div class="sticker" id="sticker7">
-      <img src="images/prod.png">
+    <div class="sticker" id="sticker2">
+      <img src="images/londonuk.png">
     </div>
-    <div class="sticker" id="sticker5">
-      <img src="images/gamedesign.png">
+    <div class="sticker" id="sticker2.1">
+      <img src="images/yesthatme.png">
     </div>
-    <div class="sticker" id="sticker4">
-      <img src="images/frontend.png">
+
+    <div class="sticker" id="sticker3">
+      <img src="images/since.png">
     </div>
-  </div>
+    <div class="sticker" id="sticker3.9">
+      <img src="images/meee.png">
+    </div>
+
+
+
+
+
+    <div class="sticker" id="stickerBannerAd5">
+      <img src="images/ba4.png">
+    </div>
+    <div class="sticker" id="stickerBannerAd4">
+      <img src="images/ba3.png">
+    </div>
+
+    <div class="sticker" id="sticker9">
+      <img src="images/ba1.png">
+    </div>
+    <div class="sticker" id="sticker10">
+      <img src="images/ba8.png">
+    </div>
+    <div class="sticker" id="sticker11">
+      <img src="images/ba2.png">
+    </div>
+    <div class="sticker" id="sticker12">
+      <img src="images/ba5.png">
+    </div>
+    <div class="sticker" id="sticker13">
+      <img src="images/flow5.png">
+    </div>
+
+
+
+
+
+  </div> -->
 
   <!-- Free fonts -->
   <div id="pagesecshort2" data-aos="fade-top" data-aos-duration="1000" data-aos-once="false" data-aos-delay="100">
@@ -707,8 +809,7 @@
 
 
     </div>
-    <a vibrantcursor data-aos="fade-top" data-aos-duration="1000" data-aos-once="false" data-aos-delay="100"
-      href="freefonts.html">
+    <a vibrantcursor href="freefonts.html">
       <img class="downcur" style="padding: 0% 0% 10% 20%;" src="images/font-download.png"> </a>
 
 
@@ -755,8 +856,6 @@
     mask-image: linear-gradient(rgb(255 255 255 / 0%) 0%, rgb(223 223 223) 100%, rgb(255 255 255 / 0%) 50%);">
   </div>
 
-
-
   <button class="summary" style="z-index: 100;"><a href="compressed.html">About me</a></button>
 
   <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
@@ -768,33 +867,6 @@
 
 <!-- Footer -->
 <footer class="footer" style="margin-top: 1%;">
-
-  <div class="sticker" id="stickerBannerAd5">
-    <img src="images/ba4.png">
-  </div>
-
-  <div class="sticker" id="sticker9">
-    <img src="images/ba1.png">
-  </div>
-
-  <div class="sticker" id="sticker10">
-    <img src="images/ba8.png">
-  </div>
-
-  <div class="sticker" id="stickerBannerAd4">
-    <img src="images/ba3.png">
-  </div>
-
-  <div class="sticker" id="sticker11">
-    <img src="images/ba2.png">
-  </div>
-
-  <div class="sticker" id="sticker12">
-    <img src="images/ba5.png">
-  </div>
-  <div class="sticker" id="sticker13">
-    <img src="images/flow5.png">
-  </div>
 
 
   <div class="container">
