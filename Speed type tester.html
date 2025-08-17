@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Speed Type Tester</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            --bg: #f5f6fa;
+            --accent: #222;
+            --primary: #fff;
+            --secondary: #e0e0e0;
+            --highlight: #dbdbdb;
+            --font: 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+            --mono: 'Menlo', 'SF Mono', 'Consolas', monospace;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: var(--font, 'Inter', Arial, sans-serif);
+            color: #222;
+            display: flex;
+            flex-direction: column;
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        .container {
+            padding: 48px 32px 40px 32px;
+            max-width: 600px;
+            width: 100%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            margin-bottom: 8px;
+            text-align: center;
+            background: linear-gradient(90deg, #222 60%, #ffcc00 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .prompt {
+            font-family: var(--mono, monospace);
+            font-size: 1.1rem;
+            background: none;
+            border: none;
+            padding: 0;
+            margin: 0;
+            width: 100%;
+            min-height: 80px;
+            color: #bbb;
+            letter-spacing: 0.5px;
+            word-break: break-word;
+            user-select: none;
+            outline: none;
+        }
+
+        .prompt-word.current-word {
+            background: rgba(0, 122, 255, 0.08);
+            border-radius: 6px;
+            padding: 0 4px;
+        }
+
+        .prompt .current {
+            color: #fff;
+            background: #007aff;
+            border-radius: 4px;
+            padding: 0 2px;
+            animation: blink 1s steps(1) infinite;
+        }
+
+        .prompt .current.incorrect {
+            background: #ff3b30;
+            color: #fff;
+        }
+
+        .prompt .incorrect {
+            background: #ff3b30;
+            color: #fff;
+            border-radius: 4px;
+            padding: 0 2px;
+        }
+
+        .prompt .correct {
+            color: #222;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .input-area {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+
+        }
+
+        .input {
+            font-family: var(--mono, monospace);
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 16px;
+            background: #f7f7fa;
+            padding: 18px 16px;
+            width: 100%;
+            outline: none;
+            color: #222;
+            resize: none;
+            min-height: 160px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+            border-radius: 20px;
+            border: 1px solid #D9D9D9;
+            background: #F2F2F2;
+
+        }
+
+        .input:focus {
+            background: #e0e0e0;
+        }
+
+        .wpm {
+            position: fixed;
+            top: 32px;
+            right: 48px;
+            background: #fff;
+            color: #222;
+            font-family: var(--mono);
+            font-size: 1.5rem;
+            font-weight: 600;
+            border-radius: 16px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+            padding: 14px 28px;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: 1px;
+            transition: background 0.2s;
+        }
+
+        .wpm .dot {
+            width: 10px;
+            height: 10px;
+            background: var(--highlight);
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+            box-shadow: 0 0 6px #ffcc00;
+        }
+
+        .restart-btn {
+            margin-top: 16px;
+            background: #ffcc00;
+            color: #222;
+            font-family: var(--font);
+            font-weight: 600;
+            border: none;
+            border-radius: 12px;
+            padding: 12px 32px;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            transition: background 0.2s;
+        }
+
+        .restart-btn:hover {
+            background: #ffe066;
+        }
+
+        .switch-container {
+            position: fixed;
+            top: 32px;
+            left: 32px;
+            z-index: 100;
+            user-select: none;
+            border-radius: 28px;
+            border-top: 1.5px solid rgba(229, 229, 229, 0.4);
+            border-left: 1.5px solid rgba(229, 229, 229, 0.4);
+            background: rgba(255, 255, 255, 0.099);
+            backdrop-filter: blur(1.7px);
+        }
+
+        .switch-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: inherit;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #fff;
+            border-radius: 28px;
+            padding: 10px 10px 10px 10px;
+            backdrop-filter: blur(1.7px);
+        }
+
+        .switch-label input[type="checkbox"] {
+            display: none;
+        }
+
+        .slider {
+            width: 38px;
+            height: 22px;
+            background: #fff;
+            border-radius: 999px;
+            position: relative;
+            transition: background 0.2s;
+            margin-right: 4px;
+        }
+
+        .slider:before {
+            content: "";
+            position: absolute;
+            left: 3px;
+            top: 3px;
+            width: 16px;
+            height: 16px;
+            background: #ffd600;
+            border-radius: 50%;
+            transition: transform 0.2s;
+        }
+
+        .switch-label input[type="checkbox"]:checked+.slider:before {
+            transform: translateX(16px);
+            background: #b6a7c9;
+        }
+
+        .switch-label input[type="checkbox"]:checked+.slider {
+            background: #ffe066;
+        }
+
+        .switch-text {
+            min-width: 90px;
+            display: inline-block;
+        }
+
+        .main-center {
+            width: 100%;
+            max-width: 40%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            align-items: center;
+            margin-top: 32px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 28px;
+            /* box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.07); */
+            padding: 18px 24px;
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 0;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            /* padding: 18px 24px; */
+            margin-bottom: 0;
+            /* width: 732px;*/
+            height: 3rem;
+            flex-shrink: 0;
+        }
+
+        .header-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .randomize-btn {
+            padding: 8px 18px;
+            font-size: 1rem;
+            font-family: inherit;
+            cursor: pointer;
+            color: #222;
+            font-weight: 500;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+
+            border-radius: 28px;
+            border: 1px solid #D9D9D9;
+            background: white;
+        }
+
+        .randomize-btn:hover {
+            background: #ffd600;
+        }
+
+        .card-prompt {
+            min-height: 120px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-start;
+        }
+
+        .card-input {
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .card-row {
+            display: flex;
+            gap: 5px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .card-stat {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-width: 120px;
+            min-height: 60px;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            margin-bottom: 0;
+        }
+
+        .card-stat-combined {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 0;
+            min-height: 60px;
+            background: #fff;
+            border-radius: 28px;
+            margin-bottom: 0;
+            width: 100%;
+            padding: 12px 0;
+        }
+
+        .stat-combined-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            gap: 110px;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: #888;
+            margin-bottom: 4px;
+            text-align: center;
+            color: #000;
+            text-align: center;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+        }
+
+        .stat-value {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #222;
+            text-align: center;
+            color: #000;
+            text-align: center;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+        }
+
+        .restart-btn,
+        .startstop-btn {
+            width: 100%;
+            background: #ffffff;
+            color: #222;
+            font-family: inherit;
+            font-weight: 600;
+            border: none;
+            border-radius: 28px;
+            padding: 16px 0;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-right: 18px;
+        }
+
+        .restart-btn:hover {
+            background: #ffe066;
+        }
+
+
+
+        .footer-card {
+            position: fixed;
+            left: 24px;
+            bottom: 24px;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 18px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            padding: 14px 24px;
+            font-size: 0.95rem;
+            color: #aaa;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            z-index: 10;
+        }
+
+        .wpm-vertical-bar {
+            position: fixed;
+            right: 24px;
+            top: 120px;
+            width: 48px;
+            height: 400px;
+            background: #f7f7fa;
+            border-radius: 24px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            z-index: 20;
+        }
+
+        .wpm-bar-inner {
+            width: 100%;
+            background: #ff3b30;
+            border-radius: 24px 24px 0 0;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            transition: height 0.3s;
+            height: 0%;
+            position: relative;
+        }
+
+        .wpm-bar-label {
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .wpm-bar-desc {
+            font-size: 0.95rem;
+            color: #222;
+            text-align: center;
+            margin-top: 8px;
+            margin-bottom: 8px;
+            writing-mode: vertical-lr;
+            transform: rotate(180deg);
+            letter-spacing: 1px;
+        }
+
+        .prompt-word.current-word {
+            background: rgba(0, 122, 255, 0.08);
+            border-radius: 6px;
+            padding: 0 4px;
+        }
+
+        @media (max-width: 900px) {
+            .main-center {
+                max-width: 98vw;
+            }
+
+            .footer-card {
+                left: 8px;
+                bottom: 8px;
+            }
+
+            .switch-container {
+                left: 8px;
+                top: 8px;
+            }
+
+            .wpm-vertical-bar {
+                right: 8px;
+            }
+        }
+
+        .card-master {
+            background: #fff;
+            border-radius: 28px;
+            box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.07);
+            padding: 0;
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .card-master .card-prompt {
+            border-radius: 28px 28px 0 0;
+            margin-bottom: 0;
+            box-shadow: none;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .card-master .card-input {
+            border-radius: 0 0 28px 28px;
+            margin-top: 0;
+            box-shadow: none;
+        }
+
+        .wave-emit {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .wave {
+            position: absolute;
+            bottom: 100%;
+            width: 300%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: wave-animation 6s linear infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes wave-animation {
+            0% {
+                transform: translateX(0) translateY(0);
+            }
+
+            100% {
+                transform: translateX(-100%) translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="switch-container">
+        <label class="switch-label">
+            <input type="checkbox" id="mode-switch">
+            <span class="slider"></span>
+            <span class="switch-text" id="switch-text">Gibberish</span>
+        </label>
+    </div>
+    <div class="main-center">
+        <div class="card card-header" style="padding: 10px 6px 10px 20px; position:relative;">
+            <div class="wave-emit" id="wave-emit"></div>
+            <div class="header-title">Speed type tester</div>
+            <button class="randomize-btn" id="randomize">
+                Randomize
+                <span class="randomize-icon" aria-hidden="true">
+                    <svg width="18" height="18" viewBox="0 0 20 20" fill="none" style="vertical-align:middle;"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 4v4h4" stroke="#222" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M16 16v-4h-4" stroke="#222" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M5.07 14.93A8 8 0 1 1 18 10" stroke="#222" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </span>
+            </button>
+        </div>
+        <div class="card card-master">
+            <div class="card card-prompt">
+                <div class="prompt" id="prompt"></div>
+            </div>
+            <div class="card card-input" style="padding: 10px;">
+                <textarea class="input" id="input" autocomplete="off" autocorrect="off" autocapitalize="off"
+                    spellcheck="false" placeholder="Start typing here..."></textarea>
+            </div>
+        </div>
+        <div class="card-row">
+            <div class="card card-stat card-stat-combined">
+                <div class="stat-combined-row">
+                    <div>
+                        <div class="stat-label">WPM</div>
+                        <div class="stat-value" id="stat-wpm">0</div>
+                    </div>
+                    <!-- <div class="stat-divider"></div> -->
+                    <div>
+                        <div class="stat-label">Accuracy</div>
+                        <div class="stat-value" id="stat-accuracy">0 %</div>
+                    </div>
+                    <!-- <div class="stat-divider"></div> -->
+                    <div>
+                        <div class="stat-label">Timer</div>
+                        <div class="stat-value" id="timer">30s</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-row">
+            <button class="restart-btn" id="restart" style="display:none;">Re-start</button>
+        </div>
+    </div>
+
+
+    <script>
+        // --- CONFIG ---
+        const wordList = [
+            "design", "simple", "code", "speed", "test", "random", "keyboard", "focus", "logic", "style",
+            "color", "font", "display", "input", "output", "timer", "result", "click", "reset", "start",
+            "finish", "prompt", "type", "fast", "slow", "creative", "smart", "fun", "challenge", "learn"
+        ];
+        const WORDS_TO_SHOW = 50;
+        const TEST_TIME = 30;
+
+        const bgImages = [
+            "images/bg1.jpg",
+            "images/bg2.jpg",
+            "images/bg3.jpg",
+            "images/bg4.jpg",
+            "images/bg5.jpg",
+            "images/bg6.jpg",
+            "images/bg7.jpg",
+            "images/bg8.jpg",
+            "images/bg9.jpg",
+            "images/bg10.jpg",
+            "images/bg11.jpg",
+            "images/bg12.jpg",
+            "images/bg13.jpg",
+            "images/bg14.jpg",
+            "images/bg15.jpg",
+            "images/bg16.jpg",
+            "images/bg17.jpg",
+            "images/bg18.jpg",
+            "images/bg19.jpg",
+            "images/bg20.jpg",
+            // Add more image paths as needed
+        ];
+
+        // --- STATE ---
+        let promptWords = [];
+        let promptText = "";
+        let startTime = null;
+        let timer = null;
+        let wpm = 0;
+        let finished = false;
+        let timeLeft = TEST_TIME;
+        let interval = null;
+        let wpmHistory = [];
+        let wpmInterval = null;
+
+        // --- DOM ---
+        const promptEl = document.getElementById('prompt');
+        const inputEl = document.getElementById('input');
+        const restartBtn = document.getElementById('restart');
+        const wpmValueEl = document.getElementById('wpm-value');
+        const timerEl = document.getElementById('timer');
+        const modeSwitch = document.getElementById('mode-switch');
+        const switchText = document.getElementById('switch-text');
+        const randomizeBtn = document.getElementById('randomize');
+        const statWpm = document.getElementById('stat-wpm');
+        const statAccuracy = document.getElementById('stat-accuracy');
+        const wpmBarVertical = document.getElementById('wpm-bar-vertical');
+        const wpmLabelVertical = document.getElementById('wpm-label-vertical');
+
+        // --- FUNCTIONS ---
+        function getRandomWords(count) {
+            let words = [];
+            for (let i = 0; i < count; i++) {
+                words.push(wordList[Math.floor(Math.random() * wordList.length)]);
+            }
+            return words;
+        }
+
+        function renderPrompt(userInput) {
+            const promptWordsArr = promptText.split(' ');
+            const inputWordsArr = userInput.split(' ');
+            let html = '';
+            let charIndex = 0;
+
+            for (let w = 0; w < promptWordsArr.length; w++) {
+                const promptWord = promptWordsArr[w];
+                const userWord = inputWordsArr[w] || '';
+                let wordHtml = '';
+                let mistakeInWord = false;
+
+                for (let i = 0; i < promptWord.length; i++) {
+                    // Determine if this is the current word being typed
+                    const isCurrentWord = (w === inputWordsArr.length - 1 && !finished);
+
+                    if (userWord[i] !== undefined) {
+                        if (!mistakeInWord && userWord[i] === promptWord[i]) {
+                            wordHtml += `<span class="correct">${promptWord[i]}</span>`;
+                        } else {
+                            mistakeInWord = true;
+                            wordHtml += `<span class="incorrect">${promptWord[i]}</span>`;
+                        }
+                    } else if (isCurrentWord && i === userWord.length && !finished) {
+                        // Cursor (next character to type)
+                        wordHtml += `<span class="current${mistakeInWord ? ' incorrect' : ''}">${promptWord[i]}</span>`;
+                    } else {
+                        wordHtml += `<span>${promptWord[i]}</span>`;
+                    }
+                    charIndex++;
+                }
+
+                // Add space after word except last
+                if (w < promptWordsArr.length - 1) {
+                    const isCurrentWord = (w === inputWordsArr.length - 1 && !finished);
+                    if (w < inputWordsArr.length - 1) {
+                        wordHtml += `<span class="correct"> </span>`;
+                    } else if (isCurrentWord && userWord.length === promptWord.length) {
+                        // Cursor on space after current word
+                        wordHtml += `<span class="current"> </span>`;
+                    } else {
+                        wordHtml += `<span> </span>`;
+                    }
+                    charIndex++;
+                }
+
+                // Highlight current word background
+                if (w === inputWordsArr.length - 1 && !finished) {
+                    html += `<span class="prompt-word current-word">${wordHtml}</span>`;
+                } else {
+                    html += `<span class="prompt-word">${wordHtml}</span>`;
+                }
+            }
+            promptEl.innerHTML = html;
+        }
+
+        function calculateWPM(chars, elapsed) {
+            const words = chars / 5;
+            const minutes = elapsed / 60;
+            return Math.round(words / minutes);
+        }
+
+        function updateWPM() {
+            if (!startTime) return;
+            const elapsed = (Date.now() - startTime) / 1000;
+            const chars = inputEl.value.length;
+            wpm = elapsed > 0 ? calculateWPM(chars, elapsed) : 0;
+            statWpm.textContent = isNaN(wpm) ? 0 : wpm;
+
+            // Update vertical WPM bar
+            const maxWPM = 120;
+            const percent = Math.min(100, (wpm / maxWPM) * 100);
+            wpmBarVertical.style.height = percent + "%";
+            wpmLabelVertical.textContent = isNaN(wpm) ? 0 : wpm;
+        }
+
+        function startTimer() {
+            wpmHistory = [];
+            wpmInterval = setInterval(() => {
+                if (!startTime || finished) return;
+                const elapsed = (Date.now() - startTime) / 1000;
+                const chars = inputEl.value.length;
+                const currentWPM = elapsed > 0 ? calculateWPM(chars, elapsed) : 0;
+                wpmHistory.push({ time: Math.round(elapsed), wpm: currentWPM });
+            }, 1000);
+        }
+
+        function stopTimer() {
+            if (wpmInterval) clearInterval(wpmInterval);
+            wpmInterval = null;
+        }
+
+        function startCountdown() {
+            timeLeft = TEST_TIME;
+            timerEl.textContent = `${timeLeft}s`;
+            interval = setInterval(() => {
+                timeLeft--;
+                timerEl.textContent = `${timeLeft}s`;
+                if (timeLeft <= 0) {
+                    clearInterval(interval);
+                    finishTest();
+                }
+            }, 1000);
+        }
+
+        function finishTest() {
+            finished = true;
+            stopTimer();
+            updateWPM();
+            inputEl.disabled = true;
+            showResultModal();
+        }
+
+        function showResultModal() {
+            // Prepare data for Chart.js
+            const modal = document.getElementById('result-modal');
+            const ctx = document.getElementById('wpmChart').getContext('2d');
+            modal.style.display = "flex";
+
+            // Prepare labels and data
+            const labels = wpmHistory.map(point => point.time + "s");
+            const data = wpmHistory.map(point => point.wpm);
+
+            // Destroy previous chart if exists
+            if (window.wpmChartInstance) window.wpmChartInstance.destroy();
+
+            window.wpmChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'WPM',
+                        data: data,
+                        borderColor: '#007aff',
+                        backgroundColor: 'rgba(0,122,255,0.08)',
+                        tension: 0.3,
+                        pointRadius: 2,
+                        fill: true,
+                    }]
+                },
+                options: {
+                    responsive: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        x: { title: { display: true, text: 'Time (s)' } },
+                        y: { title: { display: true, text: 'WPM' }, beginAtZero: true }
+                    }
+                }
+            });
+        }
+
+        // Close modal handler
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('close-modal').onclick = function () {
+                document.getElementById('result-modal').style.display = "none";
+            };
+        });
+
+        // Reset the test to initial state
+        function reset() {
+            if (interval) clearInterval(interval);
+            stopTimer();
+            inputEl.focus();
+            inputEl.disabled = false;
+            renderPrompt('');
+            timerEl && (timerEl.textContent = `${TEST_TIME}s`);
+            statWpm && (statWpm.textContent = "0");
+            statAccuracy && (statAccuracy.textContent = "0 %");
+            wpm = 0;
+            startTime = null;
+            finished = false;
+            inputEl.value = '';
+            promptWords = getRandomWords(WORDS_TO_SHOW);
+            promptText = promptWords.join(' ');
+            renderPrompt('');
+            // Reset WPM bar
+            wpmBarVertical && (wpmBarVertical.style.height = "0%");
+            wpmLabelVertical && (wpmLabelVertical.textContent = "0");
+            restartBtn.style.display = "none";
+        }
+
+        function updateAccuracy() {
+            const val = inputEl.value;
+            let correct = 0;
+            for (let i = 0; i < inputEl.value.length; i++) {
+                if (inputEl.value[i] === promptText[i]) correct++;
+            }
+            const chars = correct;
+            let accuracy = val.length > 0 ? Math.round((correct / val.length) * 100) : 0;
+            statAccuracy.textContent = accuracy + " %";
+        }
+
+        // Handle typing input
+        inputEl.addEventListener('input', () => {
+            if (finished) {
+                inputEl.value = inputEl.value.slice(0, promptText.length); // Prevent further typing
+                return;
+            }
+            let val = inputEl.value.replace(/\n/g, ""); // Remove newlines
+
+            // Show the restart button if user typed something
+            if (val.length > 0) {
+                restartBtn.style.display = "inline-block";
+            }
+
+            // Trim input to prompt length
+            if (val.length > promptText.length) {
+                val = val.slice(0, promptText.length);
+                inputEl.value = val;
+            }
+            renderPrompt(val);
+
+            // Start timer on first input
+            if (!startTime && val.length > 0 && !finished) {
+                startTime = Date.now();
+                startCountdown();
+                startTimer();
+            }
+
+            // If finished typing
+            if (val.length >= promptText.length && !finished) {
+                finished = true;
+                inputEl.disabled = true;
+                updateWPM();
+                stopTimer();
+                if (interval) clearInterval(interval);
+            }
+
+            // Update stats live
+            updateWPM();
+            updateAccuracy();
+        });
+
+        // Prevent newlines in textarea
+        inputEl.addEventListener('keydown', (e) => {
+            if (e.key === "Enter") e.preventDefault();
+        });
+
+        // Restart button
+        restartBtn.addEventListener('click', reset);
+
+        // Mode switch
+        modeSwitch.addEventListener('change', () => {
+            if (modeSwitch.checked) {
+                switchText.textContent = "Normal";
+                // TODO: Implement gibberish mode
+            } else {
+                switchText.textContent = "Gibberish";
+                // TODO: Implement normal mode
+            }
+        });
+
+        // Randomize button
+        randomizeBtn.addEventListener('click', () => {
+            reset();
+            // Pick a random background image
+            const randomBg = bgImages[Math.floor(Math.random() * bgImages.length)];
+            document.body.style.backgroundImage = `url('${randomBg}')`;
+        });
+
+        // Set a random background image on initial load
+        const randomBg = bgImages[Math.floor(Math.random() * bgImages.length)];
+        document.body.style.backgroundImage = `url('${randomBg}')`;
+
+        // Initial render
+        reset();
+    </script>
+</body>
+
+</html>
