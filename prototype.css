@@ -10,8 +10,8 @@
     --ease-lux: cubic-bezier(0.22, 1, 0.36, 1);
 
     /* Layout */
-    --device-width: 500px;
-    --device-collapsed-height: 52px;
+    --device-width: 550px;
+    --device-collapsed-height: 56px;
     --device-expanded-height: 88vh;
     --device-expanded-max-height: 980px;
     --site-padding-x: 24px;
@@ -138,7 +138,7 @@ button *,
     height: 100%;
     z-index: 1;
     pointer-events: none;
-    opacity: var(--matrix-opacity, 0.2);
+    opacity: var(--matrix-opacity, 1);
 }
 
 .device-container {
@@ -154,9 +154,18 @@ button *,
 .device-container.expanded {
     height: min(var(--device-expanded-height), var(--device-expanded-max-height));
     background: var(--panel);
-    box-shadow: 0 22px 60px rgba(0, 0, 0, 0.1);
+    box-shadow: 14px 17px 20px 0px rgba(0, 0, 0, 0.1);
     border-radius: var(--site-radius);
     overflow: hidden;
+}
+
+.device-container.maximized {
+    height: 100vh !important;
+    max-height: none !important;
+}
+
+.device-container.maximized .bottom-bar {
+    display: none !important;
 }
 
 .top-bar {
@@ -166,69 +175,160 @@ button *,
     flex-shrink: 0;
     position: relative;
     background: #ffffff;
-    border-radius: var(--site-radius);
-    transition: background-color 0.45s var(--ease-lux);
+    border-radius: 999px;
+    align-items: center;
+    transition: background-color 0.45s var(--ease-lux), border-radius 0.45s var(--ease-lux), height 0.45s var(--ease-lux);
+    overflow: hidden;
 }
 
 .device-container.expanded .top-bar {
     border-radius: var(--site-radius) var(--site-radius) 0 0;
 }
 
-.bar-left,
-.bar-right {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    font-size: 12px;
-    letter-spacing: 0.01em;
-    color: #232323;
-    line-height: 1.1;
-    font-weight: 500;
-}
-
-.bar-left {
-    padding: 0 14px;
-}
-
-.bar-right {
-    justify-content: flex-start;
-    padding: 0 12px;
-}
-
-.circle {
-    width: 10px;
-    height: 10px;
-    background-color: #a6a6a6;
-    border-radius: 50%;
-    margin-right: 10px;
-    flex-shrink: 0;
-}
-
-.hover-arrow {
+/* Cutout effect for the arrow separator */
+.cutout {
     position: absolute;
-    right: 2px;
-    top: var(--device-collapsed-height);
-    width: 28px;
-    height: 22px;
-    background: #f4f4f4;
-    color: #666;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 13px;
-    opacity: 0;
-    transform: translateY(-4px);
-    transition: all 0.3s var(--ease-lux);
+    right: 58px;
+    width: 20px;
+    height: 20px;
+    background: var(--bg);
+    border-radius: 50%;
+    z-index: 2;
+    transition: opacity 0.3s;
     pointer-events: none;
 }
 
-.top-bar:hover .hover-arrow {
-    opacity: 1;
-    transform: translateY(0);
+.top-cutout {
+    top: -10px;
 }
 
-.device-container.expanded .hover-arrow,
-.device-container.expanded .top-bar:hover .hover-arrow {
+.bottom-cutout {
+    bottom: -10px;
+}
+
+.device-container.expanded .cutout {
+    opacity: 0;
+}
+
+/* New components for header */
+.bar-pill-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 16px;
+    flex: 1;
+}
+
+.spin-circle {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: conic-gradient(#111 0deg 90deg,
+            #ffb800 90deg 180deg,
+            #111 180deg 270deg,
+            #ffb800 270deg 360deg);
+    /* Spin like a second hand: 60s total, moving in 60 discrete jumps */
+    animation: spin-anim 60s steps(60, end) infinite;
+    flex-shrink: 0;
+}
+
+@keyframes spin-anim {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.badge {
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 13.5px;
+    letter-spacing: 0.05em;
+    color: #111;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.badge-green {
+    background: #e9e9e9;
+}
+
+.badge-blue {
+    background: #e9e9e9;
+}
+
+.bar-action {
+    width: 68px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.3s;
+}
+
+.device-container.expanded .bar-action {
+    pointer-events: none;
+}
+
+.action-arrow {
+    transition: transform 0.4s var(--ease-lux);
+    color: #111;
+}
+
+.top-bar:hover .action-arrow {
+    transform: rotate(90deg);
+}
+
+.device-container.expanded .top-bar .action-arrow {
+    opacity: 0;
+}
+
+/* Standalone Expand FAB */
+.expand-fab {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #f1f1f1;
+    border: none;
+    color: #444;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.85);
+    transition: opacity 0.35s var(--ease-lux), transform 0.35s var(--ease-lux), background 0.2s, color 0.2s;
+    z-index: 20;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.device-container.expanded .expand-fab {
+    opacity: 1;
+    pointer-events: auto;
+    transform: scale(1);
+    transition-delay: 0.1s;
+}
+
+.expand-fab:hover {
+    background: #111;
+    color: #fff;
+    transform: scale(1.05);
+}
+
+.expand-fab .icon-shrink {
+    display: none;
+}
+
+.device-container.maximized .expand-fab .icon-shrink {
+    display: block;
+}
+
+.device-container.maximized .expand-fab .icon-expand {
     display: none;
 }
 
@@ -314,6 +414,7 @@ button *,
     gap: var(--section-gap-sm);
     align-items: stretch;
     margin-bottom: var(--section-gap-md);
+    padding: 41px 0px 0px 0px;
 }
 
 .hero-copy h1 {
@@ -361,6 +462,7 @@ button *,
     align-items: center;
     gap: 22px;
     margin-bottom: var(--section-gap-xl);
+    padding: 20px 0px 20px 0px;
 }
 
 .brand-link {
@@ -687,8 +789,7 @@ button *,
 
 .footer {
     margin-top: var(--section-gap-md);
-    padding: 34px 0 46px;
-    background: #f0f0f0;
+    background: #ffffff;
 }
 
 .footer-grid {
@@ -699,7 +800,6 @@ button *,
 }
 
 .footer h3 {
-    font-family: 'RobotoLocal', sans-serif;
     font-weight: 700;
     font-size: 1.6rem;
     color: #424242;
@@ -707,7 +807,6 @@ button *,
 }
 
 .footer p {
-    font-family: 'RobotoLocal', sans-serif;
     font-size: 0.95rem;
     font-weight: 500;
     color: #424242;
@@ -726,16 +825,16 @@ button *,
 .footer-contact a {
     color: #424242;
     text-decoration: none;
-    font-family: 'VCRLocal', monospace;
     font-size: 1.05rem;
     letter-spacing: 0.02em;
-    transition: letter-spacing 0.5s var(--ease-lux), color 0.25s var(--ease-lux);
+    display: inline-block;
+    transition: transform 0.3s var(--ease-lux), color 0.25s var(--ease-lux);
 }
 
 .footer-links a:hover,
 .footer-contact a:hover {
     color: #262626;
-    letter-spacing: -0.01em;
+    transform: translateY(-2px);
 }
 
 .footer-hand {
@@ -811,6 +910,7 @@ button *,
 }
 
 @media (pointer: coarse) {
+
     html,
     body,
     body * {
