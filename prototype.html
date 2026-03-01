@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Mobile Portfolio Prototype</title>
+    <!-- Importing Inter for the tiny text in the bar -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="prototype.css">
+</head>
+
+<body>
+
+    <!-- JS Custom Cursor Element -->
+    <img id="custom-cursor" src="pointercursor.png" alt=""
+        style="position: fixed; top: 0; left: 0; z-index: 999999; pointer-events: none; transform: translate3d(-100px, -100px, 0); max-height: 28px; width: auto;" />
+
+    <canvas id="matrix-canvas"></canvas>
+
+    <div id="portfolio-device" class="device-container">
+        <!-- The top bar that acts as the trigger button initially -->
+        <div class="top-bar" id="top-bar">
+            <!-- (rest of device container is unaffected) -->
+            <div class="bar-left">
+                <span>Raghavs portfolio site</span>
+            </div>
+            <div class="bar-right">
+                <div class="circle"></div>
+                <span>Press to open the site</span>
+            </div>
+            <div class="hover-arrow">↓</div>
+        </div>
+
+        <div class="site-content" id="scrollable-content">
+            <!-- Intro Hero Box (No longer a bento card) -->
+            <div class="hero" style="padding: 0 0 24px 0;">
+                <h1
+                    style="font-size: 2rem; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.04em; color: #111;">
+                    Hi! I'm Raghav.</h1>
+                <p style="font-size: 1rem; color: #666; line-height: 1.5;">Mid-level <b>Digital Product Designer</b>
+                    based in London with a background in game mechanics.</p>
+            </div>
+
+            <!-- 3D Model Placeholder -->
+            <div class="model-placeholder" style="background: transparent; border: none; padding-bottom: 24px;">
+                <span class="model-text" style="color: #888; font-size: 14px;">[ 3D Model Placeholder ]</span>
+            </div>
+
+            <!-- Socials Box -->
+            <div class="bento-item delay-1" style="padding: 16px; margin-bottom: 24px;">
+                <div class="socials" style="gap: 8px;">
+                    <a href="https://www.behance.net/raghavprasanna" target="_blank" class="social-link">Behance</a>
+                    <a href="https://dribbble.com/DEDROX2K" target="_blank" class="social-link">Dribbble</a>
+                    <a href="https://www.linkedin.com/in/raghav-prasanna-b530621b0/" target="_blank"
+                        class="social-link">LinkedIn</a>
+                    <a href="https://www.artstation.com/raghavprasanna" target="_blank"
+                        class="social-link">Artstation</a>
+                    <a href="https://www.fiverr.com/dedrox_" target="_blank" class="social-link">Freelance</a>
+                </div>
+            </div>
+
+            <!-- Priority Case Studies -->
+            <!-- Case 1 -->
+            <a href="Case1.html" class="bento-item project-card delay-2" style="margin-bottom: 24px; display: block;">
+                <div class="badge" style="position: absolute; top: 16px; left: 16px; z-index: 10;">App</div>
+                <img src="images/port1.jpg" alt="Clear Breath App" class="project-image">
+                <div class="project-info">
+                    <h3 class="project-title">Clear Breath CBT App</h3>
+                    <p class="project-summary">App to assist addicts in quitting smoking by integrating Cognitive
+                        Behavioral Therapy techniques.</p>
+                    <p class="project-summary" style="font-size: 0.85rem; color: #111; margin-bottom: 0;">
+                        <strong>Impact:</strong> Made the app 3X more efficient.
+                    </p>
+                </div>
+            </a>
+
+            <!-- Case 2 -->
+            <a href="Case2.html" class="bento-item project-card delay-2" style="margin-bottom: 24px; display: block;">
+                <div class="badge" style="position: absolute; top: 16px; left: 16px; z-index: 10;">AR Application</div>
+                <img src="images/port2.jpg" alt="AR Airport Navigation" class="project-image">
+                <div class="project-info">
+                    <h3 class="project-title">AR Airport Navigation</h3>
+                    <p class="project-summary">AR app designed to simplify navigation in complex airports and enhance
+                        the travel experience.</p>
+                </div>
+            </a>
+
+            <!-- Additional Projects -->
+            <a href="https://www.behance.net/gallery/200529521/CLEAR-BREATH-case-study-No-smoking-app" target="_blank"
+                class="bento-item project-card delay-3" style="margin-bottom: 24px; display: block;">
+                <img src="images/portpie 2.png" alt="Detailed Smoking App Project" class="project-image">
+                <div class="project-info">
+                    <span class="badge" style="margin-bottom: 8px;">Case Study</span>
+                    <h3 class="project-title">Clear Breath Detail</h3>
+                </div>
+            </a>
+
+            <a href="https://medium.com/@RaghavPrasannaUX/case-study-gym-finder-app-3ac05a38abe3" target="_blank"
+                class="bento-item project-card delay-3" style="margin-bottom: 24px; display: block;">
+                <img src="images/portpie 3.png" alt="Gym Finder App" class="project-image">
+                <div class="project-info">
+                    <span class="badge" style="margin-bottom: 8px;">Mini Case Study</span>
+                    <h3 class="project-title">Gym Finder Application</h3>
+                </div>
+            </a>
+
+            <!-- Desk Research -->
+            <a href="case3.html" class="bento-item project-card delay-3" style="margin-bottom: 24px; display: block;">
+                <img src="images/port4.jpg" alt="Desk Research" class="project-image">
+                <div class="project-info">
+                    <span class="badge" style="margin-bottom: 8px;">Research</span>
+                    <h3 class="project-title">Desk Research</h3>
+                </div>
+            </a>
+
+            <!-- Fiverr image -->
+            <div style="margin: 40px 0 24px;">
+                <a class="justify-content-center align-items-center" target="_blank"
+                    href="https://www.fiverr.com/dedrox_"
+                    style="display: block; width: 100%; transition: transform 0.3s ease; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.05); cursor: pointer;">
+                    <img style="width: 100%; height: auto; display: block;" src="images/allrevs.png"
+                        alt="Fiverr Reviews">
+                </a>
+            </div>
+
+            <!-- Consultation button -->
+            <div id="pagesec4" style="margin: 0 0 40px; text-align: center;">
+                <div class="consu">
+                    <div class="custom-container text-center consutex"
+                        style="margin-bottom: 20px; font-family: 'Instrument Serif', Georgia, serif; font-size: 1.5rem; line-height: 1.2; color: #242424; font-weight: 500;">
+                        <span>Have an idea? Let's talk. I'm currently interested in projects related to games,
+                            softwares, Applications or Corporate projects. <br></span>
+                    </div>
+                    <a href="index.html" style="display: inline-block;">
+                        <div class="consubtn"
+                            style="background-color: #f0f0f0; color: #242424; border-radius: 100px; font-size: 1rem; padding: 1rem 1.5rem; font-weight: 600; letter-spacing: 0.1rem; box-shadow: inset 0 1px 0 0 #f4f4f4, 0 1px 0 0 #efefef, 0 2px 0 0 #ececec, 0 4px 0 0 #e0e0e0, 0 5px 0 0 #dedede; transition: transform 0.25s ease, box-shadow 0.25s ease; cursor: pointer;">
+                            SEND ME A QUICK MESSAGE
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="bottom-bar"></div>
+    </div>
+
+    <script>
+        // --------------------------------------------------------
+        // EXPAND / COLLAPSE UI LOGIC
+        // --------------------------------------------------------
+        const device = document.getElementById('portfolio-device');
+        const topBar = document.getElementById('top-bar');
+
+        topBar.addEventListener('click', (e) => {
+            if (!device.classList.contains('expanded')) {
+                device.classList.add('expanded');
+                e.stopPropagation();
+            }
+        });
+
+        document.body.addEventListener('click', (e) => {
+            if (device.classList.contains('expanded') && !device.contains(e.target)) {
+                device.classList.remove('expanded');
+            }
+        });
+
+        // --------------------------------------------------------
+        // MATRIX RIPPLE BACKGROUND LOGIC
+        // --------------------------------------------------------
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+        const scrollableContent = document.getElementById('scrollable-content');
+
+        // Settings
+        const fontSize = 14;
+        const fontFace = 'monospace';
+        const characters = '=-✦✦✦✦.   .,"/o';
+        let cols, rows;
+        let grid = [];
+
+        // Track active ripples
+        // { x, y, radius, maxRadius, speed, strength }
+        let ripples = [];
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            cols = Math.floor(canvas.width / fontSize);
+            rows = Math.floor(canvas.height / fontSize);
+            initGrid();
+        }
+
+        function initGrid() {
+            grid = [];
+            for (let i = 0; i < cols; i++) {
+                grid[i] = [];
+                for (let j = 0; j < rows; j++) {
+                    grid[i][j] = {
+                        char: characters.charAt(Math.floor(Math.random() * characters.length)),
+                        baseColor: 100, // Bright enough to show on dark bg
+                        currentColor: 100,
+                        lastUpdate: Math.random() * 100 // randomize char swap
+                    };
+                }
+            }
+        }
+
+        // Add a ripple to the screen
+        function createRipple(px, py, maxRadius = 300) {
+            ripples.push({
+                x: px,
+                y: py,
+                radius: 0,
+                maxRadius: maxRadius,
+                speed: 3,     // Slower expansion so they linger more
+                thickness: 60 // Much thicker wave band
+            });
+        }
+
+        // Update mouse position and spawn a tiny ripple on move
+        let lastMouseX = -1;
+        let lastMouseY = -1;
+        window.addEventListener('mousemove', (e) => {
+            // Spacing them out a bit so it doesn't overload
+            const dist = Math.hypot(e.clientX - lastMouseX, e.clientY - lastMouseY);
+            if (dist > 40) {
+                createRipple(e.clientX, e.clientY, 150);
+                lastMouseX = e.clientX;
+                lastMouseY = e.clientY;
+            }
+        });
+
+        // --------------------------------------------------------
+        // CUSTOM JS CURSOR LOGIC
+        // --------------------------------------------------------
+        const cursorImg = document.getElementById('custom-cursor');
+
+        window.addEventListener('mousemove', (e) => {
+            cursorImg.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+        });
+
+        document.body.addEventListener('mouseover', (e) => {
+            const el = e.target;
+            const isLink = el.closest('a, button, .top-bar, .social-link, .project-card, .hover-arrow, .consubtn');
+            const isText = el.closest('p, span, h1, h2, h3, h4, h5, h6, .bar-left, .bar-right, .model-text');
+
+            if (isLink) {
+                cursorImg.src = 'linkcursor.png';
+            } else if (isText) {
+                cursorImg.src = 'textcursor.png';
+            } else {
+                cursorImg.src = 'pointercursor.png';
+            }
+        });
+
+        function draw() {
+            ctx.fillStyle = '#111111'; // Pure dark background
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.font = fontSize + 'px ' + fontFace;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            // Process ripples expansion and death
+            for (let i = ripples.length - 1; i >= 0; i--) {
+                ripples[i].radius += ripples[i].speed;
+                if (ripples[i].radius > ripples[i].maxRadius + ripples[i].thickness) {
+                    ripples.splice(i, 1);
+                }
+            }
+
+            // Draw grid
+            for (let i = 0; i < cols; i++) {
+                for (let j = 0; j < rows; j++) {
+                    const cell = grid[i][j];
+                    const cx = i * fontSize + fontSize / 2;
+                    const cy = j * fontSize + fontSize / 2;
+
+                    // Calculate color based on distance to any ripple
+                    let targetColor = cell.baseColor;
+                    let isRippled = false;
+
+                    for (const r of ripples) {
+                        const dist = Math.hypot(cx - r.x, cy - r.y);
+                        // Is this cell currently on the wavefront?
+                        if (dist > r.radius - r.thickness && dist < r.radius) {
+
+                            // Diminish wave strength as it travels farther
+                            const decay = Math.pow(1 - (r.radius / r.maxRadius), 0.5);
+
+                            if (decay > 0.1) {
+                                // Tag cell as currently active in the ripple band
+                                isRippled = true;
+                            }
+                        }
+                    }
+
+                    // Scramble characters
+                    if (isRippled) {
+                        // Rapidly scramble if currently in a wave
+                        if (Math.random() > 0.3) {
+                            cell.char = characters.charAt(Math.floor(Math.random() * characters.length));
+                        }
+                    } else {
+                        // Slow ambient scrambling for the rest of the board
+                        cell.lastUpdate++;
+                        if (cell.lastUpdate > 150) {
+                            if (Math.random() > 0.95) {
+                                cell.char = characters.charAt(Math.floor(Math.random() * characters.length));
+                            }
+                            cell.lastUpdate = 0;
+                        }
+                    }
+
+                    // We removed the target color fading logic, so we just lock the color to the base grey.
+                    cell.currentColor = cell.baseColor;
+
+                    const colorVal = Math.floor(cell.currentColor);
+                    ctx.fillStyle = `rgb(${colorVal}, ${colorVal}, ${colorVal})`;
+                    ctx.fillText(cell.char, cx, cy);
+                }
+            }
+
+            requestAnimationFrame(draw);
+        }
+
+        // Init
+        window.addEventListener('resize', resize);
+        resize();
+        draw();
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,173 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    cursor: none !important;
+    /* Globally disable native cursor */
+}
+
+body {
+    background-color: #111;
+    /* Fallback dark bg */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'Inter', sans-serif;
+    overflow: hidden;
+}
+
+/* JS Custom Cursor handles styling dynamically */
+
+#matrix-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    /* Behind the device container */
+    pointer-events: none;
+    /* Let clicks pass through if needed, though we will handle mousemove on window */
+}
+
+.device-container {
+    position: relative;
+    width: 380px;
+    /* Width matching a mobile UI constraint */
+    height: 48px;
+    /* Initial height = just the bar */
+    display: flex;
+    flex-direction: column;
+    transition: all 0.5s cubic-bezier(0.8, 0, 0.2, 1);
+    background-color: transparent;
+    z-index: 10;
+}
+
+.device-container.expanded {
+    height: 80vh;
+    /* Expands to a mobile phone height vertically */
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    background-color: #ffffff;
+    border-radius: 0;
+    overflow: hidden;
+}
+
+.top-bar {
+    display: flex;
+    height: 48px;
+    width: 100%;
+    cursor: pointer;
+    flex-shrink: 0;
+    position: relative;
+}
+
+.device-container.expanded .top-bar {
+    cursor: default;
+    /* Remove expand cursor when already open */
+}
+
+.bar-left {
+    flex: 1;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    padding-left: 16px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #111;
+}
+
+.bar-right {
+    flex: 1;
+    background-color: #eeb200;
+    /* Match the gold/yellow */
+    display: flex;
+    align-items: center;
+    padding-left: 12px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #111;
+}
+
+.circle {
+    width: 18px;
+    height: 18px;
+    background-color: #d9d9d9;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+/* The arrow hanging piece matching the image */
+.hover-arrow {
+    position: absolute;
+    right: 0;
+    top: 48px;
+    width: 24px;
+    height: 24px;
+    background-color: #999999;
+    color: #111;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    font-weight: bold;
+    opacity: 0;
+    transform: translateY(-5px);
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.top-bar:hover .hover-arrow {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.device-container.expanded .hover-arrow,
+.device-container.expanded .top-bar:hover .hover-arrow {
+    display: none;
+    opacity: 0;
+}
+
+/* Inner content area */
+.site-content {
+    flex: 1;
+    background-color: #ffffff;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    overflow-y: auto;
+    overflow-x: hidden;
+    /* Added strict x-overflow rule to prevent horizontal scrolling */
+    padding: 32px 24px;
+    visibility: hidden;
+}
+
+.device-container.expanded .site-content {
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0.3s;
+    /* Show content smoothly after expansion */
+}
+
+/* Make sure all project images behave strictly responsively inside out padding */
+.project-image {
+    max-width: 100%;
+    width: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* The bottom yellow border visible in the expanded image */
+.bottom-bar {
+    height: 8px;
+    background-color: #eeb200;
+    width: 100%;
+    flex-shrink: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.device-container.expanded .bottom-bar {
+    opacity: 1;
+    transition-delay: 0.3s;
+}
