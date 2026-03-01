@@ -4,17 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Mobile Portfolio Prototype</title>
-    <!-- Importing Inter for the tiny text in the bar -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700&display=swap" rel="stylesheet">
+    <title>Minimal UX Portfolio Prototype</title>
     <link rel="stylesheet" href="prototype.css">
 </head>
 
 <body>
-
-    <!-- JS Custom Cursor Element -->
-    <img id="custom-cursor" src="pointercursor.png" alt=""
-        style="position: fixed; top: 0; left: 0; z-index: 999999; pointer-events: none; transform: translate3d(-100px, -100px, 0); max-height: 28px; width: auto;" />
 
     <canvas id="matrix-canvas"></canvas>
 
@@ -39,7 +33,7 @@
                     style="font-size: 2rem; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.04em; color: #111;">
                     Hi! I'm Raghav.</h1>
                 <p style="font-size: 1rem; color: #666; line-height: 1.5;">Mid-level <b>Digital Product Designer</b>
-                    based in London with a background in game mechanics.</p>
+                    based in the US with a background in game mechanics.</p>
             </div>
 
             <!-- 3D Model Placeholder -->
@@ -167,169 +161,256 @@
         });
 
         // --------------------------------------------------------
-        // MATRIX RIPPLE BACKGROUND LOGIC
+        // LIQUID MATRIX BACKGROUND LOGIC
         // --------------------------------------------------------
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
-        const scrollableContent = document.getElementById('scrollable-content');
-
-        // Settings
-        const fontSize = 14;
         const fontFace = 'monospace';
-        const characters = '=-✦✦✦✦.   .,"/o';
-        let cols, rows;
-        let grid = [];
+        const characters = '.:`+-*/^';
+        const cellSize = 10;
+        const maxDpr = Math.min(window.devicePixelRatio || 1, 1.2);
+        const renderScale = 0.5;
+        const targetFps = 30;
+        const frameInterval = 1000 / targetFps;
+        const maxTrailPoints = 20;
+        const trailFade = 0.94;
 
-        // Track active ripples
-        // { x, y, radius, maxRadius, speed, strength }
-        let ripples = [];
+        let cols = 0;
+        let rows = 0;
+        let grid = [];
+        let cssToCanvasX = 1;
+        let cssToCanvasY = 1;
+        let lastFrameTime = 0;
+        let trail = [];
+
+        const pointer = {
+            x: 0,
+            y: 0,
+            tx: 0,
+            ty: 0,
+            active: false
+        };
 
         function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            cols = Math.floor(canvas.width / fontSize);
-            rows = Math.floor(canvas.height / fontSize);
+            const width = Math.max(360, Math.floor(window.innerWidth * maxDpr * renderScale));
+            const height = Math.max(220, Math.floor(window.innerHeight * maxDpr * renderScale));
+            canvas.width = width;
+            canvas.height = height;
+            canvas.style.width = window.innerWidth + 'px';
+            canvas.style.height = window.innerHeight + 'px';
+
+            cssToCanvasX = canvas.width / window.innerWidth;
+            cssToCanvasY = canvas.height / window.innerHeight;
+            cols = Math.floor(canvas.width / cellSize);
+            rows = Math.floor(canvas.height / cellSize);
             initGrid();
         }
 
         function initGrid() {
-            grid = [];
+            grid = new Array(cols * rows);
             for (let i = 0; i < cols; i++) {
-                grid[i] = [];
                 for (let j = 0; j < rows; j++) {
-                    grid[i][j] = {
+                    const idx = i * rows + j;
+                    grid[idx] = {
+                        x: i * cellSize + cellSize / 2,
+                        y: j * cellSize + cellSize / 2,
                         char: characters.charAt(Math.floor(Math.random() * characters.length)),
-                        baseColor: 100, // Bright enough to show on dark bg
-                        currentColor: 100,
-                        lastUpdate: Math.random() * 100 // randomize char swap
+                        baseColor: 120 + Math.floor(Math.random() * 16),
+                        currentColor: 126,
+                        lastUpdate: Math.random() * 90
                     };
                 }
             }
         }
 
-        // Add a ripple to the screen
-        function createRipple(px, py, maxRadius = 300) {
-            ripples.push({
-                x: px,
-                y: py,
-                radius: 0,
-                maxRadius: maxRadius,
-                speed: 3,     // Slower expansion so they linger more
-                thickness: 60 // Much thicker wave band
-            });
+        function addTrailPoint(x, y) {
+            const last = trail[trail.length - 1];
+            if (!last) {
+                trail.push({ x, y, life: 1 });
+            } else {
+                const dx = x - last.x;
+                const dy = y - last.y;
+                if ((dx * dx + dy * dy) > 30) {
+                    trail.push({ x, y, life: 1 });
+                }
+            }
+
+            if (trail.length > maxTrailPoints) {
+                trail.shift();
+            }
         }
 
-        // Update mouse position and spawn a tiny ripple on move
-        let lastMouseX = -1;
-        let lastMouseY = -1;
-        window.addEventListener('mousemove', (e) => {
-            // Spacing them out a bit so it doesn't overload
-            const dist = Math.hypot(e.clientX - lastMouseX, e.clientY - lastMouseY);
-            if (dist > 40) {
-                createRipple(e.clientX, e.clientY, 150);
-                lastMouseX = e.clientX;
-                lastMouseY = e.clientY;
+        function updateTrail() {
+            if (pointer.active) {
+                pointer.x += (pointer.tx - pointer.x) * 0.2;
+                pointer.y += (pointer.ty - pointer.y) * 0.2;
+                addTrailPoint(pointer.x, pointer.y);
             }
-        });
 
-        // --------------------------------------------------------
-        // CUSTOM JS CURSOR LOGIC
-        // --------------------------------------------------------
-        const cursorImg = document.getElementById('custom-cursor');
-
-        window.addEventListener('mousemove', (e) => {
-            cursorImg.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
-        });
-
-        document.body.addEventListener('mouseover', (e) => {
-            const el = e.target;
-            const isLink = el.closest('a, button, .top-bar, .social-link, .project-card, .hover-arrow, .consubtn');
-            const isText = el.closest('p, span, h1, h2, h3, h4, h5, h6, .bar-left, .bar-right, .model-text');
-
-            if (isLink) {
-                cursorImg.src = 'linkcursor.png';
-            } else if (isText) {
-                cursorImg.src = 'textcursor.png';
-            } else {
-                cursorImg.src = 'pointercursor.png';
+            for (let i = trail.length - 1; i >= 0; i--) {
+                trail[i].life *= trailFade;
+                if (trail[i].life < 0.035) {
+                    trail.splice(i, 1);
+                }
             }
-        });
+        }
 
-        function draw() {
-            ctx.fillStyle = '#111111'; // Pure dark background
+        function pointToSegmentDistSq(px, py, ax, ay, bx, by) {
+            const abx = bx - ax;
+            const aby = by - ay;
+            const apx = px - ax;
+            const apy = py - ay;
+            const ab2 = abx * abx + aby * aby;
+            if (ab2 < 0.0001) {
+                return apx * apx + apy * apy;
+            }
+            const t = Math.max(0, Math.min(1, (apx * abx + apy * aby) / ab2));
+            const qx = ax + abx * t;
+            const qy = ay + aby * t;
+            const dx = px - qx;
+            const dy = py - qy;
+            return dx * dx + dy * dy;
+        }
+
+        function liquidInfluence(x, y) {
+            let strongest = 0;
+            if (trail.length < 2) return strongest;
+
+            const radius = 62 * renderScale * maxDpr;
+            const radiusSq = radius * radius;
+
+            for (let i = 1; i < trail.length; i++) {
+                const a = trail[i - 1];
+                const b = trail[i];
+                const life = (a.life + b.life) * 0.5;
+                if (life < 0.06) continue;
+
+                const d2 = pointToSegmentDistSq(x, y, a.x, a.y, b.x, b.y);
+                if (d2 > radiusSq) continue;
+
+                const norm = 1 - (d2 / radiusSq);
+                const influence = norm * norm * life;
+                if (influence > strongest) {
+                    strongest = influence;
+                }
+            }
+            return strongest;
+        }
+
+        function drawGradientField(t) {
+            ctx.fillStyle = '#f4f4f4';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            ctx.font = fontSize + 'px ' + fontFace;
+            const time = t * 0.00035;
+            const minSide = Math.min(canvas.width, canvas.height);
+
+            const g1x = canvas.width * (0.24 + Math.sin(time * 1.2) * 0.08);
+            const g1y = canvas.height * (0.28 + Math.cos(time * 0.9) * 0.1);
+            const g1r = minSide * 0.78;
+            const grad1 = ctx.createRadialGradient(g1x, g1y, 0, g1x, g1y, g1r);
+            grad1.addColorStop(0, 'rgba(222, 222, 222, 0.26)');
+            grad1.addColorStop(1, 'rgba(222, 222, 222, 0)');
+            ctx.fillStyle = grad1;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            const g2x = canvas.width * (0.72 + Math.cos(time * 0.8) * 0.09);
+            const g2y = canvas.height * (0.64 + Math.sin(time * 1.1) * 0.08);
+            const g2r = minSide * 0.7;
+            const grad2 = ctx.createRadialGradient(g2x, g2y, 0, g2x, g2y, g2r);
+            grad2.addColorStop(0, 'rgba(205, 205, 205, 0.2)');
+            grad2.addColorStop(1, 'rgba(205, 205, 205, 0)');
+            ctx.fillStyle = grad2;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function drawTrailWash() {
+            if (trail.length < 2) return;
+            ctx.save();
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+
+            for (let i = 1; i < trail.length; i++) {
+                const a = trail[i - 1];
+                const b = trail[i];
+                const life = (a.life + b.life) * 0.5;
+                if (life < 0.05) continue;
+                ctx.strokeStyle = `rgba(176, 176, 176, ${0.18 * life})`;
+                ctx.lineWidth = (8 + 64 * life) * renderScale;
+                ctx.beginPath();
+                ctx.moveTo(a.x, a.y);
+                ctx.lineTo(b.x, b.y);
+                ctx.stroke();
+            }
+            ctx.restore();
+        }
+
+        function draw(timestamp) {
+            if (timestamp - lastFrameTime < frameInterval) {
+                requestAnimationFrame(draw);
+                return;
+            }
+            lastFrameTime = timestamp;
+
+            updateTrail();
+            drawGradientField(timestamp);
+            drawTrailWash();
+
+            ctx.font = cellSize + 'px ' + fontFace;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
 
-            // Process ripples expansion and death
-            for (let i = ripples.length - 1; i >= 0; i--) {
-                ripples[i].radius += ripples[i].speed;
-                if (ripples[i].radius > ripples[i].maxRadius + ripples[i].thickness) {
-                    ripples.splice(i, 1);
-                }
-            }
+            for (let i = 0; i < grid.length; i++) {
+                const cell = grid[i];
+                const influence = liquidInfluence(cell.x, cell.y);
 
-            // Draw grid
-            for (let i = 0; i < cols; i++) {
-                for (let j = 0; j < rows; j++) {
-                    const cell = grid[i][j];
-                    const cx = i * fontSize + fontSize / 2;
-                    const cy = j * fontSize + fontSize / 2;
-
-                    // Calculate color based on distance to any ripple
-                    let targetColor = cell.baseColor;
-                    let isRippled = false;
-
-                    for (const r of ripples) {
-                        const dist = Math.hypot(cx - r.x, cy - r.y);
-                        // Is this cell currently on the wavefront?
-                        if (dist > r.radius - r.thickness && dist < r.radius) {
-
-                            // Diminish wave strength as it travels farther
-                            const decay = Math.pow(1 - (r.radius / r.maxRadius), 0.5);
-
-                            if (decay > 0.1) {
-                                // Tag cell as currently active in the ripple band
-                                isRippled = true;
-                            }
-                        }
+                if (influence > 0.05) {
+                    if (Math.random() < (0.2 + influence * 0.45)) {
+                        cell.char = characters.charAt(Math.floor(Math.random() * characters.length));
                     }
-
-                    // Scramble characters
-                    if (isRippled) {
-                        // Rapidly scramble if currently in a wave
-                        if (Math.random() > 0.3) {
+                    const liquidTarget = Math.max(66, cell.baseColor - influence * 62);
+                    cell.currentColor += (liquidTarget - cell.currentColor) * 0.32;
+                } else {
+                    cell.lastUpdate++;
+                    if (cell.lastUpdate > 130) {
+                        if (Math.random() > 0.988) {
                             cell.char = characters.charAt(Math.floor(Math.random() * characters.length));
                         }
-                    } else {
-                        // Slow ambient scrambling for the rest of the board
-                        cell.lastUpdate++;
-                        if (cell.lastUpdate > 150) {
-                            if (Math.random() > 0.95) {
-                                cell.char = characters.charAt(Math.floor(Math.random() * characters.length));
-                            }
-                            cell.lastUpdate = 0;
-                        }
+                        cell.lastUpdate = 0;
                     }
-
-                    // We removed the target color fading logic, so we just lock the color to the base grey.
-                    cell.currentColor = cell.baseColor;
-
-                    const colorVal = Math.floor(cell.currentColor);
-                    ctx.fillStyle = `rgb(${colorVal}, ${colorVal}, ${colorVal})`;
-                    ctx.fillText(cell.char, cx, cy);
+                    cell.currentColor += (cell.baseColor - cell.currentColor) * 0.08;
                 }
+
+                const v = Math.floor(cell.currentColor);
+                ctx.fillStyle = `rgb(${v}, ${v}, ${v})`;
+                ctx.fillText(cell.char, cell.x, cell.y);
             }
 
             requestAnimationFrame(draw);
         }
 
+        window.addEventListener('mousemove', (e) => {
+            pointer.tx = e.clientX * cssToCanvasX;
+            pointer.ty = e.clientY * cssToCanvasY;
+            if (!pointer.active) {
+                pointer.active = true;
+                pointer.x = pointer.tx;
+                pointer.y = pointer.ty;
+                addTrailPoint(pointer.x, pointer.y);
+            }
+        });
+
+        window.addEventListener('mouseleave', () => {
+            pointer.active = false;
+        });
+
+        window.addEventListener('blur', () => {
+            pointer.active = false;
+        });
+
         // Init
         window.addEventListener('resize', resize);
         resize();
-        draw();
+        requestAnimationFrame(draw);
 
     </script>
 </body>
