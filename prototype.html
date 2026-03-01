@@ -63,6 +63,36 @@
                 </a>
             </nav>
 
+            <section class="company-dock-section reveal delay-2" aria-label="Companies worked with">
+                <p class="dock-kicker">Companies I've worked with</p>
+                <div class="company-dock" id="company-dock">
+                    <button class="dock-item" type="button" aria-label="Company 1 placeholder">
+                        <span class="dock-tooltip">Company 1</span>
+                        <span class="dock-logo">C1</span>
+                    </button>
+                    <button class="dock-item" type="button" aria-label="Company 2 placeholder">
+                        <span class="dock-tooltip">Company 2</span>
+                        <span class="dock-logo">C2</span>
+                    </button>
+                    <button class="dock-item" type="button" aria-label="Company 3 placeholder">
+                        <span class="dock-tooltip">Company 3</span>
+                        <span class="dock-logo">C3</span>
+                    </button>
+                    <button class="dock-item" type="button" aria-label="Company 4 placeholder">
+                        <span class="dock-tooltip">Company 4</span>
+                        <span class="dock-logo">C4</span>
+                    </button>
+                    <button class="dock-item" type="button" aria-label="Company 5 placeholder">
+                        <span class="dock-tooltip">Company 5</span>
+                        <span class="dock-logo">C5</span>
+                    </button>
+                    <button class="dock-item" type="button" aria-label="Company 6 placeholder">
+                        <span class="dock-tooltip">Company 6</span>
+                        <span class="dock-logo">C6</span>
+                    </button>
+                </div>
+            </section>
+
             <section class="case-studies reveal delay-2">
                 <a href="Case1.html" class="case-card">
                     <img src="images/port1.jpg" alt="Clear Breath App">
@@ -119,6 +149,11 @@
                         </div>
                     </a>
                 </div>
+
+                <section class="github-chart-block" aria-label="GitHub contributions">
+                    <img id="github-chart-img" src="https://ghchart.rshah.org/111111/raghavprasanna"
+                        alt="GitHub contributions chart">
+                </section>
             </section>
 
             <section class="full-bleed-wrap reveal delay-3" aria-label="Featured image">
@@ -135,9 +170,12 @@
             </section>
 
             <section class="contact-block reveal delay-5">
-                <a href="index.html" class="contact-btn">Send Me A Quick Message</a>
-                <p class="contact-meta">United States</p>
-                <p class="contact-meta" id="live-time">--</p>
+                <p class="contact-location">
+                    <span class="location-main">New York, NY</span>
+                    <span class="location-sub">(currently traveling)</span>
+                </p>
+                <p class="contact-time" id="live-time">--</p>
+                <a href="index.html" class="contact-btn">Contact ↗</a>
             </section>
 
             <footer class="footer reveal delay-5">
@@ -438,6 +476,46 @@
         });
 
         // --------------------------------------------------------
+        // COMPANY DOCK HOVER MAGNIFICATION
+        // --------------------------------------------------------
+        function initCompanyDock() {
+            const dock = document.getElementById('company-dock');
+            if (!dock) return;
+            const items = Array.from(dock.querySelectorAll('.dock-item'));
+            if (!items.length) return;
+
+            const maxDistance = 160;
+            const maxScaleBoost = 0.85;
+            const maxLift = 18;
+
+            function resetDock() {
+                items.forEach((item) => {
+                    item.style.setProperty('--scale', '1');
+                    item.style.setProperty('--lift', '0px');
+                });
+            }
+
+            dock.addEventListener('mousemove', (e) => {
+                const pointerX = e.clientX;
+                items.forEach((item) => {
+                    const rect = item.getBoundingClientRect();
+                    const centerX = rect.left + rect.width * 0.5;
+                    const distance = Math.abs(pointerX - centerX);
+                    const t = Math.max(0, 1 - (distance / maxDistance));
+                    const eased = t * t;
+                    const scale = 1 + (eased * maxScaleBoost);
+                    const lift = -(eased * maxLift);
+                    item.style.setProperty('--scale', scale.toFixed(3));
+                    item.style.setProperty('--lift', `${lift.toFixed(2)}px`);
+                });
+            });
+
+            dock.addEventListener('mouseleave', resetDock);
+            window.addEventListener('blur', resetDock);
+            resetDock();
+        }
+
+        // --------------------------------------------------------
         // PIXEL DRAW CANVAS
         // --------------------------------------------------------
         const pixelCanvas = document.getElementById('pixel-canvas');
@@ -525,23 +603,23 @@
 
         function updateLiveTime() {
             const now = new Date();
-            const dateFmt = new Intl.DateTimeFormat(undefined, {
-                weekday: 'long',
-                month: 'long',
-                day: 'numeric',
-                year: 'numeric'
-            }).format(now);
             const timeFmt = new Intl.DateTimeFormat(undefined, {
                 hour: 'numeric',
                 minute: '2-digit'
             }).format(now);
-            liveTime.textContent = `${dateFmt} · ${timeFmt}`;
+            const dayFmt = new Intl.DateTimeFormat(undefined, {
+                weekday: 'short',
+                month: 'short',
+                day: 'numeric'
+            }).format(now);
+            liveTime.textContent = `${timeFmt} ${dayFmt}`;
         }
 
         // Init
         window.addEventListener('resize', resize);
         resize();
         requestAnimationFrame(draw);
+        initCompanyDock();
         buildPalette();
         clearPixelCanvas();
         updateLiveTime();
