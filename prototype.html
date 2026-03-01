@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minimal UX Portfolio Prototype</title>
     <link rel="stylesheet" href="prototype.css">
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 </head>
 
 <body>
@@ -13,137 +14,166 @@
     <canvas id="matrix-canvas"></canvas>
 
     <div id="portfolio-device" class="device-container">
-        <!-- The top bar that acts as the trigger button initially -->
         <div class="top-bar" id="top-bar">
-            <!-- (rest of device container is unaffected) -->
             <div class="bar-left">
-                <span>Raghavs portfolio site</span>
+                <span>Raghav's Portfolio</span>
             </div>
             <div class="bar-right">
                 <div class="circle"></div>
-                <span>Press to open the site</span>
+                <span>Press to open</span>
             </div>
             <div class="hover-arrow">↓</div>
         </div>
 
         <div class="site-content" id="scrollable-content">
-            <!-- Intro Hero Box (No longer a bento card) -->
-            <div class="hero" style="padding: 0 0 24px 0;">
-                <h1
-                    style="font-size: 2rem; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.04em; color: #111;">
-                    Hi! I'm Raghav.</h1>
-                <p style="font-size: 1rem; color: #666; line-height: 1.5;">Mid-level <b>Digital Product Designer</b>
-                    based in the US with a background in game mechanics.</p>
-            </div>
-
-            <!-- 3D Model Placeholder -->
-            <div class="model-placeholder" style="background: transparent; border: none; padding-bottom: 24px;">
-                <span class="model-text" style="color: #888; font-size: 14px;">[ 3D Model Placeholder ]</span>
-            </div>
-
-            <!-- Socials Box -->
-            <div class="bento-item delay-1" style="padding: 16px; margin-bottom: 24px;">
-                <div class="socials" style="gap: 8px;">
-                    <a href="https://www.behance.net/raghavprasanna" target="_blank" class="social-link">Behance</a>
-                    <a href="https://dribbble.com/DEDROX2K" target="_blank" class="social-link">Dribbble</a>
-                    <a href="https://www.linkedin.com/in/raghav-prasanna-b530621b0/" target="_blank"
-                        class="social-link">LinkedIn</a>
-                    <a href="https://www.artstation.com/raghavprasanna" target="_blank"
-                        class="social-link">Artstation</a>
-                    <a href="https://www.fiverr.com/dedrox_" target="_blank" class="social-link">Freelance</a>
-                </div>
-            </div>
-
-            <!-- Priority Case Studies -->
-            <!-- Case 1 -->
-            <a href="Case1.html" class="bento-item project-card delay-2" style="margin-bottom: 24px; display: block;">
-                <div class="badge" style="position: absolute; top: 16px; left: 16px; z-index: 10;">App</div>
-                <img src="images/port1.jpg" alt="Clear Breath App" class="project-image">
-                <div class="project-info">
-                    <h3 class="project-title">Clear Breath CBT App</h3>
-                    <p class="project-summary">App to assist addicts in quitting smoking by integrating Cognitive
-                        Behavioral Therapy techniques.</p>
-                    <p class="project-summary" style="font-size: 0.85rem; color: #111; margin-bottom: 0;">
-                        <strong>Impact:</strong> Made the app 3X more efficient.
+            <section class="hero-grid reveal delay-1">
+                <div class="hero-copy">
+                    <h1>Designing products that feel effortless.</h1>
+                    <p>
+                        Product designer based in the US with a game-mechanics background.
+                        I focus on fast clarity, practical UX decisions, and clean execution.
                     </p>
                 </div>
-            </a>
-
-            <!-- Case 2 -->
-            <a href="Case2.html" class="bento-item project-card delay-2" style="margin-bottom: 24px; display: block;">
-                <div class="badge" style="position: absolute; top: 16px; left: 16px; z-index: 10;">AR Application</div>
-                <img src="images/port2.jpg" alt="AR Airport Navigation" class="project-image">
-                <div class="project-info">
-                    <h3 class="project-title">AR Airport Navigation</h3>
-                    <p class="project-summary">AR app designed to simplify navigation in complex airports and enhance
-                        the travel experience.</p>
+                <div class="hero-model">
+                    <model-viewer src="threeD/Tintanic.glb" alt="3D model" camera-controls auto-rotate
+                        rotation-per-second="20deg" exposure="1.1" shadow-intensity="0"></model-viewer>
                 </div>
-            </a>
+            </section>
 
-            <!-- Additional Projects -->
-            <a href="https://www.behance.net/gallery/200529521/CLEAR-BREATH-case-study-No-smoking-app" target="_blank"
-                class="bento-item project-card delay-3" style="margin-bottom: 24px; display: block;">
-                <img src="images/portpie 2.png" alt="Detailed Smoking App Project" class="project-image">
-                <div class="project-info">
-                    <span class="badge" style="margin-bottom: 8px;">Case Study</span>
-                    <h3 class="project-title">Clear Breath Detail</h3>
-                </div>
-            </a>
-
-            <a href="https://medium.com/@RaghavPrasannaUX/case-study-gym-finder-app-3ac05a38abe3" target="_blank"
-                class="bento-item project-card delay-3" style="margin-bottom: 24px; display: block;">
-                <img src="images/portpie 3.png" alt="Gym Finder App" class="project-image">
-                <div class="project-info">
-                    <span class="badge" style="margin-bottom: 8px;">Mini Case Study</span>
-                    <h3 class="project-title">Gym Finder Application</h3>
-                </div>
-            </a>
-
-            <!-- Desk Research -->
-            <a href="case3.html" class="bento-item project-card delay-3" style="margin-bottom: 24px; display: block;">
-                <img src="images/port4.jpg" alt="Desk Research" class="project-image">
-                <div class="project-info">
-                    <span class="badge" style="margin-bottom: 8px;">Research</span>
-                    <h3 class="project-title">Desk Research</h3>
-                </div>
-            </a>
-
-            <!-- Fiverr image -->
-            <div style="margin: 40px 0 24px;">
-                <a class="justify-content-center align-items-center" target="_blank"
-                    href="https://www.fiverr.com/dedrox_"
-                    style="display: block; width: 100%; transition: transform 0.3s ease; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.05); cursor: pointer;">
-                    <img style="width: 100%; height: auto; display: block;" src="images/allrevs.png"
-                        alt="Fiverr Reviews">
+            <nav class="links-row reveal delay-2" aria-label="Primary Links">
+                <a href="https://www.behance.net/raghavprasanna" target="_blank" class="brand-link">
+                    Behance
+                    <img class="brand-pop" src="images/DEDROX.DSGN/dedroxLogo.svg" alt="Brand logo">
                 </a>
-            </div>
+                <a href="https://dribbble.com/DEDROX2K" target="_blank" class="brand-link">
+                    Dribbble
+                    <img class="brand-pop" src="images/DEDROX.DSGN/dedroxLogo.svg" alt="Brand logo">
+                </a>
+                <a href="https://www.linkedin.com/in/raghav-prasanna-b530621b0/" target="_blank" class="brand-link">
+                    LinkedIn
+                    <img class="brand-pop" src="images/DEDROX.DSGN/dedroxLogo.svg" alt="Brand logo">
+                </a>
+                <a href="https://www.artstation.com/raghavprasanna" target="_blank" class="brand-link">
+                    Artstation
+                    <img class="brand-pop" src="images/DEDROX.DSGN/dedroxLogo.svg" alt="Brand logo">
+                </a>
+                <a href="https://www.fiverr.com/dedrox_" target="_blank" class="brand-link">
+                    Freelance
+                    <img class="brand-pop" src="images/DEDROX.DSGN/dedroxLogo.svg" alt="Brand logo">
+                </a>
+            </nav>
 
-            <!-- Consultation button -->
-            <div id="pagesec4" style="margin: 0 0 40px; text-align: center;">
-                <div class="consu">
-                    <div class="custom-container text-center consutex"
-                        style="margin-bottom: 20px; font-family: 'Instrument Serif', Georgia, serif; font-size: 1.5rem; line-height: 1.2; color: #242424; font-weight: 500;">
-                        <span>Have an idea? Let's talk. I'm currently interested in projects related to games,
-                            softwares, Applications or Corporate projects. <br></span>
+            <section class="case-studies reveal delay-2">
+                <a href="Case1.html" class="case-card">
+                    <img src="images/port1.jpg" alt="Clear Breath App">
+                    <div class="case-content">
+                        <p class="kicker">Case Study</p>
+                        <h3>Clear Breath CBT App</h3>
+                        <p>Reduced the critical logging flow from 7 steps to 3 while improving retention and task clarity.</p>
                     </div>
-                    <a href="index.html" style="display: inline-block;">
-                        <div class="consubtn"
-                            style="background-color: #f0f0f0; color: #242424; border-radius: 100px; font-size: 1rem; padding: 1rem 1.5rem; font-weight: 600; letter-spacing: 0.1rem; box-shadow: inset 0 1px 0 0 #f4f4f4, 0 1px 0 0 #efefef, 0 2px 0 0 #ececec, 0 4px 0 0 #e0e0e0, 0 5px 0 0 #dedede; transition: transform 0.25s ease, box-shadow 0.25s ease; cursor: pointer;">
-                            SEND ME A QUICK MESSAGE
+                </a>
+                <a href="Case2.html" class="case-card">
+                    <img src="images/port2.jpg" alt="AR Airport Navigation">
+                    <div class="case-content">
+                        <p class="kicker">Case Study</p>
+                        <h3>AR Airport Navigation</h3>
+                        <p>Wayfinding and companion-finder flows designed for complex terminals and high-stress travel moments.</p>
+                    </div>
+                </a>
+            </section>
+
+            <section class="reveal delay-3">
+                <h2 class="more-title">More Projects</h2>
+                <div class="project-grid">
+                    <a href="https://www.behance.net/gallery/200529521/CLEAR-BREATH-case-study-No-smoking-app" target="_blank"
+                        class="project-card">
+                        <img src="images/portpie 2.png" alt="Detailed Smoking App">
+                        <div class="project-info">
+                            <h3>Clear Breath Detail</h3>
+                            <p>Extended flow documentation and behavior design.</p>
+                        </div>
+                    </a>
+
+                    <a href="https://medium.com/@RaghavPrasannaUX/case-study-gym-finder-app-3ac05a38abe3" target="_blank"
+                        class="project-card">
+                        <img src="images/portpie 3.png" alt="Gym Finder">
+                        <div class="project-info">
+                            <h3>Gym Finder App</h3>
+                            <p>Travel-focused utility for quick gym discovery.</p>
+                        </div>
+                    </a>
+
+                    <a href="case3.html" class="project-card">
+                        <img src="images/port4.jpg" alt="Desk Research">
+                        <div class="project-info">
+                            <h3>Desk Research</h3>
+                            <p>Early-stage market and problem framing process.</p>
+                        </div>
+                    </a>
+
+                    <a href="https://dribbble.com/DEDROX2K" target="_blank" class="project-card">
+                        <img src="images/portpie 5.png" alt="UI Exploration">
+                        <div class="project-info">
+                            <h3>UI Exploration</h3>
+                            <p>Interface pattern studies and visual systems.</p>
                         </div>
                     </a>
                 </div>
-            </div>
+            </section>
 
+            <section class="full-bleed-wrap reveal delay-3" aria-label="Featured image">
+                <img src="images/allrevs.png" alt="Featured full-width visual">
+            </section>
+
+            <section class="pixel-section reveal delay-4">
+                <h2 class="pixel-title">Draw Pixel Art</h2>
+                <p class="pixel-sub">Quick octagon sketch board. 6 colors. Reload clears it.</p>
+                <div class="pixel-tools" id="pixel-palette"></div>
+                <div class="pixel-canvas-wrap">
+                    <canvas id="pixel-canvas" width="40" height="40" aria-label="Pixel drawing canvas"></canvas>
+                </div>
+            </section>
+
+            <section class="contact-block reveal delay-5">
+                <a href="index.html" class="contact-btn">Send Me A Quick Message</a>
+                <p class="contact-meta">United States</p>
+                <p class="contact-meta" id="live-time">--</p>
+            </section>
+
+            <footer class="footer reveal delay-5">
+                <div class="footer-grid">
+                    <div class="footer-contact">
+                        <h3>Contact Me</h3>
+                        <p>
+                            <a href="https://www.linkedin.com/in/raghav-prasanna-b530621b0/" target="_blank">linkedin.com/raghav-prasanna</a><br>
+                            raghavprasanna2000@gmail.com<br>
+                            +44 7553 433334
+                        </p>
+                    </div>
+                    <div class="footer-links">
+                        <h3>Follow Me</h3>
+                        <ul>
+                            <li><a href="https://www.behance.net/raghavprasanna" target="_blank">Behance</a></li>
+                            <li><a href="https://www.artstation.com/raghavprasanna" target="_blank">Artstation</a></li>
+                            <li><a href="https://www.instagram.com/dedrox__/?hl=en" target="_blank">Instagram</a></li>
+                            <li><a href="https://medium.com/@RaghavPrasannaUX" target="_blank">Medium</a></li>
+                            <li><a href="https://www.youtube.com/@dedrox3d491/videos" target="_blank">Youtube</a></li>
+                            <li><a href="https://codepen.io/Raghav-Prasanna-Lakshminarayanan" target="_blank">Codepen</a></li>
+                            <li><a href="https://dribbble.com/DEDROX2K" target="_blank">Dribbble</a></li>
+                            <li><a href="https://letterboxd.com/dedrox/films/reviews/" target="_blank">Letterboxd</a></li>
+                            <li><a href="https://www.instagram.com/raghavprasanna_photography/?hl=en" target="_blank">Photography</a></li>
+                            <li><a href="https://sketchfab.com/Raghavprasanna" target="_blank">Sketchfab</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <img src="images/footerhand.png" alt="Footer visual" class="footer-hand">
+            </footer>
         </div>
 
         <div class="bottom-bar"></div>
     </div>
 
     <script>
-        // --------------------------------------------------------
-        // EXPAND / COLLAPSE UI LOGIC
-        // --------------------------------------------------------
         const device = document.getElementById('portfolio-device');
         const topBar = document.getElementById('top-bar');
 
@@ -407,11 +437,115 @@
             pointer.active = false;
         });
 
+        // --------------------------------------------------------
+        // PIXEL DRAW CANVAS
+        // --------------------------------------------------------
+        const pixelCanvas = document.getElementById('pixel-canvas');
+        const pixelCtx = pixelCanvas.getContext('2d');
+        const paletteRoot = document.getElementById('pixel-palette');
+        const palette = ['#111111', '#ff3b30', '#ffcc00', '#34c759', '#0a84ff', '#bf5af2'];
+        const pixelSize = 1;
+        let drawing = false;
+        let activeColor = palette[0];
+
+        function buildPalette() {
+            palette.forEach((color, index) => {
+                const swatch = document.createElement('button');
+                swatch.className = 'swatch' + (index === 0 ? ' active' : '');
+                swatch.style.background = color;
+                swatch.type = 'button';
+                swatch.setAttribute('aria-label', `Select color ${index + 1}`);
+                swatch.addEventListener('click', () => {
+                    activeColor = color;
+                    document.querySelectorAll('.swatch').forEach((s) => s.classList.remove('active'));
+                    swatch.classList.add('active');
+                });
+                paletteRoot.appendChild(swatch);
+            });
+
+            const clearBtn = document.createElement('button');
+            clearBtn.className = 'clear-pixel';
+            clearBtn.type = 'button';
+            clearBtn.textContent = 'Clear';
+            clearBtn.addEventListener('click', clearPixelCanvas);
+            paletteRoot.appendChild(clearBtn);
+        }
+
+        function clearPixelCanvas() {
+            pixelCtx.fillStyle = '#f2f2f2';
+            pixelCtx.fillRect(0, 0, pixelCanvas.width, pixelCanvas.height);
+        }
+
+        function paintFromEvent(e) {
+            const rect = pixelCanvas.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            const x = Math.floor(((clientX - rect.left) / rect.width) * pixelCanvas.width);
+            const y = Math.floor(((clientY - rect.top) / rect.height) * pixelCanvas.height);
+
+            if (x < 0 || y < 0 || x >= pixelCanvas.width || y >= pixelCanvas.height) return;
+            pixelCtx.fillStyle = activeColor;
+            pixelCtx.fillRect(x, y, pixelSize, pixelSize);
+        }
+
+        pixelCanvas.addEventListener('mousedown', (e) => {
+            drawing = true;
+            paintFromEvent(e);
+        });
+
+        window.addEventListener('mouseup', () => {
+            drawing = false;
+        });
+
+        pixelCanvas.addEventListener('mousemove', (e) => {
+            if (!drawing) return;
+            paintFromEvent(e);
+        });
+
+        pixelCanvas.addEventListener('touchstart', (e) => {
+            drawing = true;
+            paintFromEvent(e);
+            e.preventDefault();
+        }, { passive: false });
+
+        pixelCanvas.addEventListener('touchmove', (e) => {
+            if (!drawing) return;
+            paintFromEvent(e);
+            e.preventDefault();
+        }, { passive: false });
+
+        window.addEventListener('touchend', () => {
+            drawing = false;
+        });
+
+        // --------------------------------------------------------
+        // LIVE DATE TIME
+        // --------------------------------------------------------
+        const liveTime = document.getElementById('live-time');
+
+        function updateLiveTime() {
+            const now = new Date();
+            const dateFmt = new Intl.DateTimeFormat(undefined, {
+                weekday: 'long',
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric'
+            }).format(now);
+            const timeFmt = new Intl.DateTimeFormat(undefined, {
+                hour: 'numeric',
+                minute: '2-digit'
+            }).format(now);
+            liveTime.textContent = `${dateFmt} · ${timeFmt}`;
+        }
+
         // Init
         window.addEventListener('resize', resize);
         resize();
         requestAnimationFrame(draw);
-
+        buildPalette();
+        clearPixelCanvas();
+        updateLiveTime();
+        setInterval(updateLiveTime, 30000);
     </script>
 </body>
 
