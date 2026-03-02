@@ -233,12 +233,13 @@ button *,
     border-radius: 3px;
 }
 
-.pill-circle {
+.pill-globe {
     width: 36px;
     height: 36px;
-    background: #F786C8;
-    /* Orange */
     border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    display: block;
 }
 
 .pill-square {
@@ -563,29 +564,52 @@ button *,
 }
 
 .hero-grid {
-    display: grid;
-    grid-template-columns: 2.15fr 0.85fr;
-    gap: var(--section-gap-sm);
-    align-items: stretch;
+    display: block;
     margin-bottom: var(--section-gap-lg);
     padding: var(--section-vertical-space) 0 0;
 }
 
-.hero-copy h1 {
-    font-size: clamp(2rem, 5.3vw, 2.9rem);
-    line-height: 0.95;
-    letter-spacing: -0.045em;
-    margin-bottom: 12px;
+.hero-role {
+
+    font-size: 0.78rem;
     font-weight: 700;
+    text-transform: uppercase;
+    color: black;
+    margin-bottom: 10px;
 }
 
-.hero-copy p {
-    font-size: 1rem;
-    line-height: 1.42;
-    color: var(--soft-ink);
-    max-width: 34ch;
-    font-weight: 500;
+.hero-name {
+    font-size: clamp(2.4rem, 7vw, 3.4rem);
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+    font-weight: 700;
+    margin-bottom: 18px;
+    color: var(--ink);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.15em;
+}
 
+.hero-name-script {
+    font-size: 1em;
+    font-weight: 700;
+    color: black;
+    line-height: 1;
+}
+
+.hero-bio {
+    font-size: 0.93rem;
+    line-height: 1.55;
+    color: var(--soft-ink);
+    max-width: 52ch;
+    font-weight: 400;
+    margin-bottom: 0;
+}
+
+.hero-bio strong {
+    color: var(--ink);
+    font-weight: 600;
 }
 
 .hero-model {
@@ -593,7 +617,7 @@ button *,
     display: flex;
     align-items: stretch;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.35);
+    background: #ffffff59;
 }
 
 .hero-model model-viewer,

@@ -12,6 +12,7 @@
         href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&family=Bebas+Neue&display=swap"
         rel="stylesheet">
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
 </head>
 
 <body>
@@ -22,7 +23,7 @@
             <div class="top-bar-pill">
                 <div class="pill-left">
                     <div class="pill-bar"></div>
-                    <div class="pill-circle"></div>
+                    <canvas id="globe-canvas" class="pill-globe"></canvas>
                     <div class="pill-square"></div>
                     <div class="pill-dark-block"></div>
                 </div>
@@ -52,39 +53,23 @@
         <div class="site-content" id="scrollable-content">
             <section class="hero-grid reveal delay-1">
                 <div class="hero-copy">
-                    <h1 style="padding-bottom: 6px;">Designing products that feel effortless.</h1>
-                    <p>
-                        Product designer based in the US with a game-mechanics background.
-                        I focus on fast clarity, practical UX decisions, and clean execution.
+                    <h1 class="hero-name">
+                        Raghav,
+                        <span class="hero-name-script" lang="ta">ராகவ்,</span>
+                        <span class="hero-name-script" lang="kn">拉加夫.</span>
+                    </h1>
+                    <p class="hero-role">product designer + developer</p>
+
+                    <p class="hero-bio">
+                        Helping product teams and startups move at warp speed. From detailed research to scalable
+                        designs and prototypes — I help product teams succeed.
+                        <br><br>
+                        I'm currently the founder of <strong>Airpaste</strong>, a project management tool for indie
+                        developers and solo workers. I've also worked with <strong>Aircards</strong> on multiple AR and
+                        immersive experience projects.
                     </p>
                 </div>
-                <div class="hero-model">
-                    <model-viewer src="threeD/me.glb" alt="3D model" camera-controls auto-rotate
-                        rotation-per-second="20deg" exposure="1.1" shadow-intensity="0"></model-viewer>
-                </div>
             </section>
-
-            <nav class="social-icon-dock reveal delay-2" aria-label="Social Links">
-                <a href="mailto:raghavprasanna2000@gmail.com" class="social-icon-btn" data-tooltip="Email">
-                    <!-- SVG ICON HERE -->
-                </a>
-                <a href="https://www.behance.net/raghavprasanna" target="_blank" class="social-icon-btn"
-                    data-tooltip="Behance">
-                    <!-- SVG ICON HERE -->
-                </a>
-                <a href="https://dribbble.com/DEDROX2K" target="_blank" class="social-icon-btn" data-tooltip="Dribbble">
-                    <!-- SVG ICON HERE -->
-                </a>
-                <a href="https://github.com/raghavprasanna" target="_blank" class="social-icon-btn"
-                    data-tooltip="GitHub">
-                    <!-- SVG ICON HERE -->
-                </a>
-                <a href="https://www.linkedin.com/in/raghav-prasanna-b530621b0/" target="_blank"
-                    class="social-resume-btn">
-                    <!-- SVG ICON HERE -->
-                    <span>LinkedIn</span>
-                </a>
-            </nav>
 
             <section class="company-dock-section reveal delay-2" aria-label="Companies worked with">
                 <p class="dock-kicker">Companies I've worked with</p>
@@ -111,6 +96,28 @@
                     </div>
                 </a>
             </section>
+
+            <nav class="social-icon-dock reveal delay-3" aria-label="Social Links">
+                <a href="mailto:raghavprasanna2000@gmail.com" class="social-icon-btn" data-tooltip="Email">
+                    <!-- SVG ICON HERE -->
+                </a>
+                <a href="https://www.behance.net/raghavprasanna" target="_blank" class="social-icon-btn"
+                    data-tooltip="Behance">
+                    <!-- SVG ICON HERE -->
+                </a>
+                <a href="https://dribbble.com/DEDROX2K" target="_blank" class="social-icon-btn" data-tooltip="Dribbble">
+                    <!-- SVG ICON HERE -->
+                </a>
+                <a href="https://github.com/raghavprasanna" target="_blank" class="social-icon-btn"
+                    data-tooltip="GitHub">
+                    <!-- SVG ICON HERE -->
+                </a>
+                <a href="https://www.linkedin.com/in/raghav-prasanna-b530621b0/" target="_blank"
+                    class="social-resume-btn">
+                    <!-- SVG ICON HERE -->
+                    <span>LinkedIn</span>
+                </a>
+            </nav>
 
             <section class="reveal delay-3">
                 <h2 class="more-title">More Projects</h2>
@@ -174,13 +181,13 @@
             </section>
 
             <section class="contact-block reveal delay-5" style="padding: 40px 0px;">
-                <div class="location-box">
+                <div class="location-box" style="background: #ECE9E6;">
+                    <h3 class="location-box-title">NEWCASTLE</h3>
+                </div>
+                <div class="location-box" style="background: #F289C4;">
                     <h3 class="location-box-title">London, UK</h3>
                 </div>
-                <div class="location-box">
-                    <h3 class="location-box-title">London, UK</h3>
-                </div>
-                <div class="location-box">
+                <div class="location-box" style="background: #919598;">
                     <h3 class="location-box-title">London, UK</h3>
                 </div>
                 <a href="index.html" class="contact-btn">Contact ↗</a>
@@ -603,6 +610,88 @@
         window.addEventListener('touchend', () => {
             drawing = false;
         });
+
+        // --------------------------------------------------------
+        // 3D GLOBE IN PILL
+        // --------------------------------------------------------
+        (function initGlobe() {
+            const canvas = document.getElementById('globe-canvas');
+            if (!canvas || typeof THREE === 'undefined') return;
+
+            const SIZE = 36;
+            canvas.width = SIZE;
+            canvas.height = SIZE;
+
+            const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setSize(SIZE, SIZE);
+            renderer.setClearColor(0x000000, 0);
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+            camera.position.z = 2.2;
+
+            // Sphere
+            const geo = new THREE.SphereGeometry(1, 32, 32);
+            const mat = new THREE.MeshStandardMaterial({
+                color: 0xF786C8,
+                roughness: 0.55,
+                metalness: 0.1,
+            });
+            const globe = new THREE.Mesh(geo, mat);
+            scene.add(globe);
+
+            // Latitude lines
+            const lineMat = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.25 });
+            for (let lat = -75; lat <= 75; lat += 25) {
+                const r = Math.cos((lat * Math.PI) / 180);
+                const y = Math.sin((lat * Math.PI) / 180);
+                const pts = [];
+                for (let i = 0; i <= 64; i++) {
+                    const a = (i / 64) * Math.PI * 2;
+                    pts.push(new THREE.Vector3(r * Math.cos(a), y, r * Math.sin(a)));
+                }
+                scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), lineMat));
+            }
+            // Longitude lines
+            for (let lon = 0; lon < 180; lon += 30) {
+                const pts = [];
+                for (let i = 0; i <= 64; i++) {
+                    const a = (i / 64) * Math.PI * 2;
+                    const rad = (lon * Math.PI) / 180;
+                    pts.push(new THREE.Vector3(
+                        Math.cos(a) * Math.cos(rad) - Math.sin(a) * 0,
+                        Math.sin(a),
+                        Math.cos(a) * Math.sin(rad)
+                    ));
+                }
+                scene.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), lineMat));
+            }
+
+            // Lighting
+            scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+            const dir = new THREE.DirectionalLight(0xffffff, 1.2);
+            dir.position.set(3, 3, 3);
+            scene.add(dir);
+
+            // Mouse tracking
+            let targetX = 0, targetY = 0, currentX = 0, currentY = 0;
+            document.addEventListener('mousemove', (e) => {
+                targetX = (e.clientX / window.innerWidth - 0.5) * Math.PI * 1.5;
+                targetY = (e.clientY / window.innerHeight - 0.5) * Math.PI * 0.8;
+            });
+
+            // Animate
+            function animate() {
+                requestAnimationFrame(animate);
+                currentX += (targetX - currentX) * 0.06;
+                currentY += (targetY - currentY) * 0.06;
+                globe.rotation.y = currentX;
+                globe.rotation.x = -currentY;
+                renderer.render(scene, camera);
+            }
+            animate();
+        })();
 
         // --------------------------------------------------------
         // INIT
