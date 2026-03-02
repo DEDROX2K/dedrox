@@ -155,6 +155,26 @@ button *,
     cursor: url('linkcursor.png') 6 4, pointer !important;
 }
 
+.site-exit-btn {
+    position: fixed;
+    top: 32px;
+    left: 32px;
+    width: 64px;
+    height: auto;
+    z-index: 50;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+}
+
+.site-exit-btn:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+}
+
+.site-exit-btn img {
+    width: 100%;
+    display: block;
+}
+
 .device-container {
     position: relative;
     width: min(96vw, var(--bar-collapsed-width));
@@ -441,8 +461,9 @@ button *,
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    background: #f2cc3f;
-    box-shadow: 0 0 0 1px rgba(17, 17, 17, 0.2);
+    background: #d4f79d;
+    border: 1px solid #dbdbdb;
+    /*    box-shadow: 0 0 0 1px rgba(17, 17, 17, 0.2);*/
     display: inline-block;
     flex-shrink: 0;
     pointer-events: none;
@@ -596,6 +617,7 @@ button *,
     font-weight: 700;
     color: black;
     line-height: 1;
+    font-style: italic;
 }
 
 .hero-bio {
@@ -756,6 +778,13 @@ button *,
 
 .company-dock-section {
     margin-bottom: var(--section-gap-lg);
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    padding: 30px 0;
+}
+
+.night-mode .company-dock-section {
+    border-color: rgba(255, 255, 255, 0.08);
 }
 
 .dock-kicker {
@@ -1034,7 +1063,6 @@ button *,
 
 .contact-block {
     text-align: left;
-    margin-bottom: var(--section-gap-xl);
 }
 
 .contact-btn {
