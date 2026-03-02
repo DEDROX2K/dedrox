@@ -11,28 +11,17 @@
 
 <body>
 
-    <canvas id="matrix-canvas"></canvas>
-
     <div id="portfolio-device" class="device-container">
         <div class="top-bar" id="top-bar">
-            <div class="top-cutout cutout"></div>
-            <div class="bottom-cutout cutout"></div>
-
-            <div class="bar-pill-content">
-                <div class="spin-circle"></div>
-                <div class="badge badge-green">
-                    <span class="stagger-header">RAGHAV ::</span>
+            <img id="top-bar-art" class="top-bar-art" src="images/Line1.png" alt="Open portfolio bar design">
+            <div class="top-bar-fallback">
+                <div class="bar-left">
+                    <span>Raghav's Portfolio</span>
                 </div>
-                <div class="badge badge-blue">
-                    <span class="stagger-header">PRODUCT DESIGNER</span>
+                <div class="bar-right">
+                    <div class="circle"></div>
+                    <span>Press to open</span>
                 </div>
-            </div>
-            <div class="bar-action">
-                <svg class="action-arrow" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                </svg>
             </div>
         </div>
 
@@ -88,32 +77,7 @@
 
             <section class="company-dock-section reveal delay-2" aria-label="Companies worked with">
                 <p class="dock-kicker">Companies I've worked with</p>
-                <div class="company-dock" id="company-dock">
-                    <button class="dock-item" type="button" aria-label="Company 1 placeholder">
-                        <span class="dock-tooltip">Company 1</span>
-                        <span class="dock-logo">C1</span>
-                    </button>
-                    <button class="dock-item" type="button" aria-label="Company 2 placeholder">
-                        <span class="dock-tooltip">Company 2</span>
-                        <span class="dock-logo">C2</span>
-                    </button>
-                    <button class="dock-item" type="button" aria-label="Company 3 placeholder">
-                        <span class="dock-tooltip">Company 3</span>
-                        <span class="dock-logo">C3</span>
-                    </button>
-                    <button class="dock-item" type="button" aria-label="Company 4 placeholder">
-                        <span class="dock-tooltip">Company 4</span>
-                        <span class="dock-logo">C4</span>
-                    </button>
-                    <button class="dock-item" type="button" aria-label="Company 5 placeholder">
-                        <span class="dock-tooltip">Company 5</span>
-                        <span class="dock-logo">C5</span>
-                    </button>
-                    <button class="dock-item" type="button" aria-label="Company 6 placeholder">
-                        <span class="dock-tooltip">Company 6</span>
-                        <span class="dock-logo">C6</span>
-                    </button>
-                </div>
+                <div class="company-dock" id="company-dock"></div>
             </section>
 
             <section class="case-studies reveal delay-2">
@@ -239,6 +203,16 @@
 
     </div>
 
+    <div class="global-controls">
+        <div class="resume-wrap">
+            <span class="seconds-dot" id="seconds-dot" aria-hidden="true"></span>
+            <a class="resume-fab" href="threeD/CV_RESUME-RAGHAV.pdf" target="_blank" rel="noopener noreferrer">
+                /-Resume
+            </a>
+        </div>
+        <button class="theme-fab" id="theme-toggle" type="button" aria-pressed="false">Night</button>
+    </div>
+
     <script>
         // --------------------------------------------------------
         // QUICK EDIT CONFIG
@@ -252,55 +226,72 @@
                 locationSub: '(United Kingdom)',
                 timeZone: 'Europe/London' // e.g. 'America/New_York'
             },
-            matrix: {
-                fontFace: 'monospace',
-                characters: '.`+-*  1234567890^',
-                cellSize: 18,
-                maxDpr: 1.2,
-                renderScale: 0.8,
-                targetFps: 60,
-                maxTrailPoints: 14,
-                trailFade: 0.86,
-                pointerLerp: 0.34,
-                radius: 96,
-                influenceThreshold: 0.09,
-                effect: {
-                    flashBoost: 0.95,
-                    flashDecay: 0.2,
-                    whitePhaseStart: 0.5,
-                    hueShiftSpeed: 0.042,
-                    hueSpatialFactor: 0.06,
-                    rainbowSaturation: 1000,
-                    rainbowLightness: 0
-                }
-            },
             dock: {
-                maxDistance: 150,
+                maxDistance: 120,
                 maxScaleBoost: 0.35,
                 maxLift: 8
             },
+            // Edit this list only: name/logo/url for each company dock item.
+            companies: [
+                { name: 'Company 1', logo: 'images/c5.png', url: 'images/c1.png' },
+                { name: 'Company 2', logo: 'images/c6.png', url: 'images/c2.png' },
+                { name: 'Company 3', logo: 'images/c4.png', url: 'images/c3.png' },
+                { name: 'Company 4', logo: 'images/c3.png', url: 'images/c4.png' },
+                { name: 'Company 5', logo: 'images/c2.png', url: 'images/c5.png' },
+                { name: 'Company 6', logo: 'images/c1.png', url: 'images/c6.png' }
+            ],
             pixel: {
-                palette: ['#ffffff'],
-                pixelSize: 10,
-                background: '#ffffff'
+                palette: ['#111111', '#ff3b30', '#ffcc00', '#34c759', '#0a84ff', '#bf5af2'],
+                pixelSize: 1,
+                background: '#f3f3f3'
             }
         };
 
         const device = document.getElementById('portfolio-device');
         const topBar = document.getElementById('top-bar');
+        const topBarArt = document.getElementById('top-bar-art');
         const locationMainEl = document.getElementById('location-main');
         const locationSubEl = document.getElementById('location-sub');
         const githubChartImg = document.getElementById('github-chart-img');
+        const themeToggle = document.getElementById('theme-toggle');
+        const secondsDot = document.getElementById('seconds-dot');
 
         // Apply editable profile values to UI
         locationMainEl.textContent = SITE_CONFIG.profile.locationMain;
         locationSubEl.textContent = SITE_CONFIG.profile.locationSub;
         githubChartImg.src = `https://ghchart.rshah.org/${SITE_CONFIG.profile.githubChartColor}/${SITE_CONFIG.profile.githubUsername}`;
 
+        // If PNG loads, use it; if not, keep fallback bar content visible.
+        if (topBarArt) {
+            const applyBarArtState = () => {
+                const hasImage = topBarArt.naturalWidth > 0;
+                topBar.classList.toggle('has-art', hasImage);
+            };
+            if (topBarArt.complete) {
+                applyBarArtState();
+            }
+            topBarArt.addEventListener('load', applyBarArtState);
+            topBarArt.addEventListener('error', () => {
+                topBar.classList.remove('has-art');
+            });
+        }
+
         const expandBtn = document.getElementById('expand-btn');
         expandBtn.addEventListener('click', (e) => {
             device.classList.toggle('maximized');
             e.stopPropagation();
+        });
+
+        function setNightMode(next) {
+            document.body.classList.toggle('night-mode', next);
+            themeToggle.setAttribute('aria-pressed', next ? 'true' : 'false');
+            themeToggle.textContent = next ? 'Day' : 'Night';
+        }
+
+        themeToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const next = !document.body.classList.contains('night-mode');
+            setNightMode(next);
         });
 
         topBar.addEventListener('click', (e) => {
@@ -318,253 +309,51 @@
         });
 
         // --------------------------------------------------------
-        // LIQUID MATRIX BACKGROUND LOGIC
+        // COMPANY DOCK DATA RENDER
         // --------------------------------------------------------
-        const canvas = document.getElementById('matrix-canvas');
-        const ctx = canvas.getContext('2d');
-        const fontFace = SITE_CONFIG.matrix.fontFace;
-        const characters = SITE_CONFIG.matrix.characters;
-        const cellSize = SITE_CONFIG.matrix.cellSize;
-        const maxDpr = Math.min(window.devicePixelRatio || 1, SITE_CONFIG.matrix.maxDpr);
-        const renderScale = SITE_CONFIG.matrix.renderScale;
-        const targetFps = SITE_CONFIG.matrix.targetFps;
-        const frameInterval = 1000 / targetFps;
-        const maxTrailPoints = SITE_CONFIG.matrix.maxTrailPoints;
-        const trailFade = SITE_CONFIG.matrix.trailFade;
+        function buildCompanyDock() {
+            const dock = document.getElementById('company-dock');
+            if (!dock) return;
+            dock.innerHTML = '';
 
-        let cols = 0;
-        let rows = 0;
-        let grid = [];
-        let cssToCanvasX = 1;
-        let cssToCanvasY = 1;
-        let lastFrameTime = 0;
-        let trail = [];
+            SITE_CONFIG.companies.forEach((company, index) => {
+                const item = document.createElement('button');
+                item.className = 'dock-item';
+                item.type = 'button';
+                item.setAttribute('aria-label', company.name || `Company ${index + 1}`);
 
-        const pointer = {
-            x: 0,
-            y: 0,
-            tx: 0,
-            ty: 0,
-            active: false
-        };
+                if (company.url) {
+                    item.addEventListener('click', () => {
+                        window.open(company.url, '_blank', 'noopener,noreferrer');
+                    });
+                }
 
-        function resize() {
-            const width = Math.max(360, Math.floor(window.innerWidth * maxDpr * renderScale));
-            const height = Math.max(220, Math.floor(window.innerHeight * maxDpr * renderScale));
-            canvas.width = width;
-            canvas.height = height;
-            canvas.style.width = window.innerWidth + 'px';
-            canvas.style.height = window.innerHeight + 'px';
+                const tooltip = document.createElement('span');
+                tooltip.className = 'dock-tooltip';
+                tooltip.textContent = company.name || `Company ${index + 1}`;
 
-            cssToCanvasX = canvas.width / window.innerWidth;
-            cssToCanvasY = canvas.height / window.innerHeight;
-            cols = Math.floor(canvas.width / cellSize);
-            rows = Math.floor(canvas.height / cellSize);
-            initGrid();
-        }
+                const logoWrap = document.createElement('span');
+                logoWrap.className = 'dock-logo';
 
-        function initGrid() {
-            grid = new Array(cols * rows);
-            for (let i = 0; i < cols; i++) {
-                for (let j = 0; j < rows; j++) {
-                    const idx = i * rows + j;
-                    grid[idx] = {
-                        x: i * cellSize + cellSize / 2,
-                        y: j * cellSize + cellSize / 2,
-                        char: characters.charAt(Math.floor(Math.random() * characters.length)),
-                        baseColor: 120 + Math.floor(Math.random() * 16),
-                        currentColor: 126,
-                        lastUpdate: Math.random() * 90,
-                        flash: 0,
-                        hue: 0
+                if (company.logo) {
+                    const logo = document.createElement('img');
+                    logo.className = 'dock-logo-img';
+                    logo.src = company.logo;
+                    logo.alt = company.name || `Company ${index + 1}`;
+                    logo.onerror = () => {
+                        logo.remove();
+                        logoWrap.textContent = `C${index + 1}`;
                     };
-                }
-            }
-        }
-
-        function addTrailPoint(x, y) {
-            const last = trail[trail.length - 1];
-            if (!last) {
-                trail.push({ x, y, life: 1 });
-            } else {
-                const dx = x - last.x;
-                const dy = y - last.y;
-                if ((dx * dx + dy * dy) > 30) {
-                    trail.push({ x, y, life: 1 });
-                }
-            }
-
-            if (trail.length > maxTrailPoints) {
-                trail.shift();
-            }
-        }
-
-        function updateTrail() {
-            if (pointer.active) {
-                pointer.x += (pointer.tx - pointer.x) * SITE_CONFIG.matrix.pointerLerp;
-                pointer.y += (pointer.ty - pointer.y) * SITE_CONFIG.matrix.pointerLerp;
-                addTrailPoint(pointer.x, pointer.y);
-            }
-
-            for (let i = trail.length - 1; i >= 0; i--) {
-                trail[i].life *= trailFade;
-                if (trail[i].life < 0.035) {
-                    trail.splice(i, 1);
-                }
-            }
-        }
-
-        function pointToSegmentDistSq(px, py, ax, ay, bx, by) {
-            const abx = bx - ax;
-            const aby = by - ay;
-            const apx = px - ax;
-            const apy = py - ay;
-            const ab2 = abx * abx + aby * aby;
-            if (ab2 < 0.0001) {
-                return apx * apx + apy * apy;
-            }
-            const t = Math.max(0, Math.min(1, (apx * abx + apy * aby) / ab2));
-            const qx = ax + abx * t;
-            const qy = ay + aby * t;
-            const dx = px - qx;
-            const dy = py - qy;
-            return dx * dx + dy * dy;
-        }
-
-        function liquidInfluence(x, y) {
-            let strongest = 0;
-            if (trail.length < 2) return strongest;
-
-            const radius = SITE_CONFIG.matrix.radius * renderScale * maxDpr;
-            const radiusSq = radius * radius;
-
-            for (let i = 1; i < trail.length; i++) {
-                const a = trail[i - 1];
-                const b = trail[i];
-                const life = (a.life + b.life) * 0.5;
-                if (life < 0.06) continue;
-
-                const d2 = pointToSegmentDistSq(x, y, a.x, a.y, b.x, b.y);
-                if (d2 > radiusSq) continue;
-
-                const norm = 1 - (d2 / radiusSq);
-                const influence = norm * norm * life;
-                if (influence > strongest) {
-                    strongest = influence;
-                }
-            }
-            return strongest;
-        }
-
-
-        function drawGradientField(t) {
-            ctx.fillStyle = '#e9e9e9';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-        }
-
-
-        function drawTrailWash() {
-            if (trail.length < 2) return;
-            ctx.save();
-            ctx.lineCap = 'round';
-            ctx.lineJoin = 'round';
-
-            for (let i = 1; i < trail.length; i++) {
-                const a = trail[i - 1];
-                const b = trail[i];
-                const life = (a.life + b.life) * 0.5;
-                if (life < 0.05) continue;
-                ctx.strokeStyle = `rgba(176, 176, 176, ${0.18 * life})`;
-                ctx.lineWidth = (8 + 64 * life) * renderScale;
-                ctx.beginPath();
-                ctx.moveTo(a.x, a.y);
-                ctx.lineTo(b.x, b.y);
-                ctx.stroke();
-            }
-            ctx.restore();
-        }
-
-        function hslToRgb(h, s, l) {
-            const sat = s / 100;
-            const light = l / 100;
-            const c = (1 - Math.abs(2 * light - 1)) * sat;
-            const hp = (h % 360) / 60;
-            const x = c * (1 - Math.abs((hp % 2) - 1));
-            let r1 = 0, g1 = 0, b1 = 0;
-
-            if (hp >= 0 && hp < 1) {
-                r1 = c; g1 = x;
-            } else if (hp < 2) {
-                r1 = x; g1 = c;
-            } else if (hp < 3) {
-                g1 = c; b1 = x;
-            } else if (hp < 4) {
-                g1 = x; b1 = c;
-            } else if (hp < 5) {
-                r1 = x; b1 = c;
-            } else {
-                r1 = c; b1 = x;
-            }
-
-            const m = light - c / 2;
-            return {
-                r: Math.round((r1 + m) * 255),
-                g: Math.round((g1 + m) * 255),
-                b: Math.round((b1 + m) * 255)
-            };
-        }
-
-        function draw(timestamp) {
-            if (timestamp - lastFrameTime < frameInterval) {
-                requestAnimationFrame(draw);
-                return;
-            }
-            lastFrameTime = timestamp;
-
-            drawGradientField(timestamp);
-
-            ctx.font = cellSize + 'px ' + fontFace;
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-
-            // Baseline color of the matrix characters
-            ctx.fillStyle = '#A0D8FF'; // Edit text color here
-
-            for (let i = 0; i < grid.length; i++) {
-                const cell = grid[i];
-
-                cell.lastUpdate++;
-                if (cell.lastUpdate > 130) {
-                    if (Math.random() > 0.988) {
-                        cell.char = characters.charAt(Math.floor(Math.random() * characters.length));
-                    }
-                    cell.lastUpdate = 0;
+                    logoWrap.appendChild(logo);
+                } else {
+                    logoWrap.textContent = `C${index + 1}`;
                 }
 
-                ctx.fillText(cell.char, cell.x, cell.y);
-            }
-
-            requestAnimationFrame(draw);
+                item.appendChild(tooltip);
+                item.appendChild(logoWrap);
+                dock.appendChild(item);
+            });
         }
-
-        window.addEventListener('mousemove', (e) => {
-            pointer.tx = e.clientX * cssToCanvasX;
-            pointer.ty = e.clientY * cssToCanvasY;
-            if (!pointer.active) {
-                pointer.active = true;
-                pointer.x = pointer.tx;
-                pointer.y = pointer.ty;
-                addTrailPoint(pointer.x, pointer.y);
-            }
-        });
-
-        window.addEventListener('mouseleave', () => {
-            pointer.active = false;
-        });
-
-        window.addEventListener('blur', () => {
-            pointer.active = false;
-        });
 
         // --------------------------------------------------------
         // COMPANY DOCK HOVER MAGNIFICATION
@@ -721,15 +510,23 @@
             liveTime.textContent = `${timeFmt} ${dayFmt}`;
         }
 
+        function updateSecondsDot() {
+            const seconds = new Date().getSeconds();
+            if (secondsDot) {
+                secondsDot.style.opacity = seconds % 2 === 0 ? '1' : '0.58';
+                secondsDot.title = `:${String(seconds).padStart(2, '0')}`;
+            }
+        }
+
         // Init
-        window.addEventListener('resize', resize);
-        resize();
-        requestAnimationFrame(draw);
+        buildCompanyDock();
         initCompanyDock();
         buildPalette();
         clearPixelCanvas();
         updateLiveTime();
+        updateSecondsDot();
         setInterval(updateLiveTime, 30000);
+        setInterval(updateSecondsDot, 1000);
     </script>
 </body>
 
