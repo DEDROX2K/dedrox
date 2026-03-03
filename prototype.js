@@ -15,8 +15,10 @@ const SITE_CONFIG = {
     },
     dock: {
         maxDistance: 120,
+        maxDistanceY: 110,
         maxScaleBoost: 0.35,
-        maxLift: 8
+        maxLift: 8,
+        smoothFactor: 0.36
     },
     asciiRain: {
         chars: ['█', '▒', '░', '*', '|', '/', 'o'],
@@ -79,6 +81,16 @@ const SITE_CONFIG = {
 
         let isTransitioning = false;
 
+        const setCaseLayout = (isOpen) => {
+            document.body.classList.toggle('case-open', isOpen);
+        };
+
+        const closeCase = () => {
+            caseWindow.classList.remove('visible');
+            caseWindow.classList.remove('minimized');
+            setCaseLayout(false);
+        };
+
         const openCase = (caseId) => {
             if (isTransitioning) return;
             const data = SITE_CONFIG.caseData[caseId];
@@ -89,6 +101,7 @@ const SITE_CONFIG = {
                 contentArea.innerHTML = data.images.map(img => `<img src="${img}" alt="Case Image">`).join('');
                 caseWindow.classList.add('visible');
                 caseWindow.classList.remove('minimized');
+                setCaseLayout(true);
 
                 contentArea.scrollTop = 0;
                 isTransitioning = false;
@@ -112,10 +125,7 @@ const SITE_CONFIG = {
         });
 
         if (closeBtn) {
-            closeBtn.addEventListener('click', () => {
-                caseWindow.classList.remove('visible');
-                caseWindow.classList.remove('minimized');
-            });
+            closeBtn.addEventListener('click', closeCase);
         }
     },
     pillSizes: {
@@ -173,6 +183,55 @@ const topBarArt = document.getElementById('top-bar-art');
 const githubChartImg = document.getElementById('github-chart-img');
 const secondsDot = document.getElementById('seconds-dot');
 const expandBtn = document.getElementById('expand-btn');
+const caseWindowEl = document.getElementById('case-window');
+
+function initCustomCursor() {
+    const cursorEl = document.getElementById('custom-cursor');
+    if (!cursorEl) return;
+    if (window.matchMedia('(pointer: coarse)').matches) return;
+
+    const state = {
+        x: -100,
+        y: -100,
+        tx: -100,
+        ty: -100
+    };
+
+    function tick() {
+        state.x += (state.tx - state.x) * 0.35;
+        state.y += (state.ty - state.y) * 0.35;
+        cursorEl.style.transform = `translate3d(${(state.x - 4).toFixed(2)}px, ${(state.y - 4).toFixed(2)}px, 0)`;
+        requestAnimationFrame(tick);
+    }
+
+    document.addEventListener('mousemove', (e) => {
+        state.tx = e.clientX;
+        state.ty = e.clientY;
+        cursorEl.style.opacity = '1';
+    }, { passive: true });
+
+    document.addEventListener('mouseleave', () => {
+        cursorEl.style.opacity = '0';
+    });
+
+    window.addEventListener('blur', () => {
+        cursorEl.style.opacity = '0';
+    });
+
+    window.addEventListener('focus', () => {
+        cursorEl.style.opacity = '1';
+    });
+
+    document.addEventListener('mousedown', () => {
+        cursorEl.classList.add('is-down');
+    });
+
+    document.addEventListener('mouseup', () => {
+        cursorEl.classList.remove('is-down');
+    });
+
+    requestAnimationFrame(tick);
+}
 
 // Reusable Scramble and Reveal Logic
 function scrambleText(element, targetText, delay = 1000) {
@@ -444,35 +503,87 @@ function initCompanyDock() {
     const items = Array.from(dock.querySelectorAll('.dock-item'));
     if (!items.length) return;
 
-    const maxDistance = SITE_CONFIG.dock.maxDistance;
+    const maxDistanceX = SITE_CONFIG.dock.maxDistance;
+    const maxDistanceY = SITE_CONFIG.dock.maxDistanceY || SITE_CONFIG.dock.maxDistance;
     const maxScaleBoost = SITE_CONFIG.dock.maxScaleBoost;
     const maxLift = SITE_CONFIG.dock.maxLift;
+    const smoothFactor = SITE_CONFIG.dock.smoothFactor || 0.2;
+    const minDelta = 0.0008;
 
-    function resetDock() {
-        items.forEach((item) => {
-            item.style.setProperty('--scale', '1');
-            item.style.setProperty('--lift', '0px');
-        });
+    const pointer = { x: 0, y: 0, active: false };
+    let rafId = null;
+    const state = items.map(() => ({ scale: 1, lift: 0 }));
+
+    function getTargets(item) {
+        if (!pointer.active) return { scale: 1, lift: 0 };
+        const rect = item.getBoundingClientRect();
+        const centerX = rect.left + rect.width * 0.5;
+        const centerY = rect.top + rect.height * 0.5;
+        const dx = Math.abs(pointer.x - centerX);
+        const dy = Math.abs(pointer.y - centerY);
+        const tx = Math.max(0, 1 - (dx / maxDistanceX));
+        const ty = Math.max(0, 1 - (dy / maxDistanceY));
+        const t = tx * ty;
+        const eased = t * t;
+        return {
+            scale: 1 + (eased * maxScaleBoost),
+            lift: -(eased * maxLift)
+        };
     }
 
-    dock.addEventListener('mousemove', (e) => {
-        const pointerX = e.clientX;
-        items.forEach((item) => {
-            const rect = item.getBoundingClientRect();
-            const centerX = rect.left + rect.width * 0.5;
-            const distance = Math.abs(pointerX - centerX);
-            const t = Math.max(0, 1 - (distance / maxDistance));
-            const eased = t * t;
-            const scale = 1 + (eased * maxScaleBoost);
-            const lift = -(eased * maxLift);
-            item.style.setProperty('--scale', scale.toFixed(3));
-            item.style.setProperty('--lift', `${lift.toFixed(2)}px`);
+    function animateDock() {
+        let hasMotion = false;
+        items.forEach((item, index) => {
+            const target = getTargets(item);
+            const nextScale = state[index].scale + ((target.scale - state[index].scale) * smoothFactor);
+            const nextLift = state[index].lift + ((target.lift - state[index].lift) * smoothFactor);
+            state[index].scale = nextScale;
+            state[index].lift = nextLift;
+            item.style.setProperty('--scale', nextScale.toFixed(3));
+            item.style.setProperty('--lift', `${nextLift.toFixed(2)}px`);
+
+            if (
+                Math.abs(target.scale - nextScale) > minDelta ||
+                Math.abs(target.lift - nextLift) > minDelta
+            ) {
+                hasMotion = true;
+            }
         });
+
+        if (hasMotion || pointer.active) {
+            rafId = window.requestAnimationFrame(animateDock);
+        } else {
+            rafId = null;
+        }
+    }
+
+    function queueDockFrame() {
+        if (rafId !== null) return;
+        rafId = window.requestAnimationFrame(animateDock);
+    }
+
+    dock.addEventListener('mouseenter', (e) => {
+        pointer.active = true;
+        pointer.x = e.clientX;
+        pointer.y = e.clientY;
+        queueDockFrame();
+    });
+    dock.addEventListener('mousemove', (e) => {
+        pointer.active = true;
+        pointer.x = e.clientX;
+        pointer.y = e.clientY;
+        queueDockFrame();
     });
 
-    dock.addEventListener('mouseleave', resetDock);
-    window.addEventListener('blur', resetDock);
-    resetDock();
+    dock.addEventListener('mouseleave', () => {
+        pointer.active = false;
+        queueDockFrame();
+    });
+    window.addEventListener('blur', () => {
+        pointer.active = false;
+        queueDockFrame();
+    });
+    queueDockFrame();
 }
 
 // --------------------------------------------------------
@@ -588,6 +699,8 @@ function initIndexGrid() {
 // MAIN INIT ON DOM CONTENT LOADED
 // --------------------------------------------------------
 document.addEventListener('DOMContentLoaded', () => {
+    initCustomCursor();
+
     // Config based UI updates
     if (githubChartImg) {
         githubChartImg.src = `https://ghchart.rshah.org/${SITE_CONFIG.profile.githubChartColor}/${SITE_CONFIG.profile.githubUsername}`;
@@ -629,7 +742,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     document.body.addEventListener('click', (e) => {
-        if (device.classList.contains('expanded') && !device.contains(e.target)) {
+        const caseIsOpen = caseWindowEl && caseWindowEl.classList.contains('visible');
+        const clickedInsideCase = caseWindowEl && caseWindowEl.contains(e.target);
+        const clickedInsideDevice = device && device.contains(e.target);
+
+        // Priority close order:
+        // 1) Close the side case window first.
+        // 2) Only after that, allow closing the mini portfolio on a later outside click.
+        if (caseIsOpen && !clickedInsideCase && !clickedInsideDevice) {
+            caseWindowEl.classList.remove('visible');
+            caseWindowEl.classList.remove('minimized');
+            document.body.classList.remove('case-open');
+            return;
+        }
+
+        if (
+            device.classList.contains('expanded') &&
+            !clickedInsideDevice &&
+            !clickedInsideCase
+        ) {
             device.classList.remove('expanded');
             device.classList.remove('maximized');
             applyPillSizes('collapsed');
