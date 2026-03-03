@@ -405,51 +405,32 @@ button *,
     pointer-events: none;
 }
 
-.resume-fab {
-    border: 0;
-    border-radius: 10px;
-    width: 100px;
-    height: 36px;
-    background: #d4d4d4;
-    color: #1f1f1f;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.88rem;
-    font-weight: 600;
-    letter-spacing: 0.01em;
+.site-resume-btn {
+    width: 135px;
+    height: auto;
     z-index: 61;
     pointer-events: auto;
-    transition: background-color 0.2s var(--ease-lux), color 0.2s var(--ease-lux), opacity 0.2s var(--ease-lux);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+    display: block;
 }
 
-.resume-fab {
-    pointer-events: auto;
+.site-resume-btn:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
 }
 
-.resume-fab:hover {
-    background: #bfbfbf;
+.site-resume-btn img {
+    width: 100%;
+    display: block;
 }
 
-.resume-fab:focus-visible,
+.site-resume-btn:focus-visible,
 .expand-fab:focus-visible {
     outline: 2px solid #7f7f7f;
     outline-offset: 2px;
 }
 
-.seconds-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: #d4f79d;
-    border: 1px solid #dbdbdb;
-    /*    box-shadow: 0 0 0 1px rgba(17, 17, 17, 0.2);*/
-    display: inline-block;
-    flex-shrink: 0;
-    pointer-events: none;
-    transition: opacity 0.22s var(--ease-lux);
-}
+
 
 /* Blur Masks */
 .content-mask {
