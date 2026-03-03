@@ -141,6 +141,16 @@ button *,
     display: block;
 }
 
+.mini-matrix-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    border-radius: inherit;
+}
+
 .device-container {
     position: relative;
     width: min(96vw, var(--bar-collapsed-width));
@@ -161,6 +171,7 @@ button *,
     border-radius: var(--site-radius);
     overflow: hidden;
 }
+
 
 .device-container.maximized {
     height: 100vh !important;

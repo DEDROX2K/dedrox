@@ -300,6 +300,37 @@
                 maxScaleBoost: 0.35,
                 maxLift: 8
             },
+
+            // -------------------------------------------------------
+            // ASCII RAIN  —  edit everything here
+            // -------------------------------------------------------
+            asciiRain: {
+                // Characters to rain down (add/remove freely)
+                chars: ['█', '▒', '░'],
+
+                // Font size in px — controls character size AND column density
+                // Bigger = fewer columns, larger blocks. Smaller = denser grid.
+                fontSize: 10,
+
+                // Fall speed multiplier (1 = normal, 0.5 = slow, 2 = fast)
+                speed: 1,
+
+                // Base opacity of characters when cursor is FAR away
+                baseOpacity: 0.10,
+
+                // Base colour (RGB) when cursor is far
+                baseColor: '77, 77, 77',
+
+                // Colour (RGB) characters shift TO when cursor is nearby
+                cursorColor: '0, 0, 0',   // try e.g. '220, 80, 120' for pink
+
+                // Max opacity of cursor-lit characters (the 39% you want)
+                cursorOpacity: 0.39,
+
+                // Radius (px) around cursor that affects colour (spread)
+                cursorRadius: 180,
+            },
+
             // Edit this list only: name/logo/url for each company dock item.
             companies: [
                 { name: 'AIR CARDS', logo: 'images/c5.png', url: 'images/c1.png' },
@@ -433,6 +464,8 @@
             if (!device.classList.contains('expanded')) {
                 device.classList.add('expanded');
                 e.stopPropagation();
+                // Resize dots canvas after CSS transition completes (500ms)
+                setTimeout(() => { if (miniMatrixInstance) miniMatrixInstance.resize(); }, 520);
             }
         });
 
@@ -440,6 +473,8 @@
             if (device.classList.contains('expanded') && !device.contains(e.target)) {
                 device.classList.remove('expanded');
                 device.classList.remove('maximized');
+                // Resize back to collapsed height
+                setTimeout(() => { if (miniMatrixInstance) miniMatrixInstance.resize(); }, 520);
             }
         });
 
@@ -629,17 +664,37 @@
         // --------------------------------------------------------
         // MATRIX ANIMATED BACKGROUNDS
         // --------------------------------------------------------
+
+        // Global cursor position (used by cursor-reactive rain)
+        const cursorPos = { x: -9999, y: -9999 };
+        window.addEventListener('mousemove', (e) => {
+            cursorPos.x = e.clientX;
+            cursorPos.y = e.clientY;
+        });
+
         class MatrixRain {
-            constructor(canvasId, chars, colorStr, fontSize, speed, parentElement, maxOpacity) {
+            /**
+             * @param {string}    canvasId
+             * @param {string[]}  chars         Characters to rain
+             * @param {string}    baseColor      RGB string far-from-cursor, e.g. '130,130,130'
+             * @param {number}    fontSize       Column width & char size in px
+             * @param {number}    speed          Fall speed multiplier
+             * @param {Window|Element} parentElement
+             * @param {number}    baseOpacity    Max opacity when cursor is far
+             * @param {object}   [cursor]        Optional cursor-reactive options:
+             *   { color: RGB string, opacity: peak opacity, radius: px spread }
+             */
+            constructor(canvasId, chars, baseColor, fontSize, speed, parentElement, baseOpacity, cursor) {
                 this.canvas = document.getElementById(canvasId);
                 if (!this.canvas) return;
                 this.ctx = this.canvas.getContext('2d');
                 this.chars = chars;
-                this.colorStr = colorStr;
+                this.baseColor = baseColor;
                 this.fontSize = fontSize;
                 this.speed = speed;
                 this.parent = parentElement;
-                this.maxOpacity = maxOpacity || 0.4;
+                this.baseOpacity = baseOpacity || 0.15;
+                this.cursor = cursor || null;
 
                 this.resize();
                 window.addEventListener('resize', () => this.resize());
@@ -676,18 +731,20 @@
                     const length = Math.floor(10 + Math.random() * 20);
                     this.columns.push({
                         x: i * this.fontSize,
-                        y: Math.random() * -h * 2, // starting Y offscreen
+                        y: Math.random() * -h * 2,
                         chars: [],
                         speed: this.speed * (0.8 + Math.random() * 0.6),
                         length: length
                     });
-
                     const maxRows = Math.floor(h / this.fontSize) + length + 20;
                     for (let j = 0; j < maxRows; j++) {
                         this.columns[i].chars.push(this.chars[Math.floor(Math.random() * this.chars.length)]);
                     }
                 }
             }
+
+            _lerp(a, b, t) { return Math.round(a + (b - a) * t); }
+            _parseRGB(str) { return str.split(',').map(Number); }
 
             animate(time) {
                 requestAnimationFrame(this.animate);
@@ -696,8 +753,15 @@
                 this.lastTime = time - (deltaTime % this.interval);
 
                 this.ctx.clearRect(0, 0, this.width, this.height);
-                this.ctx.font = this.fontSize + 'px monospace';
+                this.ctx.font = `${this.fontSize}px monospace`;
                 this.ctx.textAlign = 'center';
+
+                // Pre-compute canvas offset for cursor proximity
+                let canvasRect = null;
+                if (this.cursor) canvasRect = this.canvas.getBoundingClientRect();
+
+                const baseRGB = this._parseRGB(this.baseColor);
+                const curRGB = this.cursor ? this._parseRGB(this.cursor.color) : null;
 
                 for (let col of this.columns) {
                     col.y += col.speed * this.fontSize;
@@ -713,28 +777,70 @@
                         col.chars[randIndex] = this.chars[Math.floor(Math.random() * this.chars.length)];
                     }
 
+                    // --- Cursor proximity colour blend ---
+                    let t = 0; // 0 = far (base colour), 1 = at cursor (cursor colour)
+                    if (this.cursor && canvasRect) {
+                        const scaleX = this.width / canvasRect.width;
+                        const scaleY = this.height / canvasRect.height;
+                        const colScreenX = canvasRect.left + col.x / scaleX + this.fontSize / 2;
+                        const colScreenY = canvasRect.top + col.y / scaleY;
+                        const dx = cursorPos.x - colScreenX;
+                        const dy = cursorPos.y - colScreenY;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        t = Math.max(0, 1 - dist / this.cursor.radius);
+                        t = t * t; // quadratic ease — sharper falloff from cursor centre
+                    }
+
+                    const r = curRGB ? this._lerp(baseRGB[0], curRGB[0], t) : baseRGB[0];
+                    const g = curRGB ? this._lerp(baseRGB[1], curRGB[1], t) : baseRGB[1];
+                    const b = curRGB ? this._lerp(baseRGB[2], curRGB[2], t) : baseRGB[2];
+                    const peakOpacity = this.cursor
+                        ? this.baseOpacity + (this.cursor.opacity - this.baseOpacity) * t
+                        : this.baseOpacity;
+
                     const startRow = Math.floor(col.y / this.fontSize);
                     for (let i = 0; i < col.length; i++) {
                         const row = startRow - i;
                         if (row < 0 || row * this.fontSize > this.height) continue;
 
-                        const opacity = (1 - (i / col.length)) * this.maxOpacity;
+                        const opacity = (1 - (i / col.length)) * peakOpacity;
                         const charIndex = Math.abs(row) % col.chars.length;
                         const char = col.chars[charIndex];
 
-                        this.ctx.fillStyle = `rgba(${this.colorStr}, ${opacity})`;
+                        this.ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${opacity.toFixed(3)})`;
                         this.ctx.fillText(char, col.x + this.fontSize / 2, row * this.fontSize);
                     }
                 }
             }
         }
 
-        function initBackgrounds() {
-            // Main Matrix background
-            new MatrixRain('canvas-bg', ['█', '▓', '▒', '░', '▄', '▀', '|', '/'], '130, 130, 130', 20, 1, window, 0.15);
+        let miniMatrixInstance = null;
 
-            // Mini website dots background
-            new MatrixRain('mini-matrix', ['.'], '130, 130, 130', 14, 0.6, document.getElementById('portfolio-device'), 0.25);
+        function initBackgrounds() {
+            const cfg = SITE_CONFIG.asciiRain;
+
+            // Main ASCII rain — full page, cursor-reactive
+            new MatrixRain(
+                'canvas-bg',
+                cfg.chars,
+                cfg.baseColor,
+                cfg.fontSize,
+                cfg.speed,
+                window,
+                cfg.baseOpacity,
+                { color: cfg.cursorColor, opacity: cfg.cursorOpacity, radius: cfg.cursorRadius }
+            );
+
+            // Mini dots inside device — no cursor-reactive (stays subtle)
+            miniMatrixInstance = new MatrixRain(
+                'mini-matrix',
+                ['.'],
+                '130, 130, 130',
+                14,
+                0.6,
+                document.getElementById('portfolio-device'),
+                0.25
+            );
         }
 
         // --------------------------------------------------------
