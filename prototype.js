@@ -1,0 +1,674 @@
+/**
+ * DEDROX Portfolio Prototype JS
+ */
+
+// --------------------------------------------------------
+// QUICK EDIT CONFIG
+// --------------------------------------------------------
+const SITE_CONFIG = {
+    profile: {
+        githubUsername: 'raghavprasanna',
+        githubChartColor: '111111',
+        locationMain: 'Newcastle',
+        locationSub: '(United Kingdom)',
+        timeZone: 'Europe/London'
+    },
+    dock: {
+        maxDistance: 120,
+        maxScaleBoost: 0.35,
+        maxLift: 8
+    },
+    asciiRain: {
+        chars: ['█', '▒', '░', '*', '|', '/', 'o'],
+        fontSize: 5,
+        speed: 1,
+        baseOpacity: 0.10,
+        baseColor: '77, 77, 77',
+        cursorColor: '0, 0, 0',
+        direction: 'up',
+        cursorOpacity: 0.39,
+        cursorRadius: 280,
+    },
+    companies: [
+        { name: 'AIR CARDS', logo: 'images/c5.png', url: 'images/c1.png' },
+        { name: 'Studio Nefce', logo: 'images/c6.png', url: 'images/c2.png' },
+        { name: 'Opendatabay', logo: 'images/c4.png', url: 'images/c3.png' },
+        { name: 'Noun Town VR Language Learning', logo: 'images/c3.png', url: 'images/c4.png' },
+        { name: 'Birmingham city university', logo: 'images/c2.png', url: 'images/c5.png' },
+        { name: 'Do. Creative Labs', logo: 'images/c1.png', url: 'images/c6.png' }
+    ],
+    pixel: {
+        palette: ['#111111', '#ff3b30', '#ffcc00', '#34c759', '#0a84ff', '#bf5af2'],
+        pixelSize: 1,
+        background: '#f3f3f3',
+        resolution: 40
+    },
+    caseData: {
+        case1: {
+            title: "Clear Breath CBT",
+            images: [
+                'images/DEDROX.DSGN/CB1.jpg', 'images/DEDROX.DSGN/CB2.jpg', 'images/DEDROX.DSGN/CB3.jpg',
+                'images/DEDROX.DSGN/CB4.jpg', 'images/DEDROX.DSGN/CB5.jpg', 'images/DEDROX.DSGN/CB6.jpg',
+                'images/DEDROX.DSGN/CB7.jpg', 'images/DEDROX.DSGN/CB8.jpg', 'images/DEDROX.DSGN/CB9.jpg',
+                'images/DEDROX.DSGN/CB10.jpg', 'images/DEDROX.DSGN/CB11.jpg'
+            ]
+        },
+        case2: {
+            title: "Air Buddy Navigation",
+            images: [
+                'images/DEDROX.DSGN/AN1.jpg', 'images/DEDROX.DSGN/AN2.jpg', 'images/DEDROX.DSGN/AN3.jpg',
+                'images/DEDROX.DSGN/AN4.jpg', 'images/DEDROX.DSGN/AN5.jpg', 'images/DEDROX.DSGN/AN6.jpg',
+                'images/DEDROX.DSGN/AN7.jpg', 'images/DEDROX.DSGN/AN8.jpg', 'images/DEDROX.DSGN/AN9.jpg'
+            ]
+        },
+        case3: {
+            title: "Research Phase",
+            images: [
+                'images/DEDROX.DSGN/f1.png', 'images/DEDROX.DSGN/f2.png', 'images/DEDROX.DSGN/f3.png',
+                'images/DEDROX.DSGN/f4.png', 'images/DEDROX.DSGN/f5.png', 'images/DEDROX.DSGN/f6.png',
+                'images/DEDROX.DSGN/f7.png'
+            ]
+        }
+    },
+    setupCaseOverlays() {
+        const cards = document.querySelectorAll('[data-case]');
+        const caseWindow = document.getElementById('case-window');
+        const closeBtn = document.getElementById('case-close');
+        const contentArea = document.getElementById('case-content-area');
+        const titleDisp = document.getElementById('case-title');
+
+        let isTransitioning = false;
+
+        const openCase = (caseId) => {
+            if (isTransitioning) return;
+            const data = SITE_CONFIG.caseData[caseId];
+            if (!data) return;
+
+            const performOpen = () => {
+                titleDisp.textContent = data.title;
+                contentArea.innerHTML = data.images.map(img => `<img src="${img}" alt="Case Image">`).join('');
+                caseWindow.classList.add('visible');
+                caseWindow.classList.remove('minimized');
+
+                contentArea.scrollTop = 0;
+                isTransitioning = false;
+            };
+
+            if (caseWindow.classList.contains('visible')) {
+                isTransitioning = true;
+                caseWindow.classList.remove('visible');
+                setTimeout(performOpen, 400);
+            } else {
+                performOpen();
+            }
+        };
+
+        cards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                e.preventDefault();
+                const caseId = card.getAttribute('data-case');
+                openCase(caseId);
+            });
+        });
+
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                caseWindow.classList.remove('visible');
+                caseWindow.classList.remove('minimized');
+            });
+        }
+    },
+    pillSizes: {
+        collapsed: {
+            bar: { w: '8px', h: '34px' },
+            circle: { w: '10px', h: '10px' },
+            square: { w: '25px', h: '24px' },
+            dark: { w: '8px', h: '34px' },
+            container: { w: '280px', h: '56px' }
+        },
+        expanded: {
+            bar: { w: '12px', h: '40px' },
+            circle: { w: '44px', h: '44px' },
+            square: { w: '100px', h: '40px' },
+            dark: { w: '30px', h: '40px' },
+            container: { w: '450px', h: '64px' }
+        }
+    },
+    blurMask: {
+        strength: '15px',
+        opacity: 0.85
+    }
+};
+
+function applyBlurMaskSettings() {
+    const cfg = SITE_CONFIG.blurMask;
+    if (!cfg) return;
+    const root = document.documentElement;
+    root.style.setProperty('--blur-mask-strength', cfg.strength);
+    root.style.setProperty('--blur-mask-opacity', cfg.opacity);
+}
+
+function applyPillSizes(state) {
+    const sizes = SITE_CONFIG.pillSizes[state];
+    if (!sizes) return;
+    const root = document.documentElement;
+    root.style.setProperty('--pill-bar-w', sizes.bar.w);
+    root.style.setProperty('--pill-bar-h', sizes.bar.h);
+    root.style.setProperty('--pill-circle-w', sizes.circle.w);
+    root.style.setProperty('--pill-circle-h', sizes.circle.h);
+    root.style.setProperty('--pill-square-w', sizes.square.w);
+    root.style.setProperty('--pill-square-h', sizes.square.h);
+    root.style.setProperty('--pill-dark-w', sizes.dark.w);
+    root.style.setProperty('--pill-dark-h', sizes.dark.h);
+
+    if (sizes.container) {
+        root.style.setProperty('--pill-container-w', sizes.container.w);
+        root.style.setProperty('--pill-container-h', sizes.container.h);
+    }
+}
+
+const device = document.getElementById('portfolio-device');
+const topBar = document.getElementById('top-bar');
+const topBarArt = document.getElementById('top-bar-art');
+const githubChartImg = document.getElementById('github-chart-img');
+const secondsDot = document.getElementById('seconds-dot');
+const expandBtn = document.getElementById('expand-btn');
+
+// Reusable Scramble and Reveal Logic
+function scrambleText(element, targetText, delay = 1000) {
+    if (!element) return;
+
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()";
+    let isRevealing = false;
+    let revealIndex = 0;
+
+    // Phase 1: Scramble for the specified delay
+    const scrambleInterval = setInterval(() => {
+        if (!isRevealing) {
+            let scrambled = "";
+            for (let i = 0; i < targetText.length; i++) {
+                scrambled += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+            element.textContent = scrambled;
+        }
+    }, 50);
+
+    // Phase 2: Start reveal after delay
+    setTimeout(() => {
+        isRevealing = true;
+        clearInterval(scrambleInterval);
+
+        const revealInterval = setInterval(() => {
+            if (revealIndex <= targetText.length) {
+                let currentDisplay = targetText.substring(0, revealIndex);
+                // Fill the rest with scrambled chars
+                for (let i = revealIndex; i < targetText.length; i++) {
+                    currentDisplay += characters.charAt(Math.floor(Math.random() * characters.length));
+                }
+                element.textContent = currentDisplay;
+                revealIndex++;
+            } else {
+                element.textContent = targetText;
+                clearInterval(revealInterval);
+            }
+        }, 80); // Reveal speed
+    }, delay);
+}
+
+// Global cursor position
+const cursorPos = { x: -9999, y: -9999 };
+window.addEventListener('mousemove', (e) => {
+    cursorPos.x = e.clientX;
+    cursorPos.y = e.clientY;
+});
+
+class MatrixRain {
+    constructor(canvasId, chars, baseColor, fontSize, speed, parentElement, baseOpacity, cursor, direction) {
+        this.canvas = document.getElementById(canvasId);
+        if (!this.canvas) return;
+        this.ctx = this.canvas.getContext('2d');
+        this.chars = chars;
+        this.baseColor = baseColor;
+        this.fontSize = fontSize;
+        this.speed = speed;
+        this.parent = parentElement;
+        this.baseOpacity = baseOpacity || 0.15;
+        this.cursor = cursor || null;
+        this.direction = direction || 'down';
+
+        this.resize();
+        window.addEventListener('resize', () => this.resize());
+
+        this.lastTime = 0;
+        this.fps = 20;
+        this.interval = 1000 / this.fps;
+
+        this.animate = this.animate.bind(this);
+        requestAnimationFrame(this.animate);
+    }
+
+    resize() {
+        let w, h;
+        if (this.parent === window) {
+            w = window.innerWidth;
+            h = window.innerHeight;
+        } else {
+            const rect = this.parent.getBoundingClientRect();
+            w = rect.width;
+            h = rect.height;
+        }
+        this.width = w;
+        this.height = h;
+
+        const dpr = window.devicePixelRatio || 1;
+        this.canvas.width = w * dpr;
+        this.canvas.height = h * dpr;
+        this.ctx.scale(dpr, dpr);
+
+        const colCount = Math.floor(w / this.fontSize) + 1;
+        this.columns = [];
+        for (let i = 0; i < colCount; i++) {
+            const length = Math.floor(10 + Math.random() * 20);
+            const startY = this.direction === 'up'
+                ? this.height + Math.random() * this.height
+                : Math.random() * -this.height * 2;
+
+            this.columns.push({
+                x: i * this.fontSize,
+                y: startY,
+                chars: [],
+                speed: this.speed * (0.8 + Math.random() * 0.6),
+                length: length
+            });
+            const maxRows = Math.floor(h / this.fontSize) + length + 20;
+            for (let j = 0; j < maxRows; j++) {
+                this.columns[i].chars.push(this.chars[Math.floor(Math.random() * this.chars.length)]);
+            }
+        }
+    }
+
+    _lerp(a, b, t) { return Math.round(a + (b - a) * t); }
+    _parseRGB(str) { return str.split(',').map(Number); }
+
+    animate(time) {
+        requestAnimationFrame(this.animate);
+        const deltaTime = time - this.lastTime;
+        if (deltaTime < this.interval) return;
+        this.lastTime = time - (deltaTime % this.interval);
+
+        this.ctx.clearRect(0, 0, this.width, this.height);
+        this.ctx.font = `${this.fontSize}px monospace`;
+        this.ctx.textAlign = 'center';
+
+        let canvasRect = null;
+        if (this.cursor) canvasRect = this.canvas.getBoundingClientRect();
+
+        const baseRGB = this._parseRGB(this.baseColor);
+        const curRGB = this.cursor ? this._parseRGB(this.cursor.color) : null;
+
+        for (let col of this.columns) {
+            if (this.direction === 'up') {
+                col.y -= col.speed * this.fontSize;
+                if (col.y + col.length * this.fontSize < 0 && Math.random() > 0.95) {
+                    col.y = this.height + this.fontSize;
+                    col.speed = this.speed * (0.8 + Math.random() * 0.6);
+                    col.length = Math.floor(10 + Math.random() * 20);
+                }
+            } else {
+                col.y += col.speed * this.fontSize;
+                if (col.y - col.length * this.fontSize > this.height && Math.random() > 0.95) {
+                    col.y = -this.fontSize;
+                    col.speed = this.speed * (0.8 + Math.random() * 0.6);
+                    col.length = Math.floor(10 + Math.random() * 20);
+                }
+            }
+
+            if (Math.random() > 0.8) {
+                const randIndex = Math.floor(Math.random() * col.chars.length);
+                col.chars[randIndex] = this.chars[Math.floor(Math.random() * this.chars.length)];
+            }
+
+            let t = 0;
+            if (this.cursor && canvasRect) {
+                const scaleX = this.width / canvasRect.width;
+                const scaleY = this.height / canvasRect.height;
+                const colScreenX = canvasRect.left + col.x / scaleX + this.fontSize / 2;
+                const colScreenY = canvasRect.top + col.y / scaleY;
+                const dx = cursorPos.x - colScreenX;
+                const dy = cursorPos.y - colScreenY;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                t = Math.max(0, 1 - dist / this.cursor.radius);
+                t = t * t;
+            }
+
+            const r = curRGB ? this._lerp(baseRGB[0], curRGB[0], t) : baseRGB[0];
+            const g = curRGB ? this._lerp(baseRGB[1], curRGB[1], t) : baseRGB[1];
+            const b = curRGB ? this._lerp(baseRGB[2], curRGB[2], t) : baseRGB[2];
+            const peakOpacity = this.cursor
+                ? this.baseOpacity + (this.cursor.opacity - this.baseOpacity) * t
+                : this.baseOpacity;
+
+            const startRow = Math.floor(col.y / this.fontSize);
+            for (let i = 0; i < col.length; i++) {
+                const row = startRow - i;
+                if (row < 0 || row * this.fontSize > this.height) continue;
+
+                const opacity = (1 - (i / col.length)) * peakOpacity;
+                const charIndex = Math.abs(row) % col.chars.length;
+                const char = col.chars[charIndex];
+
+                this.ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${opacity.toFixed(3)})`;
+                this.ctx.fillText(char, col.x + this.fontSize / 2, row * this.fontSize);
+            }
+        }
+    }
+}
+
+let miniMatrixInstance = null;
+
+function initBackgrounds() {
+    const cfg = SITE_CONFIG.asciiRain;
+    new MatrixRain(
+        'canvas-bg',
+        cfg.chars,
+        cfg.baseColor,
+        cfg.fontSize,
+        cfg.speed,
+        window,
+        cfg.baseOpacity,
+        { color: cfg.cursorColor, opacity: cfg.cursorOpacity, radius: cfg.cursorRadius },
+        cfg.direction
+    );
+
+    miniMatrixInstance = new MatrixRain(
+        'mini-matrix',
+        ['.'],
+        '130, 130, 130',
+        14,
+        0.6,
+        document.getElementById('portfolio-device'),
+        0.25
+    );
+}
+
+// --------------------------------------------------------
+// COMPANY DOCK DATA RENDER
+// --------------------------------------------------------
+function buildCompanyDock() {
+    const dock = document.getElementById('company-dock');
+    if (!dock) return;
+    dock.innerHTML = '';
+
+    SITE_CONFIG.companies.forEach((company, index) => {
+        const item = document.createElement('button');
+        item.className = 'dock-item';
+        item.type = 'button';
+        item.setAttribute('aria-label', company.name || `Company ${index + 1}`);
+
+        if (company.url) {
+            item.addEventListener('click', () => {
+                window.open(company.url, '_blank', 'noopener,noreferrer');
+            });
+        }
+
+        const tooltip = document.createElement('span');
+        tooltip.className = 'dock-tooltip';
+        tooltip.textContent = company.name || `Company ${index + 1}`;
+
+        const logoWrap = document.createElement('span');
+        logoWrap.className = 'dock-logo';
+
+        if (company.logo) {
+            const logo = document.createElement('img');
+            logo.className = 'dock-logo-img';
+            logo.src = company.logo;
+            logo.alt = company.name || `Company ${index + 1}`;
+            logo.onerror = () => {
+                logo.remove();
+                logoWrap.textContent = `C${index + 1}`;
+            };
+            logoWrap.appendChild(logo);
+        } else {
+            logoWrap.textContent = `C${index + 1}`;
+        }
+
+        item.appendChild(tooltip);
+        item.appendChild(logoWrap);
+        dock.appendChild(item);
+    });
+}
+
+function initCompanyDock() {
+    const dock = document.getElementById('company-dock');
+    if (!dock) return;
+    const items = Array.from(dock.querySelectorAll('.dock-item'));
+    if (!items.length) return;
+
+    const maxDistance = SITE_CONFIG.dock.maxDistance;
+    const maxScaleBoost = SITE_CONFIG.dock.maxScaleBoost;
+    const maxLift = SITE_CONFIG.dock.maxLift;
+
+    function resetDock() {
+        items.forEach((item) => {
+            item.style.setProperty('--scale', '1');
+            item.style.setProperty('--lift', '0px');
+        });
+    }
+
+    dock.addEventListener('mousemove', (e) => {
+        const pointerX = e.clientX;
+        items.forEach((item) => {
+            const rect = item.getBoundingClientRect();
+            const centerX = rect.left + rect.width * 0.5;
+            const distance = Math.abs(pointerX - centerX);
+            const t = Math.max(0, 1 - (distance / maxDistance));
+            const eased = t * t;
+            const scale = 1 + (eased * maxScaleBoost);
+            const lift = -(eased * maxLift);
+            item.style.setProperty('--scale', scale.toFixed(3));
+            item.style.setProperty('--lift', `${lift.toFixed(2)}px`);
+        });
+    });
+
+    dock.addEventListener('mouseleave', resetDock);
+    window.addEventListener('blur', resetDock);
+    resetDock();
+}
+
+// --------------------------------------------------------
+// PIXEL DRAW CANVAS
+// --------------------------------------------------------
+const pixelCanvas = document.getElementById('pixel-canvas');
+const pixelCtx = pixelCanvas ? pixelCanvas.getContext('2d') : null;
+const paletteRoot = document.getElementById('pixel-palette');
+let drawing = false;
+let activeColor = SITE_CONFIG.pixel.palette[0];
+
+function buildPalette() {
+    if (!paletteRoot) return;
+    SITE_CONFIG.pixel.palette.forEach((color, index) => {
+        const swatch = document.createElement('button');
+        swatch.className = 'swatch' + (index === 0 ? ' active' : '');
+        swatch.style.background = color;
+        swatch.type = 'button';
+        swatch.setAttribute('aria-label', `Select color ${index + 1}`);
+        swatch.addEventListener('click', () => {
+            activeColor = color;
+            document.querySelectorAll('.swatch').forEach((s) => s.classList.remove('active'));
+            swatch.classList.add('active');
+        });
+        paletteRoot.appendChild(swatch);
+    });
+
+    const clearBtn = document.createElement('button');
+    clearBtn.className = 'clear-pixel';
+    clearBtn.type = 'button';
+    clearBtn.textContent = 'Clear';
+    clearBtn.addEventListener('click', clearPixelCanvas);
+    paletteRoot.appendChild(clearBtn);
+}
+
+function clearPixelCanvas() {
+    if (!pixelCtx || !pixelCanvas) return;
+    pixelCtx.fillStyle = SITE_CONFIG.pixel.background;
+    pixelCtx.fillRect(0, 0, pixelCanvas.width, pixelCanvas.height);
+}
+
+function paintFromEvent(e) {
+    if (!pixelCanvas || !pixelCtx) return;
+    const rect = pixelCanvas.getBoundingClientRect();
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    const cssX = clientX - rect.left;
+    const cssY = clientY - rect.top;
+    const scaleX = pixelCanvas.width / rect.width;
+    const scaleY = pixelCanvas.height / rect.height;
+    const rawX = cssX * scaleX;
+    const rawY = cssY * scaleY;
+    const x = Math.floor(rawX / SITE_CONFIG.pixel.pixelSize) * SITE_CONFIG.pixel.pixelSize;
+    const y = Math.floor(rawY / SITE_CONFIG.pixel.pixelSize) * SITE_CONFIG.pixel.pixelSize;
+
+    if (x < 0 || y < 0 || x >= pixelCanvas.width || y >= pixelCanvas.height) return;
+    pixelCtx.fillStyle = activeColor;
+    pixelCtx.fillRect(x, y, SITE_CONFIG.pixel.pixelSize, SITE_CONFIG.pixel.pixelSize);
+}
+
+if (pixelCanvas) {
+    pixelCanvas.addEventListener('mousedown', (e) => {
+        drawing = true;
+        paintFromEvent(e);
+    });
+
+    window.addEventListener('mouseup', () => {
+        drawing = false;
+    });
+
+    pixelCanvas.addEventListener('mousemove', (e) => {
+        if (!drawing) return;
+        paintFromEvent(e);
+    });
+
+    pixelCanvas.addEventListener('touchstart', (e) => {
+        drawing = true;
+        paintFromEvent(e);
+        e.preventDefault();
+    }, { passive: false });
+
+    pixelCanvas.addEventListener('touchmove', (e) => {
+        if (!drawing) return;
+        paintFromEvent(e);
+        e.preventDefault();
+    }, { passive: false });
+
+    window.addEventListener('touchend', () => {
+        drawing = false;
+    });
+}
+
+function initIndexGrid() {
+    const grid = document.getElementById('index-grid');
+    if (!grid) return;
+
+    const colors = [
+        '#FF3BB3', '#5C2DFF', '#00D1FF', '#00FF4E', '#FFFB1F',
+        '#FF7A00', '#FF0000', '#0000FF', '#00FF00', '#FF00FF',
+        '#EEEEEE', '#111111', '#DDDDDD', '#222222', '#CCCCCC'
+    ];
+
+    const count = 120;
+    for (let i = 0; i < count; i++) {
+        const square = document.createElement('div');
+        square.className = 'index-grid-square';
+        square.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        grid.appendChild(square);
+    }
+}
+
+// --------------------------------------------------------
+// MAIN INIT ON DOM CONTENT LOADED
+// --------------------------------------------------------
+document.addEventListener('DOMContentLoaded', () => {
+    // Config based UI updates
+    if (githubChartImg) {
+        githubChartImg.src = `https://ghchart.rshah.org/${SITE_CONFIG.profile.githubChartColor}/${SITE_CONFIG.profile.githubUsername}`;
+    }
+
+    if (topBarArt) {
+        const applyBarArtState = () => {
+            const hasImage = topBarArt.naturalWidth > 0;
+            topBar.classList.toggle('has-art', hasImage);
+        };
+        if (topBarArt.complete) {
+            applyBarArtState();
+        }
+        topBarArt.addEventListener('load', applyBarArtState);
+        topBarArt.addEventListener('error', () => {
+            topBar.classList.remove('has-art');
+        });
+    }
+
+    if (expandBtn) {
+        expandBtn.addEventListener('click', (e) => {
+            device.classList.toggle('maximized');
+            e.stopPropagation();
+            setTimeout(() => {
+                if (typeof fitty !== 'undefined') fitty.fitAll();
+            }, 350);
+        });
+    }
+
+    if (topBar) {
+        topBar.addEventListener('click', (e) => {
+            if (!device.classList.contains('expanded')) {
+                device.classList.add('expanded');
+                applyPillSizes('expanded');
+                e.stopPropagation();
+                setTimeout(() => { if (miniMatrixInstance) miniMatrixInstance.resize(); }, 520);
+            }
+        });
+    }
+
+    document.body.addEventListener('click', (e) => {
+        if (device.classList.contains('expanded') && !device.contains(e.target)) {
+            device.classList.remove('expanded');
+            device.classList.remove('maximized');
+            applyPillSizes('collapsed');
+            setTimeout(() => { if (miniMatrixInstance) miniMatrixInstance.resize(); }, 520);
+        }
+    });
+
+    // Run core initializers
+    initBackgrounds();
+    buildCompanyDock();
+    initCompanyDock();
+    buildPalette();
+    clearPixelCanvas();
+    SITE_CONFIG.setupCaseOverlays();
+    initIndexGrid();
+
+    // Initialize Scramble Animations
+    const pillTextEl = document.querySelector('.pill-text');
+    scrambleText(pillTextEl, "portfolio", 1000);
+
+    const resumeBtnEl = document.querySelector('.resume-fab');
+    scrambleText(resumeBtnEl, "/-Resume", 1000);
+
+    applyPillSizes('collapsed'); // Ensure initial state is collapsed
+    applyBlurMaskSettings();
+
+    // Lucide Icons
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
+
+    // Fitty
+    if (typeof fitty !== 'undefined') {
+        document.fonts.ready.then(() => {
+            fitty('.fit-text', {
+                minSize: 16,
+                maxSize: 200,
+                multiLine: false
+            });
+        });
+    }
+});
