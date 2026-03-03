@@ -6,7 +6,7 @@
     --soft-ink: #4b4b4b;
     --muted: #828282;
     --pattern-dot: #D6D6D6;
-    --accent-green: #d487da;
+    --accent-green: #8ca0bb;
 
 
     /* refer this site to get more cubic references - https://joshcollinsworth.com/blog/easing-curves */
@@ -105,26 +105,45 @@ body {
 html,
 body,
 body * {
-    cursor: none !important;
+    cursor: url('pointercursor.png') 4 4, auto !important;
 }
 
-#custom-cursor {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 26px;
-    height: 26px;
-    pointer-events: none;
-    z-index: 9999;
-    opacity: 0;
-    transform: translate3d(-100px, -100px, 0);
-    background: center / contain no-repeat url('pointercursor.png');
-    will-change: transform, opacity;
-    transition: opacity 0.12s ease;
+p,
+span,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.bar-left,
+.bar-right,
+.model-copy,
+.contact-meta {
+    cursor: url('textcursor.png') 8 10, text !important;
 }
 
-#custom-cursor.is-down {
-    opacity: 0.75;
+a,
+a *,
+button,
+button *,
+.top-bar,
+.top-bar *,
+.brand-link,
+.brand-link *,
+.company-dock,
+.company-dock *,
+.dock-item,
+.dock-item *,
+.project-card,
+.project-card *,
+.case-card,
+.case-card *,
+.contact-btn,
+.contact-btn *,
+[role='button'],
+[role='button'] * {
+    cursor: url('linkcursor.png') 6 4, pointer !important;
 }
 
 .site-exit-btn {
@@ -1106,6 +1125,12 @@ body * {
     align-items: center;
     padding: 12px var(--site-padding-x);
     text-decoration: none;
+    transition: filter 0.2s var(--ease-lux), padding-left 0.3s var(--ease-lux);
+}
+
+a.brand-block:hover {
+    filter: brightness(0.92);
+    padding-left: calc(var(--site-padding-x) + 10px);
 }
 
 .brand-text {
@@ -1359,10 +1384,6 @@ body * {
     body,
     body * {
         cursor: auto !important;
-    }
-
-    #custom-cursor {
-        display: none !important;
     }
 }
 
