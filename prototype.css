@@ -6,7 +6,7 @@
     --soft-ink: #4b4b4b;
     --muted: #828282;
     --pattern-dot: #D6D6D6;
-    --accent-green: #8ca0bb;
+    --accent-green: #f1f1f1;
 
 
     /* refer this site to get more cubic references - https://joshcollinsworth.com/blog/easing-curves */
@@ -253,14 +253,14 @@ button *,
     width: var(--pill-bar-w);
     height: var(--pill-bar-h);
     background: #999;
-    border-radius: 3px;
+    border-radius: 99px;
     transition: all 0.5s var(--ease-lux);
 }
 
 .pill-plain-circle {
     width: var(--pill-circle-w);
     height: var(--pill-circle-h);
-    border-radius: 50%;
+    border-radius: 99px;
     background-color: var(--accent-green);
     flex-shrink: 0;
     transition: all 0.5s var(--ease-lux);
@@ -271,7 +271,7 @@ button *,
     height: var(--pill-square-h);
     background: #8e9194;
     /* Medium grey square */
-    border-radius: 6px;
+    border-radius: 99px;
     transition: all 0.5s var(--ease-lux);
 }
 
@@ -280,7 +280,7 @@ button *,
     height: var(--pill-dark-h);
     background: #333;
     /* Dark grey block */
-    border-radius: 6px;
+    border-radius: 99px;
     transition: all 0.5s var(--ease-lux);
 }
 
@@ -1129,15 +1129,14 @@ button *,
 }
 
 a.brand-block:hover {
-    filter: brightness(0.92);
     padding-left: calc(var(--site-padding-x) + 10px);
 }
 
 .brand-text {
     font-family: 'Archivo', sans-serif;
-    font-size: 3.0rem;
-    font-weight: 600;
-    line-height: 1.1;
+    font-size: 1.0rem;
+    font-weight: 800;
+    line-height: 0.1;
     letter-spacing: -0.02em;
 }
 
@@ -1802,5 +1801,15 @@ body.case-open .case-window {
 
     .index-title {
         font-size: 3rem;
+    }
+
+    .hidden-mobile {
+        display: none !important;
+    }
+
+    .site-exit-btn,
+    .site-resume-btn,
+    .expand-fab {
+        display: none !important;
     }
 }

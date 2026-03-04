@@ -696,6 +696,56 @@ function initIndexGrid() {
 }
 
 // --------------------------------------------------------
+// HOVER ANIMATIONS
+// --------------------------------------------------------
+function initBrandHoverAnimations() {
+    const blocks = document.querySelectorAll('.brand-block');
+
+    blocks.forEach(block => {
+        const textSpan = block.querySelector('.brand-text');
+        if (!textSpan) return;
+
+        // Split text into individual spans for staggered animation
+        const originalText = textSpan.textContent;
+        textSpan.innerHTML = '';
+        const letters = originalText.split('');
+
+        letters.forEach(letter => {
+            const span = document.createElement('span');
+            // preserve spaces
+            if (letter === ' ') {
+                span.innerHTML = '&nbsp;';
+            } else {
+                span.textContent = letter;
+            }
+            span.style.display = 'inline-block';
+            span.style.transformOrigin = 'center';
+            textSpan.appendChild(span);
+        });
+
+        const charSpans = textSpan.querySelectorAll('span');
+
+        block.addEventListener('mouseenter', () => {
+            if (typeof gsap !== 'undefined') {
+                gsap.killTweensOf(charSpans);
+
+                // Reset first
+                gsap.set(charSpans, { y: 0, opacity: 1 });
+
+                // Play stagger animation
+                gsap.from(charSpans, {
+                    y: 10,
+                    opacity: 0,
+                    duration: 0.3,
+                    stagger: 0.05,
+                    ease: "back.out(1.5)"
+                });
+            }
+        });
+    });
+}
+
+// --------------------------------------------------------
 // MAIN INIT ON DOM CONTENT LOADED
 // --------------------------------------------------------
 document.addEventListener('DOMContentLoaded', () => {
@@ -776,6 +826,7 @@ document.addEventListener('DOMContentLoaded', () => {
     clearPixelCanvas();
     SITE_CONFIG.setupCaseOverlays();
     initIndexGrid();
+    initBrandHoverAnimations();
 
     // Initialize Scramble Animations
     const pillTextEl = document.querySelector('.pill-text');
