@@ -18,7 +18,7 @@
     --device-collapsed-height: 56px;
     --device-expanded-height: 88vh;
     --device-expanded-max-height: 980px;
-    --case-window-width: 600px;
+    --case-window-width: 750px;
     --case-window-gap: 20px;
     --case-pair-shift: calc((var(--case-window-width) + var(--case-window-gap)) / 2);
     --site-padding-x: 24px;
@@ -1442,7 +1442,6 @@ body.case-open .case-window {
 .case-window-header {
     height: 44px;
     background: #f2f2f2;
-    border-bottom: 2px solid #000;
     display: flex;
     align-items: center;
     padding: 0 14px;
@@ -1456,10 +1455,10 @@ body.case-open .case-window {
 }
 
 .dot {
-    width: 12px;
-    height: 12px;
+    width: 17px;
+    height: 17px;
     border-radius: 50%;
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    border: 1px solid rgb(0 0 0 / 13%);
     cursor: default;
     /* Default to no pointer */
     transition: filter 0.2s, background-color 0.2s;
@@ -1467,7 +1466,7 @@ body.case-open .case-window {
 
 .close-dot {
     background: #ff5f56;
-    cursor: pointer;
+    cursor: default;
     /* Only close is active */
 }
 
