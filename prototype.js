@@ -896,6 +896,14 @@ function initStickyNote() {
     const startDrag = (event) => {
         if (!stickyNoteEl.classList.contains('visible')) return;
 
+        const controlTarget = event.target instanceof Element
+            ? event.target.closest('#sticky-close, #sticky-min, .dot, button, a, textarea, input, select')
+            : null;
+
+        if (controlTarget) {
+            return;
+        }
+
         isDragging = true;
         activePointerId = event.pointerId;
         header.setPointerCapture(activePointerId);
@@ -924,12 +932,22 @@ function initStickyNote() {
         activePointerId = null;
     };
 
+    closeBtn?.addEventListener('pointerdown', (event) => {
+        event.stopPropagation();
+    });
+
     closeBtn?.addEventListener('click', (event) => {
+        event.preventDefault();
         event.stopPropagation();
         close();
     });
 
+    minBtn?.addEventListener('pointerdown', (event) => {
+        event.stopPropagation();
+    });
+
     minBtn?.addEventListener('click', (event) => {
+        event.preventDefault();
         event.stopPropagation();
         toggleMinimize();
     });

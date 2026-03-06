@@ -756,7 +756,7 @@ body.cursor-system :where([data-cursor='default']) {
     width: fit-content;
     margin: 0 auto;
     padding: 12px 14px;
-    border-radius: 30px;
+    border-radius: 20px;
     background: rgba(218, 226, 243, 0.82);
     display: flex;
     align-items: flex-end;
@@ -1547,12 +1547,12 @@ body.case-open .case-window {
     position: fixed;
     top: 120px;
     left: 24px;
-    width: min(82vw, 560px);
-    height: min(62vh, 430px);
-    min-width: 280px;
-    min-height: 220px;
-    max-width: min(88vw, 720px);
-    max-height: min(80vh, 560px);
+    width: min(41vw, 280px);
+    height: min(31vh, 215px);
+    min-width: 180px;
+    min-height: 140px;
+    max-width: min(44vw, 360px);
+    max-height: min(40vh, 280px);
     border-radius: 16px;
     border: 1px solid rgba(0, 0, 0, 0.12);
     background: #e7acbc;
@@ -1580,13 +1580,13 @@ body.case-open .case-window {
 }
 
 .sticky-note.minimized {
-    height: 48px !important;
-    min-height: 48px;
+    height: 38px !important;
+    min-height: 38px;
     resize: none;
 }
 
 .sticky-note-header {
-    height: 44px;
+    height: 38px;
     background: #e88fa5;
     display: flex;
     align-items: center;
@@ -1628,7 +1628,7 @@ body.case-open .case-window {
 .sticky-note-body {
     position: relative;
     flex: 1;
-    padding: 24px;
+    padding: 12px;
     background: #e7acbc;
 }
 
@@ -1639,7 +1639,7 @@ body.case-open .case-window {
     background: transparent;
     color: #201314;
     font-family: 'Archivo', sans-serif;
-    font-size: clamp(1.35rem, 2.8vw, 2.1rem);
+    font-size: clamp(0.95rem, 1.6vw, 1.25rem);
     line-height: 1.2;
     resize: none;
     outline: none;
@@ -1658,21 +1658,21 @@ body.case-open .case-window {
     position: absolute;
     right: 0;
     bottom: 0;
-    width: 60px;
-    height: 60px;
+    width: 30px;
+    height: 30px;
     background: linear-gradient(135deg, rgba(235, 146, 170, 0.92) 0%, rgba(235, 146, 170, 0.92) 50%, rgba(255, 219, 228, 0.85) 50%, rgba(255, 219, 228, 0.85) 100%);
     pointer-events: none;
 }
 
 @media (max-width: 640px) {
     .sticky-note {
-        width: min(92vw, 430px);
-        height: min(56vh, 360px);
-        min-width: 250px;
+        width: min(70vw, 215px);
+        height: min(28vh, 180px);
+        min-width: 160px;
     }
 
     .sticky-note-body {
-        padding: 18px;
+        padding: 10px;
     }
 }
 /* Mobile adjustments for Case Window */
