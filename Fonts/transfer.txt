@@ -22,6 +22,7 @@ Implemented that isolation now:
 
 How you control cursor per element now:
 
+1. In HTML: set `data-cursor="default|text|link|grab|grabbing"` on any element.
 2. In JS at runtime:
 ```js
 CursorControl.setRole('.my-card', 'link');
