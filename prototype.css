@@ -68,6 +68,13 @@
     /* Blur Mask Settings (Configurable via JS) */
     --blur-mask-strength: 10px;
     --blur-mask-opacity: 0.8;
+
+    /* Cursor assets */
+    --cursor-default: url('pointercursor.png') 4 4, auto;
+    --cursor-text: url('textcursor.png') 8 10, text;
+    --cursor-link: url('linkcursor.png') 6 4, pointer;
+    --cursor-grab: url('grabcursor.png') 12 12, grab;
+    --cursor-grabbing: url('ggrabbingcursor.png') 12 12, grabbing;
 }
 
 
@@ -102,48 +109,55 @@ body {
     font-weight: 400;
 }
 
-html,
-body,
-body * {
-    cursor: url('pointercursor.png') 4 4, auto !important;
+/* Cursor System (isolated)
+   Set data-cursor on any element to force a role:
+   default | text | link | grab | grabbing
+*/
+body.cursor-system,
+body.cursor-system * {
+    cursor: var(--cursor-default) !important;
 }
 
-p,
-span,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-.bar-left,
-.bar-right,
-.model-copy,
-.contact-meta {
-    cursor: url('textcursor.png') 8 10, text !important;
+body.cursor-system :where(
+    p,
+    span,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    input,
+    textarea,
+    select,
+    option,
+    label,
+    [contenteditable='true'],
+    [data-cursor='text']
+) {
+    cursor: var(--cursor-text) !important;
 }
 
-a,
-a *,
-button,
-button *,
-.top-bar,
-.top-bar *,
-.brand-link,
-.brand-link *,
-.company-dock,
-.company-dock *,
-.dock-item,
-.dock-item *,
-.project-card,
-.project-card *,
-.case-card,
-.case-card *,
-.contact-btn,
-.contact-btn *,
-[role='button'],
-[role='button'] * {
-    cursor: url('linkcursor.png') 6 4, pointer !important;
+body.cursor-system :where(
+    a,
+    button,
+    [role='button'],
+    summary,
+    [data-cursor='link']
+) {
+    cursor: var(--cursor-link) !important;
+}
+
+body.cursor-system :where([data-cursor='grab']) {
+    cursor: var(--cursor-grab) !important;
+}
+
+body.cursor-system :where([data-cursor='grab']:active, [data-cursor='grabbing']) {
+    cursor: var(--cursor-grabbing) !important;
+}
+
+body.cursor-system :where([data-cursor='default']) {
+    cursor: var(--cursor-default) !important;
 }
 
 .site-exit-btn {
@@ -621,11 +635,6 @@ button *,
     width: 100%;
     height: 100%;
     min-height: var(--hero-model-min-height);
-    cursor: url('grabcursor.png') 12 12, grab !important;
-}
-
-.hero-model model-viewer:active {
-    cursor: url('ggrabbingcursor.png') 12 12, grabbing !important;
 }
 
 .model-fallback {
@@ -1379,9 +1388,8 @@ a.brand-block:hover {
 
 @media (pointer: coarse) {
 
-    html,
-    body,
-    body * {
+    body.cursor-system,
+    body.cursor-system * {
         cursor: auto !important;
     }
 }
@@ -1446,7 +1454,6 @@ body.case-open .case-window {
     align-items: center;
     padding: 0 14px;
     flex-shrink: 0;
-    cursor: default;
 }
 
 .case-window-dots {
@@ -1459,14 +1466,12 @@ body.case-open .case-window {
     height: 17px;
     border-radius: 50%;
     border: 1px solid rgb(0 0 0 / 13%);
-    cursor: default;
     /* Default to no pointer */
     transition: filter 0.2s, background-color 0.2s;
 }
 
 .close-dot {
     background: #ff5f56;
-    cursor: default;
     /* Only close is active */
 }
 
@@ -1536,6 +1541,140 @@ body.case-open .case-window {
     border-radius: 10px;
 }
 
+
+/* Sticky Note Overlay */
+.sticky-note {
+    position: fixed;
+    top: 120px;
+    left: 24px;
+    width: min(82vw, 560px);
+    height: min(62vh, 430px);
+    min-width: 280px;
+    min-height: 220px;
+    max-width: min(88vw, 720px);
+    max-height: min(80vh, 560px);
+    border-radius: 16px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    background: #e7acbc;
+    box-shadow: 0 24px 58px rgba(0, 0, 0, 0.22);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    z-index: 12000;
+    transform: translate3d(0, 0, 0);
+    resize: both;
+}
+
+.sticky-note.visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.sticky-note.is-opening {
+    transition: transform 0.55s var(--ease-lux), opacity 0.25s var(--ease-lux);
+    will-change: transform, opacity;
+}
+
+.sticky-note.minimized {
+    height: 48px !important;
+    min-height: 48px;
+    resize: none;
+}
+
+.sticky-note-header {
+    height: 44px;
+    background: #e88fa5;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 14px;
+    flex-shrink: 0;
+    user-select: none;
+    touch-action: none;
+}
+
+.sticky-note-dots .close-dot {
+    background: #ff5f56;
+}
+
+.sticky-note-dots .minimize-dot {
+    background: #ffbd2e;
+    pointer-events: auto;
+}
+
+.sticky-note-dots .zoom-dot {
+    background: #28c840;
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.sticky-note-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 6px);
+    gap: 6px;
+}
+
+.sticky-note-grid span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.95);
+}
+
+.sticky-note-body {
+    position: relative;
+    flex: 1;
+    padding: 24px;
+    background: #e7acbc;
+}
+
+.sticky-note-editor {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: transparent;
+    color: #201314;
+    font-family: 'Archivo', sans-serif;
+    font-size: clamp(1.35rem, 2.8vw, 2.1rem);
+    line-height: 1.2;
+    resize: none;
+    outline: none;
+}
+
+.sticky-note-editor::placeholder {
+    color: rgba(32, 19, 20, 0.6);
+}
+
+.sticky-note.minimized .sticky-note-body,
+.sticky-note.minimized .sticky-note-corner {
+    display: none;
+}
+
+.sticky-note-corner {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, rgba(235, 146, 170, 0.92) 0%, rgba(235, 146, 170, 0.92) 50%, rgba(255, 219, 228, 0.85) 50%, rgba(255, 219, 228, 0.85) 100%);
+    pointer-events: none;
+}
+
+@media (max-width: 640px) {
+    .sticky-note {
+        width: min(92vw, 430px);
+        height: min(56vh, 360px);
+        min-width: 250px;
+    }
+
+    .sticky-note-body {
+        padding: 18px;
+    }
+}
 /* Mobile adjustments for Case Window */
 @media (max-width: 1000px) {
     .case-window {

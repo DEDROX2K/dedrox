@@ -38,7 +38,7 @@
         <div class="content-mask bottom"></div>
 
         <!-- Main Content -->
-        <div class="top-bar" id="top-bar">
+        <div class="top-bar" id="top-bar" data-cursor="link">
             <div class="top-bar-pill">
                 <div class="pill-left">
                     <div class="pill-bar"></div>
@@ -89,7 +89,7 @@
 
             <section class="hero-model reveal delay-2" aria-label="3D Interactive character model">
                 <!-- Google model-viewer web component -->
-                <model-viewer src="threeD/me.glb" alt="3D character of Raghav" auto-rotate camera-controls
+                <model-viewer data-cursor="grab" src="threeD/me.glb" alt="3D character of Raghav" auto-rotate camera-controls
                     interaction-prompt="none" disable-zoom rotation-per-second="40deg" shadow-intensity="1"
                     min-camera-orbit="auto auto 3.5m" max-camera-orbit="auto auto 3.5m" environment-image="neutral"
                     tabindex="0">
@@ -304,7 +304,7 @@
     <div id="case-window" class="case-window">
         <div class="case-window-header">
             <div class="case-window-dots">
-                <span class="dot close-dot" id="case-close" title="Close"></span>
+                <span class="dot close-dot" id="case-close" title="Close" data-cursor="link"></span>
                 <span class="dot minimize-dot" id="case-min" title="Minimize"></span>
                 <span class="dot zoom-dot"></span>
             </div>
@@ -315,6 +315,26 @@
         </div>
     </div>
 
+    <div id="sticky-note" class="sticky-note" aria-hidden="true">
+        <div class="sticky-note-header" id="sticky-note-handle" data-cursor="grab">
+            <div class="case-window-dots sticky-note-dots">
+                <span class="dot close-dot" id="sticky-close" title="Close" data-cursor="link"></span>
+                <span class="dot minimize-dot" id="sticky-min" title="Minimize" data-cursor="link"></span>
+                <span class="dot zoom-dot" title="Expand"></span>
+            </div>
+            <div class="sticky-note-grid" aria-hidden="true">
+                <span></span><span></span><span></span>
+                <span></span><span></span><span></span>
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="sticky-note-body">
+            <textarea id="sticky-note-editor" class="sticky-note-editor" data-cursor="text"
+                placeholder="Take a note"></textarea>
+        </div>
+        <div class="sticky-note-corner" aria-hidden="true"></div>
+    </div>
+
     <div class="global-controls">
         <div class="resume-wrap hidden-mobile">
             <a class="site-resume-btn" href="threeD/CV_RESUME-RAGHAV.pdf" target="_blank" rel="noopener noreferrer">
@@ -322,7 +342,6 @@
             </a>
         </div>
     </div>
-
     <!-- Custom Device Bottom Blur Styles -->
     <style>
         /* Tweak these values to adjust the blur at the bottom of the mini site */

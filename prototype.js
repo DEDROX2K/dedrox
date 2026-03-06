@@ -184,6 +184,7 @@ const githubChartImg = document.getElementById('github-chart-img');
 const secondsDot = document.getElementById('seconds-dot');
 const expandBtn = document.getElementById('expand-btn');
 const caseWindowEl = document.getElementById('case-window');
+const stickyNoteEl = document.getElementById('sticky-note');
 
 function initCustomCursor() {
     const cursorEl = document.getElementById('custom-cursor');
@@ -233,6 +234,58 @@ function initCustomCursor() {
     requestAnimationFrame(tick);
 }
 
+function initCursorSystem() {
+    if (!document.body) return;
+
+    document.body.classList.add('cursor-system');
+
+    const cssVarByRole = {
+        default: '--cursor-default',
+        text: '--cursor-text',
+        link: '--cursor-link',
+        grab: '--cursor-grab',
+        grabbing: '--cursor-grabbing'
+    };
+
+    const normalizeTargets = (targetOrSelector) => {
+        if (!targetOrSelector) return [];
+        if (typeof targetOrSelector === 'string') {
+            return Array.from(document.querySelectorAll(targetOrSelector));
+        }
+        if (targetOrSelector instanceof Element) {
+            return [targetOrSelector];
+        }
+        if (targetOrSelector instanceof NodeList || Array.isArray(targetOrSelector)) {
+            return Array.from(targetOrSelector).filter((item) => item instanceof Element);
+        }
+        return [];
+    };
+
+    const isValidRole = (role) => Object.prototype.hasOwnProperty.call(cssVarByRole, role);
+
+    window.CursorControl = {
+        setRole(targetOrSelector, role) {
+            if (!isValidRole(role)) return false;
+            const targets = normalizeTargets(targetOrSelector);
+            targets.forEach((el) => el.setAttribute('data-cursor', role));
+            return targets.length > 0;
+        },
+        clearRole(targetOrSelector) {
+            const targets = normalizeTargets(targetOrSelector);
+            targets.forEach((el) => el.removeAttribute('data-cursor'));
+            return targets.length > 0;
+        },
+        setCursorAsset(role, imagePath, hotspotX = 0, hotspotY = 0, fallback = 'auto') {
+            if (!isValidRole(role) || !imagePath) return false;
+            const cssValue = `url('${imagePath}') ${hotspotX} ${hotspotY}, ${fallback}`;
+            document.documentElement.style.setProperty(cssVarByRole[role], cssValue);
+            return true;
+        },
+        getRoles() {
+            return Object.keys(cssVarByRole);
+        }
+    };
+}
 // Reusable Scramble and Reveal Logic
 function scrambleText(element, targetText, delay = 1000) {
     if (!element) return;
@@ -745,11 +798,170 @@ function initBrandHoverAnimations() {
     });
 }
 
+function initStickyNote() {
+    if (!stickyNoteEl || !topBar || !device) {
+        return {
+            openFromPill: () => { },
+            close: () => { },
+            isVisible: () => false
+        };
+    }
+
+    const header = document.getElementById('sticky-note-handle');
+    const closeBtn = document.getElementById('sticky-close');
+    const minBtn = document.getElementById('sticky-min');
+    const editor = document.getElementById('sticky-note-editor');
+
+    let hasPosition = false;
+    let isDragging = false;
+    let dragOffsetX = 0;
+    let dragOffsetY = 0;
+    let activePointerId = null;
+
+    const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+
+    const getViewportBounds = () => ({
+        minX: 8,
+        minY: 8,
+        maxX: window.innerWidth - stickyNoteEl.offsetWidth - 8,
+        maxY: window.innerHeight - stickyNoteEl.offsetHeight - 8
+    });
+
+    const setPosition = (left, top) => {
+        const bounds = getViewportBounds();
+        stickyNoteEl.style.left = `${clamp(left, bounds.minX, Math.max(bounds.minX, bounds.maxX))}px`;
+        stickyNoteEl.style.top = `${clamp(top, bounds.minY, Math.max(bounds.minY, bounds.maxY))}px`;
+        hasPosition = true;
+    };
+
+    const setDefaultPosition = () => {
+        const deviceRect = device.getBoundingClientRect();
+        const targetLeft = deviceRect.left + Math.max(18, (deviceRect.width - stickyNoteEl.offsetWidth) * 0.5);
+        const targetTop = deviceRect.top + 72;
+        setPosition(targetLeft, targetTop);
+    };
+
+    const endOpenTransition = () => {
+        stickyNoteEl.classList.remove('is-opening');
+        stickyNoteEl.style.transform = '';
+    };
+
+    const openFromPill = (sourceEl = topBar) => {
+        if (!stickyNoteEl.classList.contains('visible')) {
+            stickyNoteEl.classList.add('visible');
+            stickyNoteEl.setAttribute('aria-hidden', 'false');
+        }
+        stickyNoteEl.classList.remove('minimized');
+
+        if (!hasPosition) {
+            setDefaultPosition();
+        } else {
+            const currentLeft = Number.parseFloat(stickyNoteEl.style.left || '24');
+            const currentTop = Number.parseFloat(stickyNoteEl.style.top || '120');
+            setPosition(currentLeft, currentTop);
+        }
+
+        const sourceRect = sourceEl.getBoundingClientRect();
+        const targetRect = stickyNoteEl.getBoundingClientRect();
+
+        const sourceCenterX = sourceRect.left + (sourceRect.width * 0.5);
+        const sourceCenterY = sourceRect.top + (sourceRect.height * 0.5);
+        const targetCenterX = targetRect.left + (targetRect.width * 0.5);
+        const targetCenterY = targetRect.top + (targetRect.height * 0.5);
+
+        const deltaX = sourceCenterX - targetCenterX;
+        const deltaY = sourceCenterY - targetCenterY;
+
+        stickyNoteEl.classList.add('is-opening');
+        stickyNoteEl.style.transform = `translate3d(${deltaX}px, ${deltaY}px, 0) scale(0.18)`;
+        stickyNoteEl.offsetHeight;
+        requestAnimationFrame(() => {
+            stickyNoteEl.style.transform = 'translate3d(0, 0, 0) scale(1)';
+        });
+        window.setTimeout(endOpenTransition, 620);
+    };
+
+    const close = () => {
+        stickyNoteEl.classList.remove('visible');
+        stickyNoteEl.classList.remove('minimized');
+        stickyNoteEl.classList.remove('is-opening');
+        stickyNoteEl.style.transform = '';
+        stickyNoteEl.setAttribute('aria-hidden', 'true');
+    };
+
+    const toggleMinimize = () => {
+        stickyNoteEl.classList.toggle('minimized');
+    };
+
+    const startDrag = (event) => {
+        if (!stickyNoteEl.classList.contains('visible')) return;
+
+        isDragging = true;
+        activePointerId = event.pointerId;
+        header.setPointerCapture(activePointerId);
+
+        const rect = stickyNoteEl.getBoundingClientRect();
+        dragOffsetX = event.clientX - rect.left;
+        dragOffsetY = event.clientY - rect.top;
+
+        stickyNoteEl.classList.remove('is-opening');
+        stickyNoteEl.style.transform = '';
+
+        event.preventDefault();
+    };
+
+    const moveDrag = (event) => {
+        if (!isDragging || event.pointerId !== activePointerId) return;
+        setPosition(event.clientX - dragOffsetX, event.clientY - dragOffsetY);
+    };
+
+    const endDrag = (event) => {
+        if (!isDragging || event.pointerId !== activePointerId) return;
+        isDragging = false;
+        if (header && header.hasPointerCapture(activePointerId)) {
+            header.releasePointerCapture(activePointerId);
+        }
+        activePointerId = null;
+    };
+
+    closeBtn?.addEventListener('click', (event) => {
+        event.stopPropagation();
+        close();
+    });
+
+    minBtn?.addEventListener('click', (event) => {
+        event.stopPropagation();
+        toggleMinimize();
+    });
+
+    header?.addEventListener('pointerdown', startDrag);
+    header?.addEventListener('pointermove', moveDrag);
+    header?.addEventListener('pointerup', endDrag);
+    header?.addEventListener('pointercancel', endDrag);
+
+    window.addEventListener('resize', () => {
+        if (!stickyNoteEl.classList.contains('visible')) return;
+        const rect = stickyNoteEl.getBoundingClientRect();
+        setPosition(rect.left, rect.top);
+    });
+
+    editor?.addEventListener('click', (event) => {
+        event.stopPropagation();
+    });
+
+    return {
+        openFromPill,
+        close,
+        isVisible: () => stickyNoteEl.classList.contains('visible')
+    };
+}
 // --------------------------------------------------------
 // MAIN INIT ON DOM CONTENT LOADED
 // --------------------------------------------------------
 document.addEventListener('DOMContentLoaded', () => {
+    initCursorSystem();
     initCustomCursor();
+    const stickyNote = initStickyNote();
 
     // Config based UI updates
     if (githubChartImg) {
@@ -788,6 +1000,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.stopPropagation();
                 setTimeout(() => { if (miniMatrixInstance) miniMatrixInstance.resize(); }, 520);
             }
+            stickyNote.openFromPill(topBar);
         });
     }
 
@@ -795,11 +1008,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const caseIsOpen = caseWindowEl && caseWindowEl.classList.contains('visible');
         const clickedInsideCase = caseWindowEl && caseWindowEl.contains(e.target);
         const clickedInsideDevice = device && device.contains(e.target);
+        const clickedInsideSticky = stickyNoteEl && stickyNoteEl.contains(e.target);
 
         // Priority close order:
         // 1) Close the side case window first.
         // 2) Only after that, allow closing the mini portfolio on a later outside click.
-        if (caseIsOpen && !clickedInsideCase && !clickedInsideDevice) {
+        if (caseIsOpen && !clickedInsideCase && !clickedInsideDevice && !clickedInsideSticky) {
             caseWindowEl.classList.remove('visible');
             caseWindowEl.classList.remove('minimized');
             document.body.classList.remove('case-open');
@@ -809,11 +1023,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (
             device.classList.contains('expanded') &&
             !clickedInsideDevice &&
-            !clickedInsideCase
+            !clickedInsideCase &&
+            !clickedInsideSticky
         ) {
             device.classList.remove('expanded');
             device.classList.remove('maximized');
             applyPillSizes('collapsed');
+            stickyNote.close();
             setTimeout(() => { if (miniMatrixInstance) miniMatrixInstance.resize(); }, 520);
         }
     });
