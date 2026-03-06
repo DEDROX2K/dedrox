@@ -42,9 +42,18 @@
             <div class="top-bar-pill">
                 <div class="pill-left">
                     <div class="pill-bar"></div>
-                    <div class="pill-plain-circle"></div>
-                    <div class="pill-square"></div>
-                    <div class="pill-dark-block"></div>
+                    <button class="pill-plain-circle pill-icon-btn" id="pill-notes-btn" type="button"
+                        aria-label="Open notes" title="Notes" data-cursor="link">
+                        <span class="pill-icon-slot" aria-hidden="true"></span>
+                    </button>
+                    <button class="pill-square pill-icon-btn" id="pill-resume-btn" type="button"
+                        aria-label="Open resume" title="Resume" data-cursor="link">
+                        <span class="pill-icon-slot" aria-hidden="true"></span>
+                    </button>
+                    <button class="pill-dark-block pill-icon-btn" id="pill-third-btn" type="button"
+                        aria-label="Open third action" title="Third action" data-cursor="link">
+                        <span class="pill-icon-slot" aria-hidden="true"></span>
+                    </button>
                 </div>
                 <div class="pill-right">
                     <span class="pill-text">portfolio</span>
@@ -333,6 +342,20 @@
                 placeholder="Take a note"></textarea>
         </div>
         <div class="sticky-note-corner" aria-hidden="true"></div>
+    </div>
+
+    <div id="resume-popout" class="asset-popout" aria-hidden="true">
+        <div class="asset-popout-header" id="resume-popout-handle" data-cursor="grab">
+            <div class="case-window-dots">
+                <span class="dot close-dot" id="resume-popout-close" title="Close" data-cursor="link"></span>
+                <span class="dot minimize-dot" aria-hidden="true"></span>
+                <span class="dot zoom-dot" aria-hidden="true"></span>
+            </div>
+            <div class="asset-popout-title">Resume</div>
+        </div>
+        <div class="asset-popout-body">
+            <iframe id="resume-popout-frame" src="threeD/CV_RESUME-RAGHAV.pdf" title="Resume preview"></iframe>
+        </div>
     </div>
 
     <div class="global-controls">

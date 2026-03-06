@@ -185,6 +185,10 @@ const secondsDot = document.getElementById('seconds-dot');
 const expandBtn = document.getElementById('expand-btn');
 const caseWindowEl = document.getElementById('case-window');
 const stickyNoteEl = document.getElementById('sticky-note');
+const pillNotesBtn = document.getElementById('pill-notes-btn');
+const pillResumeBtn = document.getElementById('pill-resume-btn');
+const pillThirdBtn = document.getElementById('pill-third-btn');
+const resumePopoutEl = document.getElementById('resume-popout');
 
 function initCustomCursor() {
     const cursorEl = document.getElementById('custom-cursor');
@@ -798,6 +802,163 @@ function initBrandHoverAnimations() {
     });
 }
 
+function initResumePopout() {
+    if (!resumePopoutEl || !device) {
+        return {
+            openFromPill: () => { },
+            close: () => { },
+            isVisible: () => false
+        };
+    }
+
+    const header = document.getElementById('resume-popout-handle');
+    const closeBtn = document.getElementById('resume-popout-close');
+
+    let hasPosition = false;
+    let isDragging = false;
+    let dragOffsetX = 0;
+    let dragOffsetY = 0;
+    let activePointerId = null;
+
+    const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+
+    const getViewportBounds = () => ({
+        minX: 8,
+        minY: 8,
+        maxX: window.innerWidth - resumePopoutEl.offsetWidth - 8,
+        maxY: window.innerHeight - resumePopoutEl.offsetHeight - 8
+    });
+
+    const setPosition = (left, top) => {
+        const bounds = getViewportBounds();
+        resumePopoutEl.style.left = `${clamp(left, bounds.minX, Math.max(bounds.minX, bounds.maxX))}px`;
+        resumePopoutEl.style.top = `${clamp(top, bounds.minY, Math.max(bounds.minY, bounds.maxY))}px`;
+        hasPosition = true;
+    };
+
+    const setDefaultPosition = () => {
+        const deviceRect = device.getBoundingClientRect();
+        const targetLeft = deviceRect.left + Math.max(22, (deviceRect.width * 0.35));
+        const targetTop = deviceRect.top + 86;
+        setPosition(targetLeft, targetTop);
+    };
+
+    const endOpenTransition = () => {
+        resumePopoutEl.classList.remove('is-opening');
+        resumePopoutEl.style.transform = '';
+        resumePopoutEl.style.transformOrigin = '';
+    };
+
+    const openFromPill = (sourceEl = topBar) => {
+        if (!resumePopoutEl.classList.contains('visible')) {
+            resumePopoutEl.classList.add('visible');
+            resumePopoutEl.setAttribute('aria-hidden', 'false');
+        }
+
+        if (!hasPosition) {
+            setDefaultPosition();
+        } else {
+            const currentLeft = Number.parseFloat(resumePopoutEl.style.left || '42');
+            const currentTop = Number.parseFloat(resumePopoutEl.style.top || '136');
+            setPosition(currentLeft, currentTop);
+        }
+
+        const sourceRect = sourceEl.getBoundingClientRect();
+        const targetRect = resumePopoutEl.getBoundingClientRect();
+
+        const sourceCenterX = sourceRect.left + (sourceRect.width * 0.5);
+        const sourceCenterY = sourceRect.top + (sourceRect.height * 0.5);
+        const targetCenterX = targetRect.left + (targetRect.width * 0.5);
+        const targetCenterY = targetRect.top + (targetRect.height * 0.5);
+
+        const deltaX = sourceCenterX - targetCenterX;
+        const deltaY = sourceCenterY - targetCenterY;
+
+        resumePopoutEl.classList.add('is-opening');
+        resumePopoutEl.style.transformOrigin = `${sourceCenterX - targetRect.left}px ${sourceCenterY - targetRect.top}px`;
+        resumePopoutEl.style.transform = `translate3d(${deltaX}px, ${deltaY}px, 0) scale3d(0.1, 0.24, 1)`;
+        resumePopoutEl.offsetHeight;
+        requestAnimationFrame(() => {
+            resumePopoutEl.style.transform = 'translate3d(0, 0, 0) scale3d(1, 1, 1)';
+        });
+        window.setTimeout(endOpenTransition, 660);
+    };
+
+    const close = () => {
+        resumePopoutEl.classList.remove('visible');
+        resumePopoutEl.classList.remove('is-opening');
+        resumePopoutEl.style.transform = '';
+        resumePopoutEl.style.transformOrigin = '';
+        resumePopoutEl.setAttribute('aria-hidden', 'true');
+    };
+
+    const startDrag = (event) => {
+        if (!resumePopoutEl.classList.contains('visible')) return;
+
+        const controlTarget = event.target instanceof Element
+            ? event.target.closest('#resume-popout-close, .dot, button, a, iframe')
+            : null;
+
+        if (controlTarget) {
+            return;
+        }
+
+        isDragging = true;
+        activePointerId = event.pointerId;
+        header.setPointerCapture(activePointerId);
+
+        const rect = resumePopoutEl.getBoundingClientRect();
+        dragOffsetX = event.clientX - rect.left;
+        dragOffsetY = event.clientY - rect.top;
+
+        resumePopoutEl.classList.remove('is-opening');
+        resumePopoutEl.style.transform = '';
+        resumePopoutEl.style.transformOrigin = '';
+
+        event.preventDefault();
+    };
+
+    const moveDrag = (event) => {
+        if (!isDragging || event.pointerId !== activePointerId) return;
+        setPosition(event.clientX - dragOffsetX, event.clientY - dragOffsetY);
+    };
+
+    const endDrag = (event) => {
+        if (!isDragging || event.pointerId !== activePointerId) return;
+        isDragging = false;
+        if (header && header.hasPointerCapture(activePointerId)) {
+            header.releasePointerCapture(activePointerId);
+        }
+        activePointerId = null;
+    };
+
+    closeBtn?.addEventListener('pointerdown', (event) => {
+        event.stopPropagation();
+    });
+
+    closeBtn?.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        close();
+    });
+
+    header?.addEventListener('pointerdown', startDrag);
+    header?.addEventListener('pointermove', moveDrag);
+    header?.addEventListener('pointerup', endDrag);
+    header?.addEventListener('pointercancel', endDrag);
+
+    window.addEventListener('resize', () => {
+        if (!resumePopoutEl.classList.contains('visible')) return;
+        const rect = resumePopoutEl.getBoundingClientRect();
+        setPosition(rect.left, rect.top);
+    });
+
+    return {
+        openFromPill,
+        close,
+        isVisible: () => resumePopoutEl.classList.contains('visible')
+    };
+}
 function initStickyNote() {
     if (!stickyNoteEl || !topBar || !device) {
         return {
@@ -844,6 +1005,7 @@ function initStickyNote() {
     const endOpenTransition = () => {
         stickyNoteEl.classList.remove('is-opening');
         stickyNoteEl.style.transform = '';
+        stickyNoteEl.style.transformOrigin = '';
     };
 
     const openFromPill = (sourceEl = topBar) => {
@@ -886,6 +1048,7 @@ function initStickyNote() {
         stickyNoteEl.classList.remove('minimized');
         stickyNoteEl.classList.remove('is-opening');
         stickyNoteEl.style.transform = '';
+        stickyNoteEl.style.transformOrigin = '';
         stickyNoteEl.setAttribute('aria-hidden', 'true');
     };
 

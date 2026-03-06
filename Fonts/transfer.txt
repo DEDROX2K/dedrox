@@ -1,0 +1,36 @@
+Add a tiny, highly-performant Vanilla JS loop inside the existing script tag to generate falling/glitching ASCII blocks (█, ▒, ░, etc.) inside this container.
+
+                chars: ['█', '▓', '▒', '░', '▄', '▀', '|', '/'],
+
+
+You’re right. The fix is to make cursor behavior a single, isolated system and never let random component CSS own it.
+
+
+
+
+-------------------------------------------------------------------------------------------------------------
+
+
+
+
+Implemented that isolation now:
+
+- Central cursor assets + policy in one place: [prototype.css](/C:/Users/Aircards%202D%20Team/Documents/GitHub/dedrox/prototype.css#L73), [prototype.css](/C:/Users/Aircards%202D%20Team/Documents/GitHub/dedrox/prototype.css#L112)
+- System is activated once at startup: [prototype.js](/C:/Users/Aircards%202D%20Team/Documents/GitHub/dedrox/prototype.js#L962)
+- Runtime control API added (`window.CursorControl`): [prototype.js](/C:/Users/Aircards%202D%20Team/Documents/GitHub/dedrox/prototype.js#L237), [prototype.js](/C:/Users/Aircards%202D%20Team/Documents/GitHub/dedrox/prototype.js#L266)
+- Element-level cursor roles via `data-cursor` are now used on key non-semantic elements: [prototype.html](/C:/Users/Aircards%202D%20Team/Documents/GitHub/dedrox/prototype.html#L41), [prototype.html](/C:/Users/Aircards%202D%20Team/Documents/GitHub/dedrox/prototype.html#L92), [prototype.html](/C:/Users/Aircards%202D%20Team/Documents/GitHub/dedrox/prototype.html#L319)
+
+How you control cursor per element now:
+
+2. In JS at runtime:
+```js
+CursorControl.setRole('.my-card', 'link');
+CursorControl.clearRole('.my-card');
+CursorControl.setCursorAsset('link', 'images/my-link-cursor.png', 6, 4, 'pointer');
+```
+
+Why this is safer:
+- Cursor logic is centralized under `body.cursor-system` and uses `!important` in one policy block.
+- Scattered hardcoded custom-cursor declarations were removed from components, so style edits elsewhere won’t silently override your cursor behavior.
+
+Validation run: `node --check prototype.js` passed.
