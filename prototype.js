@@ -180,10 +180,10 @@ const SITE_CONFIG = {
             container: { w: '280px', h: '56px' }
         },
         expanded: {
-            bar: { w: '12px', h: '40px' },
-            circle: { w: '44px', h: '44px' },
-            square: { w: '100px', h: '40px' },
-            dark: { w: '30px', h: '40px' },
+            bar: { w: '8px', h: '40px' },
+            circle: { w: '74px', h: '44px' },
+            square: { w: '74px', h: '44px' },
+            dark: { w: '74px', h: '44px' },
             container: { w: '450px', h: '64px' }
         }
     },
@@ -1381,12 +1381,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const resumePopout = initResumePopout();
     const readerMode = initReaderMode();
 
-    const expandDeviceShell = () => {
+    const expandDeviceShell = (autoOpenNotes = true) => {
         if (!device || device.classList.contains('expanded')) return;
         device.classList.add('expanded');
         applyPillSizes('expanded');
         setTimeout(() => {
             if (miniMatrixInstance) miniMatrixInstance.resize();
+            if (autoOpenNotes && stickyNote && !stickyNote.isVisible()) {
+                stickyNote.openFromPill(pillNotesBtn);
+            }
         }, 520);
     };
 
@@ -1422,7 +1425,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (topBar) {
         topBar.addEventListener('click', (e) => {
             if (e.target instanceof Element && e.target.closest('.pill-icon-btn')) return;
-            expandDeviceShell();
+            expandDeviceShell(true);
             e.stopPropagation();
         });
     }
@@ -1430,25 +1433,38 @@ document.addEventListener('DOMContentLoaded', () => {
     pillNotesBtn?.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
-        expandDeviceShell();
-        if (resumePopout.isVisible()) resumePopout.closeToPill(pillResumeBtn);
-        if (readerMode.isActive()) readerMode.close();
-        stickyNote.toggleFromPill(pillNotesBtn);
+        if (!device.classList.contains('expanded')) {
+            expandDeviceShell(true);
+        } else {
+            if (resumePopout.isVisible()) resumePopout.closeToPill(pillResumeBtn);
+            if (readerMode.isActive()) readerMode.close();
+            stickyNote.toggleFromPill(pillNotesBtn);
+        }
     });
 
     pillResumeBtn?.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
-        expandDeviceShell();
+        expandDeviceShell(false);
         if (stickyNote.isVisible()) stickyNote.closeToPill(pillNotesBtn);
         if (readerMode.isActive()) readerMode.close();
-        resumePopout.toggleFromPill(pillResumeBtn);
+
+        navigator.clipboard.writeText('raghavprasanna2000@gmail.com').then(() => {
+            const tooltipSpan = pillResumeBtn.querySelector('.pill-tooltip');
+            if (tooltipSpan) {
+                const originalText = tooltipSpan.textContent;
+                tooltipSpan.textContent = 'Copied!';
+                setTimeout(() => {
+                    tooltipSpan.textContent = originalText;
+                }, 2000);
+            }
+        });
     });
 
     pillThirdBtn?.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
-        expandDeviceShell();
+        expandDeviceShell(false);
         if (stickyNote.isVisible()) stickyNote.closeToPill(pillNotesBtn);
         if (resumePopout.isVisible()) resumePopout.closeToPill(pillResumeBtn);
         readerMode.toggle();

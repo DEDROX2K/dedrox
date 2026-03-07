@@ -57,9 +57,9 @@
     --pill-bar-h: 34px;
     --pill-circle-w: 36px;
     --pill-circle-h: 36px;
-    --pill-square-w: 77px;
+    --pill-square-w: 47px;
     --pill-square-h: 34px;
-    --pill-dark-w: 24px;
+    --pill-dark-w: 44px;
     --pill-dark-h: 34px;
 
     /* Overall Bar Dimensions */
@@ -242,9 +242,8 @@ body.cursor-system :where([data-cursor='default']) {
     align-items: center;
     justify-content: center;
     transition: background-color 0.52s var(--ease-genie), border-radius 0.52s var(--ease-genie), height 0.52s var(--ease-genie);
-    /* Shortened from 0.45s */
-    overflow: hidden;
     padding: 4px;
+    overflow: visible;
 }
 
 .device-container.expanded .top-bar {
@@ -267,14 +266,14 @@ body.cursor-system :where([data-cursor='default']) {
 .pill-left {
     display: flex;
     align-items: center;
-    gap: 1px;
-    padding-left: 10px;
+    gap: 3px;
+    padding-left: 3px;
 }
 
 .pill-bar {
     width: var(--pill-bar-w);
     height: var(--pill-bar-h);
-    background: #454545;
+    background: #545454;
     border-radius: 99px;
     transition: all 0.52s var(--ease-genie);
 }
@@ -283,7 +282,7 @@ body.cursor-system :where([data-cursor='default']) {
     width: var(--pill-circle-w);
     height: var(--pill-circle-h);
     border-radius: 99px;
-    background-color: #a1a1a1;
+    background-color: #e7e7e7;
     flex-shrink: 0;
     transition: all 0.52s var(--ease-genie);
 }
@@ -291,7 +290,7 @@ body.cursor-system :where([data-cursor='default']) {
 .pill-square {
     width: var(--pill-square-w);
     height: var(--pill-square-h);
-    background: #c1c1c1;
+    background: #e7e7e7;
     /* Medium grey square */
     border-radius: 99px;
     transition: all 0.52s var(--ease-genie);
@@ -300,7 +299,7 @@ body.cursor-system :where([data-cursor='default']) {
 .pill-dark-block {
     width: var(--pill-dark-w);
     height: var(--pill-dark-h);
-    background: #e7e7e7;
+    background: #f2f2f2;
     /* Dark grey block */
     border-radius: 99px;
     transition: all 0.52s var(--ease-genie);
@@ -314,13 +313,13 @@ body.cursor-system :where([data-cursor='default']) {
     justify-content: center;
     position: relative;
     isolation: isolate;
-    overflow: hidden;
+    overflow: visible;
     -webkit-tap-highlight-color: transparent;
 }
 
 .pill-icon-btn img {
-    width: 58%;
-    height: 58%;
+    /* width: 58%; */
+    /* height: 58%; */
     object-fit: contain;
     opacity: 0;
     transform: translateY(6px) scale(0.88);
@@ -421,6 +420,34 @@ body.cursor-system :where([data-cursor='default']) {
     transform: scale(1.22);
 }
 
+/* Tooltip for Pill Buttons */
+.pill-tooltip {
+    position: absolute;
+    top: calc(100% + 14px);
+    left: 50%;
+    transform: translateX(-50%) translateY(-5px);
+    background: rgba(0, 0, 0, 0.85);
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.12s ease-out, transform 0.12s ease-out;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 100;
+}
+
+@media (hover: hover) {
+    .device-container.expanded .pill-icon-btn:hover .pill-tooltip {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
 .pill-right {
     flex: 1;
     height: calc(100% - 2px);
@@ -458,7 +485,7 @@ body.cursor-system :where([data-cursor='default']) {
 /* Standalone Expand FAB */
 .expand-fab {
     position: absolute;
-    top: 10px;
+    top: 13px;
     /* Centered in 56px bar (56 - 36) / 2 = 10 */
     right: 14px;
     width: 36px;
@@ -1745,8 +1772,8 @@ body.case-open .case-window {
 }
 
 .dot {
-    width: 17px;
-    height: 17px;
+    width: 13px;
+    height: 13px;
     border-radius: 50%;
     border: 1px solid rgb(0 0 0 / 13%);
     /* Default to no pointer */
@@ -1996,8 +2023,8 @@ body.case-open .case-window {
 }
 
 .sticky-note-header {
-    height: 38px;
-    background: #e88fa5;
+    height: 22px;
+    background: #ef9eb2;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -2017,7 +2044,7 @@ body.case-open .case-window {
 }
 
 .sticky-note-dots .zoom-dot {
-    background: #28c840;
+    background: #00000021;
     opacity: 0.5;
     pointer-events: none;
 }
@@ -2029,8 +2056,8 @@ body.case-open .case-window {
 }
 
 .sticky-note-grid span {
-    width: 6px;
-    height: 6px;
+    width: 5px;
+    height: 5px;
     border-radius: 50%;
     background: #DE7E91;
 }
@@ -2108,7 +2135,7 @@ body.case-open .case-window {
    HERO TYPOGRAPHY (OPENAI STYLE)
    -------------------------------------------------------- */
 .hero-clean {
-    padding: 60px 0 40px;
+    padding: 20px 0 40px;
     margin-bottom: var(--section-gap-lg);
     text-align: center;
     max-width: 800px;
@@ -2118,13 +2145,13 @@ body.case-open .case-window {
 
 .hero-clean-title {
     font-size: clamp(3rem, 6vw, 4.5rem);
-    font-weight: 400;
-    line-height: 1.1;
+    font-weight: 600;
+    line-height: 1;
     letter-spacing: -0.03em;
     color: var(--ink);
     margin-bottom: 24px;
     /* Soft gradient matching OpenAI's subtle darks */
-    background: linear-gradient(180deg, #111 0%, #333 100%);
+    background: linear-gradient(180deg, #212121 0%, #595959 100%);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
