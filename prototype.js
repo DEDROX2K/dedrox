@@ -1236,10 +1236,12 @@ function initStickyNote() {
 
         stickyNoteEl.classList.add('is-opening');
         stickyNoteEl.style.transformOrigin = `${sourceCenterX - targetRect.left}px ${sourceCenterY - targetRect.top}px`;
-        stickyNoteEl.style.transform = `translate3d(${deltaX}px, ${deltaY}px, 0) scale3d(0.08, 0.15, 1)`;
+        stickyNoteEl.style.transform = `translate3d(${deltaX}px, ${deltaY}px, 0) scale3d(0.05, 0.1, 1)`;
+        stickyNoteEl.style.opacity = '0.08';
         stickyNoteEl.offsetHeight;
         requestAnimationFrame(() => {
             stickyNoteEl.style.transform = 'translate3d(0, 0, 0) scale3d(1, 1, 1)';
+            stickyNoteEl.style.opacity = '1';
         });
         motionTimer = window.setTimeout(() => {
             clearMotionState();
@@ -1263,11 +1265,11 @@ function initStickyNote() {
         stickyNoteEl.classList.remove('minimized');
         stickyNoteEl.classList.add('is-closing');
         stickyNoteEl.style.transformOrigin = `${sourceCenterX - targetRect.left}px ${sourceCenterY - targetRect.top}px`;
-        stickyNoteEl.style.transform = 'translate3d(0, 0, 0) scale(1)';
+        stickyNoteEl.style.transform = 'translate3d(0, 0, 0) scale3d(1, 1, 1)';
         stickyNoteEl.style.opacity = '1';
         stickyNoteEl.offsetHeight;
         requestAnimationFrame(() => {
-            stickyNoteEl.style.transform = `translate3d(${deltaX}px, ${deltaY}px, 0) scale3d(0.02, 0.08, 1)`;
+            stickyNoteEl.style.transform = `translate3d(${deltaX}px, ${deltaY}px, 0) scale3d(0.05, 0.1, 1)`;
             stickyNoteEl.style.opacity = '0.08';
         });
         motionTimer = window.setTimeout(finishClose, 720);
@@ -1437,7 +1439,7 @@ document.addEventListener('DOMContentLoaded', () => {
             expandDeviceShell(true);
         } else {
             if (resumePopout.isVisible()) resumePopout.closeToPill(pillResumeBtn);
-            if (readerMode.isActive()) readerMode.close();
+            // Notes shouldn't close the reader mode window
             stickyNote.toggleFromPill(pillNotesBtn);
         }
     });

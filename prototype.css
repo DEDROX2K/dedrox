@@ -411,8 +411,13 @@ body.cursor-system :where([data-cursor='default']) {
     }
 }
 
+.device-container.expanded .pill-icon-btn {
+    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
 .device-container.expanded .pill-icon-btn:active {
-    transform: scale(0.92);
+    transform: scale(0.88, 0.94);
+    transition: transform 0.12s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .device-container.expanded .pill-icon-btn:active::before {
@@ -680,7 +685,7 @@ body.cursor-system :where([data-cursor='default']) {
 }
 
 .device-container.reader-mode {
-    width: min(96vw, 720px);
+    width: min(98vw, 820px);
     background: #ececec;
 }
 
@@ -792,7 +797,19 @@ body.cursor-system :where([data-cursor='default']) {
 .reader-image-placeholder {
     min-height: 360px;
     border-radius: 2px;
-    background: linear-gradient(180deg, #c9c9c9 0%, #acacac 100%);
+    background: linear-gradient(180deg, #000000 0%, #acacac 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.reader-image-placeholder img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
 .reader-contact-grid {
