@@ -306,6 +306,35 @@ body.cursor-system :where([data-cursor='default']) {
     -webkit-tap-highlight-color: transparent;
 }
 
+.pill-icon-btn img {
+    width: 58%;
+    height: 58%;
+    object-fit: contain;
+    opacity: 0;
+    transform: translateY(6px) scale(0.88);
+    filter: blur(2px);
+    transition: opacity 0.28s var(--ease-lux), transform 0.42s var(--ease-lux), filter 0.42s var(--ease-lux);
+    will-change: opacity, transform, filter;
+}
+
+.device-container.expanded .pill-icon-btn img {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+}
+
+.device-container.expanded #pill-notes-btn img {
+    transition-delay: 0.05s;
+}
+
+.device-container.expanded #pill-resume-btn img {
+    transition-delay: 0.15s;
+}
+
+.device-container.expanded #pill-third-btn img {
+    transition-delay: 0.25s;
+}
+
 .pill-icon-btn::before {
     content: '';
     position: absolute;
@@ -1709,12 +1738,12 @@ body.case-open .case-window {
     position: fixed;
     top: 120px;
     left: 24px;
-    width: min(41vw, 280px);
-    height: min(31vh, 215px);
-    min-width: 180px;
-    min-height: 140px;
-    max-width: min(44vw, 360px);
-    max-height: min(40vh, 280px);
+    width: min(28.7vw, 196px);
+    height: min(21.7vh, 150px);
+    min-width: 126px;
+    min-height: 98px;
+    max-width: min(30.8vw, 252px);
+    max-height: min(28vh, 196px);
     border-radius: 16px;
     border: 1px solid rgba(0, 0, 0, 0.12);
     background: #e7acbc;
@@ -1801,7 +1830,7 @@ body.case-open .case-window {
     background: transparent;
     color: #201314;
     font-family: 'Archivo', sans-serif;
-    font-size: clamp(0.95rem, 1.6vw, 1.25rem);
+    font-size: clamp(0.66rem, 1.12vw, 0.875rem);
     line-height: 1.2;
     resize: none;
     outline: none;
@@ -1828,9 +1857,9 @@ body.case-open .case-window {
 
 @media (max-width: 640px) {
     .sticky-note {
-        width: min(70vw, 215px);
-        height: min(28vh, 180px);
-        min-width: 160px;
+        width: min(49vw, 150px);
+        height: min(19.6vh, 126px);
+        min-width: 112px;
     }
 
     .sticky-note-body {
