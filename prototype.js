@@ -80,15 +80,60 @@ const SITE_CONFIG = {
         const titleDisp = document.getElementById('case-title');
 
         let isTransitioning = false;
+        let caseMotionTimer = null;
+        const CASE_ANIM_MS = 560;
 
         const setCaseLayout = (isOpen) => {
             document.body.classList.toggle('case-open', isOpen);
         };
 
-        const closeCase = () => {
+        const clearCaseMotion = () => {
+            if (caseMotionTimer) {
+                window.clearTimeout(caseMotionTimer);
+                caseMotionTimer = null;
+            }
+            caseWindow.classList.remove('is-opening');
+            caseWindow.classList.remove('is-closing');
+        };
+
+        const finalizeClose = (keepLayout = false) => {
+            clearCaseMotion();
             caseWindow.classList.remove('visible');
             caseWindow.classList.remove('minimized');
-            setCaseLayout(false);
+            if (!keepLayout) {
+                setCaseLayout(false);
+            }
+        };
+
+        const closeCase = ({ immediate = false, keepLayout = false } = {}) => {
+            if (!caseWindow.classList.contains('visible') && !caseWindow.classList.contains('is-closing')) return;
+            clearCaseMotion();
+            caseWindow.classList.remove('minimized');
+            if (immediate) {
+                finalizeClose(keepLayout);
+                return;
+            }
+            caseWindow.classList.add('is-closing');
+            caseWindow.classList.remove('visible');
+            caseMotionTimer = window.setTimeout(() => {
+                finalizeClose(keepLayout);
+            }, CASE_ANIM_MS);
+        };
+
+        const showCase = (data) => {
+            titleDisp.textContent = data.title;
+            contentArea.innerHTML = data.images.map(img => `<img src="${img}" alt="Case Image">`).join('');
+
+            setCaseLayout(true);
+            clearCaseMotion();
+            caseWindow.classList.remove('minimized');
+            caseWindow.classList.add('visible');
+            caseWindow.classList.add('is-opening');
+            contentArea.scrollTop = 0;
+
+            caseMotionTimer = window.setTimeout(() => {
+                clearCaseMotion();
+            }, CASE_ANIM_MS);
         };
 
         const openCase = (caseId) => {
@@ -96,23 +141,15 @@ const SITE_CONFIG = {
             const data = SITE_CONFIG.caseData[caseId];
             if (!data) return;
 
-            const performOpen = () => {
-                titleDisp.textContent = data.title;
-                contentArea.innerHTML = data.images.map(img => `<img src="${img}" alt="Case Image">`).join('');
-                caseWindow.classList.add('visible');
-                caseWindow.classList.remove('minimized');
-                setCaseLayout(true);
-
-                contentArea.scrollTop = 0;
-                isTransitioning = false;
-            };
-
             if (caseWindow.classList.contains('visible')) {
                 isTransitioning = true;
-                caseWindow.classList.remove('visible');
-                setTimeout(performOpen, 400);
+                closeCase({ keepLayout: true });
+                window.setTimeout(() => {
+                    showCase(data);
+                    isTransitioning = false;
+                }, CASE_ANIM_MS + 20);
             } else {
-                performOpen();
+                showCase(data);
             }
         };
 
@@ -127,6 +164,12 @@ const SITE_CONFIG = {
         if (closeBtn) {
             closeBtn.addEventListener('click', closeCase);
         }
+
+        window.CaseOverlayControl = {
+            close: () => closeCase(),
+            closeImmediate: () => closeCase({ immediate: true }),
+            isVisible: () => caseWindow.classList.contains('visible') || caseWindow.classList.contains('is-closing')
+        };
     },
     pillSizes: {
         collapsed: {
@@ -189,6 +232,7 @@ const pillNotesBtn = document.getElementById('pill-notes-btn');
 const pillResumeBtn = document.getElementById('pill-resume-btn');
 const pillThirdBtn = document.getElementById('pill-third-btn');
 const resumePopoutEl = document.getElementById('resume-popout');
+const readerInlineEl = document.getElementById('reader-inline');
 
 function initCustomCursor() {
     const cursorEl = document.getElementById('custom-cursor');
@@ -495,16 +539,7 @@ function initBackgrounds() {
         { color: cfg.cursorColor, opacity: cfg.cursorOpacity, radius: cfg.cursorRadius },
         cfg.direction
     );
-
-    miniMatrixInstance = new MatrixRain(
-        'mini-matrix',
-        ['.'],
-        '130, 130, 130',
-        14,
-        0.6,
-        document.getElementById('portfolio-device'),
-        0.25
-    );
+    miniMatrixInstance = null;
 }
 
 // --------------------------------------------------------
@@ -806,6 +841,8 @@ function initResumePopout() {
     if (!resumePopoutEl || !device) {
         return {
             openFromPill: () => { },
+            closeToPill: () => { },
+            toggleFromPill: () => { },
             close: () => { },
             isVisible: () => false
         };
@@ -819,6 +856,8 @@ function initResumePopout() {
     let dragOffsetX = 0;
     let dragOffsetY = 0;
     let activePointerId = null;
+    let motionTimer = null;
+    let lastSourceEl = pillResumeBtn || topBar || device;
 
     const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
@@ -843,13 +882,28 @@ function initResumePopout() {
         setPosition(targetLeft, targetTop);
     };
 
-    const endOpenTransition = () => {
+    const clearMotionState = () => {
+        if (motionTimer) {
+            window.clearTimeout(motionTimer);
+            motionTimer = null;
+        }
         resumePopoutEl.classList.remove('is-opening');
+        resumePopoutEl.classList.remove('is-closing');
         resumePopoutEl.style.transform = '';
         resumePopoutEl.style.transformOrigin = '';
+        resumePopoutEl.style.opacity = '';
+    };
+
+    const finishClose = () => {
+        clearMotionState();
+        resumePopoutEl.classList.remove('visible');
+        resumePopoutEl.setAttribute('aria-hidden', 'true');
     };
 
     const openFromPill = (sourceEl = topBar) => {
+        lastSourceEl = sourceEl || lastSourceEl || pillResumeBtn || topBar || device;
+        clearMotionState();
+
         if (!resumePopoutEl.classList.contains('visible')) {
             resumePopoutEl.classList.add('visible');
             resumePopoutEl.setAttribute('aria-hidden', 'false');
@@ -863,7 +917,7 @@ function initResumePopout() {
             setPosition(currentLeft, currentTop);
         }
 
-        const sourceRect = sourceEl.getBoundingClientRect();
+        const sourceRect = (lastSourceEl || topBar || device).getBoundingClientRect();
         const targetRect = resumePopoutEl.getBoundingClientRect();
 
         const sourceCenterX = sourceRect.left + (sourceRect.width * 0.5);
@@ -876,24 +930,56 @@ function initResumePopout() {
 
         resumePopoutEl.classList.add('is-opening');
         resumePopoutEl.style.transformOrigin = `${sourceCenterX - targetRect.left}px ${sourceCenterY - targetRect.top}px`;
-        resumePopoutEl.style.transform = `translate3d(${deltaX}px, ${deltaY}px, 0) scale3d(0.1, 0.24, 1)`;
+        resumePopoutEl.style.transform = `translate3d(${deltaX}px, ${deltaY}px, 0) scale3d(0.06, 0.14, 1)`;
         resumePopoutEl.offsetHeight;
         requestAnimationFrame(() => {
             resumePopoutEl.style.transform = 'translate3d(0, 0, 0) scale3d(1, 1, 1)';
         });
-        window.setTimeout(endOpenTransition, 660);
+        motionTimer = window.setTimeout(() => {
+            clearMotionState();
+        }, 820);
+    };
+
+    const closeToPill = (sourceEl = lastSourceEl) => {
+        if (!resumePopoutEl.classList.contains('visible')) return;
+        lastSourceEl = sourceEl || lastSourceEl || pillResumeBtn || topBar || device;
+
+        const sourceRect = (lastSourceEl || topBar || device).getBoundingClientRect();
+        const targetRect = resumePopoutEl.getBoundingClientRect();
+        const sourceCenterX = sourceRect.left + (sourceRect.width * 0.5);
+        const sourceCenterY = sourceRect.top + (sourceRect.height * 0.5);
+        const targetCenterX = targetRect.left + (targetRect.width * 0.5);
+        const targetCenterY = targetRect.top + (targetRect.height * 0.5);
+        const deltaX = sourceCenterX - targetCenterX;
+        const deltaY = sourceCenterY - targetCenterY;
+
+        clearMotionState();
+        resumePopoutEl.classList.add('is-closing');
+        resumePopoutEl.style.transformOrigin = `${sourceCenterX - targetRect.left}px ${sourceCenterY - targetRect.top}px`;
+        resumePopoutEl.style.transform = 'translate3d(0, 0, 0) scale3d(1, 1, 1)';
+        resumePopoutEl.style.opacity = '1';
+        resumePopoutEl.offsetHeight;
+        requestAnimationFrame(() => {
+            resumePopoutEl.style.transform = `translate3d(${deltaX}px, ${deltaY}px, 0) scale3d(0.03, 0.09, 1)`;
+            resumePopoutEl.style.opacity = '0.12';
+        });
+        motionTimer = window.setTimeout(finishClose, 760);
     };
 
     const close = () => {
-        resumePopoutEl.classList.remove('visible');
-        resumePopoutEl.classList.remove('is-opening');
-        resumePopoutEl.style.transform = '';
-        resumePopoutEl.style.transformOrigin = '';
-        resumePopoutEl.setAttribute('aria-hidden', 'true');
+        finishClose();
+    };
+
+    const toggleFromPill = (sourceEl = lastSourceEl) => {
+        if (resumePopoutEl.classList.contains('visible')) {
+            closeToPill(sourceEl);
+            return;
+        }
+        openFromPill(sourceEl);
     };
 
     const startDrag = (event) => {
-        if (!resumePopoutEl.classList.contains('visible')) return;
+        if (!resumePopoutEl.classList.contains('visible') || resumePopoutEl.classList.contains('is-closing')) return;
 
         const controlTarget = event.target instanceof Element
             ? event.target.closest('#resume-popout-close, .dot, button, a, iframe')
@@ -911,9 +997,7 @@ function initResumePopout() {
         dragOffsetX = event.clientX - rect.left;
         dragOffsetY = event.clientY - rect.top;
 
-        resumePopoutEl.classList.remove('is-opening');
-        resumePopoutEl.style.transform = '';
-        resumePopoutEl.style.transformOrigin = '';
+        clearMotionState();
 
         event.preventDefault();
     };
@@ -939,7 +1023,7 @@ function initResumePopout() {
     closeBtn?.addEventListener('click', (event) => {
         event.preventDefault();
         event.stopPropagation();
-        close();
+        closeToPill();
     });
 
     header?.addEventListener('pointerdown', startDrag);
@@ -955,14 +1039,112 @@ function initResumePopout() {
 
     return {
         openFromPill,
+        closeToPill,
+        toggleFromPill,
         close,
         isVisible: () => resumePopoutEl.classList.contains('visible')
     };
 }
+
+function initReaderMode() {
+    if (!device || !readerInlineEl) {
+        return {
+            open: () => { },
+            close: () => { },
+            toggle: () => { },
+            isActive: () => false
+        };
+    }
+
+    const scrollableContent = document.getElementById('scrollable-content');
+
+    const open = () => {
+        device.classList.add('reader-mode');
+        document.body.classList.add('reader-mode');
+        readerInlineEl.setAttribute('aria-hidden', 'false');
+        if (scrollableContent) {
+            scrollableContent.scrollTop = 0;
+        }
+    };
+
+    const close = () => {
+        device.classList.remove('reader-mode');
+        document.body.classList.remove('reader-mode');
+        readerInlineEl.setAttribute('aria-hidden', 'true');
+    };
+
+    const toggle = () => {
+        if (device.classList.contains('reader-mode')) {
+            close();
+            return;
+        }
+        open();
+    };
+
+    return {
+        open,
+        close,
+        toggle,
+        isActive: () => device.classList.contains('reader-mode')
+    };
+}
+
+function initSmoothWheelScrolling() {
+    const targets = [
+        document.scrollingElement,
+        document.getElementById('scrollable-content'),
+        document.getElementById('case-content-area')
+    ].filter(Boolean);
+
+    targets.forEach((el) => {
+        const state = {
+            current: el.scrollTop,
+            target: el.scrollTop,
+            raf: 0
+        };
+
+        const tick = () => {
+            state.current += (state.target - state.current) * 0.18;
+            if (Math.abs(state.target - state.current) < 0.35) {
+                state.current = state.target;
+            }
+            el.scrollTop = state.current;
+            if (Math.abs(state.target - state.current) > 0.35) {
+                state.raf = requestAnimationFrame(tick);
+            } else {
+                state.raf = 0;
+            }
+        };
+
+        el.addEventListener('wheel', (event) => {
+            if (event.ctrlKey) return;
+            const maxScroll = Math.max(0, el.scrollHeight - el.clientHeight);
+            if (maxScroll <= 0) return;
+
+            const delta = Math.abs(event.deltaY) >= Math.abs(event.deltaX) ? event.deltaY : event.deltaX;
+            if (!Number.isFinite(delta) || Math.abs(delta) < 0.2) return;
+
+            state.target = Math.min(Math.max(state.target + (delta * 1.05), 0), maxScroll);
+            event.preventDefault();
+            if (!state.raf) {
+                state.raf = requestAnimationFrame(tick);
+            }
+        }, { passive: false });
+
+        el.addEventListener('scroll', () => {
+            if (state.raf) return;
+            state.current = el.scrollTop;
+            state.target = el.scrollTop;
+        }, { passive: true });
+    });
+}
+
 function initStickyNote() {
-    if (!stickyNoteEl || !topBar || !device) {
+    if (!stickyNoteEl || !device) {
         return {
             openFromPill: () => { },
+            closeToPill: () => { },
+            toggleFromPill: () => { },
             close: () => { },
             isVisible: () => false
         };
@@ -978,6 +1160,8 @@ function initStickyNote() {
     let dragOffsetX = 0;
     let dragOffsetY = 0;
     let activePointerId = null;
+    let motionTimer = null;
+    let lastSourceEl = pillNotesBtn || topBar || device;
 
     const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
@@ -1002,13 +1186,29 @@ function initStickyNote() {
         setPosition(targetLeft, targetTop);
     };
 
-    const endOpenTransition = () => {
+    const clearMotionState = () => {
+        if (motionTimer) {
+            window.clearTimeout(motionTimer);
+            motionTimer = null;
+        }
         stickyNoteEl.classList.remove('is-opening');
+        stickyNoteEl.classList.remove('is-closing');
         stickyNoteEl.style.transform = '';
         stickyNoteEl.style.transformOrigin = '';
+        stickyNoteEl.style.opacity = '';
+    };
+
+    const finishClose = () => {
+        clearMotionState();
+        stickyNoteEl.classList.remove('visible');
+        stickyNoteEl.classList.remove('minimized');
+        stickyNoteEl.setAttribute('aria-hidden', 'true');
     };
 
     const openFromPill = (sourceEl = topBar) => {
+        lastSourceEl = sourceEl || lastSourceEl || pillNotesBtn || topBar || device;
+        clearMotionState();
+
         if (!stickyNoteEl.classList.contains('visible')) {
             stickyNoteEl.classList.add('visible');
             stickyNoteEl.setAttribute('aria-hidden', 'false');
@@ -1023,7 +1223,7 @@ function initStickyNote() {
             setPosition(currentLeft, currentTop);
         }
 
-        const sourceRect = sourceEl.getBoundingClientRect();
+        const sourceRect = (lastSourceEl || topBar || device).getBoundingClientRect();
         const targetRect = stickyNoteEl.getBoundingClientRect();
 
         const sourceCenterX = sourceRect.left + (sourceRect.width * 0.5);
@@ -1035,21 +1235,54 @@ function initStickyNote() {
         const deltaY = sourceCenterY - targetCenterY;
 
         stickyNoteEl.classList.add('is-opening');
-        stickyNoteEl.style.transform = `translate3d(${deltaX}px, ${deltaY}px, 0) scale(0.18)`;
+        stickyNoteEl.style.transformOrigin = `${sourceCenterX - targetRect.left}px ${sourceCenterY - targetRect.top}px`;
+        stickyNoteEl.style.transform = `translate3d(${deltaX}px, ${deltaY}px, 0) scale3d(0.08, 0.15, 1)`;
         stickyNoteEl.offsetHeight;
         requestAnimationFrame(() => {
-            stickyNoteEl.style.transform = 'translate3d(0, 0, 0) scale(1)';
+            stickyNoteEl.style.transform = 'translate3d(0, 0, 0) scale3d(1, 1, 1)';
         });
-        window.setTimeout(endOpenTransition, 620);
+        motionTimer = window.setTimeout(() => {
+            clearMotionState();
+        }, 760);
+    };
+
+    const closeToPill = (sourceEl = lastSourceEl) => {
+        if (!stickyNoteEl.classList.contains('visible')) return;
+        lastSourceEl = sourceEl || lastSourceEl || pillNotesBtn || topBar || device;
+
+        const sourceRect = (lastSourceEl || topBar || device).getBoundingClientRect();
+        const targetRect = stickyNoteEl.getBoundingClientRect();
+        const sourceCenterX = sourceRect.left + (sourceRect.width * 0.5);
+        const sourceCenterY = sourceRect.top + (sourceRect.height * 0.5);
+        const targetCenterX = targetRect.left + (targetRect.width * 0.5);
+        const targetCenterY = targetRect.top + (targetRect.height * 0.5);
+        const deltaX = sourceCenterX - targetCenterX;
+        const deltaY = sourceCenterY - targetCenterY;
+
+        clearMotionState();
+        stickyNoteEl.classList.remove('minimized');
+        stickyNoteEl.classList.add('is-closing');
+        stickyNoteEl.style.transformOrigin = `${sourceCenterX - targetRect.left}px ${sourceCenterY - targetRect.top}px`;
+        stickyNoteEl.style.transform = 'translate3d(0, 0, 0) scale(1)';
+        stickyNoteEl.style.opacity = '1';
+        stickyNoteEl.offsetHeight;
+        requestAnimationFrame(() => {
+            stickyNoteEl.style.transform = `translate3d(${deltaX}px, ${deltaY}px, 0) scale3d(0.02, 0.08, 1)`;
+            stickyNoteEl.style.opacity = '0.08';
+        });
+        motionTimer = window.setTimeout(finishClose, 720);
     };
 
     const close = () => {
-        stickyNoteEl.classList.remove('visible');
-        stickyNoteEl.classList.remove('minimized');
-        stickyNoteEl.classList.remove('is-opening');
-        stickyNoteEl.style.transform = '';
-        stickyNoteEl.style.transformOrigin = '';
-        stickyNoteEl.setAttribute('aria-hidden', 'true');
+        finishClose();
+    };
+
+    const toggleFromPill = (sourceEl = lastSourceEl) => {
+        if (stickyNoteEl.classList.contains('visible')) {
+            closeToPill(sourceEl);
+            return;
+        }
+        openFromPill(sourceEl);
     };
 
     const toggleMinimize = () => {
@@ -1057,7 +1290,7 @@ function initStickyNote() {
     };
 
     const startDrag = (event) => {
-        if (!stickyNoteEl.classList.contains('visible')) return;
+        if (!stickyNoteEl.classList.contains('visible') || stickyNoteEl.classList.contains('is-closing')) return;
 
         const controlTarget = event.target instanceof Element
             ? event.target.closest('#sticky-close, #sticky-min, .dot, button, a, textarea, input, select')
@@ -1075,8 +1308,7 @@ function initStickyNote() {
         dragOffsetX = event.clientX - rect.left;
         dragOffsetY = event.clientY - rect.top;
 
-        stickyNoteEl.classList.remove('is-opening');
-        stickyNoteEl.style.transform = '';
+        clearMotionState();
 
         event.preventDefault();
     };
@@ -1102,7 +1334,7 @@ function initStickyNote() {
     closeBtn?.addEventListener('click', (event) => {
         event.preventDefault();
         event.stopPropagation();
-        close();
+        closeToPill();
     });
 
     minBtn?.addEventListener('pointerdown', (event) => {
@@ -1132,6 +1364,8 @@ function initStickyNote() {
 
     return {
         openFromPill,
+        closeToPill,
+        toggleFromPill,
         close,
         isVisible: () => stickyNoteEl.classList.contains('visible')
     };
@@ -1142,7 +1376,19 @@ function initStickyNote() {
 document.addEventListener('DOMContentLoaded', () => {
     initCursorSystem();
     initCustomCursor();
+    initSmoothWheelScrolling();
     const stickyNote = initStickyNote();
+    const resumePopout = initResumePopout();
+    const readerMode = initReaderMode();
+
+    const expandDeviceShell = () => {
+        if (!device || device.classList.contains('expanded')) return;
+        device.classList.add('expanded');
+        applyPillSizes('expanded');
+        setTimeout(() => {
+            if (miniMatrixInstance) miniMatrixInstance.resize();
+        }, 520);
+    };
 
     // Config based UI updates
     if (githubChartImg) {
@@ -1175,29 +1421,60 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (topBar) {
         topBar.addEventListener('click', (e) => {
-            if (!device.classList.contains('expanded')) {
-                device.classList.add('expanded');
-                applyPillSizes('expanded');
-                e.stopPropagation();
-                setTimeout(() => { if (miniMatrixInstance) miniMatrixInstance.resize(); }, 520);
-            }
-            stickyNote.openFromPill(topBar);
+            if (e.target instanceof Element && e.target.closest('.pill-icon-btn')) return;
+            expandDeviceShell();
+            e.stopPropagation();
         });
     }
 
+    pillNotesBtn?.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        expandDeviceShell();
+        if (resumePopout.isVisible()) resumePopout.closeToPill(pillResumeBtn);
+        if (readerMode.isActive()) readerMode.close();
+        stickyNote.toggleFromPill(pillNotesBtn);
+    });
+
+    pillResumeBtn?.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        expandDeviceShell();
+        if (stickyNote.isVisible()) stickyNote.closeToPill(pillNotesBtn);
+        if (readerMode.isActive()) readerMode.close();
+        resumePopout.toggleFromPill(pillResumeBtn);
+    });
+
+    pillThirdBtn?.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        expandDeviceShell();
+        if (stickyNote.isVisible()) stickyNote.closeToPill(pillNotesBtn);
+        if (resumePopout.isVisible()) resumePopout.closeToPill(pillResumeBtn);
+        readerMode.toggle();
+    });
+
     document.body.addEventListener('click', (e) => {
-        const caseIsOpen = caseWindowEl && caseWindowEl.classList.contains('visible');
+        const caseOverlayControl = window.CaseOverlayControl;
+        const caseIsOpen = caseOverlayControl
+            ? caseOverlayControl.isVisible()
+            : (caseWindowEl && caseWindowEl.classList.contains('visible'));
         const clickedInsideCase = caseWindowEl && caseWindowEl.contains(e.target);
         const clickedInsideDevice = device && device.contains(e.target);
         const clickedInsideSticky = stickyNoteEl && stickyNoteEl.contains(e.target);
+        const clickedInsideResume = resumePopoutEl && resumePopoutEl.contains(e.target);
 
         // Priority close order:
         // 1) Close the side case window first.
         // 2) Only after that, allow closing the mini portfolio on a later outside click.
-        if (caseIsOpen && !clickedInsideCase && !clickedInsideDevice && !clickedInsideSticky) {
-            caseWindowEl.classList.remove('visible');
-            caseWindowEl.classList.remove('minimized');
-            document.body.classList.remove('case-open');
+        if (caseIsOpen && !clickedInsideCase && !clickedInsideDevice && !clickedInsideSticky && !clickedInsideResume) {
+            if (caseOverlayControl) {
+                caseOverlayControl.close();
+            } else if (caseWindowEl) {
+                caseWindowEl.classList.remove('visible');
+                caseWindowEl.classList.remove('minimized');
+                document.body.classList.remove('case-open');
+            }
             return;
         }
 
@@ -1205,12 +1482,15 @@ document.addEventListener('DOMContentLoaded', () => {
             device.classList.contains('expanded') &&
             !clickedInsideDevice &&
             !clickedInsideCase &&
-            !clickedInsideSticky
+            !clickedInsideSticky &&
+            !clickedInsideResume
         ) {
             device.classList.remove('expanded');
             device.classList.remove('maximized');
             applyPillSizes('collapsed');
+            readerMode.close();
             stickyNote.close();
+            resumePopout.close();
             setTimeout(() => { if (miniMatrixInstance) miniMatrixInstance.resize(); }, 520);
         }
     });
