@@ -21,7 +21,7 @@ const SITE_CONFIG = {
         smoothFactor: 0.36
     },
     asciiRain: {
-        chars: ['█', '▒', '░','░', ],
+        chars: ['█', '▒', '░', '░',],
         fontSize: 10,
         speed: 1,
         baseOpacity: 0.10,
@@ -1180,9 +1180,9 @@ function initStickyNote() {
     };
 
     const setDefaultPosition = () => {
-        const deviceRect = device.getBoundingClientRect();
-        const targetLeft = deviceRect.left + Math.max(18, (deviceRect.width - stickyNoteEl.offsetWidth) * 0.5);
-        const targetTop = deviceRect.top + 72;
+        const bounds = getViewportBounds();
+        const targetLeft = bounds.maxX - 24;
+        const targetTop = bounds.maxY - 24;
         setPosition(targetLeft, targetTop);
     };
 
@@ -1203,6 +1203,7 @@ function initStickyNote() {
         stickyNoteEl.classList.remove('visible');
         stickyNoteEl.classList.remove('minimized');
         stickyNoteEl.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('notes-active');
     };
 
     const openFromPill = (sourceEl = topBar) => {
@@ -1212,6 +1213,7 @@ function initStickyNote() {
         if (!stickyNoteEl.classList.contains('visible')) {
             stickyNoteEl.classList.add('visible');
             stickyNoteEl.setAttribute('aria-hidden', 'false');
+            document.body.classList.add('notes-active');
         }
         stickyNoteEl.classList.remove('minimized');
 
@@ -1386,6 +1388,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const expandDeviceShell = (autoOpenNotes = true) => {
         if (!device || device.classList.contains('expanded')) return;
         device.classList.add('expanded');
+        document.body.classList.add('device-expanded');
         applyPillSizes('expanded');
         setTimeout(() => {
             if (miniMatrixInstance) miniMatrixInstance.resize();
@@ -1417,6 +1420,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (expandBtn) {
         expandBtn.addEventListener('click', (e) => {
             device.classList.toggle('maximized');
+            document.body.classList.toggle('device-maximized');
             e.stopPropagation();
             setTimeout(() => {
                 if (typeof fitty !== 'undefined') fitty.fitAll();
@@ -1504,7 +1508,9 @@ document.addEventListener('DOMContentLoaded', () => {
             !clickedInsideResume
         ) {
             device.classList.remove('expanded');
+            document.body.classList.remove('device-expanded');
             device.classList.remove('maximized');
+            document.body.classList.remove('device-maximized');
             applyPillSizes('collapsed');
             readerMode.close();
             stickyNote.close();
