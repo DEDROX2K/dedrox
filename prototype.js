@@ -21,8 +21,8 @@ const SITE_CONFIG = {
         smoothFactor: 0.36
     },
     asciiRain: {
-        chars: ['█', '▒', '░', '*', '|', '/', 'o'],
-        fontSize: 5,
+        chars: ['█', '▒', '░','░', ],
+        fontSize: 10,
         speed: 1,
         baseOpacity: 0.10,
         baseColor: '77, 77, 77',
