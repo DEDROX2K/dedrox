@@ -1135,6 +1135,22 @@ function initSmoothWheelScrolling() {
             if (state.raf) return;
             state.current = el.scrollTop;
             state.target = el.scrollTop;
+
+            // Custom scrollbar sync
+            if (el.id === 'scrollable-content') {
+                const thumb = document.querySelector('.simple-scrollbar-thumb');
+                if (thumb) {
+                    const maxScroll = Math.max(0, el.scrollHeight - el.clientHeight);
+                    if (maxScroll > 0) {
+                        const trackHeight = 40; // from CSS .simple-scrollbar height
+                        const thumbHeight = 14;  // from CSS .simple-scrollbar-thumb height
+                        const maxThumbTravel = trackHeight - thumbHeight;
+                        const scrollRatio = el.scrollTop / maxScroll;
+                        const thumbTop = scrollRatio * maxThumbTravel;
+                        thumb.style.top = `${thumbTop}px`;
+                    }
+                }
+            }
         }, { passive: true });
     });
 }

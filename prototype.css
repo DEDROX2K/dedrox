@@ -106,7 +106,7 @@ body {
     align-items: center;
     min-height: 100vh;
     overflow: hidden;
-    font-family: 'Archivo', sans-serif;
+    font-family: 'Google Sans', sans-serif;
     font-weight: 400;
 }
 
@@ -205,6 +205,7 @@ body.cursor-system :where([data-cursor='default']) {
     height: var(--pill-container-h);
     display: flex;
     flex-direction: column;
+    z-index: 1000;
     transition:
         width 0.82s var(--ease-genie),
         height 0.22s var(--ease-genie),
@@ -221,7 +222,7 @@ body.cursor-system :where([data-cursor='default']) {
     background: var(--panel);
     box-shadow: 14px 17px 20px 0px rgba(0, 0, 0, 0.1);
     border-radius: var(--site-radius);
-    overflow: hidden;
+    /* Removing overflow: hidden here so out-of-bounds left-controls are visible */
 }
 
 
@@ -240,7 +241,7 @@ body.cursor-system :where([data-cursor='default']) {
     width: 100%;
     flex-shrink: 0;
     position: relative;
-    z-index: 10;
+    z-index: 100;
     background: transparent;
     /* Darker background for the surrounding area as in the image */
     border-radius: 999px;
@@ -293,8 +294,8 @@ body.cursor-system :where([data-cursor='default']) {
 }
 
 body.notes-active .pill-plain-circle {
-    background-color: #e7acbc;
-    /* border-radius: 12px; */
+    background-color: #1d1d1d;
+    border-radius: 30px 12px 12px 30px;
 }
 
 .pill-square {
@@ -316,7 +317,7 @@ body.notes-active .pill-plain-circle {
 }
 
 body.reader-mode .pill-dark-block {
-    background: #2a2a2a;
+    background: #1d1d1d;
     border-radius: 12px;
 }
 
@@ -449,7 +450,6 @@ body.reader-mode .pill-dark-block .pill-icon-slot {
     transform: scale(1.22);
 }
 
-/* Tooltip for Pill Buttons */
 .pill-tooltip {
     position: absolute;
     top: calc(100% + 14px);
@@ -471,7 +471,9 @@ body.reader-mode .pill-dark-block .pill-icon-slot {
 }
 
 @media (hover: hover) {
-    .device-container.expanded .pill-icon-btn:hover .pill-tooltip {
+
+    .device-container.expanded .pill-icon-btn:hover .pill-tooltip,
+    body.device-expanded .expand-fab:hover .pill-tooltip {
         opacity: 1;
         transform: translateX(-50%) translateY(0);
     }
@@ -511,11 +513,22 @@ body.reader-mode .pill-dark-block .pill-icon-slot {
     display: none !important;
 }
 
-/* Standalone Expand FAB */
+/* Left Side Controls (outside pill) */
+.left-controls {
+    position: absolute;
+    top: 50%;
+    left: -58px;
+    /* Position slightly further out to the left */
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    z-index: 9999;
+    /* Ensure it's not buried */
+}
+
 .expand-fab {
-    position: fixed;
-    top: 16px;
-    right: 180px;
     width: 36px;
     height: 36px;
     border-radius: 50%;
@@ -529,8 +542,9 @@ body.reader-mode .pill-dark-block .pill-icon-slot {
     pointer-events: none;
     transform: scale(0.85);
     transition: opacity 0.35s var(--ease-lux), transform 0.35s var(--ease-lux), background 0.2s, color 0.2s;
-    z-index: 61;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    cursor: pointer;
+    position: relative;
 }
 
 body.device-expanded .expand-fab {
@@ -538,6 +552,40 @@ body.device-expanded .expand-fab {
     pointer-events: auto;
     transform: scale(1);
     transition-delay: 0.1s;
+}
+
+.expand-fab:hover {
+    background: #e4e4e4;
+}
+
+.simple-scrollbar {
+    width: 4px;
+    height: 40px;
+    background: rgba(0, 0, 0, 0.06);
+    border-radius: 99px;
+    position: relative;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s var(--ease-lux), transform 0.35s var(--ease-lux);
+    transform: translateY(-10px);
+}
+
+body.device-expanded .simple-scrollbar {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.15s;
+}
+
+.simple-scrollbar-thumb {
+    width: 8px;
+    height: 14px;
+    background: #888;
+    border-radius: 99px;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: top 0.1s linear, background 0.2s;
 }
 
 .contact-btn:hover {
@@ -676,6 +724,9 @@ body.device-maximized .expand-fab .icon-expand {
     overflow-y: auto;
     overflow-x: hidden;
     padding: var(--site-padding-top) var(--site-padding-x) 0;
+    /* Adding border radius here to inherit from device container */
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 .device-container.expanded .site-content {
@@ -724,7 +775,7 @@ body.device-maximized .expand-fab .icon-expand {
     display: none;
     min-height: calc(100% - 8px);
     color: #111;
-    font-family: 'Archivo', sans-serif;
+    font-family: 'IBM Plex Mono', monospace;
     padding-bottom: 24px;
 }
 
