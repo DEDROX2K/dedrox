@@ -76,12 +76,32 @@ const SITE_CONFIG = {
         const cards = document.querySelectorAll('[data-case]');
         const caseWindow = document.getElementById('case-window');
         const closeBtn = document.getElementById('case-close');
+        const openBtn = document.getElementById('case-open-link');
         const contentArea = document.getElementById('case-content-area');
         const titleDisp = document.getElementById('case-title');
 
         let isTransitioning = false;
         let caseMotionTimer = null;
+        let activeCaseHref = '';
         const CASE_ANIM_MS = 560;
+        const fallbackCaseLinks = {
+            case1: 'Case1.html',
+            case2: 'Case2.html',
+            case3: 'case3.html'
+        };
+
+        const syncOpenButton = () => {
+            if (!openBtn) return;
+            const hasHref = Boolean(activeCaseHref);
+            openBtn.disabled = !hasHref;
+            openBtn.setAttribute('aria-disabled', hasHref ? 'false' : 'true');
+        };
+
+        const resolveCaseHref = (caseId, rawHref) => {
+            const href = typeof rawHref === 'string' ? rawHref.trim() : '';
+            if (href && href !== '#') return href;
+            return fallbackCaseLinks[caseId] || '';
+        };
 
         const setCaseLayout = (isOpen) => {
             document.body.classList.toggle('case-open', isOpen);
@@ -120,9 +140,11 @@ const SITE_CONFIG = {
             }, CASE_ANIM_MS);
         };
 
-        const showCase = (data) => {
+        const showCase = (data, caseHref = '') => {
             titleDisp.textContent = data.title;
             contentArea.innerHTML = data.images.map(img => `<img src="${img}" alt="Case Image">`).join('');
+            activeCaseHref = caseHref;
+            syncOpenButton();
 
             setCaseLayout(true);
             clearCaseMotion();
@@ -136,20 +158,21 @@ const SITE_CONFIG = {
             }, CASE_ANIM_MS);
         };
 
-        const openCase = (caseId) => {
+        const openCase = (caseId, caseHref = '') => {
             if (isTransitioning) return;
             const data = SITE_CONFIG.caseData[caseId];
             if (!data) return;
+            const resolvedHref = resolveCaseHref(caseId, caseHref);
 
             if (caseWindow.classList.contains('visible')) {
                 isTransitioning = true;
                 closeCase({ keepLayout: true });
                 window.setTimeout(() => {
-                    showCase(data);
+                    showCase(data, resolvedHref);
                     isTransitioning = false;
                 }, CASE_ANIM_MS + 20);
             } else {
-                showCase(data);
+                showCase(data, resolvedHref);
             }
         };
 
@@ -157,12 +180,23 @@ const SITE_CONFIG = {
             card.addEventListener('click', (e) => {
                 e.preventDefault();
                 const caseId = card.getAttribute('data-case');
-                openCase(caseId);
+                const caseHref = card.getAttribute('href');
+                openCase(caseId, caseHref);
             });
         });
 
         if (closeBtn) {
             closeBtn.addEventListener('click', closeCase);
+        }
+
+        if (openBtn) {
+            syncOpenButton();
+            openBtn.addEventListener('click', (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                if (!activeCaseHref) return;
+                window.open(activeCaseHref, '_blank', 'noopener,noreferrer');
+            });
         }
 
         window.CaseOverlayControl = {
