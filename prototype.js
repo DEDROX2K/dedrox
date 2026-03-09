@@ -21,9 +21,9 @@ const SITE_CONFIG = {
         smoothFactor: 0.36
     },
     asciiRain: {
-        chars: ['█', '▒', '░', '░', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'],
-        fontSize: 10,
-        speed: 3,
+        chars: ['█', '▒', '░', '░', '*', '.', '.', '.', '.', ':', ':', '*', '.', '░'],
+        fontSize: 15,
+        speed: 1,
         baseOpacity: 0.10,
         baseColor: '77, 77, 77',
         cursorColor: '0, 0, 0',
@@ -217,10 +217,10 @@ const SITE_CONFIG = {
         },
         expanded: {
             circle: { w: '74px', h: '44px', c: '#e7e7e7' },
-            circle2: { w: '19px', h: '10px', c: '#e7e7e7', br: '14px' },
+            circle2: { w: '29px', h: '8px', c: '#e7e7e7', br: '14px' },
             square: { w: '49px', h: '44px', c: '#e7e7e7' },
             dark: { w: '74px', h: '44px', c: '#e7e7e7' },
-            circle3: { w: '8px', h: '44px', c: '#6d6d6dff', br: '22px' },
+            circle3: { w: '29px', h: '8px', c: '#e7e7e7', br: '22px' },
 
             container: { w: '450px', h: '64px', c: '#ffffff' }
         }
@@ -228,6 +228,10 @@ const SITE_CONFIG = {
     blurMask: {
         strength: '15px',
         opacity: 0.85
+    },
+    marquee: {
+        color: '#d2d2d2ff',
+        speed: 0.5
     }
 };
 
@@ -237,6 +241,19 @@ function applyBlurMaskSettings() {
     const root = document.documentElement;
     root.style.setProperty('--blur-mask-strength', cfg.strength);
     root.style.setProperty('--blur-mask-opacity', cfg.opacity);
+}
+
+function applyMarqueeSettings() {
+    const cfg = SITE_CONFIG.marquee;
+    if (!cfg) return;
+    const root = document.documentElement;
+    root.style.setProperty('--marquee-speed', `${cfg.speed}s`);
+
+    // Create base64 SVG polygon pointing left, repeating tile design
+    const color = cfg.color || '#bfa7fb';
+    const svgStr = `<svg width="40" height="24" viewBox="0 0 40 24" xmlns="http://www.w3.org/2000/svg"><polygon points="0,12 15,0 28,0 13,12 28,24 15,24" fill="${color}"/></svg>`;
+    const b64 = window.btoa(svgStr);
+    root.style.setProperty('--marquee-bg', `url('data:image/svg+xml;base64,${b64}')`);
 }
 
 function applyPillSizes(state) {
@@ -1060,7 +1077,8 @@ function initOnboardingHeader() {
         hintBtn.textContent = hintWord.textContent;
         hintBtn.setAttribute('aria-label', `Reveal stage ${stageIndex + 2}`);
         hintBtn.title = 'Continue';
-        hintBtn.addEventListener('click', () => {
+        hintBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
             if (isAnimating) return;
             const staticWord = createWord(hintBtn.textContent);
             hintBtn.replaceWith(staticWord);
@@ -1675,12 +1693,216 @@ function initStickyNote() {
     };
 }
 // --------------------------------------------------------
+// DATA GRID NODE SYSTEM
+// --------------------------------------------------------
+function initNodeGraph() {
+    const container = document.getElementById('node-graph-container');
+    if (!container) return;
+
+    const svg = container.querySelector('.node-edges');
+    if (!svg) return;
+
+    const connections = [
+        { from: 'node-pt', to: 'node-ig' },
+        { from: 'node-sms', to: 'node-ig' },
+        { from: 'node-ig', to: 'node-email' },
+        { from: 'node-ig', to: 'node-user1' },
+        { from: 'node-ig', to: 'node-user2' }
+    ];
+
+    const nodes = [];
+    const nodeMap = {};
+
+    container.querySelectorAll('.node-item').forEach(el => {
+        const x = parseFloat(el.getAttribute('data-x'));
+        const y = parseFloat(el.getAttribute('data-y'));
+
+        const node = {
+            id: el.id,
+            el: el,
+            baseX: x / 100, // anchor %
+            baseY: y / 100,
+            x: 0,
+            y: 0,
+            vx: 0,
+            vy: 0,
+            isDragging: false,
+            pointerId: null
+        };
+        nodes.push(node);
+        nodeMap[node.id] = node;
+
+        let dragOffsetX = 0;
+        let dragOffsetY = 0;
+
+        el.addEventListener('pointerdown', e => {
+            node.isDragging = true;
+            node.pointerId = e.pointerId;
+            el.setPointerCapture(e.pointerId);
+            el.classList.add('is-dragging');
+
+            const rect = el.getBoundingClientRect();
+            dragOffsetX = e.clientX - rect.left - rect.width / 2;
+            dragOffsetY = e.clientY - rect.top - rect.height / 2;
+
+            node.vx = 0;
+            node.vy = 0;
+            e.preventDefault();
+        });
+
+        el.addEventListener('pointermove', e => {
+            if (!node.isDragging || e.pointerId !== node.pointerId) return;
+            const containerRect = container.getBoundingClientRect();
+            node.x = e.clientX - containerRect.left - dragOffsetX;
+            node.y = e.clientY - containerRect.top - dragOffsetY;
+        });
+
+        const endDrag = e => {
+            if (!node.isDragging || e.pointerId !== node.pointerId) return;
+            node.isDragging = false;
+            node.pointerId = null;
+            el.releasePointerCapture(e.pointerId);
+            el.classList.remove('is-dragging');
+        };
+
+        el.addEventListener('pointerup', endDrag);
+        el.addEventListener('pointercancel', endDrag);
+    });
+
+    const edges = [];
+    connections.forEach(conn => {
+        if (!nodeMap[conn.from] || !nodeMap[conn.to]) return;
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        svg.appendChild(path);
+        edges.push({
+            source: nodeMap[conn.from],
+            target: nodeMap[conn.to],
+            path: path
+        });
+    });
+
+    // Initial positioning
+    const setInitialLayout = () => {
+        const rect = container.getBoundingClientRect();
+        nodes.forEach(n => {
+            if (!n.isDragging) {
+                n.x = n.baseX * rect.width;
+                n.y = n.baseY * rect.height;
+                n.vx = 0;
+                n.vy = 0;
+            }
+        });
+    };
+    setInitialLayout();
+
+    // Physics constants
+    const stiffness = 0.04; // Spring force for edges
+    const damping = 0.75; // Velocity decay
+    const repelStrength = 4000; // Inverse square repel between nodes
+    const anchorStiffness = 0.01; // Soft pull to base % positions to structure
+
+    let animationFrameId;
+
+    function updatePhysics() {
+        const rect = container.getBoundingClientRect();
+
+        nodes.forEach(n => {
+            if (n.isDragging) return;
+
+            let fx = 0;
+            let fy = 0;
+
+            // Return to origin anchor slightly to avoid drifting away
+            const targetX = n.baseX * rect.width;
+            const targetY = n.baseY * rect.height;
+            fx += (targetX - n.x) * anchorStiffness;
+            fy += (targetY - n.y) * anchorStiffness;
+
+            // Repel all other nodes
+            nodes.forEach(n2 => {
+                if (n === n2) return;
+                const dx = n.x - n2.x;
+                const dy = n.y - n2.y;
+                const distSq = dx * dx + dy * dy;
+                if (distSq > 0 && distSq < 50000) { // Limit repulsion radius (sqrt(50000) ~ 220px)
+                    const dist = Math.sqrt(distSq);
+                    const force = repelStrength / distSq;
+                    fx += (dx / dist) * force;
+                    fy += (dy / dist) * force;
+                }
+            });
+
+            n.vx = (n.vx + fx) * damping;
+            n.vy = (n.vy + fy) * damping;
+
+            n.x += n.vx;
+            n.y += n.vy;
+
+            // Simple boundary bounce
+            if (n.x < 30) { n.x = 30; n.vx *= -0.5; }
+            if (n.x > rect.width - 30) { n.x = rect.width - 30; n.vx *= -0.5; }
+            if (n.y < 30) { n.y = 30; n.vy *= -0.5; }
+            if (n.y > rect.height - 30) { n.y = rect.height - 30; n.vy *= -0.5; }
+        });
+
+        // Add spring forces separately so they affect both nodes symmetrically
+        edges.forEach(e => {
+            const dx = e.target.x - e.source.x;
+            const dy = e.target.y - e.source.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            const restLength = 85; // Ideal edge length
+
+            if (dist > 0) {
+                const force = (dist - restLength) * stiffness;
+                const fx = (dx / dist) * force;
+                const fy = (dy / dist) * force;
+
+                if (!e.source.isDragging) {
+                    e.source.vx += fx * damping;
+                    e.source.vy += fy * damping;
+                }
+                if (!e.target.isDragging) {
+                    e.target.vx -= fx * damping;
+                    e.target.vy -= fy * damping;
+                }
+            }
+        });
+
+        // Apply DOM updates
+        nodes.forEach(n => {
+            n.el.style.left = n.x + 'px';
+            n.el.style.top = n.y + 'px';
+        });
+
+        edges.forEach(edge => {
+            edge.path.setAttribute('d', `M ${edge.source.x} ${edge.source.y} L ${edge.target.x} ${edge.target.y}`);
+        });
+
+        animationFrameId = requestAnimationFrame(updatePhysics);
+    }
+
+    // Slight pause to ensure DOM is ready and sized
+    setTimeout(() => {
+        setInitialLayout();
+        updatePhysics();
+    }, 100);
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(setInitialLayout, 200);
+    });
+}
+
+// --------------------------------------------------------
 // MAIN INIT ON DOM CONTENT LOADED
 // --------------------------------------------------------
 document.addEventListener('DOMContentLoaded', () => {
 
     initCursorSystem();
     initCustomCursor();
+    applyMarqueeSettings();
+    initNodeGraph();
     initSmoothWheelScrolling();
     const onboardingFlow = initOnboardingHeader();
     const expandFabAnchor = initExpandButtonAnchor();

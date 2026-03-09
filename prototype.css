@@ -277,8 +277,8 @@ body.cursor-system :where([data-cursor='default']) {
     padding-bottom: 50px;
     transform: translateX(-50%);
     text-align: center;
-    color: var(--ink);
-    font-size: 25px;
+    color: #484848;
+    font-size: 16px;
     font-weight: 500;
     line-height: 1.4;
     white-space: nowrap;
@@ -289,7 +289,7 @@ body.cursor-system :where([data-cursor='default']) {
 }
 
 .device-container.expanded .pill-greeting {
-    opacity: 0;
+    opacity: 1;
     transform: translate(-50%, -10px);
 }
 
@@ -794,7 +794,7 @@ body.device-maximized .expand-fab .icon-expand {
     display: none;
     min-height: calc(100% - 8px);
     color: #111;
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: 'Google Sans', sans-serif;
     padding-bottom: 24px;
 }
 
@@ -1173,6 +1173,147 @@ body.device-maximized .expand-fab .icon-expand {
     border-top: 1px solid rgba(0, 0, 0, 0.08);
     border-bottom: 1px solid rgba(0, 0, 0, 0.08);
     padding: 30px 0;
+}
+
+.arrow-marquee {
+    width: calc(100% + 2 * var(--site-padding-x));
+    margin-left: calc(-1 * var(--site-padding-x));
+    margin-right: calc(-1 * var(--site-padding-x));
+    height: 34px;
+    margin-top: 50px;
+    margin-bottom: -30px;
+    background-image: var(--marquee-bg);
+    background-repeat: repeat-x;
+    background-size: 40px 24px;
+    animation: marquee-scroll var(--marquee-speed, 1.5s) linear infinite;
+}
+
+@keyframes marquee-scroll {
+    from {
+        background-position: 0 0;
+    }
+
+    to {
+        background-position: -40px 0;
+    }
+}
+
+/* --- DATA GRID NODE SYSTEM --- */
+.node-system-section {
+    position: relative;
+    background-color: #e8e6df;
+    width: calc(100% + 2 * var(--site-padding-x));
+    margin-left: calc(-1 * var(--site-padding-x));
+    margin-right: calc(-1 * var(--site-padding-x));
+    padding: 60px 20px;
+    margin-bottom: var(--section-gap-lg);
+}
+
+.node-system-badge {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 0.65rem;
+    font-weight: 500;
+    padding: 4px 8px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    color: #4a4a4a;
+}
+
+.node-graph-container {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    height: 380px;
+    margin: 0 auto;
+}
+
+.node-edges {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.node-edges path {
+    fill: none;
+    stroke: #555;
+    stroke-width: 1.5;
+    stroke-dasharray: 2 4;
+}
+
+.node-item {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #ffffff;
+    padding: 6px 16px 6px 6px;
+    border-radius: 99px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #111;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    user-select: none;
+    transition: box-shadow 0.25s cubic-bezier(0.2, 0.9, 0.2, 1), transform 0.25s cubic-bezier(0.2, 0.9, 0.2, 1), border 0.2s cubic-bezier(0.2, 0.9, 0.2, 1);
+    /* transition transform dynamically handled in JS where needed */
+    cursor: grab;
+    border: 1px solid transparent;
+}
+
+.node-item:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    transform: translate(-50%, -50%) scale(1.05);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    z-index: 5;
+}
+
+.node-item:active {
+    cursor: grabbing;
+    transform: translate(-50%, -50%) scale(0.98);
+}
+
+.node-item.is-dragging {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+
+.node-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #f0f0f0;
+}
+
+.node-icon.pt-icon {
+    background: #c3ff00;
+    border: 1px dashed rgba(0, 0, 0, 0.3);
+}
+
+.node-icon.num-icon {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #333;
+    background: #e8e6df;
+}
+
+.node-icon.usr-icon svg {
+    color: #888;
+}
+
+.node-icon.usr-icon.active {
+    background: #c3ff00;
+}
+
+.node-icon.usr-icon.active svg {
+    color: #111;
 }
 
 .dock-kicker {
@@ -1613,12 +1754,13 @@ body.device-maximized .expand-fab .icon-expand {
     width: calc(100% + 2 * var(--site-padding-x));
     margin-left: calc(-1 * var(--site-padding-x));
     margin-right: calc(-1 * var(--site-padding-x));
+    padding-bottom: 60px;
 }
 
 .brand-block {
     display: flex;
     align-items: center;
-    padding: 12px var(--site-padding-x);
+    padding: 19px var(--site-padding-x);
     text-decoration: none;
     transition: filter 0.2s var(--ease-lux), padding-left 0.3s var(--ease-lux);
 }

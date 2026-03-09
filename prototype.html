@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minimal UX Portfolio Prototype</title>
+    <title>Dedrox | Raghav Prasanna</title>
+    <link rel="icon" type="image/svg+xml" href="logo.svg">
+    <link rel="icon" type="image/png" href="logo.png">
     <link rel="stylesheet" href="prototype.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -161,6 +163,62 @@
                 <div class="company-dock" id="company-dock"></div>
             </section>
 
+            <section class="node-system-section reveal delay-2" aria-label="Data Grid System">
+                <div class="node-system-badge">Data Grid System</div>
+                <div class="node-graph-container" id="node-graph-container">
+                    <svg class="node-edges" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"></svg>
+
+                    <!-- Nodes -->
+                    <div class="node-item" id="node-pt" data-x="50" data-y="18" data-cursor="grab">
+                        <div class="node-icon pt-icon">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                        </div>
+                        <span>Creative technologist</span>
+                    </div>
+
+                    <div class="node-item" id="node-sms" data-x="20" data-y="50" data-cursor="grab">
+                        <div class="node-icon num-icon">1</div>
+                        <span>Pshycology</span>
+                    </div>
+
+                    <div class="node-item" id="node-ig" data-x="50" data-y="50" data-cursor="grab">
+                        <div class="node-icon num-icon">2</div>
+                        <span>UX-/UI</span>
+                    </div>
+
+                    <div class="node-item" id="node-email" data-x="80" data-y="50" data-cursor="grab">
+                        <div class="node-icon num-icon">3</div>
+                        <span>JNR_DEV</span>
+                    </div>
+
+                    <div class="node-item" id="node-user1" data-x="30" data-y="82" data-cursor="grab">
+                        <div class="node-icon usr-icon">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </div>
+                        <span>User 01</span>
+                    </div>
+
+                    <div class="node-item" id="node-user2" data-x="70" data-y="82" data-cursor="grab">
+                        <div class="node-icon usr-icon active">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </div>
+                        <span>User 02</span>
+                    </div>
+                </div>
+            </section>
+
             <section class="case-studies reveal delay-2">
                 <a href="Case1.html" class="featured-card" data-case="case1">
                     <div class="folder-top">
@@ -223,6 +281,7 @@
                         <p class="folder-foot">Open case study</p>
                     </div>
                 </a>
+                <div class="arrow-marquee"></div>
 
             </section>
 
@@ -231,25 +290,44 @@
             <section class="reveal delay-3">
                 <h2 class="more-title">More Projects</h2>
                 <div class="more-projects-grid">
-                    <a href="https://www.behance.net/gallery/200529521/CLEAR-BREATH-case-study-No-smoking-app"
-                        target="_blank" class="more-project-item">
+                    <a href="#" target="_blank" class="more-project-item">
                         <img src="images/portpie 2.png" alt="Detailed Smoking App">
                         <div class="more-project-label">CLEAR BREATH DETAIL</div>
                     </a>
 
-                    <a href="https://medium.com/@RaghavPrasannaUX/case-study-gym-finder-app-3ac05a38abe3"
-                        target="_blank" class="more-project-item">
+                    <a href="#" target="_blank" class="more-project-item">
                         <img src="images/portpie 3.png" alt="Gym Finder">
                         <div class="more-project-label">GYM FINDER APP</div>
                     </a>
 
-                    <a href="case3.html" class="more-project-item" data-case="case3">
-                        <img src="images/port4.jpg" alt="Desk Research">
-                        <div class="more-project-label">DESK RESEARCH</div>
+
+                    <a href="#" target="_blank" class="more-project-item">
+                        <img src="images/ui1.png" alt="UI Exploration">
+                        <div class="more-project-label">UI EXPLORATION</div>
                     </a>
 
-                    <a href="https://dribbble.com/DEDROX2K" target="_blank" class="more-project-item">
-                        <img src="images/portpie 5.png" alt="UI Exploration">
+                    <a href="#" target="_blank" class="more-project-item">
+                        <img src="images/ui1.png" alt="UI Exploration">
+                        <div class="more-project-label">UI EXPLORATION</div>
+                    </a>
+
+                    <a href="#" target="_blank" class="more-project-item">
+                        <img src="images/ui2.png" alt="UI Exploration">
+                        <div class="more-project-label">UI EXPLORATION</div>
+                    </a>
+
+                    <a href="#" target="_blank" class="more-project-item">
+                        <img src="images/ui3.png" alt="UI Exploration">
+                        <div class="more-project-label">UI EXPLORATION</div>
+                    </a>
+
+                    <a href="#" target="_blank" class="more-project-item">
+                        <img src="images/rethe.png" alt="UI Exploration">
+                        <div class="more-project-label">UI EXPLORATION</div>
+                    </a>
+
+                    <a href="#" target="_blank" class="more-project-item">
+                        <img src="images/treepie  2.png" alt="UI Exploration">
                         <div class="more-project-label">UI EXPLORATION</div>
                     </a>
                 </div>
@@ -269,7 +347,7 @@
                 <!-- Squares generated by JS -->
                 <!-- <div class="index-grid-wrap" id="index-grid">
                 </div> -->
-                <!-- <section class="brand-section">
+                <section class="brand-section">
                     <a href="https://www.behance.net/raghavprasanna" target="_blank" class="brand-block"
                         style="background: #ECE9E6; color: #111;">
                         <span class="brand-text">BEHANCE</span>
@@ -310,7 +388,7 @@
                         style="background: #9B7D6C; color: #111;">
                         <span class="brand-text">SKETCHFAB</span>
                     </a>
-                </section> -->
+                </section>
 
 
                 <div class="index-main">
