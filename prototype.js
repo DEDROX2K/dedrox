@@ -21,7 +21,7 @@ const SITE_CONFIG = {
         smoothFactor: 0.36
     },
     asciiRain: {
-        chars: ['█', '▒', '░', '░',],
+        chars: ['█', '▒', '░', '░', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'],
         fontSize: 10,
         speed: 3,
         baseOpacity: 0.10,
@@ -207,18 +207,22 @@ const SITE_CONFIG = {
     },
     pillSizes: {
         collapsed: {
-            bar: { w: '8px', h: '34px' },
-            circle: { w: '10px', h: '10px' },
-            square: { w: '25px', h: '24px' },
-            dark: { w: '8px', h: '34px' },
-            container: { w: '280px', h: '56px' }
+            circle: { w: '4px', h: '20px', c: '#ffffffff' },
+            circle2: { w: '10px', h: '10px', c: '#ffffffff', br: '99px' },
+            square: { w: '25px', h: '24px', c: '#ffffffff' },
+            dark: { w: '8px', h: '34px', c: '#ffffffff' },
+            circle3: { w: '10px', h: '10px', c: '#ffffffff', br: '99px' },
+
+            container: { w: '280px', h: '56px', c: '#ffffff' }
         },
         expanded: {
-            bar: { w: '8px', h: '40px' },
-            circle: { w: '74px', h: '44px' },
-            square: { w: '74px', h: '44px' },
-            dark: { w: '74px', h: '44px' },
-            container: { w: '450px', h: '64px' }
+            circle: { w: '74px', h: '44px', c: '#e7e7e7' },
+            circle2: { w: '19px', h: '10px', c: '#e7e7e7', br: '14px' },
+            square: { w: '49px', h: '44px', c: '#e7e7e7' },
+            dark: { w: '74px', h: '44px', c: '#e7e7e7' },
+            circle3: { w: '8px', h: '44px', c: '#6d6d6dff', br: '22px' },
+
+            container: { w: '450px', h: '64px', c: '#ffffff' }
         }
     },
     blurMask: {
@@ -239,18 +243,26 @@ function applyPillSizes(state) {
     const sizes = SITE_CONFIG.pillSizes[state];
     if (!sizes) return;
     const root = document.documentElement;
-    root.style.setProperty('--pill-bar-w', sizes.bar.w);
-    root.style.setProperty('--pill-bar-h', sizes.bar.h);
-    root.style.setProperty('--pill-circle-w', sizes.circle.w);
-    root.style.setProperty('--pill-circle-h', sizes.circle.h);
-    root.style.setProperty('--pill-square-w', sizes.square.w);
-    root.style.setProperty('--pill-square-h', sizes.square.h);
-    root.style.setProperty('--pill-dark-w', sizes.dark.w);
-    root.style.setProperty('--pill-dark-h', sizes.dark.h);
+
+    const setProps = (prefix, obj) => {
+        if (!obj) return;
+        if (obj.w) root.style.setProperty(`--pill-${prefix}-w`, obj.w);
+        if (obj.h) root.style.setProperty(`--pill-${prefix}-h`, obj.h);
+        if (obj.c) root.style.setProperty(`--pill-${prefix}-c`, obj.c);
+        if (obj.br) root.style.setProperty(`--pill-${prefix}-br`, obj.br);
+    };
+
+    setProps('bar', sizes.bar);
+    setProps('circle', sizes.circle);
+    setProps('circle2', sizes.circle2);
+    setProps('circle3', sizes.circle3);
+    setProps('square', sizes.square);
+    setProps('dark', sizes.dark);
 
     if (sizes.container) {
-        root.style.setProperty('--pill-container-w', sizes.container.w);
-        root.style.setProperty('--pill-container-h', sizes.container.h);
+        if (sizes.container.w) root.style.setProperty('--pill-container-w', sizes.container.w);
+        if (sizes.container.h) root.style.setProperty('--pill-container-h', sizes.container.h);
+        if (sizes.container.c) root.style.setProperty('--pill-container-c', sizes.container.c);
     }
 }
 
@@ -656,16 +668,9 @@ function buildCompanyDock() {
     dock.innerHTML = '';
 
     SITE_CONFIG.companies.forEach((company, index) => {
-        const item = document.createElement('button');
+        const item = document.createElement('div');
         item.className = 'dock-item';
-        item.type = 'button';
         item.setAttribute('aria-label', company.name || `Company ${index + 1}`);
-
-        if (company.url) {
-            item.addEventListener('click', () => {
-                window.open(company.url, '_blank', 'noopener,noreferrer');
-            });
-        }
 
         const tooltip = document.createElement('span');
         tooltip.className = 'dock-tooltip';
@@ -690,6 +695,13 @@ function buildCompanyDock() {
 
         item.appendChild(tooltip);
         item.appendChild(logoWrap);
+
+        if (company.name === 'AIR CARDS') {
+            const dot = document.createElement('div');
+            dot.className = 'aircards-dot';
+            item.appendChild(dot);
+        }
+
         dock.appendChild(item);
     });
 }
@@ -1456,11 +1468,21 @@ function initStickyNote() {
         hasPosition = true;
     };
 
-    const setDefaultPosition = () => {
+    const setDefaultPosition = (sourceEl) => {
         const bounds = getViewportBounds();
-        const targetLeft = bounds.maxX - 24;
-        const targetTop = bounds.maxY - 24;
-        setPosition(targetLeft, targetTop);
+
+        if (sourceEl) {
+            const btnRect = sourceEl.getBoundingClientRect();
+            // Spawn 20px below the button, centered horizontally if possible
+            const targetLeft = btnRect.left + (btnRect.width / 2) - (stickyNoteEl.offsetWidth / 2);
+            const targetTop = btnRect.bottom + 20;
+            setPosition(targetLeft, targetTop);
+        } else {
+            // Fallback
+            const targetLeft = bounds.maxX - 24;
+            const targetTop = bounds.maxY - 24;
+            setPosition(targetLeft, targetTop);
+        }
     };
 
     const clearMotionState = () => {
@@ -1495,7 +1517,7 @@ function initStickyNote() {
         stickyNoteEl.classList.remove('minimized');
 
         if (!hasPosition) {
-            setDefaultPosition();
+            setDefaultPosition(sourceEl);
         } else {
             const currentLeft = Number.parseFloat(stickyNoteEl.style.left || '24');
             const currentTop = Number.parseFloat(stickyNoteEl.style.top || '120');
@@ -1529,6 +1551,7 @@ function initStickyNote() {
 
     const closeToPill = (sourceEl = lastSourceEl) => {
         if (!stickyNoteEl.classList.contains('visible')) return;
+        document.body.classList.remove('notes-active');
         lastSourceEl = sourceEl || lastSourceEl || pillNotesBtn || topBar || device;
 
         const sourceRect = (lastSourceEl || topBar || device).getBoundingClientRect();
@@ -1679,9 +1702,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         setTimeout(() => {
             if (miniMatrixInstance) miniMatrixInstance.resize();
-            if (autoOpenNotes && stickyNote && !stickyNote.isVisible()) {
-                stickyNote.openFromPill(pillNotesBtn);
-            }
+            // Removed autoOpenNotes to prevent automatic spawning
         }, 520);
     };
 
@@ -1788,7 +1809,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (
             device.classList.contains('expanded') &&
-            !stickyNote.isVisible() &&
             !clickedInsideDevice &&
             !clickedInsideCase &&
             !clickedInsideSticky &&
