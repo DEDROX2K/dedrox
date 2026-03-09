@@ -948,7 +948,15 @@ function initBrandHoverAnimations() {
 
 function initOnboardingHeader() {
     const lineEl = document.getElementById('onboarding-line');
-    if (!lineEl) return;
+    if (!lineEl) {
+        return {
+            isComplete: () => true,
+            lock: () => { },
+            unlock: () => { }
+        };
+    }
+
+    const readerRoot = lineEl.closest('#reader-inline');
 
     const stages = [
         'What I do is not just visual polish.',
@@ -958,6 +966,19 @@ function initOnboardingHeader() {
 
     let revealTimer = null;
     let isAnimating = false;
+    let isComplete = false;
+
+    const setGate = (locked) => {
+        if (!readerRoot) return;
+        readerRoot.classList.toggle('onboarding-locked', locked);
+        readerRoot.classList.toggle('onboarding-unlocked', !locked);
+    };
+
+    const completeOnboarding = () => {
+        if (isComplete) return;
+        isComplete = true;
+        setGate(false);
+    };
 
     const clearTimer = () => {
         if (revealTimer) {
@@ -1061,7 +1082,11 @@ function initOnboardingHeader() {
 
             if (wordIndex >= tokens.length) {
                 clearTimer();
-                setHintOnSegment(segment, stageIndex);
+                if (stageIndex >= stages.length - 1) {
+                    completeOnboarding();
+                } else {
+                    setHintOnSegment(segment, stageIndex);
+                }
             }
         }, 82);
     };
@@ -1070,6 +1095,16 @@ function initOnboardingHeader() {
     const firstSegment = buildStaticSegment(0);
     lineEl.appendChild(firstSegment);
     setHintOnSegment(firstSegment, 0);
+
+    setGate(true);
+
+    return {
+        isComplete: () => isComplete,
+        lock: () => {
+            if (!isComplete) setGate(true);
+        },
+        unlock: () => setGate(false)
+    };
 }
 
 function initResumePopout() {
@@ -1281,7 +1316,7 @@ function initResumePopout() {
     };
 }
 
-function initReaderMode() {
+function initReaderMode(onboardingFlow = null) {
     if (!device || !readerInlineEl) {
         return {
             open: () => { },
@@ -1297,6 +1332,13 @@ function initReaderMode() {
         device.classList.add('reader-mode');
         document.body.classList.add('reader-mode');
         readerInlineEl.setAttribute('aria-hidden', 'false');
+        if (onboardingFlow) {
+            if (onboardingFlow.isComplete()) {
+                onboardingFlow.unlock();
+            } else {
+                onboardingFlow.lock();
+            }
+        }
         if (scrollableContent) {
             scrollableContent.scrollTop = 0;
         }
@@ -1617,11 +1659,11 @@ document.addEventListener('DOMContentLoaded', () => {
     initCursorSystem();
     initCustomCursor();
     initSmoothWheelScrolling();
-    initOnboardingHeader();
+    const onboardingFlow = initOnboardingHeader();
     const expandFabAnchor = initExpandButtonAnchor();
     const stickyNote = initStickyNote();
     const resumePopout = initResumePopout();
-    const readerMode = initReaderMode();
+    const readerMode = initReaderMode(onboardingFlow);
 
     const expandDeviceShell = (autoOpenNotes = true) => {
         if (!device || device.classList.contains('expanded')) return;

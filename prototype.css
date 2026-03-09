@@ -789,6 +789,32 @@ body.device-maximized .expand-fab .icon-expand {
     padding-bottom: 24px;
 }
 
+.reader-inline.onboarding-locked .reader-about-grid,
+.reader-inline.onboarding-locked .reader-quote-grid,
+.reader-inline.onboarding-locked .reader-contact-grid,
+.reader-inline.onboarding-locked .reader-inline-foot {
+    display: none;
+}
+
+.reader-inline.onboarding-unlocked .reader-about-grid,
+.reader-inline.onboarding-unlocked .reader-quote-grid,
+.reader-inline.onboarding-unlocked .reader-contact-grid,
+.reader-inline.onboarding-unlocked .reader-inline-foot {
+    animation: reader-sections-in 0.42s var(--ease-lux) both;
+}
+
+@keyframes reader-sections-in {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 .device-container.reader-mode .site-content> :not(#reader-inline) {
     display: none !important;
 }
