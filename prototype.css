@@ -50,7 +50,7 @@
     --pixel-canvas-size: 400px;
 
     /* Top Bar Tweaks */
-    --bar-collapsed-width: 380px;
+    --bar-collapsed-width: 180px;
 
     /* Pill Component Sizes (Configurable via JS) */
     --pill-bar-w: 10px;
@@ -58,9 +58,9 @@
     --pill-circle-w: 36px;
     --pill-circle-h: 36px;
     --pill-square-w: 47px;
-    --pill-square-h: 34px;
+    --pill-square-h: 14px;
     --pill-dark-w: 44px;
-    --pill-dark-h: 34px;
+    --pill-dark-h: 24px;
 
     /* Overall Bar Dimensions */
     --pill-container-w: var(--bar-collapsed-width);
@@ -110,8 +110,10 @@ body {
     font-weight: 400;
 }
 
+/* -------------------------- */
+
 body.reader-mode {
-    background: #3f3f3f;
+    background: #f1c84b;
     background-image: none;
 }
 
@@ -222,7 +224,8 @@ body.cursor-system :where([data-cursor='default']) {
     background: var(--panel);
     box-shadow: 14px 17px 20px 0px rgba(0, 0, 0, 0.1);
     border-radius: var(--site-radius);
-    /* Removing overflow: hidden here so out-of-bounds left-controls are visible */
+    overflow: hidden;
+    /* Restored to clip children preventing border radius bugs */
 }
 
 
@@ -266,8 +269,35 @@ body.cursor-system :where([data-cursor='default']) {
     border-radius: 999px;
     padding: 4px;
     gap: 2px;
+    position: relative;
     /* box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); */
 }
+
+/* --- Greeting Text Above Pill --- */
+.pill-greeting {
+    position: absolute;
+    bottom: calc(100% + 15px);
+    left: 50%;
+    padding-bottom: 50px;
+    transform: translateX(-50%);
+    text-align: center;
+    color: var(--ink);
+    font-size: 25px;
+    font-weight: 500;
+    line-height: 1.4;
+    white-space: nowrap;
+    opacity: 1;
+    pointer-events: none;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    z-index: 50;
+}
+
+.device-container.expanded .pill-greeting {
+    opacity: 0;
+    transform: translate(-50%, -10px);
+}
+
+/* -------------------------------- */
 
 .pill-left {
     display: flex;
@@ -340,21 +370,22 @@ body.reader-mode .pill-dark-block .pill-icon-slot {
     isolation: isolate;
     overflow: visible;
     -webkit-tap-highlight-color: transparent;
+
 }
 
 .pill-icon-btn img {
     /* width: 58%; */
     /* height: 58%; */
     object-fit: contain;
-    opacity: 0;
     transform: translateY(6px) scale(0.88);
     filter: blur(2px);
+    opacity: 0;
     transition: opacity 0.28s var(--ease-lux), transform 0.42s var(--ease-lux), filter 0.42s var(--ease-lux);
     will-change: opacity, transform, filter;
 }
 
 .device-container.expanded .pill-icon-btn img {
-    opacity: 1;
+    opacity: 0.7;
     transform: translateY(0) scale(1);
     filter: blur(0);
 }
@@ -517,15 +548,15 @@ body.reader-mode .pill-dark-block .pill-icon-slot {
 .left-controls {
     position: absolute;
     top: 50%;
-    left: -58px;
-    /* Position slightly further out to the left */
+    /* Position exactly outside the left edge of the centered device */
+    left: calc(50% - min(48vw, calc(var(--device-width) / 2)) - 58px);
     transform: translateY(-50%);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12px;
     z-index: 9999;
-    /* Ensure it's not buried */
+    pointer-events: auto;
+    /* Required since parent .global-controls may be pointer-events: none */
 }
 
 .expand-fab {
@@ -556,36 +587,6 @@ body.device-expanded .expand-fab {
 
 .expand-fab:hover {
     background: #e4e4e4;
-}
-
-.simple-scrollbar {
-    width: 4px;
-    height: 40px;
-    background: rgba(0, 0, 0, 0.06);
-    border-radius: 99px;
-    position: relative;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.35s var(--ease-lux), transform 0.35s var(--ease-lux);
-    transform: translateY(-10px);
-}
-
-body.device-expanded .simple-scrollbar {
-    opacity: 1;
-    transform: translateY(0);
-    transition-delay: 0.15s;
-}
-
-.simple-scrollbar-thumb {
-    width: 8px;
-    height: 14px;
-    background: #888;
-    border-radius: 99px;
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    transition: top 0.1s linear, background 0.2s;
 }
 
 .contact-btn:hover {
@@ -689,6 +690,8 @@ body.device-maximized .expand-fab .icon-expand {
     /* Above content, below navigation if needed */
     pointer-events: none;
     backdrop-filter: blur(var(--blur-mask-strength));
+    border-radius: inherit;
+    /* Prevent blurring the device's actual curved corners */
     opacity: 0;
     /* Hidden by default when collapsed */
     transition: opacity 0.5s var(--ease-lux), backdrop-filter 0.5s var(--ease-lux);
@@ -1402,16 +1405,58 @@ body.device-maximized .expand-fab .icon-expand {
     letter-spacing: -0.015em;
 }
 
-.project-grid {
+/* --- More Projects Redesign --- */
+.more-projects-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--project-grid-gap);
-    margin-bottom: calc(var(--section-gap-md) + 2px);
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+    margin-bottom: var(--section-gap-md);
 }
 
-.project-info {
-    padding: 20px 20px 24px;
+.more-project-item {
+    position: relative;
+    display: block;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: 8px;
+    background: #e0e0e0;
+    text-decoration: none;
+    cursor: pointer;
 }
+
+.more-project-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: opacity 0.4s var(--ease-lux), transform 0.6s var(--ease-lux);
+    will-change: transform, opacity;
+}
+
+.more-project-label {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Archivo', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: #111;
+    text-align: center;
+    padding: 16px;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.more-project-item:hover img {
+    opacity: 0.15;
+    transform: scale(0.96);
+}
+
+/* -------------------------------- */
 
 .github-chart-block {
     width: 100%;

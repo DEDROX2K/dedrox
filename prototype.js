@@ -23,7 +23,7 @@ const SITE_CONFIG = {
     asciiRain: {
         chars: ['█', '▒', '░', '░',],
         fontSize: 10,
-        speed: 1,
+        speed: 3,
         baseOpacity: 0.10,
         baseColor: '77, 77, 77',
         cursorColor: '0, 0, 0',
@@ -791,10 +791,14 @@ function initIndexGrid() {
 // HOVER ANIMATIONS
 // --------------------------------------------------------
 function initBrandHoverAnimations() {
-    const blocks = document.querySelectorAll('.brand-block');
+    // Both brand blocks and more-project-item labels need this staggered animation
+    const targets = [
+        ...document.querySelectorAll('.brand-block'),
+        ...document.querySelectorAll('.more-project-item')
+    ];
 
-    blocks.forEach(block => {
-        const textSpan = block.querySelector('.brand-text');
+    targets.forEach(block => {
+        const textSpan = block.querySelector('.brand-text') || block.querySelector('.more-project-label');
         if (!textSpan) return;
 
         // Split text into individual spans for staggered animation
@@ -1135,22 +1139,6 @@ function initSmoothWheelScrolling() {
             if (state.raf) return;
             state.current = el.scrollTop;
             state.target = el.scrollTop;
-
-            // Custom scrollbar sync
-            if (el.id === 'scrollable-content') {
-                const thumb = document.querySelector('.simple-scrollbar-thumb');
-                if (thumb) {
-                    const maxScroll = Math.max(0, el.scrollHeight - el.clientHeight);
-                    if (maxScroll > 0) {
-                        const trackHeight = 40; // from CSS .simple-scrollbar height
-                        const thumbHeight = 14;  // from CSS .simple-scrollbar-thumb height
-                        const maxThumbTravel = trackHeight - thumbHeight;
-                        const scrollRatio = el.scrollTop / maxScroll;
-                        const thumbTop = scrollRatio * maxThumbTravel;
-                        thumb.style.top = `${thumbTop}px`;
-                    }
-                }
-            }
         }, { passive: true });
     });
 }
@@ -1394,6 +1382,7 @@ function initStickyNote() {
 // MAIN INIT ON DOM CONTENT LOADED
 // --------------------------------------------------------
 document.addEventListener('DOMContentLoaded', () => {
+
     initCursorSystem();
     initCustomCursor();
     initSmoothWheelScrolling();
@@ -1406,6 +1395,13 @@ document.addEventListener('DOMContentLoaded', () => {
         device.classList.add('expanded');
         document.body.classList.add('device-expanded');
         applyPillSizes('expanded');
+
+        // Start Matrix Effect only on first open
+        if (!window.hasMatrixStarted) {
+            initBackgrounds();
+            window.hasMatrixStarted = true;
+        }
+
         setTimeout(() => {
             if (miniMatrixInstance) miniMatrixInstance.resize();
             if (autoOpenNotes && stickyNote && !stickyNote.isVisible()) {
@@ -1536,7 +1532,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Run core initializers
-    initBackgrounds();
     buildCompanyDock();
     initCompanyDock();
     buildPalette();
