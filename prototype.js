@@ -260,6 +260,7 @@ const topBarArt = document.getElementById('top-bar-art');
 const githubChartImg = document.getElementById('github-chart-img');
 const secondsDot = document.getElementById('seconds-dot');
 const expandBtn = document.getElementById('expand-btn');
+const leftControlsEl = document.querySelector('.left-controls');
 const caseWindowEl = document.getElementById('case-window');
 const stickyNoteEl = document.getElementById('sticky-note');
 const pillNotesBtn = document.getElementById('pill-notes-btn');
@@ -267,6 +268,76 @@ const pillResumeBtn = document.getElementById('pill-resume-btn');
 const pillThirdBtn = document.getElementById('pill-third-btn');
 const resumePopoutEl = document.getElementById('resume-popout');
 const readerInlineEl = document.getElementById('reader-inline');
+
+function initExpandButtonAnchor() {
+    if (!device || !expandBtn || !leftControlsEl) {
+        return {
+            update: () => { },
+            schedule: () => { }
+        };
+    }
+
+    // Anchor tuning:
+    // yPercent controls vertical lock point along the mini site.
+    // gapPercent controls distance from the mini site's left edge.
+    const anchor = {
+        yPercent: 50,
+        gapPercent: 6,
+        minGapPx: 12,
+        maxGapPx: 34
+    };
+
+    const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+    const transitionProbeDelays = [32, 130, 260, 420, 700, 920];
+
+    const update = () => {
+        const deviceRect = device.getBoundingClientRect();
+        const btnRect = expandBtn.getBoundingClientRect();
+
+        const dynamicGap = clamp(
+            (deviceRect.width * anchor.gapPercent) / 100,
+            anchor.minGapPx,
+            anchor.maxGapPx
+        );
+
+        const targetLeft = Math.max(8, deviceRect.left - btnRect.width - dynamicGap);
+        const targetTop = clamp(
+            deviceRect.top + (deviceRect.height * anchor.yPercent / 100) - (btnRect.height / 2),
+            8,
+            window.innerHeight - btnRect.height - 8
+        );
+
+        leftControlsEl.style.left = `${targetLeft}px`;
+        leftControlsEl.style.top = `${targetTop}px`;
+        leftControlsEl.style.transform = 'translate3d(0, 0, 0)';
+    };
+
+    const schedule = () => {
+        update();
+        transitionProbeDelays.forEach((delay) => {
+            window.setTimeout(update, delay);
+        });
+    };
+
+    const bodyClassObserver = new MutationObserver(() => {
+        schedule();
+    });
+    bodyClassObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+
+    if (typeof ResizeObserver !== 'undefined') {
+        const resizeObserver = new ResizeObserver(() => {
+            update();
+        });
+        resizeObserver.observe(device);
+    }
+
+    window.addEventListener('resize', schedule);
+    window.addEventListener('orientationchange', schedule);
+
+    update();
+
+    return { update, schedule };
+}
 
 function initCustomCursor() {
     const cursorEl = document.getElementById('custom-cursor');
@@ -1420,6 +1491,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initCursorSystem();
     initCustomCursor();
     initSmoothWheelScrolling();
+    const expandFabAnchor = initExpandButtonAnchor();
     const stickyNote = initStickyNote();
     const resumePopout = initResumePopout();
     const readerMode = initReaderMode();
@@ -1468,6 +1540,7 @@ document.addEventListener('DOMContentLoaded', () => {
             device.classList.toggle('maximized');
             document.body.classList.toggle('device-maximized');
             e.stopPropagation();
+            expandFabAnchor.schedule();
             setTimeout(() => {
                 if (typeof fitty !== 'undefined') fitty.fitAll();
             }, 350);
@@ -1498,7 +1571,6 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         e.stopPropagation();
         expandDeviceShell(false);
-        if (stickyNote.isVisible()) stickyNote.closeToPill(pillNotesBtn);
         if (readerMode.isActive()) readerMode.close();
 
         navigator.clipboard.writeText('raghavprasanna2000@gmail.com').then(() => {
@@ -1517,7 +1589,6 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         e.stopPropagation();
         expandDeviceShell(false);
-        if (stickyNote.isVisible()) stickyNote.closeToPill(pillNotesBtn);
         if (resumePopout.isVisible()) resumePopout.closeToPill(pillResumeBtn);
         readerMode.toggle();
     });
@@ -1548,6 +1619,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (
             device.classList.contains('expanded') &&
+            !stickyNote.isVisible() &&
             !clickedInsideDevice &&
             !clickedInsideCase &&
             !clickedInsideSticky &&
