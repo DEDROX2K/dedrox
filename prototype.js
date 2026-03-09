@@ -946,6 +946,132 @@ function initBrandHoverAnimations() {
     });
 }
 
+function initOnboardingHeader() {
+    const lineEl = document.getElementById('onboarding-line');
+    if (!lineEl) return;
+
+    const stages = [
+        'What I do is not just visual polish.',
+        'Design is how I shape decisions, systems, and useful outcomes for real people.',
+        'This portfolio is my way of showing how I think, collaborate, and solve problems with intent.'
+    ];
+
+    let revealTimer = null;
+    let isAnimating = false;
+
+    const clearTimer = () => {
+        if (revealTimer) {
+            window.clearInterval(revealTimer);
+            revealTimer = null;
+        }
+        isAnimating = false;
+    };
+
+    const pickHintIndex = (tokens) => {
+        const candidates = tokens
+            .map((token, index) => {
+                const clean = token.replace(/[^a-zA-Z]/g, '');
+                return clean.length >= 4 ? index : -1;
+            })
+            .filter((index) => index >= 0);
+
+        if (!candidates.length) {
+            return Math.max(0, Math.floor(tokens.length / 2));
+        }
+        return candidates[Math.floor(Math.random() * candidates.length)];
+    };
+
+    const createWord = (token) => {
+        const word = document.createElement('span');
+        word.className = 'onboarding-word';
+        word.textContent = token;
+        return word;
+    };
+
+    const buildStaticSegment = (stageIndex) => {
+        const segment = document.createElement('span');
+        segment.className = 'onboarding-segment';
+        segment.dataset.stage = String(stageIndex);
+
+        const tokens = stages[stageIndex].split(' ');
+        tokens.forEach((token, index) => {
+            segment.appendChild(createWord(token));
+            if (index < tokens.length - 1) {
+                segment.appendChild(document.createTextNode(' '));
+            }
+        });
+
+        return segment;
+    };
+
+    const setHintOnSegment = (segment, stageIndex) => {
+        if (stageIndex >= stages.length - 1) return;
+
+        const words = Array.from(segment.querySelectorAll('.onboarding-word'));
+        if (!words.length) return;
+
+        const eligible = words.filter((word) => {
+            const clean = word.textContent.replace(/[^a-zA-Z]/g, '');
+            return clean.length >= 4;
+        });
+
+        const hintWord = eligible.length
+            ? eligible[Math.floor(Math.random() * eligible.length)]
+            : words[pickHintIndex(words.map((w) => w.textContent))];
+
+        if (!hintWord) return;
+
+        const hintBtn = document.createElement('button');
+        hintBtn.type = 'button';
+        hintBtn.className = 'onboarding-hint';
+        hintBtn.textContent = hintWord.textContent;
+        hintBtn.setAttribute('aria-label', `Reveal stage ${stageIndex + 2}`);
+        hintBtn.title = 'Continue';
+        hintBtn.addEventListener('click', () => {
+            if (isAnimating) return;
+            const staticWord = createWord(hintBtn.textContent);
+            hintBtn.replaceWith(staticWord);
+            revealAndAppendStage(stageIndex + 1);
+        });
+
+        hintWord.replaceWith(hintBtn);
+    };
+
+    const revealAndAppendStage = (stageIndex) => {
+        if (stageIndex >= stages.length) return;
+
+        clearTimer();
+        isAnimating = true;
+
+        const segment = document.createElement('span');
+        segment.className = 'onboarding-segment';
+        segment.dataset.stage = String(stageIndex);
+        lineEl.appendChild(segment);
+
+        const tokens = stages[stageIndex].split(' ');
+        let wordIndex = 0;
+
+        revealTimer = window.setInterval(() => {
+            segment.appendChild(createWord(tokens[wordIndex]));
+            if (wordIndex < tokens.length - 1) {
+                segment.appendChild(document.createTextNode(' '));
+            }
+
+            wordIndex += 1;
+
+            if (wordIndex >= tokens.length) {
+                clearTimer();
+                setHintOnSegment(segment, stageIndex);
+            }
+        }, 82);
+    };
+
+    lineEl.textContent = '';
+    const firstSegment = buildStaticSegment(0);
+    lineEl.appendChild(firstSegment);
+    setHintOnSegment(firstSegment, 0);
+}
+
 function initResumePopout() {
     if (!resumePopoutEl || !device) {
         return {
@@ -1491,6 +1617,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initCursorSystem();
     initCustomCursor();
     initSmoothWheelScrolling();
+    initOnboardingHeader();
     const expandFabAnchor = initExpandButtonAnchor();
     const stickyNote = initStickyNote();
     const resumePopout = initResumePopout();
