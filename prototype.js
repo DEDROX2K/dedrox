@@ -1895,6 +1895,118 @@ function initNodeGraph() {
 }
 
 // --------------------------------------------------------
+// INTERACTIVE CHAT MODE
+// --------------------------------------------------------
+function initChatMode() {
+    const chatModeEl = document.getElementById('chat-mode');
+    if (!chatModeEl || typeof device === 'undefined') return { open: () => { }, close: () => { }, isActive: () => false };
+
+    const btnBack = document.getElementById('chat-btn-back');
+    const btnClear = document.getElementById('chat-btn-clear');
+    const messagesArea = document.getElementById('chat-messages-area');
+    const inputText = document.getElementById('chat-input-text');
+    const btnSend = document.getElementById('chat-btn-send');
+
+    const conversation = [
+        { sender: 'viewer', text: "R U Coming soon?", delay: 500 },
+        { sender: 'contact', text: "Hope so. Traffic is murder.", delay: 1500 },
+        { sender: 'viewer', text: "Traffic? It's 2 a.m.!", delay: 0 },
+        { sender: 'contact', text: "I know. Well, I also left 2 hours late.", delay: 1500 }
+    ];
+
+    let currentStepIndex = 0;
+    let isTyping = false;
+
+    const appendBubble = (sender, text) => {
+        const bubble = document.createElement('div');
+        bubble.className = `chat-bubble chat-bubble-${sender === 'viewer' ? 'send' : 'recv'}`;
+        bubble.innerText = text;
+        messagesArea.appendChild(bubble);
+        messagesArea.scrollTop = messagesArea.scrollHeight;
+    };
+
+    const showTypingIndicator = () => {
+        const typing = document.createElement('div');
+        typing.className = 'chat-typing';
+        typing.id = 'chat-typing-indicator';
+        typing.innerHTML = '<span></span><span></span>';
+        messagesArea.appendChild(typing);
+        messagesArea.scrollTop = messagesArea.scrollHeight;
+
+        // flush reflow and animate
+        typing.offsetHeight;
+        typing.classList.add('active');
+        return typing;
+    };
+
+    const processNextStep = () => {
+        if (currentStepIndex >= conversation.length) return;
+
+        const step = conversation[currentStepIndex];
+
+        if (step.sender === 'viewer') {
+            inputText.value = step.text;
+            btnSend.classList.add('active');
+        } else {
+            isTyping = true;
+            btnSend.classList.remove('active');
+            const ind = showTypingIndicator();
+
+            setTimeout(() => {
+                if (ind && ind.parentNode) ind.parentNode.removeChild(ind);
+                appendBubble('contact', step.text);
+                isTyping = false;
+                currentStepIndex++;
+                processNextStep();
+            }, step.delay);
+        }
+    };
+
+    btnSend.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (isTyping || !btnSend.classList.contains('active')) return;
+
+        const step = conversation[currentStepIndex];
+        if (step && step.sender === 'viewer') {
+            appendBubble('viewer', step.text);
+            inputText.value = '';
+            btnSend.classList.remove('active');
+            currentStepIndex++;
+            processNextStep();
+        }
+    });
+
+    const close = () => {
+        document.body.classList.remove('chat-active');
+        chatModeEl.setAttribute('aria-hidden', 'true');
+    };
+
+    const open = () => {
+        document.body.classList.add('chat-active');
+        chatModeEl.setAttribute('aria-hidden', 'false');
+
+        if (currentStepIndex === 0) {
+            messagesArea.innerHTML = '<div class="chat-timestamp">Jul 9, 2007 9:17 PM</div>';
+            setTimeout(() => {
+                processNextStep();
+            }, 600);
+        }
+    };
+
+    btnBack.addEventListener('click', close);
+    btnClear.addEventListener('click', () => {
+        messagesArea.innerHTML = '<div class="chat-timestamp">Jul 9, 2007 9:17 PM</div>';
+        currentStepIndex = 0;
+        inputText.value = '';
+        btnSend.classList.remove('active');
+        processNextStep();
+    });
+
+    return { open, close, isActive: () => document.body.classList.contains('chat-active') };
+}
+
+// --------------------------------------------------------
 // MAIN INIT ON DOM CONTENT LOADED
 // --------------------------------------------------------
 document.addEventListener('DOMContentLoaded', () => {
@@ -1909,6 +2021,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const stickyNote = initStickyNote();
     const resumePopout = initResumePopout();
     const readerMode = initReaderMode(onboardingFlow);
+    const chatMode = initChatMode();
 
     const expandDeviceShell = (autoOpenNotes = true) => {
         if (!device || device.classList.contains('expanded')) return;
@@ -1984,17 +2097,15 @@ document.addEventListener('DOMContentLoaded', () => {
         e.stopPropagation();
         expandDeviceShell(false);
         if (readerMode.isActive()) readerMode.close();
+        if (stickyNote.isVisible()) stickyNote.close();
 
-        navigator.clipboard.writeText('raghavprasanna2000@gmail.com').then(() => {
-            const tooltipSpan = pillResumeBtn.querySelector('.pill-tooltip');
-            if (tooltipSpan) {
-                const originalText = tooltipSpan.textContent;
-                tooltipSpan.textContent = 'Copied!';
-                setTimeout(() => {
-                    tooltipSpan.textContent = originalText;
-                }, 2000);
-            }
-        });
+        chatMode.open();
+
+        // Update tooltip just for context
+        const tooltipSpan = pillResumeBtn.querySelector('.pill-tooltip');
+        if (tooltipSpan) {
+            tooltipSpan.textContent = 'Messages';
+        }
     });
 
     pillThirdBtn?.addEventListener('click', (e) => {
