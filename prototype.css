@@ -3344,3 +3344,43 @@ body.chat-active .device-container #chat-mode {
         display: none !important;
     }
 }
+
+/* WIP Swinging Image */
+.wip-swinging-img {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    /* User requested bottom right */
+    width: 200px;
+    /* Base width */
+    max-width: 25vw;
+    height: auto;
+    z-index: 10000;
+
+    /* Hide by default, show in reader/chat mode */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+
+    /* Origin of swing - you can manually set the point here */
+    transform-origin: bottom center;
+
+    animation: swing-wip 3s ease-in-out infinite alternate;
+    pointer-events: none;
+}
+
+body.reader-mode .wip-swinging-img,
+body.chat-active .wip-swinging-img {
+    opacity: 1;
+    visibility: visible;
+}
+
+@keyframes swing-wip {
+    0% {
+        transform: rotate(-4deg);
+    }
+
+    100% {
+        transform: rotate(4deg);
+    }
+}
