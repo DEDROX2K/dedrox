@@ -1901,11 +1901,22 @@ function initChatMode() {
     const chatModeEl = document.getElementById('chat-mode');
     if (!chatModeEl || typeof device === 'undefined') return { open: () => { }, close: () => { }, isActive: () => false };
 
+    // Render chat mode as a global viewport overlay, not clipped by the mini-site shell.
+    if (chatModeEl.parentElement !== document.body) {
+        document.body.appendChild(chatModeEl);
+    }
+
+    const sceneEl = document.getElementById('chat-scene');
+    const parallaxLayers = Array.from(chatModeEl.querySelectorAll('[data-parallax-depth]'));
+
     const btnBack = document.getElementById('chat-btn-back');
     const btnClear = document.getElementById('chat-btn-clear');
     const messagesArea = document.getElementById('chat-messages-area');
     const inputText = document.getElementById('chat-input-text');
     const btnSend = document.getElementById('chat-btn-send');
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const blinkDuration = prefersReducedMotion ? 0 : 280;
 
     const conversation = [
         { sender: 'viewer', text: "R U Coming soon?", delay: 500 },
@@ -1916,6 +1927,55 @@ function initChatMode() {
 
     let currentStepIndex = 0;
     let isTyping = false;
+    let isTransitioning = false;
+
+    let rafId = 0;
+    let targetX = 0;
+    let targetY = 0;
+    let currentX = 0;
+    let currentY = 0;
+
+    const resetParallax = () => {
+        parallaxLayers.forEach((layer) => {
+            layer.style.setProperty('--parallax-x', '0px');
+            layer.style.setProperty('--parallax-y', '0px');
+            layer.style.setProperty('--parallax-rx', '0deg');
+            layer.style.setProperty('--parallax-ry', '0deg');
+        });
+    };
+
+    const tickParallax = () => {
+        currentX += (targetX - currentX) * 0.12;
+        currentY += (targetY - currentY) * 0.12;
+
+        parallaxLayers.forEach((layer) => {
+            const depth = Number(layer.dataset.parallaxDepth || 0);
+            const tilt = Number(layer.dataset.parallaxTilt || 0);
+            const px = (currentX * depth).toFixed(2);
+            const py = (currentY * depth).toFixed(2);
+            const rx = (-currentY * tilt).toFixed(3);
+            const ry = (currentX * tilt).toFixed(3);
+
+            layer.style.setProperty('--parallax-x', `${px}px`);
+            layer.style.setProperty('--parallax-y', `${py}px`);
+            layer.style.setProperty('--parallax-rx', `${rx}deg`);
+            layer.style.setProperty('--parallax-ry', `${ry}deg`);
+        });
+
+        const isActive = document.body.classList.contains('chat-active');
+        const isSettled = Math.abs(targetX - currentX) < 0.002 && Math.abs(targetY - currentY) < 0.002;
+
+        if (isActive || !isSettled) {
+            rafId = window.requestAnimationFrame(tickParallax);
+        } else {
+            rafId = 0;
+        }
+    };
+
+    const ensureParallaxLoop = () => {
+        if (prefersReducedMotion || !sceneEl || rafId) return;
+        rafId = window.requestAnimationFrame(tickParallax);
+    };
 
     const appendBubble = (sender, text) => {
         const bubble = document.createElement('div');
@@ -1977,14 +2037,44 @@ function initChatMode() {
         }
     });
 
+    chatModeEl.addEventListener('pointermove', (event) => {
+        if (prefersReducedMotion || !document.body.classList.contains('chat-active')) return;
+        const rect = chatModeEl.getBoundingClientRect();
+        if (!rect.width || !rect.height) return;
+
+        const nx = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+        const ny = ((event.clientY - rect.top) / rect.height) * 2 - 1;
+        targetX = Math.max(-1, Math.min(1, nx));
+        targetY = Math.max(-1, Math.min(1, ny));
+        ensureParallaxLoop();
+    });
+
+    chatModeEl.addEventListener('pointerleave', () => {
+        targetX = 0;
+        targetY = 0;
+        ensureParallaxLoop();
+    });
+
     const close = () => {
         document.body.classList.remove('chat-active');
+        chatModeEl.classList.remove('is-blinking');
+        chatModeEl.classList.remove('is-transitioning');
         chatModeEl.setAttribute('aria-hidden', 'true');
+        isTransitioning = false;
+        targetX = 0;
+        targetY = 0;
+        ensureParallaxLoop();
     };
 
     const open = () => {
-        document.body.classList.add('chat-active');
+        if (isTransitioning || document.body.classList.contains('chat-active')) return;
+
+        isTransitioning = true;
+        chatModeEl.classList.add('is-transitioning');
         chatModeEl.setAttribute('aria-hidden', 'false');
+
+        // Activate full-screen overlay immediately so it never appears trapped in mini-site bounds.
+        document.body.classList.add('chat-active');
 
         if (currentStepIndex === 0) {
             messagesArea.innerHTML = '<div class="chat-timestamp">Jul 9, 2007 9:17 PM</div>';
@@ -1992,6 +2082,26 @@ function initChatMode() {
                 processNextStep();
             }, 600);
         }
+
+        ensureParallaxLoop();
+
+        const finishTransition = () => {
+            chatModeEl.classList.remove('is-transitioning');
+            isTransitioning = false;
+        };
+
+        if (!blinkDuration) {
+            finishTransition();
+            return;
+        }
+
+        window.requestAnimationFrame(() => {
+            chatModeEl.classList.add('is-blinking');
+            window.setTimeout(() => {
+                chatModeEl.classList.remove('is-blinking');
+                window.setTimeout(finishTransition, blinkDuration + 20);
+            }, blinkDuration + 20);
+        });
     };
 
     btnBack.addEventListener('click', close);
@@ -2002,6 +2112,8 @@ function initChatMode() {
         btnSend.classList.remove('active');
         processNextStep();
     });
+
+    resetParallax();
 
     return { open, close, isActive: () => document.body.classList.contains('chat-active') };
 }
@@ -2194,3 +2306,5 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+
