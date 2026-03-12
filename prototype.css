@@ -886,6 +886,14 @@ body.device-maximized .expand-fab .icon-expand {
     display: none;
 }
 
+.reader-inline.onboarding-locked .reader-about-grid.onboarding-visible,
+.reader-inline.onboarding-locked .reader-quote-grid.onboarding-visible,
+.reader-inline.onboarding-locked .reader-contact-grid.onboarding-visible,
+.reader-inline.onboarding-locked .reader-inline-foot.onboarding-visible {
+    display: grid;
+    animation: reader-sections-in 0.42s var(--ease-lux) both;
+}
+
 .reader-inline.onboarding-unlocked .reader-about-grid,
 .reader-inline.onboarding-unlocked .reader-quote-grid,
 .reader-inline.onboarding-unlocked .reader-contact-grid,
@@ -2913,9 +2921,9 @@ body.case-open .case-window {
 :root {
     /* Chat Scene Calibration Controls
        Primary knobs:
-       --chat-hand-width / --chat-hand-offset-x / --chat-hand-offset-y => move and scale holdphone layer
+       --chat-hand-width / --chat-hand-offset-x / --chat-hand-offset-y => move and scale hand layer
        --chat-screen-scale / --chat-screen-offset-x / --chat-screen-offset-y => nudge UI inside phone frame
-       --chat-screen-x / --chat-screen-y / --chat-screen-w / --chat-screen-h => anchor fit to holdphone.png
+       --chat-screen-x / --chat-screen-y / --chat-screen-w / --chat-screen-h => anchor fit to scene-*-hand@*x.png
     */
     --chat-hand-width: clamp(920px, 82vw, 1560px);
     --chat-hand-offset-x: 0px;
@@ -3011,12 +3019,29 @@ body.chat-active #resume-popout {
 
 .chat-scene-env {
     inset: -6%;
-    background-image: url('images/bg16.jpg');
+    background-image: url('images/scene-wide-bg@1x.jpg');
+    background-image: image-set(url('images/scene-wide-bg@1x.jpg') 1x, url('images/scene-wide-bg@2x.jpg') 2x);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
     filter: saturate(0.92) brightness(0.78);
     z-index: 1;
+}
+
+/* Square-ish resized windows */
+@media (max-aspect-ratio: 4/3) {
+    .chat-scene-env {
+        background-image: url('images/scene-square-bg@1x.jpg');
+        background-image: image-set(url('images/scene-square-bg@1x.jpg') 1x, url('images/scene-square-bg@2x.jpg') 2x);
+    }
+}
+
+/* Portrait/mobile windows */
+@media (max-aspect-ratio: 3/4) {
+    .chat-scene-env {
+        background-image: url('images/scene-mobile-bg@1x.jpg');
+        background-image: image-set(url('images/scene-mobile-bg@1x.jpg') 1x, url('images/scene-mobile-bg@2x.jpg') 2x);
+    }
 }
 
 .chat-scene-hand-wrap {
@@ -3033,6 +3058,14 @@ body.chat-active #resume-popout {
     width: var(--chat-hand-width);
     aspect-ratio: 2968 / 3356;
     transform: translate3d(var(--chat-hand-offset-x), var(--chat-hand-offset-y), 0);
+}
+
+.chat-scene-hand-picture {
+    width: 100%;
+    height: 100%;
+    display: block;
+    pointer-events: none;
+    user-select: none;
 }
 
 .chat-scene-hand {
@@ -3673,3 +3706,5 @@ body.reader-mode .wip-swinging-img {
         transform: rotate(4deg);
     }
 }
+
+

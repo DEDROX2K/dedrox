@@ -986,6 +986,33 @@ function initOnboardingHeader() {
     }
 
     const readerRoot = lineEl.closest('#reader-inline');
+    const sectionRevealPlan = readerRoot
+        ? [
+            {
+                section: readerRoot.querySelector('.reader-about-grid'),
+                hintHost: readerRoot.querySelector('.reader-about-main h2')
+            },
+            {
+                section: readerRoot.querySelector('.reader-quote-grid'),
+                hintHost: readerRoot.querySelector('.reader-quote p')
+            },
+            {
+                section: readerRoot.querySelector('.reader-contact-grid'),
+                hintHost: readerRoot.querySelector('.reader-contact-grid h3')
+            },
+            {
+                section: readerRoot.querySelector('.reader-inline-foot'),
+                hintHost: readerRoot.querySelector('.reader-inline-foot div:first-child')
+            }
+        ]
+            .filter((step) => step.section)
+            .map((step) => ({
+                section: step.section,
+                hintHost: step.hintHost || step.section
+            }))
+        : [];
+
+    const revealSections = sectionRevealPlan.map((step) => step.section);
 
     const stages = [
         'What I do is not just visual polish.',
@@ -996,6 +1023,7 @@ function initOnboardingHeader() {
     let revealTimer = null;
     let isAnimating = false;
     let isComplete = false;
+    let revealedSectionCount = 0;
 
     const setGate = (locked) => {
         if (!readerRoot) return;
@@ -1003,10 +1031,42 @@ function initOnboardingHeader() {
         readerRoot.classList.toggle('onboarding-unlocked', !locked);
     };
 
+    const syncSectionVisibility = () => {
+        revealSections.forEach((section, index) => {
+            section.classList.toggle('onboarding-visible', index < revealedSectionCount);
+        });
+    };
+
     const completeOnboarding = () => {
         if (isComplete) return;
         isComplete = true;
+        revealedSectionCount = revealSections.length;
+        syncSectionVisibility();
         setGate(false);
+    };
+
+    const revealNextSection = () => {
+        if (!revealSections.length) {
+            completeOnboarding();
+            return null;
+        }
+
+        if (revealedSectionCount >= revealSections.length) {
+            completeOnboarding();
+            return null;
+        }
+
+        revealedSectionCount += 1;
+        syncSectionVisibility();
+
+        const currentStep = sectionRevealPlan[revealedSectionCount - 1] || null;
+
+        if (revealedSectionCount >= revealSections.length) {
+            completeOnboarding();
+            return null;
+        }
+
+        return currentStep ? currentStep.hintHost : null;
     };
 
     const clearTimer = () => {
@@ -1038,6 +1098,29 @@ function initOnboardingHeader() {
         return word;
     };
 
+    const ensureHintTokens = (container) => {
+        if (!container) return false;
+        if (container.querySelector('.onboarding-word') || container.querySelector('.onboarding-hint')) {
+            return true;
+        }
+
+        const sourceText = (container.textContent || '').replace(/\s+/g, ' ').trim();
+        if (!sourceText) return false;
+
+        const tokens = sourceText.split(' ').filter(Boolean);
+        if (!tokens.length) return false;
+
+        container.textContent = '';
+        tokens.forEach((token, index) => {
+            container.appendChild(createWord(token));
+            if (index < tokens.length - 1) {
+                container.appendChild(document.createTextNode(' '));
+            }
+        });
+
+        return true;
+    };
+
     const buildStaticSegment = (stageIndex) => {
         const segment = document.createElement('span');
         segment.className = 'onboarding-segment';
@@ -1054,8 +1137,18 @@ function initOnboardingHeader() {
         return segment;
     };
 
+    const getHintAriaLabel = (stageIndex) => {
+        if (stageIndex < stages.length - 1) {
+            return `Reveal stage ${stageIndex + 2}`;
+        }
+
+        const nextSection = Math.min(revealedSectionCount + 1, revealSections.length || 1);
+        return `Reveal section ${nextSection}`;
+    };
+
     const setHintOnSegment = (segment, stageIndex) => {
-        if (stageIndex >= stages.length - 1) return;
+        if (stageIndex >= stages.length - 1 && revealedSectionCount >= revealSections.length) return;
+        if (!ensureHintTokens(segment)) return;
 
         const words = Array.from(segment.querySelectorAll('.onboarding-word'));
         if (!words.length) return;
@@ -1075,14 +1168,26 @@ function initOnboardingHeader() {
         hintBtn.type = 'button';
         hintBtn.className = 'onboarding-hint';
         hintBtn.textContent = hintWord.textContent;
-        hintBtn.setAttribute('aria-label', `Reveal stage ${stageIndex + 2}`);
+        hintBtn.setAttribute('aria-label', getHintAriaLabel(stageIndex));
         hintBtn.title = 'Continue';
         hintBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             if (isAnimating) return;
+
             const staticWord = createWord(hintBtn.textContent);
             hintBtn.replaceWith(staticWord);
-            revealAndAppendStage(stageIndex + 1);
+
+            if (stageIndex < stages.length - 1) {
+                revealAndAppendStage(stageIndex + 1);
+                return;
+            }
+
+            const nextHintHost = revealNextSection();
+            if (nextHintHost && !isComplete) {
+                window.setTimeout(() => {
+                    setHintOnSegment(nextHintHost, stageIndex);
+                }, 24);
+            }
         });
 
         hintWord.replaceWith(hintBtn);
@@ -1113,7 +1218,11 @@ function initOnboardingHeader() {
             if (wordIndex >= tokens.length) {
                 clearTimer();
                 if (stageIndex >= stages.length - 1) {
-                    completeOnboarding();
+                    if (revealedSectionCount >= revealSections.length) {
+                        completeOnboarding();
+                    } else {
+                        setHintOnSegment(segment, stageIndex);
+                    }
                 } else {
                     setHintOnSegment(segment, stageIndex);
                 }
@@ -1124,19 +1233,29 @@ function initOnboardingHeader() {
     lineEl.textContent = '';
     const firstSegment = buildStaticSegment(0);
     lineEl.appendChild(firstSegment);
-    setHintOnSegment(firstSegment, 0);
 
+    revealedSectionCount = 0;
+    syncSectionVisibility();
+    setHintOnSegment(firstSegment, 0);
     setGate(true);
 
     return {
         isComplete: () => isComplete,
         lock: () => {
-            if (!isComplete) setGate(true);
+            if (!isComplete) {
+                setGate(true);
+                syncSectionVisibility();
+            }
         },
-        unlock: () => setGate(false)
+        unlock: () => {
+            setGate(false);
+            if (isComplete) {
+                revealedSectionCount = revealSections.length;
+                syncSectionVisibility();
+            }
+        }
     };
 }
-
 function initResumePopout() {
     if (!resumePopoutEl || !device) {
         return {

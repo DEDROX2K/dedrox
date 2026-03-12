@@ -449,7 +449,15 @@
             <div class="chat-scene-layer chat-scene-env" data-parallax-depth="8"></div>
             <div class="chat-scene-layer chat-scene-hand-wrap" data-parallax-depth="16">
                 <div class="chat-scene-hand-frame">
-                    <img class="chat-scene-hand" src="images/holdphone.png" alt="" aria-hidden="true">
+                    <picture class="chat-scene-hand-picture">
+                        <source media="(max-aspect-ratio: 3/4)"
+                            srcset="images/scene-mobile-hand@1x.png 1x, images/scene-mobile-hand@2x.png 2x">
+                        <source media="(max-aspect-ratio: 4/3)"
+                            srcset="images/scene-square-hand@1x.png 1x, images/scene-square-hand@2x.png 2x">
+                        <img class="chat-scene-hand" src="images/scene-wide-hand@1x.png"
+                            srcset="images/scene-wide-hand@1x.png 1x, images/scene-wide-hand@2x.png 2x" alt=""
+                            aria-hidden="true">
+                    </picture>
 
                     <div class="chat-scene-phone-anchor">
                         <div class="chat-scene-phone-layer">
