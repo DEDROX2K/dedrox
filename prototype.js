@@ -292,19 +292,29 @@ const githubChartImg = document.getElementById('github-chart-img');
 const secondsDot = document.getElementById('seconds-dot');
 const expandBtn = document.getElementById('expand-btn');
 const leftControlsEl = document.querySelector('.left-controls');
+const orbCursorHandle = document.getElementById('orb-cursor-handle');
+const orbRailTimeEl = document.getElementById('orb-rail-time');
+const matrixToggleBtn = document.getElementById('matrix-toggle-btn');
+const matrixToggleHint = document.getElementById('matrix-toggle-hint');
+const orbResumeBtn = document.getElementById('orb-resume-btn');
 const caseWindowEl = document.getElementById('case-window');
 const stickyNoteEl = document.getElementById('sticky-note');
 const pillNotesBtn = document.getElementById('pill-notes-btn');
 const pillResumeBtn = document.getElementById('pill-resume-btn');
 const pillThirdBtn = document.getElementById('pill-third-btn');
 const resumePopoutEl = document.getElementById('resume-popout');
+const workTogetherWrapEl = document.getElementById('work-together-wrap');
+const workTogetherBtn = document.getElementById('work-together-btn');
+const workAssistantPanelEl = document.getElementById('work-assistant-panel');
+const workAssistantCloseBtn = document.getElementById('work-assistant-close');
+const workAssistantVideoEl = document.getElementById('work-assistant-video');
 const readerInlineEl = document.getElementById('reader-inline');
 const showIdBtn = document.getElementById('show-id-btn');
 const idCardDock = document.getElementById('id-card-dock');
 const scrollableContentEl = document.getElementById('scrollable-content');
 
 function initExpandButtonAnchor() {
-    if (!device || !expandBtn || !leftControlsEl) {
+    if (!device || !leftControlsEl) {
         return {
             update: () => { },
             schedule: () => { }
@@ -326,7 +336,8 @@ function initExpandButtonAnchor() {
 
     const update = () => {
         const deviceRect = device.getBoundingClientRect();
-        const btnRect = expandBtn.getBoundingClientRect();
+        const controlRect = leftControlsEl.getBoundingClientRect();
+        if (!controlRect.width || !controlRect.height) return;
 
         const dynamicGap = clamp(
             (deviceRect.width * anchor.gapPercent) / 100,
@@ -334,16 +345,15 @@ function initExpandButtonAnchor() {
             anchor.maxGapPx
         );
 
-        const targetLeft = Math.max(8, deviceRect.left - btnRect.width - dynamicGap);
+        const targetLeft = Math.max(8, deviceRect.left - controlRect.width - dynamicGap);
         const targetTop = clamp(
-            deviceRect.top + (deviceRect.height * anchor.yPercent / 100) - (btnRect.height / 2),
+            deviceRect.top + (deviceRect.height * anchor.yPercent / 100) - (controlRect.height / 2),
             8,
-            window.innerHeight - btnRect.height - 8
+            window.innerHeight - controlRect.height - 8
         );
 
         leftControlsEl.style.left = `${targetLeft}px`;
         leftControlsEl.style.top = `${targetTop}px`;
-        leftControlsEl.style.transform = 'translate3d(0, 0, 0)';
     };
 
     const schedule = () => {
@@ -371,6 +381,83 @@ function initExpandButtonAnchor() {
     update();
 
     return { update, schedule };
+}
+
+function initLeftOrbControls() {
+    const noop = {
+        refreshTime: () => { },
+        updateScrollPosition: () => { }
+    };
+    if (!leftControlsEl || !orbCursorHandle) return noop;
+
+    const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+    const maxTravelPx = 88;
+    let scrollTarget = 0;
+    let scrollCurrent = 0;
+    let rafId = 0;
+    let timeIntervalId = 0;
+
+    const resolveScrollable = () => {
+        if (scrollableContentEl && scrollableContentEl.scrollHeight > scrollableContentEl.clientHeight + 2) {
+            return scrollableContentEl;
+        }
+        return document.scrollingElement || document.documentElement;
+    };
+
+    const readScrollProgress = () => {
+        const scroller = resolveScrollable();
+        if (!scroller) return 0;
+        const maxScroll = Math.max(0, scroller.scrollHeight - scroller.clientHeight);
+        if (!maxScroll) return 0;
+        const raw = scroller.scrollTop / maxScroll;
+        return clamp(raw, 0, 1);
+    };
+
+    const updateScrollPosition = () => {
+        scrollTarget = readScrollProgress();
+    };
+
+    const render = () => {
+        scrollCurrent += (scrollTarget - scrollCurrent) * 0.18;
+        const centered = (scrollCurrent * 2) - 1;
+        const yOffset = centered * maxTravelPx;
+        leftControlsEl.style.setProperty('--orb-scroll-offset-y', `${yOffset.toFixed(2)}px`);
+        rafId = window.requestAnimationFrame(render);
+    };
+
+    const refreshTime = () => {
+        if (!orbRailTimeEl) return;
+        const now = new Date();
+        orbRailTimeEl.textContent = now.toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        });
+    };
+
+    const onScroll = () => updateScrollPosition();
+    scrollableContentEl?.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    window.addEventListener('orientationchange', onScroll);
+
+    refreshTime();
+    timeIntervalId = window.setInterval(refreshTime, 30000);
+    updateScrollPosition();
+    rafId = window.requestAnimationFrame(render);
+
+    return {
+        refreshTime,
+        updateScrollPosition,
+        destroy: () => {
+            window.cancelAnimationFrame(rafId);
+            if (timeIntervalId) window.clearInterval(timeIntervalId);
+            scrollableContentEl?.removeEventListener('scroll', onScroll);
+            window.removeEventListener('scroll', onScroll);
+            window.removeEventListener('resize', onScroll);
+            window.removeEventListener('orientationchange', onScroll);
+        }
+    };
 }
 
 function initIdCardSystem() {
@@ -401,6 +488,8 @@ function initIdCardSystem() {
     const getPeekAutoHideMs = () => Math.max(0, readCssNumberVar('--id-peek-autohide-ms', 6000));
     const getOpenHoverTiltDeg = () => Math.max(0, readCssNumberVar('--id-open-hover-tilt-deg', 7));
     const getOpenHoverDriftPx = () => Math.max(0, readCssNumberVar('--id-open-hover-drift-px', 14));
+    const getOpenHoverCenterX = () => readCssNumberVar('--id-open-hover-center-x', 0.5);
+    const getOpenHoverCenterY = () => readCssNumberVar('--id-open-hover-center-y', 0.5);
 
     const state = {
         visible: false,
@@ -434,8 +523,18 @@ function initIdCardSystem() {
 
         const px = (event.clientX - rect.left) / rect.width;
         const py = (event.clientY - rect.top) / rect.height;
-        const nx = Math.max(-1, Math.min(1, (px - 0.5) * 2));
-        const ny = Math.max(-1, Math.min(1, (py - 0.5) * 2));
+        const centerX = Math.max(0.2, Math.min(0.8, getOpenHoverCenterX()));
+        const centerY = Math.max(0.2, Math.min(0.8, getOpenHoverCenterY()));
+
+        const nxRaw = px >= centerX
+            ? (px - centerX) / Math.max(1 - centerX, 0.001)
+            : (px - centerX) / Math.max(centerX, 0.001);
+        const nyRaw = py >= centerY
+            ? (py - centerY) / Math.max(1 - centerY, 0.001)
+            : (py - centerY) / Math.max(centerY, 0.001);
+
+        const nx = Math.max(-1, Math.min(1, nxRaw));
+        const ny = Math.max(-1, Math.min(1, nyRaw));
 
         const maxTiltDeg = getOpenHoverTiltDeg();
         const maxDriftPx = getOpenHoverDriftPx();
@@ -455,6 +554,15 @@ function initIdCardSystem() {
         const rect = device.getBoundingClientRect();
         const anchorOffsetX = readCssNumberVar('--id-anchor-offset-x', 6);
         const anchorYRatio = readCssNumberVar('--id-anchor-y-ratio', 0.52);
+        const openAnchorXRatio = readCssNumberVar('--id-open-anchor-x-ratio', 0.5);
+        const openAnchorYRatio = readCssNumberVar('--id-open-anchor-y-ratio', 0.5);
+
+        if (state.open) {
+            idCardDock.style.left = `${rect.left + (rect.width * openAnchorXRatio)}px`;
+            idCardDock.style.top = `${rect.top + (rect.height * openAnchorYRatio)}px`;
+            return;
+        }
+
         idCardDock.style.left = `${rect.right + anchorOffsetX}px`;
         idCardDock.style.top = `${rect.top + (rect.height * anchorYRatio)}px`;
     };
@@ -525,7 +633,6 @@ function initIdCardSystem() {
         }
     });
     idCardDock.addEventListener('pointermove', applyOpenHoverMotion, { passive: true });
-    idCardDock.addEventListener('mousemove', applyOpenHoverMotion, { passive: true });
     idCardDock.addEventListener('pointerleave', resetOpenHoverMotion);
     idCardDock.addEventListener('pointercancel', resetOpenHoverMotion);
 
@@ -728,6 +835,7 @@ class MatrixRain {
         this.direction = direction || 'down';
         this.density = Math.max(0.25, density || 1);
         this.lengthMultiplier = Math.max(0.5, lengthMultiplier || 1);
+        this.isPaused = false;
 
         this.resize();
         window.addEventListener('resize', () => this.resize());
@@ -790,11 +898,17 @@ class MatrixRain {
         return Math.floor(minLen + Math.random() * (maxLen - minLen));
     }
 
+    setPaused(paused) {
+        this.isPaused = Boolean(paused);
+    }
+
     animate(time) {
         requestAnimationFrame(this.animate);
         const deltaTime = time - this.lastTime;
         if (deltaTime < this.interval) return;
         this.lastTime = time - (deltaTime % this.interval);
+
+        if (this.isPaused) return;
 
         this.ctx.clearRect(0, 0, this.width, this.height);
         this.ctx.font = `${this.fontSize}px monospace`;
@@ -865,10 +979,39 @@ class MatrixRain {
 }
 
 let miniMatrixInstance = null;
+let backgroundMatrixInstance = null;
+let matrixPaused = false;
+
+function applyMatrixPausedState() {
+    document.body.classList.toggle('matrix-paused', matrixPaused);
+    if (backgroundMatrixInstance) {
+        backgroundMatrixInstance.setPaused(matrixPaused);
+    }
+
+    if (matrixToggleBtn) {
+        matrixToggleBtn.classList.toggle('is-paused', matrixPaused);
+        matrixToggleBtn.setAttribute('aria-label', matrixPaused ? 'Play matrix animation' : 'Pause matrix animation');
+        matrixToggleBtn.setAttribute('title', matrixPaused ? 'Play matrix animation' : 'Pause matrix animation');
+    }
+
+    if (matrixToggleHint) {
+        matrixToggleHint.textContent = matrixPaused ? 'Play matrix' : 'Pause matrix';
+    }
+}
+
+function setMatrixPaused(paused) {
+    matrixPaused = Boolean(paused);
+    applyMatrixPausedState();
+}
+
+function toggleMatrixPaused() {
+    setMatrixPaused(!matrixPaused);
+    return matrixPaused;
+}
 
 function initBackgrounds() {
     const cfg = SITE_CONFIG.asciiRain;
-    new MatrixRain(
+    backgroundMatrixInstance = new MatrixRain(
         'canvas-bg',
         cfg.chars,
         cfg.baseColor,
@@ -881,6 +1024,10 @@ function initBackgrounds() {
         cfg.density,
         cfg.lengthMultiplier
     );
+    if (backgroundMatrixInstance) {
+        backgroundMatrixInstance.setPaused(matrixPaused);
+    }
+    applyMatrixPausedState();
     miniMatrixInstance = null;
 }
 
@@ -1960,6 +2107,88 @@ function initResumePopout() {
     };
 }
 
+function initWorkTogetherPanel() {
+    if (!workTogetherBtn || !workAssistantPanelEl) {
+        return {
+            open: () => { },
+            close: () => { },
+            toggle: () => { },
+            isVisible: () => false,
+            isInside: () => false
+        };
+    }
+
+    const isVisible = () => workAssistantPanelEl.classList.contains('is-open');
+
+    const playVideo = () => {
+        if (!workAssistantVideoEl) return;
+        const playPromise = workAssistantVideoEl.play();
+        if (playPromise && typeof playPromise.catch === 'function') {
+            playPromise.catch(() => { });
+        }
+    };
+
+    const pauseVideo = () => {
+        if (!workAssistantVideoEl) return;
+        workAssistantVideoEl.pause();
+    };
+
+    const open = () => {
+        workAssistantPanelEl.classList.add('is-open');
+        workAssistantPanelEl.setAttribute('aria-hidden', 'false');
+        workTogetherBtn.setAttribute('aria-expanded', 'true');
+        playVideo();
+    };
+
+    const close = () => {
+        workAssistantPanelEl.classList.remove('is-open');
+        workAssistantPanelEl.setAttribute('aria-hidden', 'true');
+        workTogetherBtn.setAttribute('aria-expanded', 'false');
+        pauseVideo();
+    };
+
+    const toggle = () => {
+        if (isVisible()) {
+            close();
+            return;
+        }
+        open();
+    };
+
+    workTogetherBtn.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        toggle();
+    });
+
+    workAssistantCloseBtn?.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        close();
+    });
+
+    workAssistantPanelEl.addEventListener('click', (event) => {
+        event.stopPropagation();
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && isVisible()) {
+            close();
+        }
+    });
+
+    return {
+        open,
+        close,
+        toggle,
+        isVisible,
+        isInside: (target) => {
+            if (!(target instanceof Node)) return false;
+            return workAssistantPanelEl.contains(target) || workTogetherBtn.contains(target);
+        }
+    };
+}
+
 function initReaderMode(onboardingFlow = null) {
     if (!device || !readerInlineEl) {
         return {
@@ -2794,8 +3023,10 @@ document.addEventListener('DOMContentLoaded', () => {
     initSmoothWheelScrolling();
     const onboardingFlow = initOnboardingHeader();
     const expandFabAnchor = initExpandButtonAnchor();
+    const leftOrbControls = initLeftOrbControls();
     const stickyNote = initStickyNote();
     const resumePopout = initResumePopout();
+    const workTogetherPanel = initWorkTogetherPanel();
     const readerMode = initReaderMode(onboardingFlow);
     const chatMode = initChatMode();
     const idCardSystem = initIdCardSystem();
@@ -2815,6 +3046,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             if (miniMatrixInstance) miniMatrixInstance.resize();
             idCardSystem.updateAnchor();
+            leftOrbControls.updateScrollPosition();
             // Removed autoOpenNotes to prevent automatic spawning
         }, 520);
     };
@@ -2850,6 +3082,28 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    applyMatrixPausedState();
+    leftOrbControls.refreshTime();
+
+    leftControlsEl?.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
+
+    orbCursorHandle?.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+    });
+
+    matrixToggleBtn?.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleMatrixPaused();
+    });
+
+    orbResumeBtn?.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
+
     if (topBar) {
         topBar.addEventListener('click', (e) => {
             if (e.target instanceof Element && e.target.closest('.pill-icon-btn')) return;
@@ -2876,6 +3130,7 @@ document.addEventListener('DOMContentLoaded', () => {
         expandDeviceShell(false);
         if (readerMode.isActive()) readerMode.close();
         if (stickyNote.isVisible()) stickyNote.close();
+        if (workTogetherPanel.isVisible()) workTogetherPanel.close();
 
         chatMode.open();
 
@@ -2927,6 +3182,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const clickedInsideSticky = stickyNoteEl && stickyNoteEl.contains(e.target);
         const clickedInsideResume = resumePopoutEl && resumePopoutEl.contains(e.target);
         const clickedInsideIdCard = idCardSystem.isInside(e.target);
+        const clickedInsideWorkAssistant = workTogetherPanel.isInside(e.target);
 
         const idWasOpen = idCardSystem.isOpen();
         if (idWasOpen && !clickedInsideIdCard && !(showIdBtn && showIdBtn.contains(e.target))) {
@@ -2934,10 +3190,15 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        if (workTogetherPanel.isVisible() && !clickedInsideWorkAssistant) {
+            workTogetherPanel.close();
+            return;
+        }
+
         // Priority close order:
         // 1) Close the side case window first.
         // 2) Only after that, allow closing the mini portfolio on a later outside click.
-        if (caseIsOpen && !clickedInsideCase && !clickedInsideDevice && !clickedInsideSticky && !clickedInsideResume && !clickedInsideIdCard) {
+        if (caseIsOpen && !clickedInsideCase && !clickedInsideDevice && !clickedInsideSticky && !clickedInsideResume && !clickedInsideIdCard && !clickedInsideWorkAssistant) {
             if (caseOverlayControl) {
                 caseOverlayControl.close();
             } else if (caseWindowEl) {
@@ -2954,7 +3215,8 @@ document.addEventListener('DOMContentLoaded', () => {
             !clickedInsideCase &&
             !clickedInsideSticky &&
             !clickedInsideResume &&
-            !clickedInsideIdCard
+            !clickedInsideIdCard &&
+            !clickedInsideWorkAssistant
         ) {
             device.classList.remove('expanded');
             document.body.classList.remove('device-expanded');

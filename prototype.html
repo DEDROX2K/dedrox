@@ -235,7 +235,7 @@
                 </article>
             </section>
 
-            <section class="node-system-section reveal delay-2" aria-label="Data Grid System">
+            <!-- <section class="node-system-section reveal delay-2" aria-label="Data Grid System">
                 <div class="node-system-badge">Introspective Section: "At my core"</div>
                 <div class="node-graph-container" id="node-graph-container">
                     <svg class="node-edges" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"></svg>
@@ -248,7 +248,7 @@
                                 <line x1="5" y1="12" x2="19" y2="12"></line>
                             </svg>
                         </div>
-                        <span>Game Dez</span>
+                        <span>Builder</span>
                     </div>
                                         <div class="node-item" id="node-pt" data-x="50" data-y="18" data-cursor="grab">
                         <div class="node-icon pt-icon">
@@ -342,7 +342,7 @@
                     
 
                 </div>
-            </section>
+            </section> -->
 
                 <section class="portfolio-section" aria-label="Portfolio case studies">
                 <header class="portfolio-section-header reveal delay-2">
@@ -382,7 +382,7 @@
                         <p class="folder-foot">Open case study</p>
                     </div>
                 </a>
-                <a href="#" target="_blank" class="featured-card" style="width: 340px;">
+                <a href="#" target="_blank" class="featured-card">
                     <div class="folder-top">
                         <img src="images/port4.jpg" alt="UI Exploration">
                     </div>
@@ -770,13 +770,78 @@
         </div>
     </div>
 
+    <div class="work-together-wrap hidden-mobile" id="work-together-wrap">
+        <button class="work-together-btn" id="work-together-btn" type="button" aria-haspopup="dialog"
+            aria-expanded="false" data-cursor="link">
+            <span class="work-together-icon" aria-hidden="true"></span>
+            <span class="work-together-label">Let's work together</span>
+        </button>
+    </div>
+
+    <div class="work-assistant-panel hidden-mobile" id="work-assistant-panel" role="dialog"
+        aria-label="Cadence assistant" aria-hidden="true">
+        <video class="work-assistant-video" id="work-assistant-video" muted loop playsinline preload="metadata">
+            <source src="videos/cadence.mp4" type="video/mp4">
+        </video>
+        <div class="work-assistant-overlay" aria-hidden="true"></div>
+
+        <div class="work-assistant-header">
+            <span>Cadence</span>
+            <button class="work-assistant-close" id="work-assistant-close" type="button" aria-label="Close assistant"
+                data-cursor="link">×</button>
+        </div>
+
+        <div class="work-assistant-body">
+            <p class="work-assistant-copy">
+                Hello and welcome! I'm Cadence, the executive assistant at DEDROX.
+            </p>
+            <p class="work-assistant-copy">How can I assist you today?</p>
+
+            <div class="work-assistant-actions" aria-label="Assistant quick actions">
+                <button type="button" class="work-chip work-chip-primary" data-cursor="link">Hire your agency</button>
+                <button type="button" class="work-chip" data-cursor="link">Ask about your pricing</button>
+                <button type="button" class="work-chip" data-cursor="link">Learn more about DEDROX</button>
+                <button type="button" class="work-chip" data-cursor="link">Demo</button>
+            </div>
+        </div>
+
+        <div class="work-assistant-footer">
+            <span class="work-together-icon work-together-icon-sm" aria-hidden="true"></span>
+            <span class="work-assistant-input">Ask me anything...</span>
+        </div>
+    </div>
+
     <!-- WIP Swinging Image -->
-    <img src="images/wip.png" alt="Work In Progress" class="wip-swinging-img hidden-mobile">    <div class="global-controls" style="pointer-events: none;">
-        <div class="left-controls" aria-hidden="true">
-            <button class="expand-fab hidden-mobile" id="expand-btn" aria-label="Toggle Fullscreen" title="Expand">
-                <img src="iconset/expand.png" alt="">
-                <span class="pill-tooltip">Expand</span>
+    <img src="images/wip.png" alt="Work In Progress" class="wip-swinging-img hidden-mobile">
+    <div class="global-controls" style="pointer-events: none;">
+        <div class="left-controls hidden-mobile" id="left-orb-controls" aria-label="Quick actions">
+            <button class="orb-cursor-handle" id="orb-cursor-handle" type="button" aria-label="Open quick controls"
+                data-cursor="link">
+                <span class="orb-handle-dot" aria-hidden="true"></span>
+                <span class="pill-tooltip">Quick controls</span>
             </button>
+
+            <div class="orb-control-rail" id="orb-control-rail" role="group" aria-label="Quick actions panel">
+                <button class="orb-rail-btn orb-rail-expand" id="expand-btn" type="button" aria-label="Toggle fullscreen"
+                    title="Expand" data-cursor="link">
+                    <span class="orb-btn-icon orb-btn-icon-expand" aria-hidden="true"></span>
+                    <span class="pill-tooltip">Expand</span>
+                </button>
+
+                <div class="orb-rail-time" id="orb-rail-time" aria-hidden="true">16:14</div>
+
+                <button class="orb-rail-btn orb-rail-matrix" id="matrix-toggle-btn" type="button"
+                    aria-label="Pause matrix animation" title="Pause matrix animation" data-cursor="link">
+                    <span class="orb-btn-icon orb-btn-icon-matrix" aria-hidden="true"></span>
+                    <span class="pill-tooltip" id="matrix-toggle-hint">Pause matrix</span>
+                </button>
+
+                <a class="orb-rail-btn orb-rail-resume" id="orb-resume-btn" href="threeD/CV_RESUME-RAGHAV.pdf"
+                    target="_blank" rel="noopener noreferrer" aria-label="Open resume" data-cursor="link">
+                    <span class="orb-btn-icon orb-btn-icon-resume" aria-hidden="true"></span>
+                    <span class="pill-tooltip">Resume</span>
+                </a>
+            </div>
         </div>
         <div class="id-card-wrap hidden-mobile" aria-hidden="true">
             <button class="id-card-dock" id="id-card-dock" type="button" aria-label="Open ID card" aria-expanded="false" data-cursor="link">
