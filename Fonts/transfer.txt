@@ -35,3 +35,28 @@ Why this is safer:
 - Scattered hardcoded custom-cursor declarations were removed from components, so style edits elsewhere won’t silently override your cursor behavior.
 
 Validation run: `node --check prototype.js` passed.
+
+
+
+
+-----------------------------------------------------------------------------------------------------
+Edit these on monday:
+
+- border-top: 1px solid rgba(0, 0, 0, 0.08);
+- border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+- padding: 30px 0;
+Can we have this for all the sections?
+
+- Ask ChatGPT about us. Where UX meets AI
+Move this outside the mini site and to the right bottom just like the other buttons
+
+- content: counter(brand-row, decimal-leading-zero);
+Can we remove the random numbers and just have the text from 1-10? 
+
+-                     <a href="https://www.behance.net/raghavprasanna" target="_blank" class="brand-block"
+                        style="background: #ECE9E6; color: #111;">
+                        <span class="brand-text">BEHANCE</span>
+                    </a>
+replace the hover animation with a simple smooth to italic font
+
+- 

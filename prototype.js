@@ -21,7 +21,7 @@ const SITE_CONFIG = {
         smoothFactor: 0.36
     },
     asciiRain: {
-        chars: ['▒', '░', '░', '|', '¦', '┆', '┊', '┋', '█', '▓'],
+        chars: ['▒', '░', '░', '|', '▄', '▀', '█', '|', '&', '@', '#', '%', '$', '*'],
         fontSize: 15,
         speed: 1,
         baseOpacity: 0.05,
@@ -1383,56 +1383,6 @@ function initIndexGrid() {
 // --------------------------------------------------------
 // HOVER ANIMATIONS
 // --------------------------------------------------------
-function initBrandHoverAnimations() {
-    // Both brand blocks and more-project-item labels need this staggered animation
-    const targets = [
-        ...document.querySelectorAll('.brand-block'),
-        ...document.querySelectorAll('.more-project-item')
-    ];
-
-    targets.forEach(block => {
-        const textSpan = block.querySelector('.brand-text') || block.querySelector('.more-project-label');
-        if (!textSpan) return;
-
-        // Split text into individual spans for staggered animation
-        const originalText = textSpan.textContent;
-        textSpan.innerHTML = '';
-        const letters = originalText.split('');
-
-        letters.forEach(letter => {
-            const span = document.createElement('span');
-            // preserve spaces
-            if (letter === ' ') {
-                span.innerHTML = '&nbsp;';
-            } else {
-                span.textContent = letter;
-            }
-            span.style.display = 'inline-block';
-            span.style.transformOrigin = 'center';
-            textSpan.appendChild(span);
-        });
-
-        const charSpans = textSpan.querySelectorAll('span');
-
-        block.addEventListener('mouseenter', () => {
-            if (typeof gsap !== 'undefined') {
-                gsap.killTweensOf(charSpans);
-
-                // Reset first
-                gsap.set(charSpans, { y: 0, opacity: 1 });
-
-                // Play stagger animation
-                gsap.from(charSpans, {
-                    y: 10,
-                    opacity: 0,
-                    duration: 0.3,
-                    stagger: 0.05,
-                    ease: "back.out(1.5)"
-                });
-            }
-        });
-    });
-}
 
 function initFeaturedCardHoverMotion() {
     const cards = document.querySelectorAll('.featured-card');
@@ -3238,7 +3188,6 @@ document.addEventListener('DOMContentLoaded', () => {
     clearPixelCanvas();
     SITE_CONFIG.setupCaseOverlays();
     initIndexGrid();
-    initBrandHoverAnimations();
     initFeaturedCardHoverMotion();
     initHeroLanguageLoop();
 
@@ -3264,6 +3213,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 minSize: 16,
                 maxSize: 200,
                 multiLine: false
+            });
+        });
+    }
+});
+
+// Handle Email Pill Copy
+document.addEventListener('DOMContentLoaded', () => {
+    const emailPillBtn = document.getElementById('email-pill-btn');
+    const emailPillTooltip = document.getElementById('email-pill-tooltip');
+
+    if (emailPillBtn && emailPillTooltip) {
+        emailPillBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            navigator.clipboard.writeText('raghavprasanna2000@gmail.com').then(() => {
+                const originalText = emailPillTooltip.textContent;
+                emailPillTooltip.textContent = 'Copied!';
+                setTimeout(() => {
+                    emailPillTooltip.textContent = originalText;
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
             });
         });
     }
