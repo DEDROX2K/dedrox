@@ -1821,26 +1821,42 @@ function initNodeGraph() {
     const svg = container.querySelector('.node-edges');
     if (!svg) return;
 
-    const connections = [
-        { from: 'node-pt', to: 'node-ig' },
-        { from: 'node-sms', to: 'node-ig' },
-        { from: 'node-ig', to: 'node-email' },
-        { from: 'node-ig', to: 'node-user1' },
-        { from: 'node-ig', to: 'node-user2' }
-    ];
-
     const nodes = [];
-    const nodeMap = {};
+    const anchorSeeds = [];
+    const minAnchorDistanceSq = 0.018;
 
-    container.querySelectorAll('.node-item').forEach(el => {
-        const x = parseFloat(el.getAttribute('data-x'));
-        const y = parseFloat(el.getAttribute('data-y'));
+    const createRandomAnchor = () => {
+        for (let attempt = 0; attempt < 28; attempt += 1) {
+            const x = 0.14 + (Math.random() * 0.72);
+            const y = 0.14 + (Math.random() * 0.72);
+            const hasSpacing = anchorSeeds.every((anchor) => {
+                const dx = x - anchor.x;
+                const dy = y - anchor.y;
+                return (dx * dx + dy * dy) >= minAnchorDistanceSq;
+            });
 
+            if (hasSpacing) {
+                return { x, y };
+            }
+        }
+
+        return {
+            x: 0.14 + (Math.random() * 0.72),
+            y: 0.14 + (Math.random() * 0.72)
+        };
+    };
+
+    container.querySelectorAll('.node-item').forEach((el, index) => {
+        const anchor = createRandomAnchor();
+        anchorSeeds.push(anchor);
+
+        const labelEl = el.querySelector('span');
         const node = {
-            id: el.id,
+            id: el.id || `node-${index}`,
+            label: labelEl ? labelEl.textContent.trim().toLowerCase() : '',
             el: el,
-            baseX: x / 100, // anchor %
-            baseY: y / 100,
+            baseX: anchor.x, // random anchor %
+            baseY: anchor.y,
             x: 0,
             y: 0,
             vx: 0,
@@ -1849,7 +1865,6 @@ function initNodeGraph() {
             pointerId: null
         };
         nodes.push(node);
-        nodeMap[node.id] = node;
 
         let dragOffsetX = 0;
         let dragOffsetY = 0;
@@ -1888,18 +1903,22 @@ function initNodeGraph() {
         el.addEventListener('pointercancel', endDrag);
     });
 
-    const edges = [];
-    connections.forEach(conn => {
-        if (!nodeMap[conn.from] || !nodeMap[conn.to]) return;
-        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        svg.appendChild(path);
-        edges.push({
-            source: nodeMap[conn.from],
-            target: nodeMap[conn.to],
-            path: path
-        });
-    });
+    const makerNode = nodes.find((node) => node.label === 'maker') || nodes[0] || null;
 
+    const edges = [];
+    if (makerNode) {
+        nodes.forEach((node) => {
+            if (node === makerNode) return;
+
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            svg.appendChild(path);
+            edges.push({
+                source: makerNode,
+                target: node,
+                path: path
+            });
+        });
+    }
     // Initial positioning
     const setInitialLayout = () => {
         const rect = container.getBoundingClientRect();
@@ -1920,10 +1939,37 @@ function initNodeGraph() {
     const repelStrength = 4000; // Inverse square repel between nodes
     const anchorStiffness = 0.01; // Soft pull to base % positions to structure
 
+    // Every 5s, gently vary repel/link forces to keep subtle motion alive.
+    const forceShiftIntervalMs = 1000;
+    const forceShiftAmount = 0.52;
+    const forceBlend = 0.09;
+
+    const currentForceProfile = {
+        stiffness: 1,
+        repel: 1
+    };
+    const targetForceProfile = {
+        stiffness: 1,
+        repel: 1
+    };
+
+    const retargetForces = () => {
+        targetForceProfile.stiffness = 1 + ((Math.random() * 2 - 1) * forceShiftAmount);
+        targetForceProfile.repel = 1 + ((Math.random() * 2 - 1) * forceShiftAmount);
+    };
+
+    window.setInterval(retargetForces, forceShiftIntervalMs);
+
     let animationFrameId;
 
     function updatePhysics() {
         const rect = container.getBoundingClientRect();
+
+        currentForceProfile.stiffness += (targetForceProfile.stiffness - currentForceProfile.stiffness) * forceBlend;
+        currentForceProfile.repel += (targetForceProfile.repel - currentForceProfile.repel) * forceBlend;
+
+        const dynamicStiffness = stiffness * currentForceProfile.stiffness;
+        const dynamicRepelStrength = repelStrength * currentForceProfile.repel;
 
         nodes.forEach(n => {
             if (n.isDragging) return;
@@ -1945,7 +1991,7 @@ function initNodeGraph() {
                 const distSq = dx * dx + dy * dy;
                 if (distSq > 0 && distSq < 50000) { // Limit repulsion radius (sqrt(50000) ~ 220px)
                     const dist = Math.sqrt(distSq);
-                    const force = repelStrength / distSq;
+                    const force = dynamicRepelStrength / distSq;
                     fx += (dx / dist) * force;
                     fy += (dy / dist) * force;
                 }
@@ -1972,7 +2018,7 @@ function initNodeGraph() {
             const restLength = 85; // Ideal edge length
 
             if (dist > 0) {
-                const force = (dist - restLength) * stiffness;
+                const force = (dist - restLength) * dynamicStiffness;
                 const fx = (dx / dist) * force;
                 const fy = (dy / dist) * force;
 
@@ -2425,5 +2471,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+
 
 

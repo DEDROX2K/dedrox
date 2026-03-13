@@ -19,7 +19,7 @@
     --device-collapsed-height: 56px;
     --device-expanded-height: 88vh;
     --device-expanded-max-height: 980px;
-    --case-window-width: 750px;
+    --case-window-width: 39vw;
     --case-window-gap: 20px;
     --case-pair-shift: calc((var(--case-window-width) + var(--case-window-gap)) / 2);
     --site-padding-x: 24px;
@@ -1351,7 +1351,7 @@ body.device-maximized .expand-fab .icon-expand {
     transition: box-shadow 0.25s cubic-bezier(0.2, 0.9, 0.2, 1), transform 0.25s cubic-bezier(0.2, 0.9, 0.2, 1), border 0.2s cubic-bezier(0.2, 0.9, 0.2, 1);
     /* transition transform dynamically handled in JS where needed */
     cursor: grab;
-    border: 1px solid transparent;
+    border: 2px solid #e8e6df;
 }
 
 .node-item:hover {
@@ -3706,5 +3706,6 @@ body.reader-mode .wip-swinging-img {
         transform: rotate(4deg);
     }
 }
+
 
 
