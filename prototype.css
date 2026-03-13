@@ -785,6 +785,10 @@ body.device-maximized .expand-fab .icon-expand {
     position: fixed;
     inset: 0;
     pointer-events: none;
+    z-index: 8;
+}
+
+.id-card-wrap.is-open-layer {
     z-index: 71;
 }
 
@@ -792,7 +796,7 @@ body.device-maximized .expand-fab .icon-expand {
     position: fixed;
     top: 50%;
     left: 50%;
-    width: clamp(190px, 16vw, 280px);
+    width: clamp(220px, 17vw, 300px);
     border: none;
     background: transparent;
     padding: 0;
@@ -800,10 +804,11 @@ body.device-maximized .expand-fab .icon-expand {
     cursor: pointer;
     opacity: 0;
     pointer-events: none;
-    transform: translate3d(calc(-100% + var(--id-peek-visible, 44px)), -50%, 0);
+    transform: translate3d(-28px, -50%, 0);
+    /* rotate: 90deg; */
     transform-origin: right center;
     transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1), width 0.42s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.24s ease;
-    z-index: 72;
+    z-index: 1;
 }
 
 .id-card-dock img {
@@ -819,12 +824,13 @@ body.device-maximized .expand-fab .icon-expand {
 }
 
 .id-card-dock.visible:not(.is-open):hover {
-    transform: translate3d(calc(-100% + var(--id-peek-visible, 44px) - 10px), -50%, 0);
+    transform: translate3d(-18px, -50%, 0);
 }
 
 .id-card-dock.is-open {
     width: min(88vw, 1020px);
-    transform: translate3d(-100%, -50%, 0);
+    transform: translate3d(calc(-100% - 6px), -50%, 0);
+    z-index: 2;
 }
 .resume-wrap {
     position: fixed;
@@ -3914,6 +3920,4 @@ body.reader-mode .wip-swinging-img {
         transform: rotate(4deg);
     }
 }
-
-
 

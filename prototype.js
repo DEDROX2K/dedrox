@@ -385,6 +385,11 @@ function initIdCardSystem() {
         };
     }
 
+    const idCardWrap = idCardDock.closest('.id-card-wrap');
+    if (idCardWrap && idCardWrap.parentElement !== document.body) {
+        document.body.appendChild(idCardWrap);
+    }
+
     const state = {
         visible: false,
         open: false
@@ -392,13 +397,14 @@ function initIdCardSystem() {
 
     const updateAnchor = () => {
         const rect = device.getBoundingClientRect();
-        idCardDock.style.left = `${rect.right + 12}px`;
+        idCardDock.style.left = `${rect.right + 6}px`;
         idCardDock.style.top = `${rect.top + (rect.height * 0.52)}px`;
     };
 
     const showPeek = () => {
         state.visible = true;
         state.open = false;
+        idCardWrap?.classList.remove('is-open-layer');
         idCardDock.classList.add('visible');
         idCardDock.classList.remove('is-open');
         idCardDock.setAttribute('aria-expanded', 'false');
@@ -408,6 +414,7 @@ function initIdCardSystem() {
     const openCard = () => {
         if (!state.visible) showPeek();
         state.open = true;
+        idCardWrap?.classList.add('is-open-layer');
         idCardDock.classList.add('is-open');
         idCardDock.setAttribute('aria-expanded', 'true');
         updateAnchor();
@@ -416,6 +423,7 @@ function initIdCardSystem() {
     const closeToPeek = () => {
         if (!state.visible) return;
         state.open = false;
+        idCardWrap?.classList.remove('is-open-layer');
         idCardDock.classList.remove('is-open');
         idCardDock.setAttribute('aria-expanded', 'false');
         updateAnchor();
@@ -424,11 +432,10 @@ function initIdCardSystem() {
     const hide = () => {
         state.visible = false;
         state.open = false;
+        idCardWrap?.classList.remove('is-open-layer');
         idCardDock.classList.remove('visible', 'is-open');
         idCardDock.setAttribute('aria-expanded', 'false');
     };
-
-    idCardDock.style.setProperty('--id-peek-visible', '44px');
 
     idCardDock.addEventListener('click', (event) => {
         event.preventDefault();
@@ -2750,5 +2757,4 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
-
 
