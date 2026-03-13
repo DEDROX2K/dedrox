@@ -21,15 +21,17 @@ const SITE_CONFIG = {
         smoothFactor: 0.36
     },
     asciiRain: {
-        chars: ['▒', '░', '░', '*', '.','.',  ':', ':',  '░'],
+        chars: ['▒', '░', '░', '|', '¦', '┆', '┊', '┋', '█', '▓'],
         fontSize: 15,
         speed: 1,
-        baseOpacity: 0.10,
+        baseOpacity: 0.05,
         baseColor: '77, 77, 77',
         cursorColor: '0, 0, 0',
         direction: 'up',
-        cursorOpacity: 0.39,
+        cursorOpacity: 0,
         cursorRadius: 280,
+        density: 1,
+        lengthMultiplier: 1,
     },
     companies: [
         { name: 'AIR CARDS', logo: 'images/c5.png', url: 'images/c1.png' },
@@ -397,11 +399,16 @@ function initIdCardSystem() {
     };
 
     const getPeekAutoHideMs = () => Math.max(0, readCssNumberVar('--id-peek-autohide-ms', 6000));
+    const getOpenHoverTiltDeg = () => Math.max(0, readCssNumberVar('--id-open-hover-tilt-deg', 7));
+    const getOpenHoverDriftPx = () => Math.max(0, readCssNumberVar('--id-open-hover-drift-px', 14));
 
     const state = {
         visible: false,
         open: false
     };
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const supportsHoverMotion = !window.matchMedia('(pointer: coarse)').matches && !prefersReducedMotion;
 
     let peekHideTimer = 0;
 
@@ -409,6 +416,39 @@ function initIdCardSystem() {
         if (!peekHideTimer) return;
         window.clearTimeout(peekHideTimer);
         peekHideTimer = 0;
+    };
+
+    const resetOpenHoverMotion = () => {
+        idCardDock.style.setProperty('--id-open-drift-x', '0px');
+        idCardDock.style.setProperty('--id-open-drift-y', '0px');
+        idCardDock.style.setProperty('--id-open-tilt-x', '0deg');
+        idCardDock.style.setProperty('--id-open-tilt-y', '0deg');
+    };
+
+    const applyOpenHoverMotion = (event) => {
+        if (!state.open || !supportsHoverMotion) return;
+        if (event.pointerType && event.pointerType !== 'mouse' && event.pointerType !== 'pen') return;
+
+        const rect = idCardDock.getBoundingClientRect();
+        if (!rect.width || !rect.height) return;
+
+        const px = (event.clientX - rect.left) / rect.width;
+        const py = (event.clientY - rect.top) / rect.height;
+        const nx = Math.max(-1, Math.min(1, (px - 0.5) * 2));
+        const ny = Math.max(-1, Math.min(1, (py - 0.5) * 2));
+
+        const maxTiltDeg = getOpenHoverTiltDeg();
+        const maxDriftPx = getOpenHoverDriftPx();
+
+        const tiltX = -ny * maxTiltDeg;
+        const tiltY = nx * maxTiltDeg;
+        const driftX = nx * maxDriftPx;
+        const driftY = ny * maxDriftPx;
+
+        idCardDock.style.setProperty('--id-open-drift-x', `${driftX.toFixed(2)}px`);
+        idCardDock.style.setProperty('--id-open-drift-y', `${driftY.toFixed(2)}px`);
+        idCardDock.style.setProperty('--id-open-tilt-x', `${tiltX.toFixed(2)}deg`);
+        idCardDock.style.setProperty('--id-open-tilt-y', `${tiltY.toFixed(2)}deg`);
     };
 
     const updateAnchor = () => {
@@ -423,6 +463,7 @@ function initIdCardSystem() {
         state.visible = false;
         state.open = false;
         clearPeekHideTimer();
+        resetOpenHoverMotion();
         idCardWrap?.classList.remove('is-open-layer');
         idCardDock.classList.remove('visible', 'is-open');
         idCardDock.setAttribute('aria-expanded', 'false');
@@ -443,6 +484,7 @@ function initIdCardSystem() {
     const showPeek = () => {
         state.visible = true;
         state.open = false;
+        resetOpenHoverMotion();
         idCardWrap?.classList.remove('is-open-layer');
         idCardDock.classList.add('visible');
         idCardDock.classList.remove('is-open');
@@ -455,6 +497,7 @@ function initIdCardSystem() {
         if (!state.visible) showPeek();
         state.open = true;
         clearPeekHideTimer();
+        resetOpenHoverMotion();
         idCardWrap?.classList.add('is-open-layer');
         idCardDock.classList.add('is-open');
         idCardDock.setAttribute('aria-expanded', 'true');
@@ -464,6 +507,7 @@ function initIdCardSystem() {
     const closeToPeek = () => {
         if (!state.visible) return;
         state.open = false;
+        resetOpenHoverMotion();
         idCardWrap?.classList.remove('is-open-layer');
         idCardDock.classList.remove('is-open');
         idCardDock.setAttribute('aria-expanded', 'false');
@@ -480,6 +524,10 @@ function initIdCardSystem() {
             openCard();
         }
     });
+    idCardDock.addEventListener('pointermove', applyOpenHoverMotion, { passive: true });
+    idCardDock.addEventListener('mousemove', applyOpenHoverMotion, { passive: true });
+    idCardDock.addEventListener('pointerleave', resetOpenHoverMotion);
+    idCardDock.addEventListener('pointercancel', resetOpenHoverMotion);
 
     window.addEventListener('resize', updateAnchor);
     window.addEventListener('orientationchange', updateAnchor);
@@ -666,7 +714,7 @@ window.addEventListener('mousemove', (e) => {
 });
 
 class MatrixRain {
-    constructor(canvasId, chars, baseColor, fontSize, speed, parentElement, baseOpacity, cursor, direction) {
+    constructor(canvasId, chars, baseColor, fontSize, speed, parentElement, baseOpacity, cursor, direction, density = 1, lengthMultiplier = 1) {
         this.canvas = document.getElementById(canvasId);
         if (!this.canvas) return;
         this.ctx = this.canvas.getContext('2d');
@@ -678,6 +726,8 @@ class MatrixRain {
         this.baseOpacity = baseOpacity || 0.15;
         this.cursor = cursor || null;
         this.direction = direction || 'down';
+        this.density = Math.max(0.25, density || 1);
+        this.lengthMultiplier = Math.max(0.5, lengthMultiplier || 1);
 
         this.resize();
         window.addEventListener('resize', () => this.resize());
@@ -708,16 +758,17 @@ class MatrixRain {
         this.canvas.height = h * dpr;
         this.ctx.scale(dpr, dpr);
 
-        const colCount = Math.floor(w / this.fontSize) + 1;
+        const colCount = Math.max(1, Math.floor((w / this.fontSize) * this.density) + 1);
+        const colSpacing = colCount > 1 ? w / (colCount - 1) : this.fontSize;
         this.columns = [];
         for (let i = 0; i < colCount; i++) {
-            const length = Math.floor(10 + Math.random() * 20);
+            const length = this._randomLength();
             const startY = this.direction === 'up'
                 ? this.height + Math.random() * this.height
                 : Math.random() * -this.height * 2;
 
             this.columns.push({
-                x: i * this.fontSize,
+                x: i * colSpacing,
                 y: startY,
                 chars: [],
                 speed: this.speed * (0.8 + Math.random() * 0.6),
@@ -732,6 +783,12 @@ class MatrixRain {
 
     _lerp(a, b, t) { return Math.round(a + (b - a) * t); }
     _parseRGB(str) { return str.split(',').map(Number); }
+
+    _randomLength() {
+        const minLen = Math.max(6, Math.floor(10 * this.lengthMultiplier));
+        const maxLen = Math.max(minLen + 1, Math.floor(30 * this.lengthMultiplier));
+        return Math.floor(minLen + Math.random() * (maxLen - minLen));
+    }
 
     animate(time) {
         requestAnimationFrame(this.animate);
@@ -755,14 +812,14 @@ class MatrixRain {
                 if (col.y + col.length * this.fontSize < 0 && Math.random() > 0.95) {
                     col.y = this.height + this.fontSize;
                     col.speed = this.speed * (0.8 + Math.random() * 0.6);
-                    col.length = Math.floor(10 + Math.random() * 20);
+                    col.length = this._randomLength();
                 }
             } else {
                 col.y += col.speed * this.fontSize;
                 if (col.y - col.length * this.fontSize > this.height && Math.random() > 0.95) {
                     col.y = -this.fontSize;
                     col.speed = this.speed * (0.8 + Math.random() * 0.6);
-                    col.length = Math.floor(10 + Math.random() * 20);
+                    col.length = this._randomLength();
                 }
             }
 
@@ -820,7 +877,9 @@ function initBackgrounds() {
         window,
         cfg.baseOpacity,
         { color: cfg.cursorColor, opacity: cfg.cursorOpacity, radius: cfg.cursorRadius },
-        cfg.direction
+        cfg.direction,
+        cfg.density,
+        cfg.lengthMultiplier
     );
     miniMatrixInstance = null;
 }
@@ -1228,6 +1287,54 @@ function initBrandHoverAnimations() {
     });
 }
 
+function initFeaturedCardHoverMotion() {
+    const cards = document.querySelectorAll('.featured-card');
+    if (!cards.length) return;
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const coarsePointer = window.matchMedia('(pointer: coarse)').matches;
+    if (prefersReducedMotion || coarsePointer) return;
+
+    const MAX_TILT_DEG = 20;
+    const MAX_SHIFT_PX = 20;
+
+    cards.forEach((card) => {
+        const resetMotion = () => {
+            card.style.setProperty('--card-tilt-x', '0deg');
+            card.style.setProperty('--card-tilt-y', '0deg');
+            card.style.setProperty('--card-shift-x', '0px');
+            card.style.setProperty('--card-shift-y', '0px');
+        };
+
+        card.addEventListener('pointermove', (event) => {
+            if (event.pointerType && event.pointerType !== 'mouse' && event.pointerType !== 'pen') return;
+
+            const rect = card.getBoundingClientRect();
+            if (!rect.width || !rect.height) return;
+
+            const px = (event.clientX - rect.left) / rect.width;
+            const py = (event.clientY - rect.top) / rect.height;
+            const nx = Math.max(-1, Math.min(1, (px - 0.5) * 2));
+            const ny = Math.max(-1, Math.min(1, (py - 0.5) * 2));
+
+            const tiltX = -ny * MAX_TILT_DEG;
+            const tiltY = nx * MAX_TILT_DEG;
+            const shiftX = nx * MAX_SHIFT_PX;
+            const shiftY = ny * MAX_SHIFT_PX;
+
+            card.style.setProperty('--card-tilt-x', `${tiltX.toFixed(2)}deg`);
+            card.style.setProperty('--card-tilt-y', `${tiltY.toFixed(2)}deg`);
+            card.style.setProperty('--card-shift-x', `${shiftX.toFixed(2)}px`);
+            card.style.setProperty('--card-shift-y', `${shiftY.toFixed(2)}px`);
+        }, { passive: true });
+
+        card.addEventListener('pointerleave', resetMotion);
+        card.addEventListener('pointercancel', resetMotion);
+        card.addEventListener('lostpointercapture', resetMotion);
+
+        resetMotion();
+    });
+}
 function initHeroLanguageLoop() {
     const lineEl = document.getElementById('hero-language-line');
     if (!lineEl) return;
@@ -1238,7 +1345,7 @@ function initHeroLanguageLoop() {
         '拉贾夫',
         'राघव',
         '라 가브'
-        
+
     ];
 
     const intervalMs = 3000;
@@ -2036,9 +2143,9 @@ function initStickyNote() {
 
         if (!stickyNoteEl.classList.contains('visible')) {
             stickyNoteEl.classList.add('visible');
-            stickyNoteEl.setAttribute('aria-hidden', 'false');
-            document.body.classList.add('notes-active');
         }
+        stickyNoteEl.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('notes-active');
         stickyNoteEl.classList.remove('minimized');
 
         if (!hasPosition) {
@@ -2107,6 +2214,10 @@ function initStickyNote() {
     };
 
     const toggleFromPill = (sourceEl = lastSourceEl) => {
+        if (stickyNoteEl.classList.contains('is-closing')) {
+            openFromPill(sourceEl);
+            return;
+        }
         if (stickyNoteEl.classList.contains('visible')) {
             closeToPill(sourceEl);
             return;
@@ -2866,6 +2977,7 @@ document.addEventListener('DOMContentLoaded', () => {
     SITE_CONFIG.setupCaseOverlays();
     initIndexGrid();
     initBrandHoverAnimations();
+    initFeaturedCardHoverMotion();
     initHeroLanguageLoop();
 
     // Initialize Scramble Animations
@@ -2894,5 +3006,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+
+
+
 
 
