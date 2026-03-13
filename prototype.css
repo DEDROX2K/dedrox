@@ -1957,6 +1957,7 @@ body.device-maximized .expand-fab .icon-expand {
 .pixel-title {
     font-size: 1.08rem;
     margin-bottom: 8px;
+    text-align: center;
 }
 
 .pixel-sub {
@@ -1968,6 +1969,7 @@ body.device-maximized .expand-fab .icon-expand {
 .pixel-tools {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
     flex-wrap: wrap;
     margin-bottom: calc(var(--section-gap-xs) + 2px);
@@ -1976,14 +1978,17 @@ body.device-maximized .expand-fab .icon-expand {
 .swatch {
     width: 22px;
     height: 22px;
-    border-radius: 50%;
+    border-radius: 0;
+    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
     border: 2px solid transparent;
     transition: transform 0.2s var(--ease-lux), border-color 0.2s var(--ease-lux);
+    appearance: none;
+    -webkit-appearance: none;
 }
 
 .swatch.active {
-    border-color: #111;
-    transform: scale(1.08);
+    border-color: #ffffff;
+    transform: scale(1.5);
 }
 
 .clear-pixel {
@@ -1998,12 +2003,14 @@ body.device-maximized .expand-fab .icon-expand {
     flex: 0 0 100%;
     margin: 6px auto 0;
     text-align: center;
+border-radius: 999px;
 }
 
 .pixel-canvas-wrap {
     width: min(100%, var(--pixel-canvas-size));
     margin: 0 auto;
     aspect-ratio: 1 / 1;
+    position: relative;
     clip-path: polygon(32% 2%, 68% 2%, 98% 32%, 98% 68%, 68% 98%, 32% 98%, 2% 68%, 2% 32%);
     border-radius: 18px;
     overflow: hidden;
@@ -2019,6 +2026,25 @@ body.device-maximized .expand-fab .icon-expand {
 }
 
 
+
+
+.pixel-cursor-preview {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 5;
+    border: 1px solid rgba(0, 0, 0, 0.45);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.32);
+    transition: opacity 0.12s ease;
+}
+
+body.pixel-draw-cursor-active #custom-cursor {
+    opacity: 0 !important;
+}
 
 .brand-section {
     display: flex;
@@ -2171,8 +2197,13 @@ a.brand-block:hover {
 
 @media(max-width: 400px) {
     .pixel-tools {
-        grid-template-columns: repeat(3, 1fr);
-    }
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: calc(var(--section-gap-xs) + 2px);
+}
 }
 
 /* --------------------------------------------------------
@@ -3931,6 +3962,7 @@ body.reader-mode .wip-swinging-img {
         transform: rotate(4deg);
     }
 }
+
 
 
 

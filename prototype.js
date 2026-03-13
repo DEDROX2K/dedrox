@@ -969,6 +969,95 @@ const pixelCtx = pixelCanvas ? pixelCanvas.getContext('2d') : null;
 const paletteRoot = document.getElementById('pixel-palette');
 let drawing = false;
 let activeColor = SITE_CONFIG.pixel.palette[0];
+let pixelCursorPreview = null;
+
+function ensurePixelCursorPreview() {
+    if (!pixelCanvas) return null;
+    if (pixelCursorPreview) return pixelCursorPreview;
+
+    const wrap = pixelCanvas.closest('.pixel-canvas-wrap');
+    if (!wrap) return null;
+
+    pixelCursorPreview = document.createElement('div');
+    pixelCursorPreview.className = 'pixel-cursor-preview';
+    wrap.appendChild(pixelCursorPreview);
+    return pixelCursorPreview;
+}
+
+function hidePixelCursorPreview() {
+    if (pixelCursorPreview) {
+        pixelCursorPreview.style.opacity = '0';
+        pixelCursorPreview.style.width = '0';
+        pixelCursorPreview.style.height = '0';
+    }
+    document.body.classList.remove('pixel-draw-cursor-active');
+}
+
+function getPointerClientXY(event) {
+    if (event.touches && event.touches[0]) {
+        return { x: event.touches[0].clientX, y: event.touches[0].clientY };
+    }
+    if (event.changedTouches && event.changedTouches[0]) {
+        return { x: event.changedTouches[0].clientX, y: event.changedTouches[0].clientY };
+    }
+    if (typeof event.clientX === 'number' && typeof event.clientY === 'number') {
+        return { x: event.clientX, y: event.clientY };
+    }
+    return null;
+}
+
+function getPixelSnapFromEvent(event) {
+    if (!pixelCanvas || !pixelCtx) return null;
+
+    const rect = pixelCanvas.getBoundingClientRect();
+    const pointer = getPointerClientXY(event);
+    if (!pointer) return null;
+
+    const cssX = pointer.x - rect.left;
+    const cssY = pointer.y - rect.top;
+    const scaleX = pixelCanvas.width / rect.width;
+    const scaleY = pixelCanvas.height / rect.height;
+    const rawX = cssX * scaleX;
+    const rawY = cssY * scaleY;
+    const snapX = Math.floor(rawX / SITE_CONFIG.pixel.pixelSize) * SITE_CONFIG.pixel.pixelSize;
+    const snapY = Math.floor(rawY / SITE_CONFIG.pixel.pixelSize) * SITE_CONFIG.pixel.pixelSize;
+
+    const outside = snapX < 0 || snapY < 0 || snapX >= pixelCanvas.width || snapY >= pixelCanvas.height;
+
+    return {
+        outside,
+        snapX,
+        snapY,
+        scaleX,
+        scaleY
+    };
+}
+
+function updatePixelCursorPreview(event) {
+    if (!pixelCanvas || window.matchMedia('(pointer: coarse)').matches) return;
+
+    const preview = ensurePixelCursorPreview();
+    if (!preview) return;
+
+    const snap = getPixelSnapFromEvent(event);
+    if (!snap || snap.outside) {
+        hidePixelCursorPreview();
+        return;
+    }
+
+    const brushCssW = SITE_CONFIG.pixel.pixelSize / snap.scaleX;
+    const brushCssH = SITE_CONFIG.pixel.pixelSize / snap.scaleY;
+
+    preview.style.width = `${brushCssW}px`;
+    preview.style.height = `${brushCssH}px`;
+    preview.style.left = `${snap.snapX / snap.scaleX}px`;
+    preview.style.top = `${snap.snapY / snap.scaleY}px`;
+    preview.style.background = activeColor;
+    preview.style.opacity = '1';
+
+    pixelCanvas.style.setProperty('cursor', 'none', 'important');
+    document.body.classList.add('pixel-draw-cursor-active');
+}
 
 function buildPalette() {
     if (!paletteRoot) return;
@@ -982,6 +1071,9 @@ function buildPalette() {
             activeColor = color;
             document.querySelectorAll('.swatch').forEach((s) => s.classList.remove('active'));
             swatch.classList.add('active');
+            if (pixelCursorPreview) {
+                pixelCursorPreview.style.background = activeColor;
+            }
         });
         paletteRoot.appendChild(swatch);
     });
@@ -1000,54 +1092,66 @@ function clearPixelCanvas() {
     pixelCtx.fillRect(0, 0, pixelCanvas.width, pixelCanvas.height);
 }
 
-function paintFromEvent(e) {
+function paintFromEvent(event) {
     if (!pixelCanvas || !pixelCtx) return;
-    const rect = pixelCanvas.getBoundingClientRect();
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-    const cssX = clientX - rect.left;
-    const cssY = clientY - rect.top;
-    const scaleX = pixelCanvas.width / rect.width;
-    const scaleY = pixelCanvas.height / rect.height;
-    const rawX = cssX * scaleX;
-    const rawY = cssY * scaleY;
-    const x = Math.floor(rawX / SITE_CONFIG.pixel.pixelSize) * SITE_CONFIG.pixel.pixelSize;
-    const y = Math.floor(rawY / SITE_CONFIG.pixel.pixelSize) * SITE_CONFIG.pixel.pixelSize;
 
-    if (x < 0 || y < 0 || x >= pixelCanvas.width || y >= pixelCanvas.height) return;
+    const snap = getPixelSnapFromEvent(event);
+    if (!snap || snap.outside) return;
+
     pixelCtx.fillStyle = activeColor;
-    pixelCtx.fillRect(x, y, SITE_CONFIG.pixel.pixelSize, SITE_CONFIG.pixel.pixelSize);
+    pixelCtx.fillRect(
+        snap.snapX,
+        snap.snapY,
+        SITE_CONFIG.pixel.pixelSize,
+        SITE_CONFIG.pixel.pixelSize
+    );
 }
 
 if (pixelCanvas) {
-    pixelCanvas.addEventListener('mousedown', (e) => {
+    pixelCanvas.addEventListener('mouseenter', (event) => {
+        updatePixelCursorPreview(event);
+    });
+
+    pixelCanvas.addEventListener('mouseleave', () => {
+        hidePixelCursorPreview();
+    });
+
+    pixelCanvas.addEventListener('mousedown', (event) => {
         drawing = true;
-        paintFromEvent(e);
+        updatePixelCursorPreview(event);
+        paintFromEvent(event);
     });
 
     window.addEventListener('mouseup', () => {
         drawing = false;
     });
 
-    pixelCanvas.addEventListener('mousemove', (e) => {
+    pixelCanvas.addEventListener('mousemove', (event) => {
+        updatePixelCursorPreview(event);
         if (!drawing) return;
-        paintFromEvent(e);
+        paintFromEvent(event);
     });
 
-    pixelCanvas.addEventListener('touchstart', (e) => {
+    pixelCanvas.addEventListener('touchstart', (event) => {
         drawing = true;
-        paintFromEvent(e);
-        e.preventDefault();
+        paintFromEvent(event);
+        event.preventDefault();
     }, { passive: false });
 
-    pixelCanvas.addEventListener('touchmove', (e) => {
+    pixelCanvas.addEventListener('touchmove', (event) => {
         if (!drawing) return;
-        paintFromEvent(e);
-        e.preventDefault();
+        paintFromEvent(event);
+        event.preventDefault();
     }, { passive: false });
 
     window.addEventListener('touchend', () => {
         drawing = false;
+        hidePixelCursorPreview();
+    });
+
+    window.addEventListener('blur', () => {
+        drawing = false;
+        hidePixelCursorPreview();
     });
 }
 
@@ -2790,4 +2894,5 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
 
