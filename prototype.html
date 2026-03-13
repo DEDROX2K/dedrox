@@ -25,11 +25,6 @@
 <body>
 
     <!-- 4 Second Startup Overlay Removed per request -->
-
-    <a href="index.html" class="site-exit-btn hidden-mobile">
-        <img src="images/Exit.png" alt="Exit" style="border: 4px solid rgb(255, 254, 230);">
-    </a>
-
     <!-- ASCII Animated Background Container -->
     <div id="ascii-bg" class="ascii-bg" aria-hidden="true">
         <canvas id="canvas-bg"></canvas>
@@ -79,7 +74,7 @@
 
         <div class="site-content" id="scrollable-content">
             <div id="reader-inline" class="reader-inline" aria-hidden="true">
-                <!-- <header class="reader-inline-top">
+                <header class="reader-inline-top">
                     <div class="reader-top-brand">RAGHAV PRASANNA</div>
                     <div class="reader-top-links">
                         <a href="https://www.behance.net/raghavprasanna">BEHANCE</a>
@@ -88,7 +83,7 @@
                     </div>
                     <div class="reader-top-phone">+44 7466 552 666</div>
                     <div class="reader-top-cart">RAGHAVPRASANNA2000@GMAIL.COM</div>
-                </header> -->
+                </header>
 
                 <section class="onboarding-header" id="onboarding-header" aria-label="Interactive intro">
                     <p class="onboarding-kicker">Yes, I am a Product Designer but...</p>
@@ -143,13 +138,11 @@
             <section class="hero-clean reveal delay-1">
                 <h1 class="hero-clean-title">
                     <div class="hero-title-line"><span class="hero-title-text">Raghav.</span></div>
-                    <div class="hero-title-line"><span class="hero-title-text">ராகவ்.</span></div>
-                    <div class="hero-title-line"><span class="hero-title-text">राघव</span></div>
+                    <div class="hero-title-line hero-title-line-rotating"><span class="hero-title-text hero-title-rotating-text" id="hero-language-line">ராகவ்</span></div>
                 </h1>
                 <p class="hero-clean-subtitle">
-                    Mid level Digital product designer based in London with a background in jnr dev and management.
-                    Creator of
-                    <strong>Airpaste</strong>.
+                    Mid level <strong>Digital product designer</strong> based in London with a background in jnr dev and management.
+                    Creator of Airpaste.
                 </p>
                 <div class="hero-clean-actions">
                     <a href="#company-dock" class="btn-primary">
@@ -181,7 +174,6 @@
                 <div class="node-graph-container" id="node-graph-container">
                     <svg class="node-edges" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"></svg>
 
-                    <!-- Nodes -->
                     <div class="node-item" id="node-pt" data-x="50" data-y="18" data-cursor="grab">
                         <div class="node-icon pt-icon">
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -233,7 +225,7 @@
                     </div>
                                         <div class="node-item" id="node-email" data-x="80" data-y="50" data-cursor="grab">
                         <div class="node-icon num-icon">3</div>
-                        <span>Hungry</span>
+                        <span>Freelancer</span>
                     </div>
 
 
@@ -286,7 +278,13 @@
                 </div>
             </section>
 
-            <section class="case-studies reveal delay-2">
+                <section class="portfolio-section" aria-label="Portfolio case studies">
+                <header class="portfolio-section-header reveal delay-2">
+                    <h2 class="portfolio-section-title">Portfolio case studies 
+                        <!-- <span>(Click on the tiles below)</span> -->
+                    </h2>
+                </header>
+                <section class="case-studies reveal delay-2">
                 <a href="Case1.html" class="featured-card" data-case="case1">
                     <div class="folder-top">
                         <img src="images/port1.jpg" alt="Clear Breath App">
@@ -318,7 +316,7 @@
                         <p class="folder-foot">Open case study</p>
                     </div>
                 </a>
-                <a href="#" target="_blank" class="featured-card">
+                <a href="#" target="_blank" class="featured-card" style="width: 340px;">
                     <div class="folder-top">
                         <img src="images/port4.jpg" alt="UI Exploration">
                     </div>
@@ -353,8 +351,9 @@
             </section>
 
             <div class="bottom-bar"></div>
+            </section>
 
-            <section class="reveal delay-3">
+                <section class="portfolio-more reveal delay-3">
                 <h2 class="more-title">More Projects</h2>
                 <div class="more-projects-grid">
                     <a href="#" target="_blank" class="more-project-item">
@@ -408,6 +407,16 @@
                 <div class="pixel-canvas-wrap">
                     <canvas id="pixel-canvas" width="40" height="40" aria-label="Pixel drawing canvas"></canvas>
                 </div>
+            </section>
+            <section class="mini-site-actions reveal delay-4" aria-label="Site actions">
+                <a href="index.html" class="mini-site-action-btn mini-site-action-exit" data-cursor="link">
+                    <img src="images/Exit.png" alt="Exit" style="border: 4px solid rgb(255, 254, 230);">
+                </a>
+                <a class="mini-site-action-btn mini-site-action-resume"
+                    href="https://drive.google.com/file/d/1fr2YmRnY8EZXXE1qrLNsNi8FGXbhD9Sw/view?usp=sharing"
+                    target="_blank" rel="noopener noreferrer" data-cursor="link">
+                    <img src="images/Resume.png" alt="Resume" style="border: 4px solid rgb(255, 254, 230);">
+                </a>
             </section>
 
             <section class="index-footer reveal delay-5">
@@ -691,13 +700,6 @@
                 <span class="pill-tooltip">Expand</span>
             </button>
         </div>
-        <div class="resume-wrap hidden-mobile">
-            <a class="site-resume-btn"
-                href="https://drive.google.com/file/d/1fr2YmRnY8EZXXE1qrLNsNi8FGXbhD9Sw/view?usp=sharing"
-                target="_blank" rel="noopener noreferrer">
-                <img src="images/Resume.png" alt="Resume" style="border: 4px solid rgb(255, 254, 230);">
-            </a>
-        </div>
     </div>
     <!-- Custom Device Bottom Blur Styles -->
     <style>
@@ -738,3 +740,11 @@
 </body>
 
 </html>
+
+
+
+
+
+
+
+

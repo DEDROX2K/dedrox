@@ -975,6 +975,142 @@ function initBrandHoverAnimations() {
     });
 }
 
+function initHeroLanguageLoop() {
+    const lineEl = document.getElementById('hero-language-line');
+    if (!lineEl) return;
+
+    const languages = [
+        'ராகவ்',
+        'รากาฟ',
+        '拉贾夫',
+        'राघव',
+        'ರಾಘವ್',
+        'راگاو',
+        '라 가브'
+    ];
+
+    const intervalMs = 3000;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let languageIndex = 0;
+    let isTransitioning = false;
+
+    const tokenizeWords = (text) => {
+        const words = text.trim().split(/\s+/).filter(Boolean);
+        return words.length ? words : [text];
+    };
+
+    const renderWords = (text) => {
+        lineEl.textContent = '';
+        const words = tokenizeWords(text);
+        const spans = [];
+
+        words.forEach((word, index) => {
+            const span = document.createElement('span');
+            span.className = 'hero-language-word';
+            span.textContent = word;
+            lineEl.appendChild(span);
+            spans.push(span);
+
+            if (index < words.length - 1) {
+                lineEl.appendChild(document.createTextNode(' '));
+            }
+        });
+
+        return spans;
+    };
+
+    const animateIn = (spans) => {
+        if (!spans.length) return;
+
+        if (typeof gsap !== 'undefined') {
+            gsap.killTweensOf(spans);
+            gsap.fromTo(spans,
+                { y: 12, opacity: 0, filter: 'blur(2px)' },
+                {
+                    y: 0,
+                    opacity: 1,
+                    filter: 'blur(0px)',
+                    duration: 0.45,
+                    stagger: 0.08,
+                    ease: 'power3.out'
+                }
+            );
+            return;
+        }
+
+        spans.forEach((span, index) => {
+            span.style.opacity = '0';
+            span.style.transform = 'translateY(12px)';
+            span.style.filter = 'blur(2px)';
+            span.style.transition = 'transform 360ms cubic-bezier(0.22, 1, 0.36, 1), opacity 320ms ease, filter 320ms ease';
+            window.setTimeout(() => {
+                span.style.opacity = '1';
+                span.style.transform = 'translateY(0)';
+                span.style.filter = 'blur(0px)';
+            }, index * 80);
+        });
+    };
+
+    const animateOut = (spans, onComplete) => {
+        if (!spans.length) {
+            onComplete();
+            return;
+        }
+
+        if (typeof gsap !== 'undefined') {
+            gsap.killTweensOf(spans);
+            gsap.to(spans, {
+                y: -10,
+                opacity: 0,
+                filter: 'blur(2px)',
+                duration: 0.22,
+                stagger: 0.05,
+                ease: 'power2.in',
+                onComplete
+            });
+            return;
+        }
+
+        spans.forEach((span, index) => {
+            span.style.transition = 'transform 220ms ease, opacity 220ms ease, filter 220ms ease';
+            window.setTimeout(() => {
+                span.style.opacity = '0';
+                span.style.transform = 'translateY(-10px)';
+                span.style.filter = 'blur(2px)';
+            }, index * 50);
+        });
+
+        window.setTimeout(onComplete, 240 + Math.max(0, spans.length - 1) * 50);
+    };
+
+    const setLanguage = (index) => {
+        const spans = renderWords(languages[index]);
+        if (!prefersReducedMotion) {
+            animateIn(spans);
+        }
+    };
+
+    setLanguage(languageIndex);
+
+    window.setInterval(() => {
+        if (isTransitioning) return;
+
+        if (prefersReducedMotion) {
+            languageIndex = (languageIndex + 1) % languages.length;
+            setLanguage(languageIndex);
+            return;
+        }
+
+        isTransitioning = true;
+        const currentSpans = Array.from(lineEl.querySelectorAll('.hero-language-word'));
+
+        animateOut(currentSpans, () => {
+            languageIndex = (languageIndex + 1) % languages.length;
+            setLanguage(languageIndex);
+            isTransitioning = false;
+        });
+    }, intervalMs);
+}
 function initOnboardingHeader() {
     const lineEl = document.getElementById('onboarding-line');
     if (!lineEl) {
@@ -2444,6 +2580,7 @@ document.addEventListener('DOMContentLoaded', () => {
     SITE_CONFIG.setupCaseOverlays();
     initIndexGrid();
     initBrandHoverAnimations();
+    initHeroLanguageLoop();
 
     // Initialize Scramble Animations
     const pillTextEl = document.querySelector('.pill-text');
@@ -2471,6 +2608,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+
+
+
+
+
 
 
 

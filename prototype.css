@@ -19,8 +19,8 @@
     --device-collapsed-height: 56px;
     --device-expanded-height: 88vh;
     --device-expanded-max-height: 980px;
-    --case-window-width: 39vw;
-    --case-window-gap: 20px;
+    --case-window-width: 50vw;
+    --case-window-gap: 60px;
     --case-pair-shift: calc((var(--case-window-width) + var(--case-window-gap)) / 2);
     --site-padding-x: 24px;
     --site-padding-top: 30px;
@@ -41,7 +41,7 @@
     --project-grid-gap: 14px;
     --featured-card-radius: 18px;
     --featured-card-min-height: 0px;
-    --featured-card-gap: 14px;
+    --featured-card-gap: 29px;
     --featured-card-width: 100%;
     --dock-icon-size: 46px;
     --dock-icon-gap: 9px;
@@ -78,9 +78,9 @@
     --cursor-grabbing: url('ggrabbingcursor.png') 12 12, grabbing;
 
     /* Pill Button Animation Variables */
-    --pulse-initial-delay: 4s;
-    --pulse-cycle-interval: 7s;
-    --pulse-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --pulse-initial-delay: 7s;
+    --pulse-cycle-interval: 10s;
+    --pulse-spring: ease-in-out;
 }
 
 
@@ -189,6 +189,46 @@ body.cursor-system :where([data-cursor='default']) {
     width: 100%;
     display: block;
 }
+
+.mini-site-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 4px 0 var(--section-gap-md);
+}
+
+.mini-site-action-btn {
+    display: block;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+}
+
+.mini-site-action-btn:hover {
+    transform: scale(1.04);
+    opacity: 0.92;
+}
+
+.mini-site-action-btn img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.mini-site-action-exit {
+    width: 64px;
+    flex: 0 0 auto;
+}
+
+.mini-site-action-resume {
+    width: 135px;
+    margin-left: auto;
+}
+
+.mini-site-action-btn:focus-visible {
+    outline: 2px solid #7f7f7f;
+    outline-offset: 2px;
+}
+
 
 .mini-matrix-bg {
     position: absolute;
@@ -1522,6 +1562,85 @@ body.device-maximized .expand-fab .icon-expand {
     transform: translateX(-50%) translateY(0);
 }
 
+
+
+
+
+
+
+.portfolio-section {
+    position: relative;
+    width: calc(100% + (var(--site-padding-x) * 2));
+    margin-left: calc(var(--site-padding-x) * -1);
+    margin-right: calc(var(--site-padding-x) * -1);
+    margin-bottom: var(--section-gap-lg);
+    padding: clamp(20px, 3vw, 32px) calc(var(--site-padding-x) + 12px) clamp(24px, 3.2vw, 42px);
+    background: #E6E6E6;
+    border-radius: 14px;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.portfolio-section::before,
+.portfolio-section::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: clamp(64px, 9vw, 160px);
+    background-image: url("images/grad-dith-thick.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100% 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.portfolio-section::before {
+    top: 0;
+}
+
+.portfolio-section::after {
+    bottom: 0;
+    transform: scaleY(-1);
+    transform-origin: center;
+}
+
+.portfolio-section>* {
+    position: relative;
+    z-index: 1;
+}
+
+
+
+
+
+
+.portfolio-section-header {
+    margin-bottom: 16px;
+}
+
+.portfolio-section-title {
+    margin: 0;
+    color: #121212;
+    font-size: 1.18rem;
+    letter-spacing: -0.015em;
+}
+
+.portfolio-section-title span {
+    display: block;
+    margin-top: 4px;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.76rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: #444;
+}
+
+.portfolio-more {
+    margin-bottom: 0;
+}
+
 .case-studies {
     display: grid;
     gap: var(--featured-card-gap);
@@ -1539,7 +1658,7 @@ body.device-maximized .expand-fab .icon-expand {
     border-radius: var(--featured-card-radius);
     overflow: hidden;
     min-height: var(--featured-card-min-height);
-    background: #ffffff;
+    /* background: #ffffff; */
     border: 1px solid rgba(0, 0, 0, 0.08);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -2063,6 +2182,14 @@ a.brand-block:hover {
 
     .site-content {
         padding: 24px 16px 0;
+    }
+
+    .portfolio-section {
+        width: calc(100% + 32px);
+        margin-left: -16px;
+        margin-right: -16px;
+        padding: 18px 16px 24px;
+        border-radius: 0;
     }
 
     .featured-card {
@@ -2683,20 +2810,38 @@ body.case-open .case-window {
 .hero-clean-title {
     font-size: clamp(3rem, 6vw, 4.5rem);
     font-weight: 400;
-    line-height: 1;
+    line-height: 1.1;
     letter-spacing: -0.03em;
-    color: var(--ink);
+    color: #101010;
     margin-bottom: 24px;
-    /* Soft gradient matching OpenAI's subtle darks */
-    background: linear-gradient(180deg, #212121 0%, #59595959 100%);
+}
+
+.hero-title-line-rotating {
+    min-height: 1em;
+}
+
+.hero-title-rotating-text {
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.hero-language-word {
+    display: inline-block;
+    will-change: transform, opacity, filter;
+}
+
+.hero-clean-title 
+.hero-language-word {
+    display: inline-block;
+    background: linear-gradient(180deg, #000000 0%, #27272759 100%);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    color: transparent;
 }
-
 .hero-clean-subtitle {
     font-size: clamp(1.1rem, 2vw, 1.3rem);
-    line-height: 1.6;
+    line-height: 2;
     color: var(--soft-ink);
     font-weight: 400;
     letter-spacing: -0.01em;
@@ -3706,6 +3851,4 @@ body.reader-mode .wip-swinging-img {
         transform: rotate(4deg);
     }
 }
-
-
 
