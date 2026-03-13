@@ -148,8 +148,8 @@
                     <a href="#company-dock" class="btn-primary">
                         View Work
                     </a>
-                    <a href="mailto:raghavprasanna2000@gmail.com" class="btn-secondary">
-                        Contact Me <i data-lucide="arrow-right"></i>
+                    <a href="#" class="btn-secondary" id="show-id-btn" data-cursor="link">
+                        Show ID <img src="iconset/Badge.png" alt="" class="show-id-icon" aria-hidden="true">
                     </a>
                 </div>
             </section>
@@ -691,13 +691,16 @@
     </div>
 
     <!-- WIP Swinging Image -->
-    <img src="images/wip.png" alt="Work In Progress" class="wip-swinging-img hidden-mobile">
-
-    <div class="global-controls" style="pointer-events: none;">
+    <img src="images/wip.png" alt="Work In Progress" class="wip-swinging-img hidden-mobile">    <div class="global-controls" style="pointer-events: none;">
         <div class="left-controls" aria-hidden="true">
             <button class="expand-fab hidden-mobile" id="expand-btn" aria-label="Toggle Fullscreen" title="Expand">
                 <img src="iconset/expand.png" alt="">
                 <span class="pill-tooltip">Expand</span>
+            </button>
+        </div>
+        <div class="id-card-wrap hidden-mobile" aria-hidden="true">
+            <button class="id-card-dock" id="id-card-dock" type="button" aria-label="Open ID card" aria-expanded="false" data-cursor="link">
+                <img src="images/showid.png" alt="Traveler ID card">
             </button>
         </div>
     </div>
@@ -740,6 +743,11 @@
 </body>
 
 </html>
+
+
+
+
+
 
 
 

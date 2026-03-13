@@ -297,6 +297,9 @@ const pillResumeBtn = document.getElementById('pill-resume-btn');
 const pillThirdBtn = document.getElementById('pill-third-btn');
 const resumePopoutEl = document.getElementById('resume-popout');
 const readerInlineEl = document.getElementById('reader-inline');
+const showIdBtn = document.getElementById('show-id-btn');
+const idCardDock = document.getElementById('id-card-dock');
+const scrollableContentEl = document.getElementById('scrollable-content');
 
 function initExpandButtonAnchor() {
     if (!device || !expandBtn || !leftControlsEl) {
@@ -368,6 +371,111 @@ function initExpandButtonAnchor() {
     return { update, schedule };
 }
 
+function initIdCardSystem() {
+    if (!device || !idCardDock) {
+        return {
+            showPeek: () => { },
+            openCard: () => { },
+            closeToPeek: () => { },
+            hide: () => { },
+            isOpen: () => false,
+            isVisible: () => false,
+            isInside: () => false,
+            updateAnchor: () => { }
+        };
+    }
+
+    const state = {
+        visible: false,
+        open: false
+    };
+
+    const updateAnchor = () => {
+        const rect = device.getBoundingClientRect();
+        idCardDock.style.left = `${rect.right + 12}px`;
+        idCardDock.style.top = `${rect.top + (rect.height * 0.52)}px`;
+    };
+
+    const showPeek = () => {
+        state.visible = true;
+        state.open = false;
+        idCardDock.classList.add('visible');
+        idCardDock.classList.remove('is-open');
+        idCardDock.setAttribute('aria-expanded', 'false');
+        updateAnchor();
+    };
+
+    const openCard = () => {
+        if (!state.visible) showPeek();
+        state.open = true;
+        idCardDock.classList.add('is-open');
+        idCardDock.setAttribute('aria-expanded', 'true');
+        updateAnchor();
+    };
+
+    const closeToPeek = () => {
+        if (!state.visible) return;
+        state.open = false;
+        idCardDock.classList.remove('is-open');
+        idCardDock.setAttribute('aria-expanded', 'false');
+        updateAnchor();
+    };
+
+    const hide = () => {
+        state.visible = false;
+        state.open = false;
+        idCardDock.classList.remove('visible', 'is-open');
+        idCardDock.setAttribute('aria-expanded', 'false');
+    };
+
+    idCardDock.style.setProperty('--id-peek-visible', '44px');
+
+    idCardDock.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        if (state.open) {
+            closeToPeek();
+        } else {
+            openCard();
+        }
+    });
+
+    window.addEventListener('resize', updateAnchor);
+    window.addEventListener('orientationchange', updateAnchor);
+    window.addEventListener('scroll', () => {
+        if (!state.visible) return;
+        if (state.open) closeToPeek();
+        updateAnchor();
+    }, { passive: true });
+    window.addEventListener('wheel', (event) => {
+        if (!state.open) return;
+        if (event.target instanceof Node && idCardDock.contains(event.target)) return;
+        closeToPeek();
+    }, { passive: true });
+
+    const observer = new MutationObserver(() => {
+        const expanded = device.classList.contains('expanded');
+        if (!expanded) {
+            hide();
+            return;
+        }
+        if (state.visible) updateAnchor();
+    });
+    observer.observe(device, { attributes: true, attributeFilter: ['class'] });
+
+    updateAnchor();
+
+    return {
+        showPeek,
+        openCard,
+        closeToPeek,
+        hide,
+        isOpen: () => state.visible && state.open,
+        isVisible: () => state.visible,
+        isInside: (target) => Boolean(target instanceof Node && idCardDock.contains(target)),
+        updateAnchor
+    };
+}
 function initCustomCursor() {
     const cursorEl = document.getElementById('custom-cursor');
     if (!cursorEl) return;
@@ -2435,6 +2543,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const resumePopout = initResumePopout();
     const readerMode = initReaderMode(onboardingFlow);
     const chatMode = initChatMode();
+    const idCardSystem = initIdCardSystem();
 
     const expandDeviceShell = (autoOpenNotes = true) => {
         if (!device || device.classList.contains('expanded')) return;
@@ -2450,6 +2559,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         setTimeout(() => {
             if (miniMatrixInstance) miniMatrixInstance.resize();
+            idCardSystem.updateAnchor();
             // Removed autoOpenNotes to prevent automatic spawning
         }, 520);
     };
@@ -2529,6 +2639,29 @@ document.addEventListener('DOMContentLoaded', () => {
         readerMode.toggle();
     });
 
+    showIdBtn?.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        expandDeviceShell(false);
+
+        if (!idCardSystem.isVisible()) {
+            idCardSystem.showPeek();
+            return;
+        }
+
+        if (idCardSystem.isOpen()) {
+            idCardSystem.closeToPeek();
+            return;
+        }
+
+        idCardSystem.hide();
+    });
+
+    scrollableContentEl?.addEventListener('scroll', () => {
+        if (idCardSystem.isOpen()) {
+            idCardSystem.closeToPeek();
+        }
+    }, { passive: true });
     document.body.addEventListener('click', (e) => {
         const caseOverlayControl = window.CaseOverlayControl;
         const caseIsOpen = caseOverlayControl
@@ -2538,11 +2671,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const clickedInsideDevice = device && device.contains(e.target);
         const clickedInsideSticky = stickyNoteEl && stickyNoteEl.contains(e.target);
         const clickedInsideResume = resumePopoutEl && resumePopoutEl.contains(e.target);
+        const clickedInsideIdCard = idCardSystem.isInside(e.target);
+
+        const idWasOpen = idCardSystem.isOpen();
+        if (idWasOpen && !clickedInsideIdCard && !(showIdBtn && showIdBtn.contains(e.target))) {
+            idCardSystem.closeToPeek();
+            return;
+        }
 
         // Priority close order:
         // 1) Close the side case window first.
         // 2) Only after that, allow closing the mini portfolio on a later outside click.
-        if (caseIsOpen && !clickedInsideCase && !clickedInsideDevice && !clickedInsideSticky && !clickedInsideResume) {
+        if (caseIsOpen && !clickedInsideCase && !clickedInsideDevice && !clickedInsideSticky && !clickedInsideResume && !clickedInsideIdCard) {
             if (caseOverlayControl) {
                 caseOverlayControl.close();
             } else if (caseWindowEl) {
@@ -2558,7 +2698,8 @@ document.addEventListener('DOMContentLoaded', () => {
             !clickedInsideDevice &&
             !clickedInsideCase &&
             !clickedInsideSticky &&
-            !clickedInsideResume
+            !clickedInsideResume &&
+            !clickedInsideIdCard
         ) {
             device.classList.remove('expanded');
             document.body.classList.remove('device-expanded');
@@ -2568,6 +2709,7 @@ document.addEventListener('DOMContentLoaded', () => {
             readerMode.close();
             stickyNote.close();
             resumePopout.close();
+            idCardSystem.hide();
             setTimeout(() => { if (miniMatrixInstance) miniMatrixInstance.resize(); }, 520);
         }
     });
@@ -2608,13 +2750,5 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
-
-
-
-
-
-
-
-
 
 
