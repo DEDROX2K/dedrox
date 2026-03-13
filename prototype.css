@@ -2883,8 +2883,7 @@ body.case-open .case-window {
     will-change: transform, opacity, filter;
 }
 
-.hero-clean-title .hero-title-text,
-.hero-title-rotating-text,
+.hero-clean-title 
 .hero-language-word {
     display: inline-block;
     background: linear-gradient(180deg, #212121 0%, #59595959 100%);
