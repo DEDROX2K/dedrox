@@ -26,6 +26,19 @@
     --site-padding-top: 30px;
     --site-radius: 30px;
 
+    /* ID Card Controls */
+    --id-anchor-offset-x: 6px;
+    --id-anchor-y-ratio: 0.52;
+    --id-peek-autohide-ms: 3000;
+    --id-peek-width: clamp(220px, 17vw, 300px);
+    --id-open-width: min(88vw, 1020px);
+    --id-peek-shift-x: -318px;
+    --id-peek-hover-shift-x: -290px;
+    --id-open-shift-x: -6px;
+    --id-peek-scale: 1;
+    --id-open-scale: 0.5;
+    --id-peek-rotation: 90deg;
+
     /* Section spacing */
     --section-vertical-space: 0px;
 
@@ -796,7 +809,7 @@ body.device-maximized .expand-fab .icon-expand {
     position: fixed;
     top: 50%;
     left: 50%;
-    width: clamp(220px, 17vw, 300px);
+    width: var(--id-peek-width);
     border: none;
     background: transparent;
     padding: 0;
@@ -804,8 +817,7 @@ body.device-maximized .expand-fab .icon-expand {
     cursor: pointer;
     opacity: 0;
     pointer-events: none;
-    transform: translate3d(-28px, -50%, 0);
-    /* rotate: 90deg; */
+    transform: translate3d(var(--id-peek-shift-x), -50%, 0) rotate(var(--id-peek-rotation)) scale(var(--id-peek-scale)); 
     transform-origin: right center;
     transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1), width 0.42s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.24s ease;
     z-index: 1;
@@ -824,12 +836,12 @@ body.device-maximized .expand-fab .icon-expand {
 }
 
 .id-card-dock.visible:not(.is-open):hover {
-    transform: translate3d(-18px, -50%, 0);
+    transform: translate3d(var(--id-peek-hover-shift-x), -50%, 0) rotate(var(--id-peek-rotation)) scale(var(--id-peek-scale));
 }
 
 .id-card-dock.is-open {
-    width: min(88vw, 1020px);
-    transform: translate3d(calc(-100% - 6px), -50%, 0);
+    width: var(--id-open-width);
+    transform: translate3d(calc(-100% + var(--id-open-shift-x)), -50%, 0) rotate(0deg) scale(var(--id-open-scale));
     z-index: 2;
 }
 .resume-wrap {
@@ -3919,4 +3931,7 @@ body.reader-mode .wip-swinging-img {
         transform: rotate(4deg);
     }
 }
+
+
+
 

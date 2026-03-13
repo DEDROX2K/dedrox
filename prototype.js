@@ -21,7 +21,7 @@ const SITE_CONFIG = {
         smoothFactor: 0.36
     },
     asciiRain: {
-        chars: ['█', '▒', '░', '░', '*', '.', '.', '.', '.', ':', ':', '*', '.', '░'],
+        chars: ['▒', '░', '░', '*', '.','.',  ':', ':',  '░'],
         fontSize: 15,
         speed: 1,
         baseOpacity: 0.10,
@@ -40,7 +40,7 @@ const SITE_CONFIG = {
         { name: 'Do. Creative Labs', logo: 'images/c1.png', url: 'images/c6.png' }
     ],
     pixel: {
-        palette: ['#111111', '#ff3b30', '#ffcc00', '#34c759', '#0a84ff', '#bf5af2'],
+        palette: ['#111111', '#ec726c', '#ffcc00', '#99e24f', '#75d3ff', '#f996cb'],
         pixelSize: 1,
         background: '#f3f3f3',
         resolution: 40
@@ -390,15 +390,54 @@ function initIdCardSystem() {
         document.body.appendChild(idCardWrap);
     }
 
+    const readCssNumberVar = (name, fallback) => {
+        const raw = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+        const parsed = Number.parseFloat(raw);
+        return Number.isFinite(parsed) ? parsed : fallback;
+    };
+
+    const getPeekAutoHideMs = () => Math.max(0, readCssNumberVar('--id-peek-autohide-ms', 6000));
+
     const state = {
         visible: false,
         open: false
     };
 
+    let peekHideTimer = 0;
+
+    const clearPeekHideTimer = () => {
+        if (!peekHideTimer) return;
+        window.clearTimeout(peekHideTimer);
+        peekHideTimer = 0;
+    };
+
     const updateAnchor = () => {
         const rect = device.getBoundingClientRect();
-        idCardDock.style.left = `${rect.right + 6}px`;
-        idCardDock.style.top = `${rect.top + (rect.height * 0.52)}px`;
+        const anchorOffsetX = readCssNumberVar('--id-anchor-offset-x', 6);
+        const anchorYRatio = readCssNumberVar('--id-anchor-y-ratio', 0.52);
+        idCardDock.style.left = `${rect.right + anchorOffsetX}px`;
+        idCardDock.style.top = `${rect.top + (rect.height * anchorYRatio)}px`;
+    };
+
+    const hide = () => {
+        state.visible = false;
+        state.open = false;
+        clearPeekHideTimer();
+        idCardWrap?.classList.remove('is-open-layer');
+        idCardDock.classList.remove('visible', 'is-open');
+        idCardDock.setAttribute('aria-expanded', 'false');
+    };
+
+    const schedulePeekAutoHide = () => {
+        clearPeekHideTimer();
+        if (!state.visible || state.open) return;
+        const hideDelay = getPeekAutoHideMs();
+        if (hideDelay <= 0) return;
+
+        peekHideTimer = window.setTimeout(() => {
+            if (!state.visible || state.open) return;
+            hide();
+        }, hideDelay);
     };
 
     const showPeek = () => {
@@ -409,11 +448,13 @@ function initIdCardSystem() {
         idCardDock.classList.remove('is-open');
         idCardDock.setAttribute('aria-expanded', 'false');
         updateAnchor();
+        schedulePeekAutoHide();
     };
 
     const openCard = () => {
         if (!state.visible) showPeek();
         state.open = true;
+        clearPeekHideTimer();
         idCardWrap?.classList.add('is-open-layer');
         idCardDock.classList.add('is-open');
         idCardDock.setAttribute('aria-expanded', 'true');
@@ -427,14 +468,7 @@ function initIdCardSystem() {
         idCardDock.classList.remove('is-open');
         idCardDock.setAttribute('aria-expanded', 'false');
         updateAnchor();
-    };
-
-    const hide = () => {
-        state.visible = false;
-        state.open = false;
-        idCardWrap?.classList.remove('is-open-layer');
-        idCardDock.classList.remove('visible', 'is-open');
-        idCardDock.setAttribute('aria-expanded', 'false');
+        schedulePeekAutoHide();
     };
 
     idCardDock.addEventListener('click', (event) => {
@@ -1099,9 +1133,8 @@ function initHeroLanguageLoop() {
         'รากาฟ',
         '拉贾夫',
         'राघव',
-        'ರಾಘವ್',
-        'راگاو',
         '라 가브'
+        
     ];
 
     const intervalMs = 3000;
