@@ -56,7 +56,8 @@
         <div class="top-bar" id="top-bar" data-cursor="link">
 
             <div class="top-bar-pill">
-                <div class="pill-greeting">Nice to meet you! <br> I’m Raghav! I’d love to be your problem solver partner
+                <div class="pill-greeting">Nice to meet you! <br> I’m Raghav! I’d love to be your partner in problem
+                    -solving.
                 </div>
                 <div class="pill-left">
                     <!-- <div class="pill-bar"></div> -->
@@ -172,7 +173,6 @@
             </section>
 
             <section class="hero-model reveal delay-2" aria-label="3D Interactive character model">
-                <!-- Google model-viewer web component -->
                 <model-viewer data-cursor="grab" src="threeD/me.glb" alt="3D character of Raghav" auto-rotate
                     camera-controls interaction-prompt="none" disable-zoom rotation-per-second="40deg"
                     shadow-intensity="1" min-camera-orbit="auto auto 3.5m" max-camera-orbit="auto auto 3.5m"
@@ -186,23 +186,12 @@
                 <div class="company-dock" id="company-dock"></div>
             </section>
 
-            <div class="indie-tool-promo" style="text-align: left; margin-top: 40px; padding: 0 20px;">
-                <a href="#" class="indie-tool-btn"
-                    style="display: inline-block; transition: transform 0.3s ease; text-decoration: none;">
-                    <img src="images/Line1.png" alt="Indie Project Management Tool"
-                        style="max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px;"
-                        data-cursor="link">
-                </a>
-                <p style="margin-top: 24px; color: #444;  margin-left: 0; margin-right: auto;">
-                    I’m building a project management tool for developers and designers who works as a one man
-                    team.
-                </p>
-            </div>
+
 
             <section class="mini-editorial-section reveal delay-2" aria-label="Profile snapshot">
                 <h3 class="mini-editorial-title">Raghav Prasanna &copy;</h3>
 
-                <div class="mini-editorial-pills mini-editorial-pills-primary">
+                <div class="mini-editorial-pills mini-editorial-pills-primary" style="padding: 10px 10px;">
                     <a href="#" class="mini-pill mini-pill-highlight" id="email-pill-btn" data-cursor="link">Email
                         <span class="pill-tooltip" id="email-pill-tooltip">Copy email address</span>
                     </a>
@@ -219,20 +208,20 @@
                     <span class="mini-pill">AR / XR</span>
                 </div> -->
 
-                <p class="mini-editorial-copy">
+                <p class="mini-editorial-copy" style="padding: 0px 10px;">
                     Systems thinker based in Newcastle/London, working on XR, Python, AI and UX. Working as a product
                     development assistant in AIRCARDS.
                 </p>
 
                 <!-- <h4 class="mini-editorial-projects">Selected Projects</h4> -->
 
-                <article class="mini-project-row" aria-label="Selected project 017">
+                <article class="mini-project-row" aria-label="Selected project 017" style="padding: 0px 10px;">
                     <!-- <div class="mini-project-id">017</div> -->
                     <div class="mini-project-grid">
                         <div class="mini-project-item">
                             <div class="mini-project-label">Clear Breath</div>
                             <div class="mini-project-value">
-                                <span class="mini-role-pill mini-role-pill-blue">Designer</span>
+                                <span class="mini-role-pill mini-role-pill-blue">UX</span>
                                 <span class="mini-role-pill mini-role-pill-green">Product Lead</span>
                             </div>
                         </div>
@@ -430,6 +419,19 @@
                             <p class="folder-foot">Open case study</p>
                         </div>
                     </a>
+
+                    <div class="indie-tool-promo" style="text-align: left; margin-top: 40px;">
+                        <a href="#" class="indie-tool-btn"
+                            style="display: inline-block; transition: transform 0.3s ease; text-decoration: none;">
+                            <img src="images/Line1.png" alt="Indie Project Management Tool"
+                                style="max-width: 100%; height: auto; display: block; margin: 0 auto; border-radius: 12px;"
+                                data-cursor="link">
+                        </a>
+                        <p style="margin-top: 14px; color: #444;  margin-left: 0; margin-right: auto;">
+                            I’m building a project management tool for developers and designers who works as a one man
+                            team.
+                        </p>
+                    </div>
                     <!-- <div class="arrow-marquee"></div> -->
 
                 </section>
@@ -597,142 +599,10 @@
 
 
         </div> <!-- End site-content -->
-        <!-- Custom gradient blur for the device container -->
+    <!-- Custom gradient blur for the device container -->
         <div class="device-bottom-blur"></div>
     </div> <!-- End device-container -->
 
-    <!-- Retro iOS Chat Mode Container -->
-    <div id="chat-mode" class="chat-mode" aria-hidden="true">
-        <div class="chat-eyelid chat-eyelid-top" aria-hidden="true"></div>
-        <div class="chat-eyelid chat-eyelid-bottom" aria-hidden="true"></div>
-
-        <div class="chat-scene" id="chat-scene" aria-hidden="true">
-            <div class="chat-scene-layer chat-scene-env" data-parallax-depth="8"></div>
-            <div class="chat-scene-layer chat-scene-hand-wrap" data-parallax-depth="16">
-                <div class="chat-scene-hand-frame">
-                    <picture class="chat-scene-hand-picture">
-                        <source media="(max-aspect-ratio: 3/4)"
-                            srcset="images/scene-mobile-hand@1x.png 1x, images/scene-mobile-hand@2x.png 2x">
-                        <source media="(max-aspect-ratio: 4/3)"
-                            srcset="images/scene-square-hand@1x.png 1x, images/scene-square-hand@2x.png 2x">
-                        <img class="chat-scene-hand" src="images/scene-wide-hand@1x.png"
-                            srcset="images/scene-wide-hand@1x.png 1x, images/scene-wide-hand@2x.png 2x" alt=""
-                            aria-hidden="true">
-                    </picture>
-
-                    <div class="chat-scene-phone-anchor">
-                        <div class="chat-scene-phone-layer">
-                            <div class="chat-phone-shell">
-                                <div class="ios-status-bar">
-                                    <div class="ios-status-left">
-                                        <div class="ios-signal">
-                                            <div class="ios-signal-bar ios-signal-1"></div>
-                                            <div class="ios-signal-bar ios-signal-2"></div>
-                                            <div class="ios-signal-bar ios-signal-3"></div>
-                                            <div class="ios-signal-bar ios-signal-4"></div>
-                                            <div class="ios-signal-bar ios-signal-5"></div>
-                                        </div>
-                                        <span>AT&amp;T</span>
-                                        <svg class="ios-wifi" viewBox="0 0 24 24">
-                                            <path
-                                                d="M12 21c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm-4.24-4.24c2.34-2.34 6.14-2.34 8.49 0l1.41-1.41c-3.12-3.12-8.19-3.12-11.31 0l1.41 1.41zm0 0"
-                                                fill="currentColor" />
-                                            <path
-                                                d="M4.93 11.93c3.9-3.89 10.24-3.89 14.14 0l1.41-1.41c-4.68-4.68-12.29-4.68-16.97 0l1.42 1.41z"
-                                                fill="currentColor" />
-                                        </svg>
-                                    </div>
-                                    <div class="ios-status-center">
-                                        11:26 PM
-                                    </div>
-                                    <div class="ios-status-right">
-                                        <svg class="ios-icon-small" viewBox="0 0 24 24">
-                                            <path d="M21 3L3 10.53v.98l6.84 2.65L12.48 21h.98L21 3z"
-                                                fill="currentColor" />
-                                        </svg>
-                                        <svg class="ios-icon-small" viewBox="0 0 24 24">
-                                            <path
-                                                d="M17.71 7.71L12 2h-1v7.59L6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 11 14.41V22h1l5.71-5.71-4.3-4.29 4.3-4.29zM13 5.83l1.88 1.88L13 9.59V5.83zm1.88 10.46L13 18.17v-3.76l1.88 1.88z"
-                                                fill="currentColor" />
-                                        </svg>
-                                        <span>67%</span>
-                                        <div class="ios-battery">
-                                            <div class="ios-battery-fill"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="chat-header">
-                                    <button class="chat-btn-back" id="chat-btn-back"><img src="iconset/cheer.png"
-                                            alt="">Go
-                                        back</button>
-                                    <div class="chat-title">
-                                        <span>+44 7553 433334</span>
-                                    </div>
-                                    <button class="chat-btn-clear" id="chat-btn-clear"><img src="iconset/clear.png"
-                                            alt="">Call</button>
-                                </div>
-
-                                <div class="chat-messages-area" id="chat-messages-area">
-                                    <div class="chat-timestamp">Jul 9, 2007 9:17 PM</div>
-                                    <!-- Bubbles will be injected here -->
-                                </div>
-
-                                <div class="chat-input-area">
-                                    <div class="chat-input-wrapper">
-                                        <input type="text" class="chat-input-text" id="chat-input-text" readonly>
-                                    </div>
-                                    <button class="chat-btn-send" id="chat-btn-send">Send</button>
-                                </div>
-
-                                <div class="chat-keyboard" id="chat-keyboard">
-                                    <!-- Aesthetic keyboard rows -->
-                                    <div class="kb-row">
-                                        <div class="kb-key">Q</div>
-                                        <div class="kb-key">W</div>
-                                        <div class="kb-key">E</div>
-                                        <div class="kb-key">R</div>
-                                        <div class="kb-key">T</div>
-                                        <div class="kb-key">Y</div>
-                                        <div class="kb-key">U</div>
-                                        <div class="kb-key">I</div>
-                                        <div class="kb-key">O</div>
-                                        <div class="kb-key">P</div>
-                                    </div>
-                                    <div class="kb-row kb-row-indented">
-                                        <div class="kb-key">A</div>
-                                        <div class="kb-key">S</div>
-                                        <div class="kb-key">D</div>
-                                        <div class="kb-key">F</div>
-                                        <div class="kb-key">G</div>
-                                        <div class="kb-key">H</div>
-                                        <div class="kb-key">J</div>
-                                        <div class="kb-key">K</div>
-                                        <div class="kb-key">L</div>
-                                    </div>
-                                    <div class="kb-row">
-                                        <div class="kb-key kb-key-shift">⇧</div>
-                                        <div class="kb-key">Z</div>
-                                        <div class="kb-key">X</div>
-                                        <div class="kb-key">C</div>
-                                        <div class="kb-key">V</div>
-                                        <div class="kb-key">B</div>
-                                        <div class="kb-key">N</div>
-                                        <div class="kb-key">M</div>
-                                        <div class="kb-key kb-key-backspace">⌫</div>
-                                    </div>
-                                    <div class="kb-row kb-row-bottom">
-                                        <div class="kb-key kb-key-num">.?123</div>
-                                        <div class="kb-key kb-key-space">space</div>
-                                        <div class="kb-key kb-key-return">return</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
 
     <!-- Case Study Window (Side Overlay) -->

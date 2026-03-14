@@ -21,16 +21,16 @@ const SITE_CONFIG = {
         smoothFactor: 0.36
     },
     asciiRain: {
-        chars: ['▒', '▒', '▒', '░', '░', '&', '#', '$', '@', 'o', 'x', ' '],
+        chars: ['▒', '░', '░', '|', '▄', '▀', '█', '|', '&', '@', '#', '%', '$', '*'],
         fontSize: 15,
         speed: 1,
-        baseOpacity: 1,
-        baseColor: '214, 214, 214',
+        baseOpacity: 0.05,
+        baseColor: '77, 77, 77',
         cursorColor: '0, 0, 0',
         direction: 'up',
         cursorOpacity: 0,
         cursorRadius: 280,
-        density: 1.3,
+        density: 1,
         lengthMultiplier: 1,
     },
     companies: [
@@ -42,7 +42,7 @@ const SITE_CONFIG = {
         { name: 'Do. Creative Labs', logo: 'images/c1.png', url: 'images/c6.png' }
     ],
     pixel: {
-        palette: ['#141414ff', '#ec726c', '#ffcc00', '#99e24f', '#75d3ff', '#f996cb'],
+        palette: ['#111111', '#ec726c', '#ffcc00', '#99e24f', '#75d3ff', '#f996cb'],
         pixelSize: 1,
         background: '#f3f3f3',
         resolution: 40
@@ -2740,11 +2740,225 @@ function initNodeGraph() {
 // --------------------------------------------------------
 // INTERACTIVE CHAT MODE
 // --------------------------------------------------------
-function init3DChatMode() {
-    const open = () => {
-        window.location.href = 'chat3d.html';
+function initChatMode() {
+    const chatModeEl = document.getElementById('chat-mode');
+    if (!chatModeEl || typeof device === 'undefined') return { open: () => { }, close: () => { }, isActive: () => false };
+
+    // Render chat mode as a global viewport overlay, not clipped by the mini-site shell.
+    if (chatModeEl.parentElement !== document.body) {
+        document.body.appendChild(chatModeEl);
+    }
+
+    const sceneEl = document.getElementById('chat-scene');
+    const parallaxLayers = Array.from(chatModeEl.querySelectorAll('[data-parallax-depth]'));
+
+    const btnBack = document.getElementById('chat-btn-back');
+    const btnClear = document.getElementById('chat-btn-clear');
+    const messagesArea = document.getElementById('chat-messages-area');
+    const inputText = document.getElementById('chat-input-text');
+    const btnSend = document.getElementById('chat-btn-send');
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const blinkDuration = prefersReducedMotion ? 0 : 280;
+
+    const conversation = [
+        { sender: 'viewer', text: "R U Coming soon?", delay: 500 },
+        { sender: 'contact', text: "Hope so. Traffic is murder.", delay: 1500 },
+        { sender: 'viewer', text: "Traffic? It's 2 a.m.!", delay: 0 },
+        { sender: 'contact', text: "I know. Well, I also left 2 hours late.", delay: 1500 }
+    ];
+
+    let currentStepIndex = 0;
+    let isTyping = false;
+    let isTransitioning = false;
+
+    let rafId = 0;
+    let targetX = 0;
+    let targetY = 0;
+    let currentX = 0;
+    let currentY = 0;
+
+    const resetParallax = () => {
+        parallaxLayers.forEach((layer) => {
+            layer.style.setProperty('--parallax-x', '0px');
+            layer.style.setProperty('--parallax-y', '0px');
+            layer.style.setProperty('--parallax-rx', '0deg');
+            layer.style.setProperty('--parallax-ry', '0deg');
+        });
     };
-    return { open, close: () => {}, isActive: () => false };
+
+    const tickParallax = () => {
+        currentX += (targetX - currentX) * 0.12;
+        currentY += (targetY - currentY) * 0.12;
+
+        parallaxLayers.forEach((layer) => {
+            const depth = Number(layer.dataset.parallaxDepth || 0);
+            const tilt = Number(layer.dataset.parallaxTilt || 0);
+            const px = (currentX * depth).toFixed(2);
+            const py = (currentY * depth).toFixed(2);
+            const rx = (-currentY * tilt).toFixed(3);
+            const ry = (currentX * tilt).toFixed(3);
+
+            layer.style.setProperty('--parallax-x', `${px}px`);
+            layer.style.setProperty('--parallax-y', `${py}px`);
+            layer.style.setProperty('--parallax-rx', `${rx}deg`);
+            layer.style.setProperty('--parallax-ry', `${ry}deg`);
+        });
+
+        const isActive = document.body.classList.contains('chat-active');
+        const isSettled = Math.abs(targetX - currentX) < 0.002 && Math.abs(targetY - currentY) < 0.002;
+
+        if (isActive || !isSettled) {
+            rafId = window.requestAnimationFrame(tickParallax);
+        } else {
+            rafId = 0;
+        }
+    };
+
+    const ensureParallaxLoop = () => {
+        if (prefersReducedMotion || !sceneEl || rafId) return;
+        rafId = window.requestAnimationFrame(tickParallax);
+    };
+
+    const appendBubble = (sender, text) => {
+        const bubble = document.createElement('div');
+        bubble.className = `chat-bubble chat-bubble-${sender === 'viewer' ? 'send' : 'recv'}`;
+        bubble.innerText = text;
+        messagesArea.appendChild(bubble);
+        messagesArea.scrollTop = messagesArea.scrollHeight;
+    };
+
+    const showTypingIndicator = () => {
+        const typing = document.createElement('div');
+        typing.className = 'chat-typing';
+        typing.id = 'chat-typing-indicator';
+        typing.innerHTML = '<span></span><span></span>';
+        messagesArea.appendChild(typing);
+        messagesArea.scrollTop = messagesArea.scrollHeight;
+
+        // flush reflow and animate
+        typing.offsetHeight;
+        typing.classList.add('active');
+        return typing;
+    };
+
+    const processNextStep = () => {
+        if (currentStepIndex >= conversation.length) return;
+
+        const step = conversation[currentStepIndex];
+
+        if (step.sender === 'viewer') {
+            inputText.value = step.text;
+            btnSend.classList.add('active');
+        } else {
+            isTyping = true;
+            btnSend.classList.remove('active');
+            const ind = showTypingIndicator();
+
+            setTimeout(() => {
+                if (ind && ind.parentNode) ind.parentNode.removeChild(ind);
+                appendBubble('contact', step.text);
+                isTyping = false;
+                currentStepIndex++;
+                processNextStep();
+            }, step.delay);
+        }
+    };
+
+    btnSend.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (isTyping || !btnSend.classList.contains('active')) return;
+
+        const step = conversation[currentStepIndex];
+        if (step && step.sender === 'viewer') {
+            appendBubble('viewer', step.text);
+            inputText.value = '';
+            btnSend.classList.remove('active');
+            currentStepIndex++;
+            processNextStep();
+        }
+    });
+
+    chatModeEl.addEventListener('pointermove', (event) => {
+        if (prefersReducedMotion || !document.body.classList.contains('chat-active')) return;
+        const rect = chatModeEl.getBoundingClientRect();
+        if (!rect.width || !rect.height) return;
+
+        const nx = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+        const ny = ((event.clientY - rect.top) / rect.height) * 2 - 1;
+        targetX = Math.max(-1, Math.min(1, nx));
+        targetY = Math.max(-1, Math.min(1, ny));
+        ensureParallaxLoop();
+    });
+
+    chatModeEl.addEventListener('pointerleave', () => {
+        targetX = 0;
+        targetY = 0;
+        ensureParallaxLoop();
+    });
+
+    const close = () => {
+        document.body.classList.remove('chat-active');
+        chatModeEl.classList.remove('is-blinking');
+        chatModeEl.classList.remove('is-transitioning');
+        chatModeEl.setAttribute('aria-hidden', 'true');
+        isTransitioning = false;
+        targetX = 0;
+        targetY = 0;
+        ensureParallaxLoop();
+    };
+
+    const open = () => {
+        if (isTransitioning || document.body.classList.contains('chat-active')) return;
+
+        isTransitioning = true;
+        chatModeEl.classList.add('is-transitioning');
+        chatModeEl.setAttribute('aria-hidden', 'false');
+
+        // Activate full-screen overlay immediately so it never appears trapped in mini-site bounds.
+        document.body.classList.add('chat-active');
+
+        if (currentStepIndex === 0) {
+            messagesArea.innerHTML = '<div class="chat-timestamp">Jul 9, 2007 9:17 PM</div>';
+            setTimeout(() => {
+                processNextStep();
+            }, 600);
+        }
+
+        ensureParallaxLoop();
+
+        const finishTransition = () => {
+            chatModeEl.classList.remove('is-transitioning');
+            isTransitioning = false;
+        };
+
+        if (!blinkDuration) {
+            finishTransition();
+            return;
+        }
+
+        window.requestAnimationFrame(() => {
+            chatModeEl.classList.add('is-blinking');
+            window.setTimeout(() => {
+                chatModeEl.classList.remove('is-blinking');
+                window.setTimeout(finishTransition, blinkDuration + 20);
+            }, blinkDuration + 20);
+        });
+    };
+
+    btnBack.addEventListener('click', close);
+    btnClear.addEventListener('click', () => {
+        messagesArea.innerHTML = '<div class="chat-timestamp">Jul 9, 2007 9:17 PM</div>';
+        currentStepIndex = 0;
+        inputText.value = '';
+        btnSend.classList.remove('active');
+        processNextStep();
+    });
+
+    resetParallax();
+
+    return { open, close, isActive: () => document.body.classList.contains('chat-active') };
 }
 
 // --------------------------------------------------------
@@ -2764,7 +2978,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const resumePopout = initResumePopout();
     const workTogetherPanel = initWorkTogetherPanel();
     const readerMode = initReaderMode(onboardingFlow);
-    const chatMode = init3DChatMode();
+    const chatMode = initChatMode();
     const idCardSystem = initIdCardSystem();
 
     const expandDeviceShell = (autoOpenNotes = true) => {
@@ -2868,7 +3082,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (stickyNote.isVisible()) stickyNote.close();
         if (workTogetherPanel.isVisible()) workTogetherPanel.close();
 
-        window.location.href = 'chat3d.html';
+        chatMode.open();
+
+        // Update tooltip just for context
+        const tooltipSpan = pillResumeBtn.querySelector('.pill-tooltip');
+        if (tooltipSpan) {
+            tooltipSpan.textContent = 'Messages';
+        }
     });
 
     pillThirdBtn?.addEventListener('click', (e) => {

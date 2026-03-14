@@ -1,6 +1,6 @@
 Add a tiny, highly-performant Vanilla JS loop inside the existing script tag to generate falling/glitching ASCII blocks (█, ▒, ░, etc.) inside this container.
 
-                chars: ['█', '▓', '▒', '░', '▄', '▀', '|', '/'],
+                chars: ['█', '▓', '▒', '░', '▄', '▀', '|', '/', '*', '&', '#', '%', '$', '@', '█', '▓', '▒', '░', '▄', '▀', '|', '/', '*', '&', '#', '%', '$', '@', 'R', 'a', 'g', 'h', 'a', 'v', 'e', 'n', 'd', 'r', 'a', 'n', ' ', 'D', 'e', 'd', 'r', 'o', 'x', ' '],
 
 
 You’re right. The fix is to make cursor behavior a single, isolated system and never let random component CSS own it.
@@ -42,21 +42,26 @@ Validation run: `node --check prototype.js` passed.
 -----------------------------------------------------------------------------------------------------
 Edit these on monday:
 
-- border-top: 1px solid rgba(0, 0, 0, 0.08);
-- border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-- padding: 30px 0;
-Can we have this for all the sections?
-
 - Ask ChatGPT about us. Where UX meets AI
 Move this outside the mini site and to the right bottom just like the other buttons
 
 - content: counter(brand-row, decimal-leading-zero);
 Can we remove the random numbers and just have the text from 1-10? 
 
--                     <a href="https://www.behance.net/raghavprasanna" target="_blank" class="brand-block"
-                        style="background: #ECE9E6; color: #111;">
-                        <span class="brand-text">BEHANCE</span>
-                    </a>
-replace the hover animation with a simple smooth to italic font
 
+------------------------------------------------------------------------------------------------------
+
+- Interactive map of your career journey
+- Skill tree instead of resume list
+- Achievement badges for viewing the entier site!
+- Magnetic hover glow
+- Radial navigation menu
+- “Mood switch” theme (Corporate / Playful / Dark)
+- Background music toggle ---> Video of you talking
+- Random compliment generator
+- Dynamic greeting based on time of day
+- “Design philosophy” fortune cookie
+- Webcam-based motion interaction
+- Generative art that downloads as wallpaper
+- “Break the UI” debug mode
 - 
