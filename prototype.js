@@ -21,7 +21,7 @@ const SITE_CONFIG = {
         smoothFactor: 0.36
     },
     asciiRain: {
-        chars: ['▒', '▒', '▒', '░', '░', '&', '#', '$', '@', 'o', 'x', ' '],
+        chars: ['▒', '▒', '▒', '░', '░', 'o', 'x', ' '],
         fontSize: 15,
         speed: 1,
         baseOpacity: 1,
@@ -2744,7 +2744,7 @@ function init3DChatMode() {
     const open = () => {
         window.location.href = 'chat3d.html';
     };
-    return { open, close: () => {}, isActive: () => false };
+    return { open, close: () => { }, isActive: () => false };
 }
 
 // --------------------------------------------------------

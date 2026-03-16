@@ -18,7 +18,7 @@
             width: 100vw;
             height: 100dvh;
             overflow: hidden;
-            background: #06080d;
+            background: #d3d3d3; /* Changed to grey */
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
         }
 
@@ -34,8 +34,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #06080d;
-            color: #fff;
+            background: #d3d3d3;
+            color: #333;
             z-index: 9999;
             font-size: 1.2rem;
             transition: opacity 0.5s ease;
@@ -156,17 +156,6 @@
             border: 1px solid #334c6d; border-radius: 16px; color: white; font-size: 14px; font-weight: bold; cursor: pointer; opacity: 0.5; pointer-events: none;
         }
         .chat-btn-send.active { opacity: 1; pointer-events: auto; background: linear-gradient(to bottom, #74a0da 0%, #3a75c4 50%, #2260b5 51%, #2c6abf 100%); border-color: #17407a; }
-        
-        .chat-keyboard {
-            background: #1a1b1f url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="4" height="4"><rect width="4" height="4" fill="%232b2c30"/><path d="M0,0 h2 v2 h-2 z M2,2 h2 v2 h-2 z" fill="%231a1b1f"/></svg>');
-            padding: 8px 4px 6px 4px; display: flex; flex-direction: column; gap: 8px; border-top: 1px solid #000; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1); pointer-events: none;
-        }
-        .kb-row { display: flex; justify-content: center; gap: 6px; } .kb-row-indented { padding: 0 16px; } .kb-row-bottom { padding: 0 4px; gap: 8px; }
-        .kb-key { background: linear-gradient(to bottom, #fdfdfd 0%, #d8dde1 100%); border-radius: 4px; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.8); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 500; color: #000; height: 42px; flex: 1; }
-        .kb-key-shift, .kb-key-backspace { flex: 1.5; background: linear-gradient(to bottom, #a3acbd 0%, #7b889e 100%); color: white; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.2); }
-        .kb-key-num { flex: 2; background: linear-gradient(to bottom, #a3acbd 0%, #7b889e 100%); color: white; font-size: 14px; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.2); }
-        .kb-key-space { flex: 5; font-size: 14px; color: #666; }
-        .kb-key-return { flex: 2; background: linear-gradient(to bottom, #a3acbd 0%, #7b889e 100%); color: white; font-size: 14px; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.2); }
 
         .chat-typing { display: flex; align-items: center; gap: 4px; padding: 6px 12px; align-self: flex-start; background: linear-gradient(to bottom, #ffffff 0%, #e5e5ea 100%); border-radius: 16px; border: 1px solid rgba(0, 0, 0, 0.15); opacity: 0; transition: opacity 0.2s; }
         .chat-typing.active { opacity: 1; }
@@ -217,21 +206,6 @@
                 <div class="chat-input-wrapper"><input type="text" class="chat-input-text" id="chat-input-text" readonly></div>
                 <button class="chat-btn-send" id="chat-btn-send">Send</button>
             </div>
-            
-            <div class="chat-keyboard" id="chat-keyboard">
-                 <div class="kb-row">
-                     <div class="kb-key">Q</div><div class="kb-key">W</div><div class="kb-key">E</div><div class="kb-key">R</div><div class="kb-key">T</div><div class="kb-key">Y</div><div class="kb-key">U</div><div class="kb-key">I</div><div class="kb-key">O</div><div class="kb-key">P</div>
-                 </div>
-                 <div class="kb-row kb-row-indented">
-                     <div class="kb-key">A</div><div class="kb-key">S</div><div class="kb-key">D</div><div class="kb-key">F</div><div class="kb-key">G</div><div class="kb-key">H</div><div class="kb-key">J</div><div class="kb-key">K</div><div class="kb-key">L</div>
-                 </div>
-                 <div class="kb-row">
-                     <div class="kb-key kb-key-shift">⇧</div><div class="kb-key">Z</div><div class="kb-key">X</div><div class="kb-key">C</div><div class="kb-key">V</div><div class="kb-key">B</div><div class="kb-key">N</div><div class="kb-key">M</div><div class="kb-key kb-key-backspace">⌫</div>
-                 </div>
-                 <div class="kb-row kb-row-bottom">
-                     <div class="kb-key kb-key-num">.?123</div><div class="kb-key kb-key-space">space</div><div class="kb-key kb-key-return">return</div>
-                 </div>
-            </div>
         </div>
     </div>
 
@@ -259,7 +233,7 @@
             
             scene = new THREE.Scene();
             camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
-            camera.position.set(0, 0, 1.2); 
+            camera.position.set(0, 0, 1.8); // Adjusted camera to visually scale to ~80% instead of being tiny
 
             renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: "high-performance" });
             renderer.setSize(window.innerWidth, window.innerHeight);
@@ -302,7 +276,7 @@
                 const box = new THREE.Box3().setFromObject(phoneModel);
                 const center = box.getCenter(new THREE.Vector3());
                 phoneModel.position.sub(center);
-                phoneModel.scale.setScalar(2.5);
+                phoneModel.scale.setScalar(2.5); // Reverted scale so camera handles sizing
 
                 const cssObject = new THREE.CSS3DObject(uiSource);
                 cssObject.scale.setScalar(0.00062);
@@ -329,7 +303,7 @@
                     baseRotX: 0, 
                     duration: 2, 
                     ease: "expo.out",
-                    onComplete: triggerConversation
+                    onComplete: window.triggerConversation
                 });
             });
 
@@ -345,6 +319,38 @@
                 const my = -(e.clientY / window.innerHeight) * 2 + 1;
                 targetRotY = mx * 0.13;
                 targetRotX = -my * 0.13;
+            });
+
+            // Raycaster Interaction
+            const raycaster = new THREE.Raycaster();
+            const mouse = new THREE.Vector2();
+
+            window.addEventListener('pointerup', (e) => {
+                if (!phoneScreenMesh) return;
+                
+                mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+                mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+                
+                raycaster.setFromCamera(mouse, camera);
+                const intersects = raycaster.intersectObject(phoneScreenMesh);
+                
+                if (intersects.length > 0) {
+                    if (!isTyping) {
+                        const step = conversation[currentStepIndex];
+                        if (step && step.sender === 'viewer') {
+                            const btnSend = document.getElementById('chat-btn-send');
+                            const inputText = document.getElementById('chat-input-text');
+                            
+                            // Only stage the text, DO NOT tap it automatically. User must click 'Send'.
+                            if (!btnSend.classList.contains('active')) {
+                                inputText.value = step.text;
+                                btnSend.classList.add('active');
+                            }
+                        } else if (currentStepIndex === 0) {
+                             window.triggerConversation();
+                        }
+                    }
+                }
             });
 
             requestAnimationFrame(renderLoop);
@@ -439,6 +445,8 @@
                 btnSend.classList.remove('active');
                 processNextStep();
             });
+
+            // Remove the DOM listener as we rely on the raycaster now
         }
     </script>
 </body>
