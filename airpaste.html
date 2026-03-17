@@ -98,6 +98,20 @@
             </div>
         </section>
 
+        <!-- STICKER CANVAS SECTION -->
+        <section class="sticker-section">
+            <div style="margin-bottom: 20px;">
+                <h2 style="font-size: 2rem; letter-spacing: -0.04em;">Collaborative Moodboard</h2>
+                <p style="color: var(--text-muted);">A place to play. Drag and drop stickers to organize your thoughts.</p>
+            </div>
+            
+            <div class="sticker-canvas" id="sticker-canvas">
+                <!-- Stickers will be added here via JS -->
+                <div class="sticker-canvas-hint">Drag to move</div>
+            </div>
+        </section>
+
+
         <!-- TECHNICAL SECTION -->
         <section class="technical-section" id="development">
             <div style="margin-bottom: 40px;">
@@ -175,6 +189,79 @@
              document.querySelector('.hero-content').style.opacity = opacity;
              document.querySelector('.hero-content').style.transform = `translateY(${window.scrollY * 0.2}px)`;
         });
+
+        // Sticker System
+        const stickerCanvas = document.getElementById('sticker-canvas');
+        const stickerFiles = [
+            'images/flow1.png', 'images/flow2.png', 'images/flow3.png', 'images/flow4.png', 'images/flow5.png',
+            'images/ba1.png', 'images/ba2.png', 'images/ba3.png', 'images/ba4.png', 'images/ba5.png', 'images/ba6.png', 'images/ba7.png', 'images/ba8.png'
+        ];
+
+        stickerFiles.forEach((file, index) => {
+            const sticker = document.createElement('div');
+            sticker.className = 'sticker-item';
+            
+            const img = document.createElement('img');
+            img.src = file;
+            sticker.appendChild(img);
+
+            // Random initial position
+            const x = Math.random() * (stickerCanvas.offsetWidth - 150);
+            const y = Math.random() * (stickerCanvas.offsetHeight - 150);
+            sticker.style.left = x + 'px';
+            sticker.style.top = y + 'px';
+            sticker.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
+
+            stickerCanvas.appendChild(sticker);
+            makeDraggable(sticker);
+        });
+
+        function makeDraggable(el) {
+            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+            el.onmousedown = dragMouseDown;
+
+            function dragMouseDown(e) {
+                e = e || window.event;
+                e.preventDefault();
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                document.onmouseup = closeDragElement;
+                document.onmousemove = elementDrag;
+                
+                // Bring to front
+                const stickers = document.querySelectorAll('.sticker-item');
+                stickers.forEach(s => s.style.zIndex = 1);
+                el.style.zIndex = 1000;
+            }
+
+            function elementDrag(e) {
+                e = e || window.event;
+                e.preventDefault();
+                pos1 = pos3 - e.clientX;
+                pos2 = pos4 - e.clientY;
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                
+                let newTop = el.offsetTop - pos2;
+                let newLeft = el.offsetLeft - pos1;
+
+                // Simple boundary check
+                const canvasRect = stickerCanvas.getBoundingClientRect();
+                if (newTop < 0) newTop = 0;
+                if (newLeft < 0) newLeft = 0;
+                if (newTop > stickerCanvas.offsetHeight - el.offsetHeight) newTop = stickerCanvas.offsetHeight - el.offsetHeight;
+                if (newLeft > stickerCanvas.offsetWidth - el.offsetWidth) newLeft = stickerCanvas.offsetWidth - el.offsetWidth;
+
+                el.style.top = newTop + "px";
+                el.style.left = newLeft + "px";
+            }
+
+            function closeDragElement() {
+                document.onmouseup = null;
+                document.onmousemove = null;
+            }
+        }
     </script>
+
 </body>
 </html>
