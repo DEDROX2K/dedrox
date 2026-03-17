@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AirPaste | Local-First Bookmark Application</title>
+    <meta name="description" content="Local-first desktop bookmark and note board built with Electron and React. Keep your data on your own drive. Free beta download.">
+    
+    <!-- Premium Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="airpaste.css">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+    <!-- SIDEBAR RULER: Inspired by Reference Visuals -->
+    <div class="ruler" id="ruler">
+        <div class="ruler-pointer" id="ruler-pointer"></div>
+    </div>
+
+    <div class="app-container">
+        
+        <header>
+            <div class="logo">
+                <div class="logo-dot"></div>
+                AirPaste
+                <span class="beta-tag">BETA</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#development">Development</a></li>
+                    <li><a href="#download">Download</a></li>
+                    <li><a href="https://github.com/dedrox/airpaste" target="_blank">GitHub</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <!-- HERO SECTION -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1 class="hero-title">Your bookmarks.<br>Your drive.</h1>
+                <p class="hero-description">
+                    A local-first desktop bookmark and note board built with Electron and React. 
+                    Open any folder, let AirPaste create a data.json, and keep every card on your own machine.
+                </p>
+                <div class="hero-actions">
+                    <a href="#download" class="hero-cta">
+                        Download Beta (v0.1.0)
+                    </a>
+                </div>
+            </div>
+            
+            <div class="mockup-container">
+                <div class="mockup-inner">
+                    <img src="images/airpaste-mockup.png" alt="AirPaste Interface Placeholder" style="width: 100%; height: auto; display: block;">
+                    <div class="mockup-overlay"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MAIN FEATURES GRID (Based on MVP List) -->
+        <section class="features-grid" id="features">
+            <div class="feature-card">
+                <span class="feature-label">Feature 01</span>
+                <h3>Single canvas per folder</h3>
+                <p>Organize your thoughts and links spatially. Every folder is its own workspace.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-label">Feature 02</span>
+                <h3>Global paste</h3>
+                <p>Instantly capture URLs and plain text snippets. AirPaste handles the integration from your clipboard.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-label">Feature 03</span>
+                <h3>Open Graph previews</h3>
+                <p>Rich visual links with graceful fallback cards for a beautiful, readable board.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-label">Feature 04</span>
+                <h3>Local-first JSON</h3>
+                <p>No database. No cloud sync. Your data is stored in a clean data.json file inside your folder.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-label">Feature 05</span>
+                <h3>Minimal sidebar</h3>
+                <p>Folder controls and local card count indicators. Stay focused on your content.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-label">Feature 06</span>
+                <h3>Desktop-First</h3>
+                <p>Built with Electron for performance and full filesystem access that browsers can't reach.</p>
+            </div>
+        </section>
+
+        <!-- TECHNICAL SECTION -->
+        <section class="technical-section" id="development">
+            <div style="margin-bottom: 40px;">
+                <h2 style="font-size: 2rem; letter-spacing: -0.04em; margin-bottom: 20px;">Built for the modern edge.</h2>
+                <p style="color: var(--text-muted); max-width: 600px;">
+                    AirPaste requires Node.js 22 or newer. Built with Vite and Electron-Builder for high efficiency and local reliability.
+                </p>
+            </div>
+
+            <div class="code-block">
+                <span class="code-line"><span class="code-comment">// 1. Initialize environment</span></span>
+                <span class="code-line">npm install</span>
+                <span class="code-line"></span>
+                <span class="code-line"><span class="code-comment">// 2. Start local development</span></span>
+                <span class="code-line">npm run dev</span>
+                <span class="code-line"></span>
+                <span class="code-line"><span class="code-comment">// 3. Build for production</span></span>
+                <span class="code-line">npm run package</span>
+            </div>
+        </section>
+
+        <section id="download" style="padding: 100px 0; border-top: 1px solid var(--border); text-align: center;">
+            <p style="text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.2em; color: var(--accent); margin-bottom: 20px;">Ready for the beta?</p>
+            <h2 style="font-size: 3rem; letter-spacing: -0.04em; margin-bottom: 40px;">Download AirPaste Free</h2>
+            <div style="display: flex; gap: 20px; justify-content: center;">
+                <button disabled style="background: #eee; color: #888; border: none; padding: 15px 30px; border-radius: 4px; cursor: not-allowed;">Coming soon to macOS</button>
+                <a href="#" class="hero-cta" style="background: var(--text);">Download For Windows (.exe)</a>
+            </div>
+            <p style="margin-top: 20px; color: var(--text-muted); font-size: 0.9rem;">Current Version: 0.1.0 Beta</p>
+        </section>
+
+        <footer>
+            <div>&copy; 2026 AirPaste Desktop. All local. All yours.</div>
+            <div>Built by Dedrox | Designed with Antigravity</div>
+        </footer>
+
+    </div>
+
+    <!-- SCRIPT FOR DYNAMIC ELEMENTS -->
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Populate Ruler Ticks
+        const ruler = document.getElementById('ruler');
+        const itemCount = 50;
+        for (let i = 0; i < itemCount; i++) {
+            const tick = document.createElement('div');
+            tick.className = 'ruler-tick';
+            if (i % 5 === 0) tick.classList.add('major');
+            ruler.appendChild(tick);
+        }
+
+        // Pointer Following Effect
+        const pointer = document.getElementById('ruler-pointer');
+        window.addEventListener('scroll', () => {
+            const scrollPercent = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+            // Center in viewport area roughly
+            pointer.style.top = (20 + (scrollPercent * 0.6)) + '%';
+        });
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Dynamic Title effect on scroll
+        window.addEventListener('scroll', () => {
+             const opacity = Math.max(0, 1 - window.scrollY / 500);
+             document.querySelector('.hero-content').style.opacity = opacity;
+             document.querySelector('.hero-content').style.transform = `translateY(${window.scrollY * 0.2}px)`;
+        });
+    </script>
+</body>
+</html>

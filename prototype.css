@@ -3571,6 +3571,21 @@ body.case-open .case-window {
     transform: translateY(-1px);
 }
 
+.hero-clean-actions .btn-primary .linkedin-icon {
+    width: 1.365em;
+    height: 1.365em;
+    object-fit: contain;
+    transform: translateY(-0.5px);
+    filter: invert(1) brightness(2);
+    margin-left: 2px;
+}
+
+.hero-clean-actions .btn-primary:hover .linkedin-icon {
+    transform: translateY(-0.5px) translateX(2px);
+    transition: transform 0.2s;
+}
+
+
 .hero-clean-actions .btn-secondary {
     background: transparent;
     color: var(--ink);
