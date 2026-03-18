@@ -683,18 +683,34 @@
         // - draftRevealDuration: optional override for the typed-in prompt speed
         // - typingDelay / nextDraftDelay: optional per-message timing overrides
         const CHAT_THREAD = [
-            {
-                draft: 'Hey Raghav, are you taking on new projects right now?',
-                reply: "Yeah, I am. I'm especially into interactive sites, digital worlds, and ideas that want a bit of personality."
-            },
-            {
-                draft: 'Could we build something playful and immersive together?',
-                reply: "Absolutely. Send the rough idea, timeline, and budget, and I can tell you how I'd shape it."
-            },
-            {
-                draft: "Perfect. I'll send over the details soon.",
-                reply: "Sounds good. I'll get back to you as soon as I can."
-            }
+{
+        draft: "Hey Raghav, so… what do you actually *do*?",
+        reply: "Good question. I design stuff that’s not boring — apps, weird interfaces, sometimes things that probably shouldn’t exist but do anyway."
+    },
+    {
+        draft: "Okay but like… what can you do for *me*?",
+        reply: "I can take your half-baked idea and turn it into something people actually want to use. Or at least something they’ll screenshot."
+    },
+    {
+        draft: "What do you do in your free time?",
+        reply: "Start projects I may or may not finish. Mess with XR, build random tools, overthink UX, occasionally go outside."
+    },
+    {
+        draft: "Be honest… what’s the budget looking like?",
+        reply: "Somewhere between ‘this is fun’ and ‘I can pay rent’. Send what you’ve got, I’ll tell you what’s realistic."
+    },
+    {
+        draft: "What do you think of me?",
+        reply: "Bold of you to ask. You seem like someone with a cool idea and just enough chaos to make it interesting. I like that."
+    },
+    {
+        draft: "Would we get along working together?",
+        reply: "If you like honest feedback, fast iterations, and the occasional unhinged idea — yeah, we’ll be fine."
+    },
+    {
+        draft: "Alright… I might have something for you 👀",
+        reply: "Perfect. Send it over before you overthink it."
+    }
         ];
 
         let currentExchangeIndex = 0;

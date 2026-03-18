@@ -2,7 +2,8 @@
     --bg: #ffffff;
     --text: #000000;
     --text-muted: #666666;
-    --accent: #ff4500; /* High contrast orange like the reference */
+    --accent: #ff4500;
+    /* High contrast orange like the reference */
     --border: #f0f0f0;
     --font-heading: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     --font-mono: 'IBM Plex Mono', monospace;
@@ -236,7 +237,7 @@ nav a:hover {
     border-radius: 12px;
     overflow: hidden;
     position: relative;
-    box-shadow: 0 30px 60px rgba(0,0,0,0.05);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.05);
 }
 
 .mockup-inner {
@@ -251,7 +252,7 @@ nav a:hover {
 .mockup-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba(255,255,255,0.8) 0%, transparent 100%);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, transparent 100%);
     pointer-events: none;
 }
 
@@ -270,9 +271,11 @@ footer {
     .hero {
         grid-template-columns: 1fr;
     }
+
     .features-grid {
         grid-template-columns: 1fr;
     }
+
     .ruler {
         display: none;
     }
@@ -304,7 +307,7 @@ footer {
     transition: transform 0.1s;
     max-width: 150px;
     height: auto;
-    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.1));
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.1));
 }
 
 .sticker-item:active {
@@ -330,3 +333,71 @@ footer {
     pointer-events: none;
 }
 
+/* Scratch Off Section */
+.scratch-section {
+    padding: 100px 0;
+    display: flex;
+    justify-content: center;
+    border-top: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+}
+
+.scratch-container {
+    position: relative;
+    width: 600px;
+    height: 120px;
+    background: #fdfdfd;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: none;
+    /* Hide cursor to show coin instead */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.scratch-content {
+    font-family: var(--font-mono);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text);
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+#scratch-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    border-radius: 6px;
+    touch-action: none;
+}
+
+#coin-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    pointer-events: none;
+    /* Let clicks pass through to canvas handler */
+}
+
+.scratch-instruction {
+    position: absolute;
+    bottom: -40px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}

@@ -1,21 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AirPaste | Local-First Bookmark Application</title>
-    <meta name="description" content="Local-first desktop bookmark and note board built with Electron and React. Keep your data on your own drive. Free beta download.">
-    
+    <meta name="description"
+        content="Local-first desktop bookmark and note board built with Electron and React. Keep your data on your own drive. Free beta download.">
+
     <!-- Premium Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+
     <link rel="stylesheet" href="airpaste.css">
-    
+
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Three.js for 3D Coin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
 </head>
+
 <body>
 
     <!-- SIDEBAR RULER: Inspired by Reference Visuals -->
@@ -24,7 +33,7 @@
     </div>
 
     <div class="app-container">
-        
+
         <header>
             <div class="logo">
                 <div class="logo-dot"></div>
@@ -46,7 +55,7 @@
             <div class="hero-content">
                 <h1 class="hero-title">Your bookmarks.<br>Your drive.</h1>
                 <p class="hero-description">
-                    A local-first desktop bookmark and note board built with Electron and React. 
+                    A local-first desktop bookmark and note board built with Electron and React.
                     Open any folder, let AirPaste create a data.json, and keep every card on your own machine.
                 </p>
                 <div class="hero-actions">
@@ -55,10 +64,11 @@
                     </a>
                 </div>
             </div>
-            
+
             <div class="mockup-container">
                 <div class="mockup-inner">
-                    <img src="images/airpaste-mockup.png" alt="AirPaste Interface Placeholder" style="width: 100%; height: auto; display: block;">
+                    <img src="images/airpaste-mockup.png" alt="AirPaste Interface Placeholder"
+                        style="width: 100%; height: auto; display: block;">
                     <div class="mockup-overlay"></div>
                 </div>
             </div>
@@ -74,7 +84,8 @@
             <div class="feature-card">
                 <span class="feature-label">Feature 02</span>
                 <h3>Global paste</h3>
-                <p>Instantly capture URLs and plain text snippets. AirPaste handles the integration from your clipboard.</p>
+                <p>Instantly capture URLs and plain text snippets. AirPaste handles the integration from your clipboard.
+                </p>
             </div>
             <div class="feature-card">
                 <span class="feature-label">Feature 03</span>
@@ -102,9 +113,10 @@
         <section class="sticker-section">
             <div style="margin-bottom: 20px;">
                 <h2 style="font-size: 2rem; letter-spacing: -0.04em;">Collaborative Moodboard</h2>
-                <p style="color: var(--text-muted);">A place to play. Drag and drop stickers to organize your thoughts.</p>
+                <p style="color: var(--text-muted);">A place to play. Drag and drop stickers to organize your thoughts.
+                </p>
             </div>
-            
+
             <div class="sticker-canvas" id="sticker-canvas">
                 <!-- Stickers will be added here via JS -->
                 <div class="sticker-canvas-hint">Drag to move</div>
@@ -115,9 +127,11 @@
         <!-- TECHNICAL SECTION -->
         <section class="technical-section" id="development">
             <div style="margin-bottom: 40px;">
-                <h2 style="font-size: 2rem; letter-spacing: -0.04em; margin-bottom: 20px;">Built for the modern edge.</h2>
+                <h2 style="font-size: 2rem; letter-spacing: -0.04em; margin-bottom: 20px;">Built for the modern edge.
+                </h2>
                 <p style="color: var(--text-muted); max-width: 600px;">
-                    AirPaste requires Node.js 22 or newer. Built with Vite and Electron-Builder for high efficiency and local reliability.
+                    AirPaste requires Node.js 22 or newer. Built with Vite and Electron-Builder for high efficiency and
+                    local reliability.
                 </p>
             </div>
 
@@ -134,13 +148,29 @@
         </section>
 
         <section id="download" style="padding: 100px 0; border-top: 1px solid var(--border); text-align: center;">
-            <p style="text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.2em; color: var(--accent); margin-bottom: 20px;">Ready for the beta?</p>
+            <p
+                style="text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.2em; color: var(--accent); margin-bottom: 20px;">
+                Ready for the beta?</p>
             <h2 style="font-size: 3rem; letter-spacing: -0.04em; margin-bottom: 40px;">Download AirPaste Free</h2>
             <div style="display: flex; gap: 20px; justify-content: center;">
-                <button disabled style="background: #eee; color: #888; border: none; padding: 15px 30px; border-radius: 4px; cursor: not-allowed;">Coming soon to macOS</button>
+                <button disabled
+                    style="background: #eee; color: #888; border: none; padding: 15px 30px; border-radius: 4px; cursor: not-allowed;">Coming
+                    soon to macOS</button>
                 <a href="#" class="hero-cta" style="background: var(--text);">Download For Windows (.exe)</a>
             </div>
             <p style="margin-top: 20px; color: var(--text-muted); font-size: 0.9rem;">Current Version: 0.1.0 Beta</p>
+        </section>
+
+        <!-- SCRATCH OFF SECTION -->
+        <section class="scratch-section">
+            <div class="scratch-container">
+                <div class="scratch-content">
+                    raghavprasanna2000@gmail.com
+                </div>
+                <canvas id="scratch-canvas"></canvas>
+                <div id="coin-container"></div>
+                <div class="scratch-instruction">Use the coin to reveal the secret</div>
+            </div>
         </section>
 
         <footer>
@@ -185,22 +215,22 @@
 
         // Dynamic Title effect on scroll
         window.addEventListener('scroll', () => {
-             const opacity = Math.max(0, 1 - window.scrollY / 500);
-             document.querySelector('.hero-content').style.opacity = opacity;
-             document.querySelector('.hero-content').style.transform = `translateY(${window.scrollY * 0.2}px)`;
+            const opacity = Math.max(0, 1 - window.scrollY / 500);
+            document.querySelector('.hero-content').style.opacity = opacity;
+            document.querySelector('.hero-content').style.transform = `translateY(${window.scrollY * 0.2}px)`;
         });
 
         // Sticker System
         const stickerCanvas = document.getElementById('sticker-canvas');
         const stickerFiles = [
-            'images/flow1.png', 'images/flow2.png', 'images/flow3.png', 'images/flow4.png', 'images/flow5.png',
-            'images/ba1.png', 'images/ba2.png', 'images/ba3.png', 'images/ba4.png', 'images/ba5.png', 'images/ba6.png', 'images/ba7.png', 'images/ba8.png'
+            'images/f1.png', 'images/f2.png', 'images/f3.png', 'images/f4.png', 'images/f5.png',
+            'images/f6.png', 'images/f7.png', 'images/f8.png', 'images/f9.png', 'images/ba3.png'
         ];
 
         stickerFiles.forEach((file, index) => {
             const sticker = document.createElement('div');
             sticker.className = 'sticker-item';
-            
+
             const img = document.createElement('img');
             img.src = file;
             sticker.appendChild(img);
@@ -227,7 +257,7 @@
                 pos4 = e.clientY;
                 document.onmouseup = closeDragElement;
                 document.onmousemove = elementDrag;
-                
+
                 // Bring to front
                 const stickers = document.querySelectorAll('.sticker-item');
                 stickers.forEach(s => s.style.zIndex = 1);
@@ -241,7 +271,7 @@
                 pos2 = pos4 - e.clientY;
                 pos3 = e.clientX;
                 pos4 = e.clientY;
-                
+
                 let newTop = el.offsetTop - pos2;
                 let newLeft = el.offsetLeft - pos1;
 
@@ -261,7 +291,169 @@
                 document.onmousemove = null;
             }
         }
+
+        /* --- Scratch Off System --- */
+        const scratchCanvas = document.getElementById('scratch-canvas');
+        const ctx = scratchCanvas.getContext('2d');
+        const scratchContainer = document.querySelector('.scratch-container');
+        const coinContainer = document.getElementById('coin-container');
+
+        let isDrawing = false;
+        let isHovering = false;
+        let coin;
+
+        // Canvas Setup
+        function fillCanvas() {
+            scratchCanvas.width = scratchContainer.offsetWidth;
+            scratchCanvas.height = scratchContainer.offsetHeight;
+            ctx.fillStyle = "#A0A0A0";
+            ctx.fillRect(0, 0, scratchCanvas.width, scratchCanvas.height);
+            for (let i = 0; i < 1000; i++) {
+                ctx.fillStyle = `rgba(0,0,0,${Math.random() * 0.1})`;
+                ctx.fillRect(Math.random() * scratchCanvas.width, Math.random() * scratchCanvas.height, 2, 2);
+            }
+        }
+        fillCanvas();
+
+        // Three.js Setup
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 10;
+
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        coinContainer.style.position = 'fixed';
+        coinContainer.style.top = '0';
+        coinContainer.style.left = '0';
+        coinContainer.style.width = '100vw';
+        coinContainer.style.height = '100vh';
+        coinContainer.style.pointerEvents = 'none';
+        coinContainer.appendChild(renderer.domElement);
+
+        scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+        const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+        dirLight.position.set(5, 5, 5);
+        scene.add(dirLight);
+
+        const loader = new THREE.GLTFLoader();
+        loader.load('threeD/coin.glb', (gltf) => {
+            coin = gltf.scene;
+            coin.scale.set(1.8, 1.8, 1.8); // Resized: Much smaller for stability
+            coin.rotation.x = Math.PI / 2;
+            scene.add(coin);
+            animate();
+        });
+
+        const mouse = new THREE.Vector2();
+        let floatOffset = 0;
+
+        window.addEventListener('mousemove', (e) => {
+            const rect = scratchContainer.getBoundingClientRect();
+
+            // Interaction logic
+            const withinX = e.clientX >= rect.left && e.clientX <= rect.right;
+            const withinY = e.clientY >= rect.top && e.clientY <= rect.bottom;
+            isHovering = withinX && withinY;
+
+            // Normalized mouse for Three.js
+            mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+
+            if (isDrawing) {
+                const scratchX = e.clientX - rect.left;
+                const scratchY = e.clientY - rect.top;
+                if (withinX && withinY) {
+                    scratch(scratchX, scratchY);
+                }
+            }
+        });
+
+        window.addEventListener('mousedown', (e) => {
+            const rect = scratchContainer.getBoundingClientRect();
+            if (e.clientX >= rect.left && e.clientX <= rect.right &&
+                e.clientY >= rect.top && e.clientY <= rect.bottom) {
+                isDrawing = true;
+                scratchContainer.style.cursor = 'none';
+            }
+        });
+
+        window.addEventListener('mouseup', () => {
+            isDrawing = false;
+            scratchContainer.style.cursor = 'default';
+        });
+
+        function scratch(x, y) {
+            ctx.globalCompositeOperation = 'destination-out';
+            for (let i = 0; i < 20; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const length = 10 + Math.random() * 20;
+                const sx = x + (Math.random() - 0.5) * 30;
+                const sy = y + (Math.random() - 0.5) * 30;
+                ctx.lineWidth = 3 + Math.random() * 5;
+                ctx.lineCap = 'round';
+                ctx.beginPath();
+                ctx.moveTo(sx, sy);
+                ctx.lineTo(sx + Math.cos(angle) * length, sy + Math.sin(angle) * length);
+                ctx.stroke();
+            }
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            if (coin) {
+                const rect = scratchContainer.getBoundingClientRect();
+
+                // Target rotation variables
+                let targetRotX = Math.PI / 2; // Default: Lay flat
+
+                if (isDrawing) {
+                    // Picked up: Follow mouse and tilt
+                    const vector = new THREE.Vector3(mouse.x, mouse.y, 0.5);
+                    vector.unproject(camera);
+                    const dir = vector.sub(camera.position).normalize();
+                    const distance = -camera.position.z / dir.z;
+                    const pos = camera.position.clone().add(dir.multiplyScalar(distance));
+                    coin.position.lerp(pos, 0.15); // Slightly slower for stability
+                    coin.rotation.y += 0.05;
+                    targetRotX = Math.PI / 3.5;
+                } else {
+                    // Side resting position
+                    const sideX = ((rect.left - 60) / window.innerWidth) * 2 - 1;
+                    const sideY = -((rect.top + rect.height / 2) / window.innerHeight) * 2 + 1;
+
+                    const vector = new THREE.Vector3(sideX, sideY, 0.5);
+                    vector.unproject(camera);
+                    const dir = vector.sub(camera.position).normalize();
+                    const distance = -camera.position.z / dir.z;
+                    const pos = camera.position.clone().add(dir.multiplyScalar(distance));
+
+                    coin.position.lerp(pos, 0.1);
+                    coin.rotation.y += 0.01;
+                    targetRotX = Math.PI / 2;
+                }
+
+                // Smoothly lerp rotation
+                coin.rotation.x += (targetRotX - coin.rotation.x) * 0.1;
+
+                // Hover effect logic
+                if (isHovering || isDrawing) {
+                    floatOffset = Math.sin(Date.now() * 0.005) * 0.2; // Reduced float intensity
+                } else {
+                    floatOffset += (0 - floatOffset) * 0.1;
+                }
+                coin.position.y += floatOffset;
+            }
+            renderer.render(scene, camera);
+        }
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
     </script>
 
 </body>
+
 </html>
