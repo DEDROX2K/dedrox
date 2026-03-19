@@ -3024,3 +3024,214 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+
+/* -------------------------------------------------------- */
+/* INTERACTIVE CHAT 3D LOGIC                                */
+/* -------------------------------------------------------- */
+(function initChat3D() {
+    const container = document.getElementById('chat-3d-container');
+    const uiSource = document.getElementById('chat-ui-source');
+    if (!container || !uiSource) return;
+
+    let scene, camera, cssRenderer;
+    let cssObject;
+    let targetRotX = 0, targetRotY = 0;
+    let currentRotX = 0, currentRotY = 0;
+    
+    let currentExchangeIndex = 0;
+    let isTyping = false;
+    let isSending = false;
+    let isDraftTyping = false;
+    let chatSequenceId = 0;
+
+    const CHAT_SETTINGS = {
+        contactName: 'Raghav',
+        timestampLabel: 'Today 10:51 AM',
+        initialPromptDelay: 800,
+        draftRevealDuration: 1800,
+        maxDraftLines: 4,
+        sendMorphDuration: 300,
+        replyTypingDelay: 1200,
+        nextDraftDelay: 1500,
+        loopThread: true
+    };
+
+    const CHAT_THREAD = [
+        { draft: "Hey Raghav, so… what do you actually *do*?", reply: "I design stuff that’s not boring — apps, weird interfaces, sometimes things that probably shouldn’t exist but do anyway." },
+        { draft: "Okay but like… what can you do for *me*?", reply: "I can take your half-baked idea and turn it into something people actually want to use. Or at least something they’ll screenshot." },
+        { draft: "What do you do in your free time?", reply: "Start projects I may or may not finish. Mess with XR, build random tools, overthink UX, occasionally go outside." },
+        { draft: "Be honest… what’s the budget looking like?", reply: "Somewhere between ‘this is fun’ and ‘I can pay rent’. Send what you’ve got, I’ll tell you what’s realistic." },
+        { draft: "Would we get along working together?", reply: "If you like honest feedback, fast iterations, and the occasional unhinged idea — yeah, we’ll be fine." },
+        { draft: "Are you working currently?", reply: "Before finishing my UX masters in birmingham I pivoted towards AIRCARDS as a product development assistant." }
+    ];
+
+    function init() {
+        if (!container.getBoundingClientRect().width) {
+            window.setTimeout(init, 100);
+            return;
+        }
+
+        const rect = container.getBoundingClientRect();
+        scene = new THREE.Scene();
+        camera = new THREE.PerspectiveCamera(40, rect.width / rect.height, 1, 5000);
+        camera.position.z = 1200;
+
+        cssRenderer = new THREE.CSS3DRenderer();
+        cssRenderer.setSize(rect.width, rect.height);
+        container.appendChild(cssRenderer.domElement);
+
+        const chatEl = uiSource.querySelector('.chat-panel-shell');
+        uiSource.style.display = 'block';
+        cssObject = new THREE.CSS3DObject(chatEl);
+        scene.add(cssObject);
+
+        setupChatLogic(chatEl);
+
+        window.addEventListener('resize', onWindowResize);
+        window.addEventListener('scroll', onScrollSync, { passive: true });
+        window.addEventListener('mousemove', onMouseMove);
+        
+        requestAnimationFrame(animate);
+
+        // Start conversation when revealed
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                window.setTimeout(() => {
+                    if (currentExchangeIndex === 0 && !activeExchange) {
+                        stageCurrentDraft();
+                    }
+                }, 1000);
+            }
+        }, { threshold: 0.3 });
+        observer.observe(container);
+    }
+
+    function onWindowResize() {
+        const rect = container.getBoundingClientRect();
+        camera.aspect = rect.width / rect.height;
+        camera.updateProjectionMatrix();
+        cssRenderer.setSize(rect.width, rect.height);
+    }
+
+    function onScrollSync() {
+        // Sync perspective if needed, but relative to the container
+    }
+
+    function onMouseMove(e) {
+        const x = (e.clientX / window.innerWidth) * 2 - 1;
+        const y = -(e.clientY / window.innerHeight) * 2 + 1;
+        targetRotY = x * 0.12;
+        targetRotX = -y * 0.12;
+    }
+
+    function animate() {
+        requestAnimationFrame(animate);
+        currentRotX += (targetRotX - currentRotX) * 0.08;
+        currentRotY += (targetRotY - currentRotY) * 0.08;
+        cssObject.rotation.x = currentRotX;
+        cssObject.rotation.y = currentRotY;
+        cssRenderer.render(scene, camera);
+    }
+
+    let activeExchange = null;
+    let pendingTimeoutId = null;
+
+    function setupChatLogic(screenEl) {
+        const messagesArea = screenEl.querySelector('#chat-messages-area');
+        const inputText = screenEl.querySelector('#chat-input-text');
+        const btnSend = screenEl.querySelector('#chat-btn-send');
+        const btnClear = screenEl.querySelector('#chat-btn-clear');
+        
+        const scheduleStep = (callback, delay) => {
+            if (pendingTimeoutId) clearTimeout(pendingTimeoutId);
+            pendingTimeoutId = window.setTimeout(callback, delay);
+        };
+
+        const updateSendState = () => {
+            const canSend = !isTyping && !isSending && !isDraftTyping && !!activeExchange && inputText.value.trim().length > 0;
+            btnSend.classList.toggle('active', canSend);
+        };
+
+        window.typeDraftText = (text, duration) => {
+            isDraftTyping = true;
+            let visibleChars = 0;
+            const start = performance.now();
+            
+            const step = () => {
+                const elapsed = performance.now() - start;
+                const progress = Math.min(1, elapsed / duration);
+                const nextChars = Math.ceil(text.length * progress);
+                if (nextChars > visibleChars) {
+                    visibleChars = nextChars;
+                    inputText.value = text.slice(0, visibleChars);
+                    updateSendState();
+                    messagesArea.scrollTop = messagesArea.scrollHeight;
+                }
+                if (progress < 1) scheduleStep(step, 16);
+                else isDraftTyping = false;
+            };
+            step();
+        };
+
+        window.stageCurrentDraft = () => {
+            activeExchange = CHAT_THREAD[currentExchangeIndex % CHAT_THREAD.length];
+            window.typeDraftText(activeExchange.draft, CHAT_SETTINGS.draftRevealDuration);
+        };
+
+        const appendBubble = (sender, text) => {
+            const bubble = document.createElement('div');
+            bubble.className = "chat-bubble chat-bubble-" + (sender === 'viewer' ? 'send' : 'recv');
+            bubble.innerText = text;
+            messagesArea.appendChild(bubble);
+            messagesArea.scrollTop = messagesArea.scrollHeight;
+        };
+
+        const showTypingIndicator = () => {
+            const typing = document.createElement('div');
+            typing.className = 'chat-typing';
+            typing.innerHTML = '<span></span><span></span><span></span>';
+            messagesArea.appendChild(typing);
+            messagesArea.scrollTop = messagesArea.scrollHeight;
+            return typing;
+        };
+
+        const playExchange = () => {
+            const exchange = activeExchange;
+            const sentText = inputText.value;
+            activeExchange = null;
+            isSending = true;
+            updateSendState();
+
+            scheduleStep(() => {
+                isSending = false;
+                appendBubble('viewer', sentText);
+                inputText.value = '';
+                
+                isTyping = true;
+                const typing = showTypingIndicator();
+
+                scheduleStep(() => {
+                    typing.remove();
+                    appendBubble('contact', exchange.reply);
+                    isTyping = false;
+                    currentExchangeIndex++;
+                    
+                    scheduleStep(window.stageCurrentDraft, CHAT_SETTINGS.nextDraftDelay);
+                }, CHAT_SETTINGS.replyTypingDelay);
+            }, CHAT_SETTINGS.sendMorphDuration);
+        };
+
+        btnSend.addEventListener('click', playExchange);
+        btnClear.addEventListener('click', () => {
+            messagesArea.innerHTML = "<div class=\"chat-timestamp\">" + CHAT_SETTINGS.timestampLabel + "</div>";
+            currentExchangeIndex = 0;
+            activeExchange = null;
+            inputText.value = '';
+            window.stageCurrentDraft();
+        });
+    }
+
+    if (document.readyState === 'complete') init();
+    else window.addEventListener('load', init);
+
+})();

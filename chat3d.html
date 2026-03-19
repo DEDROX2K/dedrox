@@ -683,34 +683,42 @@
         // - draftRevealDuration: optional override for the typed-in prompt speed
         // - typingDelay / nextDraftDelay: optional per-message timing overrides
         const CHAT_THREAD = [
-{
-        draft: "Hey Raghav, so… what do you actually *do*?",
-        reply: "Good question. I design stuff that’s not boring — apps, weird interfaces, sometimes things that probably shouldn’t exist but do anyway."
-    },
-    {
-        draft: "Okay but like… what can you do for *me*?",
-        reply: "I can take your half-baked idea and turn it into something people actually want to use. Or at least something they’ll screenshot."
-    },
-    {
-        draft: "What do you do in your free time?",
-        reply: "Start projects I may or may not finish. Mess with XR, build random tools, overthink UX, occasionally go outside."
-    },
-    {
-        draft: "Be honest… what’s the budget looking like?",
-        reply: "Somewhere between ‘this is fun’ and ‘I can pay rent’. Send what you’ve got, I’ll tell you what’s realistic."
-    },
-    {
-        draft: "What do you think of me?",
-        reply: "Bold of you to ask. You seem like someone with a cool idea and just enough chaos to make it interesting. I like that."
-    },
-    {
-        draft: "Would we get along working together?",
-        reply: "If you like honest feedback, fast iterations, and the occasional unhinged idea — yeah, we’ll be fine."
-    },
-    {
-        draft: "Alright… I might have something for you 👀",
-        reply: "Perfect. Send it over before you overthink it."
-    }
+            {
+                draft: "Are you currently working?",
+                reply: [
+                    "Yep, AIRCARDS based in Newcastle, UK. Working as a product development assistant",
+                    "After finishing my UX masters in birmingham I povoted towards product development and project management. Working on interactive displays and XR/AR experiences with "
+                ]
+            },
+            {
+                draft: "Hey Raghav, so… what do you actually *do*?",
+                reply: "Design stuff that’s not boring — apps, Interfaces, softwares. and lots of tools and plugins to increase productivity and I mentor juniors and conduct semminars"
+            },
+            {
+                draft: "Okay but like… what can you do for *me*?",
+                reply: "Well this is a pre made chat, but I would really want to know what you are working on!"
+            },
+            {
+                draft: "Do you have experience in development side of things?",
+                reply: "Yea I recently collaborated with 3 partners to create a free and open source bookmark tool made by loving designers. This journey taught me everything about react, tauri, and dev ops"
+            },
+            {
+                draft: "Are you currently working?",
+                reply: "Yep, AIRCARDS based in Newcastle, UK. Working as a product development assistant"
+                reply: "After finishing my UX masters in birmingham I povoted towards product development and project management. Working on interactive displays and XR/AR experiences with "
+            },
+            {
+                draft: "What do you think of me?",
+                reply: "Bold of you to ask. You seem like someone with a cool idea and just enough chaos to make it interesting. I like that."
+            },
+            {
+                draft: "Would we get along working together?",
+                reply: "If you like honest feedback, fast iterations, and the occasional unhinged idea — yeah, we’ll be fine."
+            },
+            {
+                draft: "Alright… I might have something for you 👀",
+                reply: "Perfect. Send it over before you overthink it."
+            }
         ];
 
         let currentExchangeIndex = 0;
@@ -1035,27 +1043,42 @@
                     appendBubble('viewer', sentText);
                     setDraft('');
 
-                    isTyping = true;
-                    updateSendState();
-                    const typingIndicator = showTypingIndicator();
-
-                    scheduleStep(() => {
+                    const replies = Array.isArray(exchange.reply) ? exchange.reply : [exchange.reply];
+                    
+                    const showNextReply = (replyIndex) => {
                         if (runId !== chatSequenceId) return;
 
-                        if (typingIndicator.parentNode) {
-                            typingIndicator.parentNode.removeChild(typingIndicator);
+                        if (replyIndex >= replies.length) {
+                            isTyping = false;
+                            currentExchangeIndex += 1;
+                            updateSendState();
+
+                            scheduleStep(() => {
+                                if (runId !== chatSequenceId) return;
+                                stageCurrentDraft();
+                            }, exchange.nextDraftDelay ?? CHAT_SETTINGS.nextDraftDelay);
+                            return;
                         }
 
-                        appendBubble('contact', exchange.reply);
-                        isTyping = false;
-                        currentExchangeIndex += 1;
+                        isTyping = true;
                         updateSendState();
+                        const typingIndicator = showTypingIndicator();
 
                         scheduleStep(() => {
                             if (runId !== chatSequenceId) return;
-                            stageCurrentDraft();
-                        }, exchange.nextDraftDelay ?? CHAT_SETTINGS.nextDraftDelay);
-                    }, exchange.typingDelay ?? CHAT_SETTINGS.replyTypingDelay);
+
+                            if (typingIndicator.parentNode) {
+                                typingIndicator.parentNode.removeChild(typingIndicator);
+                            }
+
+                            appendBubble('contact', replies[replyIndex]);
+                            
+                            // Small gap between multiple bubbles
+                            scheduleStep(() => showNextReply(replyIndex + 1), 600);
+                        }, exchange.typingDelay ?? CHAT_SETTINGS.replyTypingDelay);
+                    };
+
+                    showNextReply(0);
                 }, exchange.sendMorphDuration ?? CHAT_SETTINGS.sendMorphDuration);
             };
 
