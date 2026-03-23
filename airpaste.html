@@ -8,160 +8,190 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Playfair+Display:wght@700&display=swap">
     <link rel="stylesheet" href="airpaste.css">
 </head>
+
+
+
+
+
+
 <body>
 
-<section class="hero-section" id="hero">
-<div class="hero-layers">
-    <div class="layer layer-7" data-speed="0.1"></div>
-    <div class="layer layer-6" data-speed="0.2"></div>
-    <div class="layer layer-5" data-speed="0.4"></div>
-    <div class="layer layer-4" data-speed="0.6"></div>
-    <div class="layer layer-3" data-speed="0.8"></div>
-    <div class="layer layer-2" data-speed="1.0"></div>
-    <div class="layer layer-1" data-speed="1.2"></div>
-</div>
-
-    <h1 class="hero-title">AirPaste</h1>
-
-    <div class="floating-label label-top-left">
-        Ideas meant to be<br>played with
+<nav class="top-nav">
+    <div class="nav-logo">
+        <img src="images/Vector/logo.svg" alt="AirPaste Logo">
     </div>
-
-    <div class="floating-label label-mid-right">
-        Early Alpha -<br>Windows only*
-    </div>
-
-    <div class="floating-label label-bottom-right">
-        airpaste isn't built for "synergy" or<br>
-        "maximizing deliverables." It's built for<br>
-        human beings who want to throw their<br>
-        ideas at a wall and watch them bounce.
-    </div>
-
-    <div class="btn-parallax-container" id="btnWrapper" data-speed="1.2">
-        <button class="hero-btn">Download .EXE</button>
-    </div>
-</section>
-
-
-
-
-
-
-
-<script>
-    // ==========================================
-    // 🎛️ MASTER ANIMATION CONTROLS
-    // ==========================================
-    const CONTROLS = {
-        // Parallax (Mouse Movement)
-        parallaxMagnitude: 0.015, 
-        parallaxEase: 0.08,       
-        
-        // Squeeze (The organic breathing)
-        squeezeAmount: 0.02,      
-        squeezeBaseSpeed: 0.03,   
-        
-        // Hover Effects
-        hoverMultiplier: 2,             // Hero section hover speed
-        buttonHoverMultiplier: 4,       // NEW: Button hover speed (4x)
-        transitionSpeed: 0.05           // Smooth acceleration
-    };
-    // ==========================================
-
-    const hero = document.getElementById('hero');
-    const parallaxElements = document.querySelectorAll('[data-speed]');
-    const layers = document.querySelectorAll('.layer');
     
-    // NEW: Grab the button
-    const btn = document.querySelector('.hero-btn');
+    <div class="nav-links">
+        <a href="#" class="nav-btn">
+            <span class="nav-text">What</span>
+            <div class="corner-dots top-left"><i></i><i></i><i></i><i></i></div>
+            <div class="corner-dots top-right"><i></i><i></i><i></i><i></i></div>
+            <div class="corner-dots bottom-left"><i></i><i></i><i></i><i></i></div>
+            <div class="corner-dots bottom-right"><i></i><i></i><i></i><i></i></div>
+        </a>
 
-    // Tracking variables
-    let targetX = 0, targetY = 0;
-    let currentX = 0, currentY = 0;
-    let time = 0;
-    
-    // Smooth speed tracking states
-    let isHeroHovered = false;
-    let isButtonHovered = false;
-    let currentSpeedMultiplier = 1;
+        <a href="#" class="nav-btn">
+            <span class="nav-text">Why</span>
+            <div class="corner-dots top-left"><i></i><i></i><i></i><i></i></div>
+            <div class="corner-dots top-right"><i></i><i></i><i></i><i></i></div>
+            <div class="corner-dots bottom-left"><i></i><i></i><i></i><i></i></div>
+            <div class="corner-dots bottom-right"><i></i><i></i><i></i><i></i></div>
+        </a>
 
-    // 1. Track Mouse Position
-    hero.addEventListener('mousemove', (e) => {
-        targetX = (e.clientX - window.innerWidth / 2);
-        targetY = (e.clientY - window.innerHeight / 2);
-    });
+        <a href="#" class="nav-btn">
+            <span class="nav-text">How</span>
+            <div class="corner-dots top-left"><i></i><i></i><i></i><i></i></div>
+            <div class="corner-dots top-right"><i></i><i></i><i></i><i></i></div>
+            <div class="corner-dots bottom-left"><i></i><i></i><i></i><i></i></div>
+            <div class="corner-dots bottom-right"><i></i><i></i><i></i><i></i></div>
+        </a>
 
-    // 2. Track Hero Hover State
-    hero.addEventListener('mouseenter', () => { isHeroHovered = true; });
-    hero.addEventListener('mouseleave', () => { 
-        isHeroHovered = false; 
-        isButtonHovered = false; // Safety catch
-        targetX = 0; 
-        targetY = 0; 
-    });
+        <a href="#" class="nav-btn">
+            <span class="nav-text">Github</span>
+            <div class="corner-dots top-left"><i></i><i></i><i></i><i></i></div>
+            <div class="corner-dots top-right"><i></i><i></i><i></i><i></i></div>
+            <div class="corner-dots bottom-left"><i></i><i></i><i></i><i></i></div>
+            <div class="corner-dots bottom-right"><i></i><i></i><i></i><i></i></div>
+        </a>
+    </div>
+</nav>
 
-    // 3. NEW: Track Button Hover State
-    btn.addEventListener('mouseenter', () => { isButtonHovered = true; });
-    btn.addEventListener('mouseleave', () => { isButtonHovered = false; });
 
-    // 4. The Main Animation Engine
-    function animateParallax() {
-        // --- A. Smooth Parallax Follow ---
-        currentX += (targetX - currentX) * CONTROLS.parallaxEase;
-        currentY += (targetY - currentY) * CONTROLS.parallaxEase;
 
-        // --- B. Smooth Acceleration for Hover ---
-        // Logic: If button is hovered -> 4x. Else if hero is hovered -> 2x. Else -> 1x.
-        let targetSpeed = 1;
-        if (isButtonHovered) {
-            targetSpeed = CONTROLS.buttonHoverMultiplier;
-        } else if (isHeroHovered) {
-            targetSpeed = CONTROLS.hoverMultiplier;
-        }
-        
-        // Smoothly ramp up or down to the target speed
-        currentSpeedMultiplier += (targetSpeed - currentSpeedMultiplier) * CONTROLS.transitionSpeed;
 
-        // --- C. Smoothly adjust CSS Color Animation Speed ---
-        layers.forEach(layer => {
-            layer.getAnimations().forEach(anim => {
-                anim.playbackRate = currentSpeedMultiplier;
-            });
-        });
 
-        // --- D. Calculate the Breathing (Squeeze) Time ---
-        time += CONTROLS.squeezeBaseSpeed * currentSpeedMultiplier;
+    <section class="hero-section" id="hero">
+        <div class="hero-layers">
+            <div class="layer layer-7" data-speed="0.1"></div>
+            <div class="layer layer-6" data-speed="0.2"></div>
+            <div class="layer layer-5" data-speed="0.4"></div>
+            <div class="layer layer-4" data-speed="0.6"></div>
+            <div class="layer layer-3" data-speed="0.8"></div>
+            <div class="layer layer-2" data-speed="1.0"></div>
+            <div class="layer layer-1" data-speed="1.2"></div>
+        </div>
 
-        // --- E. Apply Math to the Elements ---
-        parallaxElements.forEach((el, index) => {
-            const speed = parseFloat(el.getAttribute('data-speed')) || 0;
+        <h1 class="hero-title">AirPaste</h1>
+
+        <div class="floating-label label-mid-right">
+            Early Alpha - Windows only*
+            <br><br><br><br><br><br><br><br>
+            AirPaste isn't built for "corporate meetings" or<br>
+            "maximizing deliverables." It's built for<br>
+            human beings who want to throw their<br>
+            ideas at a wall and watch them bounce.
+        </div>
+
+        <div class="btn-parallax-container" id="btnWrapper" data-speed="1.2">
+            <button class="hero-btn">Download .EXE</button>
+        </div>
+    </section>
+
+    <section class="manifesto-section">
+        <div class="manifesto-content">
+            <h2 class="manifesto-subtitle">Our Manifesto</h2>
             
-            // X/Y Parallax Offset
-            const moveX = currentX * speed * CONTROLS.parallaxMagnitude;
-            const moveY = currentY * speed * CONTROLS.parallaxMagnitude;
+            <p class="manifesto-text">
+                In a time when every company has a bid on our data, when we exchange our privacy for information, when every move we make is influenced by how others will perceive it, we have little space to call our own.
+            </p>
+            
+            <p class="manifesto-text highlight">
+                Our minds have been taken captive –<br>
+                by social approval systems, by newsfeeds and timelines, by advertisements and corporate agendas.
+            </p>
+            
+            <p class="manifesto-text">
+                Our information is scattered across platforms, bound by terms and conditions. What should have never been lost is now yours again. <strong>We promise:</strong>
+            </p>
+            
+            <ul class="manifesto-promises">
+                <li>no social features</li>
+                <li>no vanity metrics</li>
+                <li>no invasive tracking</li>
+                <li>no social pressure</li>
+                <li>no collaboration</li>
+                <li>no ads</li>
+            </ul>
+        </div>
+    </section>
 
-            // Squeeze Math (Sine wave)
-            let squeeze = 1;
-            if (el.classList.contains('layer')) {
-                squeeze = 1 + (Math.sin(time + (index * 0.5)) * CONTROLS.squeezeAmount);
-            }
+    <script>
+        // ==========================================
+        // 🎛️ MASTER ANIMATION CONTROLS
+        // ==========================================
+        const CONTROLS = {
+            parallaxMagnitude: 0.035, 
+            parallaxEase: 0.08,
+            squeezeAmount: 0.09,      
+            squeezeBaseSpeed: 0.03,   
+            hoverMultiplier: 1,            
+            buttonHoverMultiplier: 4,      
+            transitionSpeed: 0.05          
+        };
 
-            // Apply it
-            el.style.transform = `translate(${moveX}px, ${moveY}px) scale(${squeeze})`;
+        const parallaxElements = document.querySelectorAll('[data-speed]');
+        const layers = document.querySelectorAll('.layer');
+        const btn = document.querySelector('.hero-btn');
+
+        let targetX = 0, targetY = 0;
+        let currentX = 0, currentY = 0;
+        let time = 0;
+        
+        // Changed default to true so it constantly breathes gently
+        let isHeroHovered = true; 
+        let isButtonHovered = false;
+        let currentSpeedMultiplier = 1;
+
+        // 1. Track Mouse Position Globally (Works even when scrolling down)
+        window.addEventListener('mousemove', (e) => {
+            targetX = (e.clientX - window.innerWidth / 2);
+            targetY = (e.clientY - window.innerHeight / 2);
         });
 
-        requestAnimationFrame(animateParallax);
-    }
+        // 2. Track Button Hover State
+        btn.addEventListener('mouseenter', () => { isButtonHovered = true; });
+        btn.addEventListener('mouseleave', () => { isButtonHovered = false; });
 
-    // Start the engine
-    animateParallax();
-</script>
+        // 3. The Main Animation Engine
+        function animateParallax() {
+            currentX += (targetX - currentX) * CONTROLS.parallaxEase;
+            currentY += (targetY - currentY) * CONTROLS.parallaxEase;
 
+            let targetSpeed = 1;
+            if (isButtonHovered) {
+                targetSpeed = CONTROLS.buttonHoverMultiplier;
+            } else if (isHeroHovered) {
+                targetSpeed = CONTROLS.hoverMultiplier;
+            }
+            
+            currentSpeedMultiplier += (targetSpeed - currentSpeedMultiplier) * CONTROLS.transitionSpeed;
 
+            layers.forEach(layer => {
+                layer.getAnimations().forEach(anim => {
+                    anim.playbackRate = currentSpeedMultiplier;
+                });
+            });
 
+            time += CONTROLS.squeezeBaseSpeed * currentSpeedMultiplier;
 
+            parallaxElements.forEach((el, index) => {
+                const speed = parseFloat(el.getAttribute('data-speed')) || 0;
+                
+                const moveX = currentX * speed * CONTROLS.parallaxMagnitude;
+                const moveY = currentY * speed * CONTROLS.parallaxMagnitude;
 
+                let squeeze = 1;
+                if (el.classList.contains('layer')) {
+                    squeeze = 1 + (Math.sin(time + (index * 0.5)) * CONTROLS.squeezeAmount);
+                }
 
+                el.style.transform = `translate(${moveX}px, ${moveY}px) scale(${squeeze})`;
+            });
+
+            requestAnimationFrame(animateParallax);
+        }
+
+        animateParallax();
+    </script>
 </body>
 </html>

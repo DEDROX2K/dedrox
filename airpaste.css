@@ -1,177 +1,347 @@
 :root {
-    --bg: #ECE7E3;
+            --bg: #ECE7E3;
 
-    /* Base variables for sizes and blurs (Based on 1920x1080 viewport) */
-    --l1-blur: 0.99vw;  --l1-radius: 15.63vw; --l1-width: 14.58vw;  --l1-height: 9.26vh;   --l1-x: 0vw; --l1-y: 0.93vh;
-    --l2-blur: 1.56vw;  --l2-radius: 15.63vw; --l2-width: 25.52vw;  --l2-height: 28.70vh;  --l2-x: 0vw; --l2-y: 0vh;
-    --l3-blur: 2.60vw;  --l3-radius: 46.88vw; --l3-width: 33.85vw;  --l3-height: 45.37vh;  --l3-x: 0vw; --l3-y: 0vh;
-    --l4-blur: 2.60vw;  --l4-radius: 46.88vw; --l4-width: 43.75vw;  --l4-height: 57.41vh;  --l4-x: 0vw; --l4-y: 0vh;
-    --l5-blur: 3.13vw;  --l5-radius: 46.88vw; --l5-width: 56.77vw;  --l5-height: 89.81vh;  --l5-x: 0vw; --l5-y: 0vh;
-    --l6-blur: 3.13vw;  --l6-radius: 46.88vw; --l6-width: 75.52vw;  --l6-height: 120.37vh; --l6-x: 0vw; --l6-y: 0vh;
-    
-    /* NEW LAYER 7 */
-    --l7-blur: 3.13vw;  --l7-radius: 46.88vw; --l7-width: 14.58vw; --l7-height: 29.63vh; --l7-x: 0vw; --l7-y: 0vh;
-}
-body, html {
-    margin: 0;
-    padding: 0;
-    background-color: var(--bg);
-    font-family: 'Inter', sans-serif;
-    overflow-x: hidden;
-}
+            /* Base variables for sizes and blurs (Based on 1920x1080 viewport) */
+            --l1-blur: 0.99vw;  --l1-radius: 15.63vw; --l1-width: 14.58vw;  --l1-height: 9.26vh;   --l1-x: 0vw; --l1-y: 0.93vh;
+            --l2-blur: 1.56vw;  --l2-radius: 15.63vw; --l2-width: 25.52vw;  --l2-height: 28.70vh;  --l2-x: 0vw; --l2-y: 0vh;
+            --l3-blur: 2.60vw;  --l3-radius: 46.88vw; --l3-width: 33.85vw;  --l3-height: 45.37vh;  --l3-x: 0vw; --l3-y: 0vh;
+            --l4-blur: 2.60vw;  --l4-radius: 46.88vw; --l4-width: 43.75vw;  --l4-height: 57.41vh;  --l4-x: 0vw; --l4-y: 0vh;
+            --l5-blur: 3.13vw;  --l5-radius: 46.88vw; --l5-width: 76.77vw;  --l5-height: 83vh;  --l5-x: 0vw; --l5-y: 0vh;
+            --l6-blur: 3.13vw;  --l6-radius: 46.88vw; --l6-width: 85.52vw;  --l6-height: 100vh; --l6-x: 0vw; --l6-y: 0vh;
+            
+            /* NEW LAYER 7 */
+            --l7-blur: 3.13vw;  --l7-radius: 46.88vw; --l7-width: 14.58vw; --l7-height: 29.63vh; --l7-x: 0vw; --l7-y: 0vh;
+        }
 
-.hero-section {
-    position: relative;
-    height: 100vh;
+
+        
+        body, html {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* --- HERO SECTION --- */
+        .hero-section {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* REMOVED overflow: hidden; so the background blobs bleed down */
+            z-index: 1; 
+        }
+
+        /* --- THE BACKGROUND LAYERS --- */
+        .hero-layers {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .layer {
+            position: absolute;
+            will-change: transform, background-color; 
+            animation: cycleColors 18s infinite linear;
+        }
+
+        .layer-1 { width: var(--l1-width); height: var(--l1-height); border-radius: var(--l1-radius); filter: blur(var(--l1-blur)); margin-left: var(--l1-x); margin-top: var(--l1-y); z-index: 7; animation-delay: 0s; }
+        .layer-2 { width: var(--l2-width); height: var(--l2-height); border-radius: var(--l2-radius); filter: blur(var(--l2-blur)); margin-left: var(--l2-x); margin-top: var(--l2-y); z-index: 6; animation-delay: -1.7s; }
+        .layer-3 { width: var(--l3-width); height: var(--l3-height); border-radius: var(--l3-radius); filter: blur(var(--l3-blur)); margin-left: var(--l3-x); margin-top: var(--l3-y); z-index: 5; animation-delay: -3.4s; }
+        .layer-4 { width: var(--l4-width); height: var(--l4-height); border-radius: var(--l4-radius); filter: blur(var(--l4-blur)); margin-left: var(--l4-x); margin-top: var(--l4-y); z-index: 4; animation-delay: -5.1s; }
+        .layer-5 { width: var(--l5-width); height: var(--l5-height); border-radius: var(--l5-radius); filter: blur(var(--l5-blur)); margin-left: var(--l5-x); margin-top: var(--l5-y); z-index: 3; animation-delay: -6.8s; }
+        .layer-6 { width: var(--l6-width); height: var(--l6-height); border-radius: var(--l6-radius); filter: blur(var(--l6-blur)); margin-left: var(--l6-x); margin-top: var(--l6-y); z-index: 2; animation-delay: -8.5s; }
+        .layer-7 { width: var(--l7-width); height: var(--l7-height); border-radius: var(--l7-radius); filter: blur(var(--l7-blur)); margin-left: var(--l7-x); margin-top: var(--l7-y); z-index: 1; animation-delay: -10.2s; }
+
+        @keyframes cycleColors {
+            0%   { background-color: #d996d4; }
+            20%  { background-color: #786bff; }
+            40%  { background-color: #F5A2C8; }
+            60%  { background-color: #ff4c4c; }
+            80%  { background-color: #fffeaf; }
+            100% { background-color: #d996d4; }
+        }
+
+        /* --- CONTENT & LABELS --- */
+        .hero-title {
+            position: absolute;
+            top: 0%;
+            /* Make sure to provide a fallback font just in case your local TTF fails */
+            font-family: url('Fonts/gloucester-mt-extra-condensed.ttf'), 'Playfair Display', serif;
+            font-size: clamp(3rem, 16vw, 15rem);
+            color: white;
+            z-index: 15;
+            pointer-events: none;
+            margin: 0;
+        }
+
+        .floating-label {
+            position: absolute;
+            font-size: 0.95rem;
+            color: #ffffff;
+            font-weight: 500;
+            line-height: 1.5;
+            pointer-events: none;
+            z-index: 15;
+        }
+
+        .label-mid-right { top: 48%; right: 26%; }
+
+        /* --- GLOWING BUTTON --- */
+        .btn-parallax-container {
+            z-index: 20; 
+            will-change: transform;
+            /* margin-top: 15vh; Pushed down slightly to center visually  */
+        }
+
+        .hero-btn {
+            display: inline-block;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: #1a1a1a;
+            padding: 1.3em 2.6em;
+            border-radius: 100px;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            
+            box-shadow: 
+                0 0 15px rgba(255, 255, 255, 0.8),        
+                0 0 40px rgba(245, 162, 200, 0.5),        
+                0 4px 15px rgba(0, 0, 0, 0.05),            
+                inset 0 0 10px rgba(255, 255, 255, 0.5);  
+            
+            transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1), 
+                        box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1),
+                        background 0.2s ease;
+        }
+
+        .hero-btn:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 
+                0 0 25px rgba(255, 255, 255, 1), 
+                0 0 60px rgba(245, 162, 200, 0.7), 
+                0 8px 20px rgba(0, 0, 0, 0.1),
+                inset 0 0 15px rgba(255, 255, 255, 0.8);
+        }
+
+        .hero-btn:active {
+            transform: translateY(4px);
+            box-shadow: 
+                0 0 10px rgba(255, 255, 255, 0.6), 
+                0 0 20px rgba(245, 162, 200, 0.4),
+                0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        /* ==========================================
+           📜 NEW: MANIFESTO SECTION
+           ========================================== */
+        .manifesto-section {
+            position: relative;
+            z-index: 10; /* Keeps text above the bleeding background */
+            width: 100%;
+            padding: 20vh 5vw 15vh 5vw;
+            display: flex;
+            justify-content: center;
+            background: transparent; /* Allows gradient bleed */
+            box-sizing: border-box;
+        }
+
+        .manifesto-content {
+            max-width: 800px;
+            text-align: center;
+        }
+
+        .manifesto-subtitle {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: rgba(26, 26, 26, 0.6);
+            margin-bottom: 4rem;
+        }
+
+        .manifesto-text {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            line-height: 1.4;
+            color: #1a1a1a;
+            margin-bottom: 2.5rem;
+            font-weight: 400;
+        }
+
+        .manifesto-text.highlight {
+            font-weight: 700;
+            font-style: italic;
+        }
+
+        .manifesto-promises {
+            list-style: none;
+            padding: 0;
+            margin-top: 5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .manifesto-promises li {
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(1.2rem, 2vw, 1.5rem);
+            font-weight: 500;
+            color: rgba(26, 26, 26, 0.8);
+            letter-spacing: -0.02em;
+        }
+        
+        .manifesto-promises li::before {
+            content: "— ";
+            color: rgba(26, 26, 26, 0.4);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /* ==========================================
+   🧭 NAVIGATION BAR
+   ========================================== */
+.top-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
+    padding: 30px 5vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+    box-sizing: border-box;
+    pointer-events: none; /* Lets clicks pass through the empty space */
+}
+
+.nav-logo, .nav-links {
+    pointer-events: auto; /* Re-enables clicks on actual elements */
+}
+
+.nav-logo img {
+    height: 35px; /* Adjust based on your SVG's actual proportions */
+    width: auto;
+}
+
+.nav-links {
+    display: flex;
+    gap: 35px;
+}
+
+/* --- THE NAV BUTTON BASE --- */
+.nav-btn {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
-    z-index: 1; 
+    padding: 8px 24px;
+    background-color: #ffffff;
+    border-radius: 999px;
+    text-decoration: none;
+    
+    /* The pronounced default blur */
+    box-shadow: 0 0 15px 8px rgba(255, 255, 255, 0.9);
+    transition: box-shadow 0.3s ease;
 }
 
-/* --- THE BACKGROUND LAYERS --- */
-.hero-layers {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    pointer-events: none;
-    z-index: 0;
-}
-
-/* We animate the background-color continuously at a base speed */
-.layer {
-    position: absolute;
-    will-change: transform, background-color; 
-    animation: cycleColors 18s infinite linear;
-}
-
-/* Updated stacking order (z-index) and delays for 7 layers */
-.layer-1 { width: var(--l1-width); height: var(--l1-height); border-radius: var(--l1-radius); filter: blur(var(--l1-blur)); margin-left: var(--l1-x); margin-top: var(--l1-y); z-index: 7; animation-delay: 0s; }
-.layer-2 { width: var(--l2-width); height: var(--l2-height); border-radius: var(--l2-radius); filter: blur(var(--l2-blur)); margin-left: var(--l2-x); margin-top: var(--l2-y); z-index: 6; animation-delay: -1.7s; }
-.layer-3 { width: var(--l3-width); height: var(--l3-height); border-radius: var(--l3-radius); filter: blur(var(--l3-blur)); margin-left: var(--l3-x); margin-top: var(--l3-y); z-index: 5; animation-delay: -3.4s; }
-.layer-4 { width: var(--l4-width); height: var(--l4-height); border-radius: var(--l4-radius); filter: blur(var(--l4-blur)); margin-left: var(--l4-x); margin-top: var(--l4-y); z-index: 4; animation-delay: -5.1s; }
-.layer-5 { width: var(--l5-width); height: var(--l5-height); border-radius: var(--l5-radius); filter: blur(var(--l5-blur)); margin-left: var(--l5-x); margin-top: var(--l5-y); z-index: 3; animation-delay: -6.8s; }
-.layer-6 { width: var(--l6-width); height: var(--l6-height); border-radius: var(--l6-radius); filter: blur(var(--l6-blur)); margin-left: var(--l6-x); margin-top: var(--l6-y); z-index: 2; animation-delay: -8.5s; }
-.layer-7 { width: var(--l7-width); height: var(--l7-height); border-radius: var(--l7-radius); filter: blur(var(--l7-blur)); margin-left: var(--l7-x); margin-top: var(--l7-y); z-index: 1; animation-delay: -10.2s; }
-
-/* The Color Palette Loop */
-@keyframes cycleColors {
-    0%   { background-color: #d996d4; }
-    20%  { background-color: #786bff; }
-    40%  { background-color: #F5A2C8; }
-    60%  { background-color: #ff4c4c; }
-    80%  { background-color: #e9ffaf; }
-    100% { background-color: #d996d4; }
-}
-
-
-
-
-/* --- CONTENT & LABELS --- */
-.hero-title {
-    position: absolute;
-    top: 0%;
-font-family: url(Fonts/gloucester-mt-extra-condensed.ttf);
-    font-size: clamp(3rem, 16vw, 15rem);
-    color: white;
-    z-index: 15;
-    pointer-events: none;
-    margin: 0;
-}
-
-.floating-label {
-    position: absolute;
-    font-size: 0.95rem;
-    color: #ffffff;
-    font-weight: 500;
-    line-height: 1.5;
-    pointer-events: none;
-    z-index: 15;
-}
-
-.label-top-left { top: 32%; left: 22%; }
-.label-mid-right { top: 48%; right: 26%; }
-.label-bottom-right { 
-    bottom: 18%; right: 22%; 
-    text-align: right; 
-    font-size: 0.85rem; 
-    color: #ffffff; 
-}
-
-/* --- THE NEW GLOWING BUTTON --- */
-.btn-parallax-container {
-    z-index: 20; 
-    will-change: transform;
-}
-
-.hero-btn {
-    display: inline-block;
-    cursor: pointer;
-    font-family: 'Inter', sans-serif;
-    font-weight: 800;
+.nav-text {
+    /* Using your editorial serif font */
+    font-family: 'Playfair Display', serif; 
     font-size: 1.1rem;
-    color: #1a1a1a;
-    padding: 1.3em 2.6em;
-    border-radius: 100px;
-    text-transform: uppercase;
-    letter-spacing: 0.02em;
-    
-    /* Frosted Glass Base */
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.8);
-    
-    /* The Glow Effect - Stacked for softness */
-    box-shadow: 
-        0 0 15px rgba(255, 255, 255, 0.8),         /* Tight white glow */
-        0 0 40px rgba(245, 162, 200, 0.5),         /* Soft pinkish aura */
-        0 4px 15px rgba(0, 0, 0, 0.05),            /* Subtle drop shadow */
-        inset 0 0 10px rgba(255, 255, 255, 0.5);   /* Inner shine */
-    
-    transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1), 
-                box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1),
-                background 0.2s ease;
+    font-weight: 700;
+    color: #242424;
+    position: relative;
+    z-index: 2;
 }
 
-.hero-btn:hover {
-    transform: translateY(-2px);
-    background: rgba(255, 255, 255, 0.95);
-    /* Expand the glow on hover */
-    box-shadow: 
-        0 0 25px rgba(255, 255, 255, 1), 
-        0 0 60px rgba(245, 162, 200, 0.7), 
-        0 8px 20px rgba(0, 0, 0, 0.1),
-        inset 0 0 15px rgba(255, 255, 255, 0.8);
+/* On hover, the blur completely vanishes */
+.nav-btn:hover {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
 }
 
-.hero-btn:active {
-    transform: translateY(4px);
-    /* Compress the glow on click */
-    box-shadow: 
-        0 0 10px rgba(255, 255, 255, 0.6), 
-        0 0 20px rgba(245, 162, 200, 0.4),
-        0 2px 5px rgba(0, 0, 0, 0.05);
+/* --- THE CORNER DOTS (BRACKETS) --- */
+.corner-dots {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 3px;
+    pointer-events: none;
 }
 
+/* Pushing them outside the bounds of the pill */
+.top-left { top: -10px; left: -10px; }
+.top-right { top: -10px; right: -10px; }
+.bottom-left { bottom: -10px; left: -10px; }
+.bottom-right { bottom: -10px; right: -10px; }
 
+/* The individual squares */
+.corner-dots i {
+    background-color: #ffffff;
+    border-radius: 1px;
+    opacity: 0;
+    transform: scale(0.5);
+    transition: opacity 0.1s ease, transform 0.1s ease;
+}
 
+/* Hide specific grid cells to form the 'L' shape brackets */
+.top-left i:nth-child(4),
+.top-right i:nth-child(3),
+.bottom-left i:nth-child(2),
+.bottom-right i:nth-child(1) {
+    visibility: hidden;
+}
 
+/* When the button is hovered, show the dots */
+.nav-btn:hover .corner-dots i {
+    opacity: 1;
+    transform: scale(1);
+}
 
+/* --- RANDOMIZED DELAYS --- */
+/* This is what creates the "popping in one by one" effect */
+.nav-btn .top-left i:nth-child(1) { transition-delay: 0.05s; }
+.nav-btn .top-left i:nth-child(2) { transition-delay: 0.12s; }
+.nav-btn .top-left i:nth-child(3) { transition-delay: 0.02s; }
 
+.nav-btn .top-right i:nth-child(1) { transition-delay: 0.18s; }
+.nav-btn .top-right i:nth-child(2) { transition-delay: 0.08s; }
+.nav-btn .top-right i:nth-child(4) { transition-delay: 0.15s; }
 
+.nav-btn .bottom-left i:nth-child(1) { transition-delay: 0.09s; }
+.nav-btn .bottom-left i:nth-child(3) { transition-delay: 0.19s; }
+.nav-btn .bottom-left i:nth-child(4) { transition-delay: 0.04s; }
 
-
-
-
-
-
-
-
-
-
-
-
+.nav-btn .bottom-right i:nth-child(2) { transition-delay: 0.14s; }
+.nav-btn .bottom-right i:nth-child(3) { transition-delay: 0.07s; }
+.nav-btn .bottom-right i:nth-child(4) { transition-delay: 0.22s; }
