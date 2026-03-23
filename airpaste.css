@@ -1,48 +1,17 @@
 :root {
-    /* --- GLOBAL BACKGROUND --- */
-    --bg: #ebe7e1;
+    --bg: #ECE7E3;
 
-    /* --- LAYER 1 (Top-most solid blue shape attached to button) --- */
-    --l1-bg: #17488A;
-    --l1-blur: 11px;
-    --l1-radius: 100px;
-    --l1-width: 340px;
-    --l1-height: 140px;
-    --l1-border: none;
-
-    /* --- LAYER 2 (Inner Blue Aura) --- */
-    --l2-bg: #4474C9;
-    --l2-blur: 50px;
-    --l2-radius: 120px;
-    --l2-width: 520px;
-    --l2-height: 240px;
-    --l2-border: none;
-
-    /* --- LAYER 3 (Pink Aura) --- */
-    --l3-bg: #F5A2C8;
-    --l3-blur: 50px;
-    --l3-radius: 200px;
-    --l3-width: 850px;
-    --l3-height: 400px;
-    --l3-border: none;
-
-    /* --- LAYER 4 (Inner Border) --- */
-    --l4-bg: #FFDCF4;
-    --l4-blur: 50px;
-    --l4-radius: 300px;
-    --l4-width: 1150px;
-    --l4-height: 580px;
-    --l4-border: none;
-
-    /* --- LAYER 5 (Outer Border) --- */
-    --l5-bg: #ffdcf0;
-    --l5-blur: 0px;
-    --l5-radius: 400px;
-    --l5-width: 1450px;
-    --l5-height: 800px;
-    --l5-border:none;
+    /* Base variables for sizes and blurs (Based on 1920x1080 viewport) */
+    --l1-blur: 0.99vw;  --l1-radius: 15.63vw; --l1-width: 14.58vw;  --l1-height: 9.26vh;   --l1-x: 0vw; --l1-y: 0.93vh;
+    --l2-blur: 1.56vw;  --l2-radius: 15.63vw; --l2-width: 25.52vw;  --l2-height: 28.70vh;  --l2-x: 0vw; --l2-y: 0vh;
+    --l3-blur: 2.60vw;  --l3-radius: 46.88vw; --l3-width: 33.85vw;  --l3-height: 45.37vh;  --l3-x: 0vw; --l3-y: 0vh;
+    --l4-blur: 2.60vw;  --l4-radius: 46.88vw; --l4-width: 43.75vw;  --l4-height: 57.41vh;  --l4-x: 0vw; --l4-y: 0vh;
+    --l5-blur: 3.13vw;  --l5-radius: 46.88vw; --l5-width: 56.77vw;  --l5-height: 89.81vh;  --l5-x: 0vw; --l5-y: 0vh;
+    --l6-blur: 3.13vw;  --l6-radius: 46.88vw; --l6-width: 75.52vw;  --l6-height: 120.37vh; --l6-x: 0vw; --l6-y: 0vh;
+    
+    /* NEW LAYER 7 */
+    --l7-blur: 3.13vw;  --l7-radius: 46.88vw; --l7-width: 14.58vw; --l7-height: 29.63vh; --l7-x: 0vw; --l7-y: 0vh;
 }
-
 body, html {
     margin: 0;
     padding: 0;
@@ -59,7 +28,7 @@ body, html {
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    z-index: 1; /* Establishes a proper stacking context */
+    z-index: 1; 
 }
 
 /* --- THE BACKGROUND LAYERS --- */
@@ -73,25 +42,41 @@ body, html {
     z-index: 0;
 }
 
-/* Notice: CSS transitions removed so JS can handle it smoothly */
+/* We animate the background-color continuously at a base speed */
 .layer {
     position: absolute;
-    will-change: transform; /* Optimizes performance */
+    will-change: transform, background-color; 
+    animation: cycleColors 18s infinite linear;
 }
 
-/* Explicit z-indexes force the colors to show up correctly */
-.layer-5 { width: var(--l5-width); height: var(--l5-height); background: var(--l5-bg); border-radius: var(--l5-radius); filter: blur(var(--l5-blur)); border: var(--l5-border); z-index: 1; }
-.layer-4 { width: var(--l4-width); height: var(--l4-height); background: var(--l4-bg); border-radius: var(--l4-radius); filter: blur(var(--l4-blur)); border: var(--l4-border); z-index: 2; }
-.layer-3 { width: var(--l3-width); height: var(--l3-height); background: var(--l3-bg); border-radius: var(--l3-radius); filter: blur(var(--l3-blur)); border: var(--l3-border); z-index: 3; }
-.layer-2 { width: var(--l2-width); height: var(--l2-height); background: var(--l2-bg); border-radius: var(--l2-radius); filter: blur(var(--l2-blur)); border: var(--l2-border); z-index: 4; }
-.layer-1 { width: var(--l1-width); height: var(--l1-height); background: var(--l1-bg); border-radius: var(--l1-radius); filter: blur(var(--l1-blur)); border: var(--l1-border); z-index: 5; }
+/* Updated stacking order (z-index) and delays for 7 layers */
+.layer-1 { width: var(--l1-width); height: var(--l1-height); border-radius: var(--l1-radius); filter: blur(var(--l1-blur)); margin-left: var(--l1-x); margin-top: var(--l1-y); z-index: 7; animation-delay: 0s; }
+.layer-2 { width: var(--l2-width); height: var(--l2-height); border-radius: var(--l2-radius); filter: blur(var(--l2-blur)); margin-left: var(--l2-x); margin-top: var(--l2-y); z-index: 6; animation-delay: -1.7s; }
+.layer-3 { width: var(--l3-width); height: var(--l3-height); border-radius: var(--l3-radius); filter: blur(var(--l3-blur)); margin-left: var(--l3-x); margin-top: var(--l3-y); z-index: 5; animation-delay: -3.4s; }
+.layer-4 { width: var(--l4-width); height: var(--l4-height); border-radius: var(--l4-radius); filter: blur(var(--l4-blur)); margin-left: var(--l4-x); margin-top: var(--l4-y); z-index: 4; animation-delay: -5.1s; }
+.layer-5 { width: var(--l5-width); height: var(--l5-height); border-radius: var(--l5-radius); filter: blur(var(--l5-blur)); margin-left: var(--l5-x); margin-top: var(--l5-y); z-index: 3; animation-delay: -6.8s; }
+.layer-6 { width: var(--l6-width); height: var(--l6-height); border-radius: var(--l6-radius); filter: blur(var(--l6-blur)); margin-left: var(--l6-x); margin-top: var(--l6-y); z-index: 2; animation-delay: -8.5s; }
+.layer-7 { width: var(--l7-width); height: var(--l7-height); border-radius: var(--l7-radius); filter: blur(var(--l7-blur)); margin-left: var(--l7-x); margin-top: var(--l7-y); z-index: 1; animation-delay: -10.2s; }
+
+/* The Color Palette Loop */
+@keyframes cycleColors {
+    0%   { background-color: #d996d4; }
+    20%  { background-color: #786bff; }
+    40%  { background-color: #F5A2C8; }
+    60%  { background-color: #ff4c4c; }
+    80%  { background-color: #e9ffaf; }
+    100% { background-color: #d996d4; }
+}
+
+
+
 
 /* --- CONTENT & LABELS --- */
 .hero-title {
     position: absolute;
-    top: 15%;
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(3rem, 10vw, 6.5rem);
+    top: 0%;
+font-family: url(Fonts/gloucester-mt-extra-condensed.ttf);
+    font-size: clamp(3rem, 16vw, 15rem);
     color: white;
     z-index: 15;
     pointer-events: none;
@@ -101,7 +86,7 @@ body, html {
 .floating-label {
     position: absolute;
     font-size: 0.95rem;
-    color: rgba(14, 31, 86, 0.75);
+    color: #ffffff;
     font-weight: 500;
     line-height: 1.5;
     pointer-events: none;
@@ -114,54 +99,79 @@ body, html {
     bottom: 18%; right: 22%; 
     text-align: right; 
     font-size: 0.85rem; 
-    color: rgba(14, 31, 86, 0.45); 
+    color: #ffffff; 
 }
 
-/* --- THE 3D BUTTON --- */
+/* --- THE NEW GLOWING BUTTON --- */
 .btn-parallax-container {
-    z-index: 20; /* Safely above all the square layers */
+    z-index: 20; 
     will-change: transform;
 }
 
 .hero-btn {
     display: inline-block;
     cursor: pointer;
-    border: 0;
     font-family: 'Inter', sans-serif;
     font-weight: 800;
     font-size: 1.1rem;
-    color: #242424;
+    color: #1a1a1a;
     padding: 1.3em 2.6em;
     border-radius: 100px;
-    background: linear-gradient(to bottom, #ffffff 0%, #f0f0f0 100%);
     text-transform: uppercase;
     letter-spacing: 0.02em;
     
-    box-shadow: 
-        inset 0 1px 0 #fff,
-        0 1px 0 #efefef, 
-        0 2px 0 #ececec, 
-        0 4px 0 #e0e0e0, 
-        0 6px 0 #dedede,
-        0 8px 15px rgba(0,0,0,0.1);
+    /* Frosted Glass Base */
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
     
-    /* We keep the transition here because this is for the CLICK effect, not parallax */
-    transition: transform 0.1s cubic-bezier(0.2, 0, 0, 1), 
-                box-shadow 0.1s cubic-bezier(0.2, 0, 0, 1);
+    /* The Glow Effect - Stacked for softness */
+    box-shadow: 
+        0 0 15px rgba(255, 255, 255, 0.8),         /* Tight white glow */
+        0 0 40px rgba(245, 162, 200, 0.5),         /* Soft pinkish aura */
+        0 4px 15px rgba(0, 0, 0, 0.05),            /* Subtle drop shadow */
+        inset 0 0 10px rgba(255, 255, 255, 0.5);   /* Inner shine */
+    
+    transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1), 
+                box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1),
+                background 0.2s ease;
 }
 
 .hero-btn:hover {
-    transform: translateY(2px);
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.95);
+    /* Expand the glow on hover */
     box-shadow: 
-        0 1px 0 #efefef, 
-        0 2px 0 #ececec, 
-        0 4px 0 #dedede, 
-        0 5px 10px rgba(0,0,0,0.1);
+        0 0 25px rgba(255, 255, 255, 1), 
+        0 0 60px rgba(245, 162, 200, 0.7), 
+        0 8px 20px rgba(0, 0, 0, 0.1),
+        inset 0 0 15px rgba(255, 255, 255, 0.8);
 }
 
 .hero-btn:active {
-    transform: translateY(6px);
+    transform: translateY(4px);
+    /* Compress the glow on click */
     box-shadow: 
-        0 1px 0 #dedede, 
-        0 2px 5px rgba(0,0,0,0.15);
+        0 0 10px rgba(255, 255, 255, 0.6), 
+        0 0 20px rgba(245, 162, 200, 0.4),
+        0 2px 5px rgba(0, 0, 0, 0.05);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

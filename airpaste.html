@@ -10,85 +10,158 @@
 </head>
 <body>
 
-    <section class="hero-section" id="hero">
-        <div class="hero-layers">
-            <div class="layer layer-5" data-speed="0.2"></div>
-            <div class="layer layer-4" data-speed="0.4"></div>
-            <div class="layer layer-3" data-speed="0.6"></div>
-            <div class="layer layer-2" data-speed="0.8"></div>
-            <div class="layer layer-1" data-speed="1.2"></div>
-        </div>
+<section class="hero-section" id="hero">
+<div class="hero-layers">
+    <div class="layer layer-7" data-speed="0.1"></div>
+    <div class="layer layer-6" data-speed="0.2"></div>
+    <div class="layer layer-5" data-speed="0.4"></div>
+    <div class="layer layer-4" data-speed="0.6"></div>
+    <div class="layer layer-3" data-speed="0.8"></div>
+    <div class="layer layer-2" data-speed="1.0"></div>
+    <div class="layer layer-1" data-speed="1.2"></div>
+</div>
 
-        <h1 class="hero-title" data-speed="0.3">AirPaste</h1>
+    <h1 class="hero-title">AirPaste</h1>
 
-        <div class="floating-label label-top-left" data-speed="0.7">
-            Ideas meant to be<br>played with
-        </div>
+    <div class="floating-label label-top-left">
+        Ideas meant to be<br>played with
+    </div>
 
-        <div class="floating-label label-mid-right" data-speed="0.5">
-            Early Alpha -<br>Windows only*
-        </div>
+    <div class="floating-label label-mid-right">
+        Early Alpha -<br>Windows only*
+    </div>
 
-        <div class="floating-label label-bottom-right" data-speed="0.9">
-            airpaste isn't built for "synergy" or<br>
-            "maximizing deliverables." It's built for<br>
-            human beings who want to throw their<br>
-            ideas at a wall and watch them bounce.
-        </div>
+    <div class="floating-label label-bottom-right">
+        airpaste isn't built for "synergy" or<br>
+        "maximizing deliverables." It's built for<br>
+        human beings who want to throw their<br>
+        ideas at a wall and watch them bounce.
+    </div>
 
-        <div class="btn-parallax-container" id="btnWrapper" data-speed="1.2">
-            <button class="hero-btn">Download .EXE</button>
-        </div>
-    </section>
+    <div class="btn-parallax-container" id="btnWrapper" data-speed="1.2">
+        <button class="hero-btn">Download .EXE</button>
+    </div>
+</section>
+
+
+
+
+
+
 
 <script>
-    // --- MASTER CONTROLS ---
-    const PARALLAX_CONFIG = {
-        magnitude: 0.015, // Lowered from 0.03 for a gentler, more subtle effect
-        ease: 0.08      // The lower the number, the smoother and more "delayed" the magnet effect is
+    // ==========================================
+    // 🎛️ MASTER ANIMATION CONTROLS
+    // ==========================================
+    const CONTROLS = {
+        // Parallax (Mouse Movement)
+        parallaxMagnitude: 0.015, 
+        parallaxEase: 0.08,       
+        
+        // Squeeze (The organic breathing)
+        squeezeAmount: 0.02,      
+        squeezeBaseSpeed: 0.03,   
+        
+        // Hover Effects
+        hoverMultiplier: 2,             // Hero section hover speed
+        buttonHoverMultiplier: 4,       // NEW: Button hover speed (4x)
+        transitionSpeed: 0.05           // Smooth acceleration
     };
+    // ==========================================
 
     const hero = document.getElementById('hero');
     const parallaxElements = document.querySelectorAll('[data-speed]');
+    const layers = document.querySelectorAll('.layer');
+    
+    // NEW: Grab the button
+    const btn = document.querySelector('.hero-btn');
 
-    // Variables to track smooth movement
-    let targetX = 0;
-    let targetY = 0;
-    let currentX = 0;
-    let currentY = 0;
+    // Tracking variables
+    let targetX = 0, targetY = 0;
+    let currentX = 0, currentY = 0;
+    let time = 0;
+    
+    // Smooth speed tracking states
+    let isHeroHovered = false;
+    let isButtonHovered = false;
+    let currentSpeedMultiplier = 1;
 
+    // 1. Track Mouse Position
     hero.addEventListener('mousemove', (e) => {
-        // Find distance from the center of the screen
         targetX = (e.clientX - window.innerWidth / 2);
         targetY = (e.clientY - window.innerHeight / 2);
     });
 
-    hero.addEventListener('mouseleave', () => {
-        // When mouse leaves, gently pull everything back to the dead center (0,0)
-        targetX = 0;
-        targetY = 0;
+    // 2. Track Hero Hover State
+    hero.addEventListener('mouseenter', () => { isHeroHovered = true; });
+    hero.addEventListener('mouseleave', () => { 
+        isHeroHovered = false; 
+        isButtonHovered = false; // Safety catch
+        targetX = 0; 
+        targetY = 0; 
     });
 
-    // The Animation Loop (Fixes the snapping)
-    function animateParallax() {
-        // "Lerp" formula: slowly close the distance between current position and target position
-        currentX += (targetX - currentX) * PARALLAX_CONFIG.ease;
-        currentY += (targetY - currentY) * PARALLAX_CONFIG.ease;
+    // 3. NEW: Track Button Hover State
+    btn.addEventListener('mouseenter', () => { isButtonHovered = true; });
+    btn.addEventListener('mouseleave', () => { isButtonHovered = false; });
 
-        parallaxElements.forEach(el => {
-            const speed = parseFloat(el.getAttribute('data-speed'));
-            const moveX = currentX * speed * PARALLAX_CONFIG.magnitude;
-            const moveY = currentY * speed * PARALLAX_CONFIG.magnitude;
-            
-            el.style.transform = `translate(${moveX}px, ${moveY}px)`;
+    // 4. The Main Animation Engine
+    function animateParallax() {
+        // --- A. Smooth Parallax Follow ---
+        currentX += (targetX - currentX) * CONTROLS.parallaxEase;
+        currentY += (targetY - currentY) * CONTROLS.parallaxEase;
+
+        // --- B. Smooth Acceleration for Hover ---
+        // Logic: If button is hovered -> 4x. Else if hero is hovered -> 2x. Else -> 1x.
+        let targetSpeed = 1;
+        if (isButtonHovered) {
+            targetSpeed = CONTROLS.buttonHoverMultiplier;
+        } else if (isHeroHovered) {
+            targetSpeed = CONTROLS.hoverMultiplier;
+        }
+        
+        // Smoothly ramp up or down to the target speed
+        currentSpeedMultiplier += (targetSpeed - currentSpeedMultiplier) * CONTROLS.transitionSpeed;
+
+        // --- C. Smoothly adjust CSS Color Animation Speed ---
+        layers.forEach(layer => {
+            layer.getAnimations().forEach(anim => {
+                anim.playbackRate = currentSpeedMultiplier;
+            });
         });
 
-        // Keep the loop running endlessly
+        // --- D. Calculate the Breathing (Squeeze) Time ---
+        time += CONTROLS.squeezeBaseSpeed * currentSpeedMultiplier;
+
+        // --- E. Apply Math to the Elements ---
+        parallaxElements.forEach((el, index) => {
+            const speed = parseFloat(el.getAttribute('data-speed')) || 0;
+            
+            // X/Y Parallax Offset
+            const moveX = currentX * speed * CONTROLS.parallaxMagnitude;
+            const moveY = currentY * speed * CONTROLS.parallaxMagnitude;
+
+            // Squeeze Math (Sine wave)
+            let squeeze = 1;
+            if (el.classList.contains('layer')) {
+                squeeze = 1 + (Math.sin(time + (index * 0.5)) * CONTROLS.squeezeAmount);
+            }
+
+            // Apply it
+            el.style.transform = `translate(${moveX}px, ${moveY}px) scale(${squeeze})`;
+        });
+
         requestAnimationFrame(animateParallax);
     }
 
-    // Start the loop
+    // Start the engine
     animateParallax();
 </script>
+
+
+
+
+
+
 </body>
 </html>
