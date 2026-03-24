@@ -2,32 +2,32 @@
     --bg: #ECE7E3;
     --l1-blur: 0.99vw;
     --l1-radius: 15.63vw;
-    --l1-width: 15.58vw;
+    --l1-width: 7.58vw;
     --l1-height: 10.26vh;
     --l1-x: 0vw;
     --l1-y: 0.93vh;
     --l2-blur: 1.56vw;
     --l2-radius: 15.63vw;
-    --l2-width: 23.52vw;
-    --l2-height: 23.7vh;
+    --l2-width: 16.52vw;
+    --l2-height: 17.7vh;
     --l2-x: 0vw;
     --l2-y: 0vh;
     --l3-blur: 2.60vw;
     --l3-radius: 46.88vw;
-    --l3-width: 39.85vw;
-    --l3-height: 31.37vh;
+    --l3-width: 32.85vw;
+    --l3-height: 26.37vh;
     --l3-x: 0vw;
     --l3-y: 0vh;
     --l4-blur: 2.60vw;
     --l4-radius: 46.88vw;
-    --l4-width: 43.75vw;
-    --l4-height: 57.41vh;
+    --l4-width: 55.75vw;
+    --l4-height: 55.41vh;
     --l4-x: 0vw;
     --l4-y: 0vh;
     --l5-blur: 3.13vw;
     --l5-radius: 46.88vw;
-    --l5-width: 76.77vw;
-    --l5-height: 83vh;
+    --l5-width: 86.77vw;
+    --l5-height: 63vh;
     --l5-x: 0vw;
     --l5-y: 0vh;
     --l6-blur: 3.13vw;
@@ -70,10 +70,12 @@
 }
 
 body,
+body,
 html {
     margin: 0;
     padding: 0;
     background-color: var(--bg);
+    /* Back to beige base */
     font-family: 'GoogleSans', sans-serif;
     overflow-x: hidden;
     scroll-behavior: smooth;
@@ -209,11 +211,12 @@ html {
     100% {
         background-color: #96c2d9;
     }
+
 }
 
 /* --- CONTENT & LABELS --- */
 .hero-title {
-    position: fixed;
+    position: absolute;
     top: 10%;
     left: 50%;
     transform: translateX(-50%);
@@ -627,130 +630,6 @@ html {
     margin: 0 auto;
 }
 
-/* ==========================================
-   📂 ACCORDION SECTION
-   ========================================== */
-.accordion-section {
-    padding: 10vh 5vw;
-}
-
-.accordion-container {
-    max-width: 750px; /* Aligned with reference image proportions */
-    width: 100%;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-}
-
-.accordion-item {
-    background: #ffffff;
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    border-radius: 28px;
-    padding: 22px 35px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-    cursor: pointer;
-    overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-}
-
-.accordion-item:hover {
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
-    transform: translateY(-2px);
-}
-
-.accordion-header {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    position: relative;
-    user-select: none;
-}
-
-.accordion-icon-box {
-    width: 58px;
-    height: 58px;
-    background: #f1ecff;
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    transition: background-color 0.3s ease;
-}
-
-.accordion-icon-box svg {
-    width: 26px;
-    height: 26px;
-    color: #6c5ce7;
-    transition: transform 0.3s ease;
-}
-
-.accordion-title {
-    font-family: 'GoogleSans', sans-serif;
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #1a1a1a;
-    margin: 0;
-    flex: 1;
-    letter-spacing: -0.01em;
-}
-
-.accordion-arrow {
-    width: 28px;
-    height: 28px;
-    color: rgba(26, 26, 26, 0.3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.accordion-arrow svg {
-    width: 20px;
-    height: 20px;
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.accordion-content {
-    max-height: 0;
-    opacity: 0;
-    padding-left: calc(58px + 1.5rem);
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.accordion-content p {
-    font-family: 'GoogleSans', sans-serif;
-    font-size: 1.15rem;
-    line-height: 1.5;
-    color: rgba(26, 26, 26, 0.65);
-    margin: 1rem 0 0.5rem 0;
-}
-
-/* Active State */
-.accordion-item.active {
-    background: #ffffff;
-    box-shadow: 0 12px 45px rgba(108, 92, 231, 0.08); /* Subtle themed glow */
-    border-color: rgba(108, 92, 231, 0.1);
-}
-
-.accordion-item.active .accordion-content {
-    max-height: 300px;
-    opacity: 1;
-    padding-bottom: 10px;
-}
-
-.accordion-item.active .accordion-arrow svg {
-    transform: rotate(180deg);
-    color: #6c5ce7;
-}
-
-.accordion-item.active .accordion-icon-box {
-    background: #6c5ce7;
-}
-
-.accordion-item.active .accordion-icon-box svg {
-    color: #ffffff;
-}
 
 /* ==========================================
    📱 DOWNLOAD SECTION
@@ -875,17 +754,17 @@ html {
     position: fixed;
     top: 28px;
     left: 50%;
-    transform: translateX(-50%) translateY(-20px);
+    transform: translateX(-50%) translateY(0);
     display: flex;
     align-items: center;
     gap: 8px;
     background: #ffffff28;
     backdrop-filter: blur(12px);
-    padding: 5px 5px 5px 15px;
+    padding: 5px 5px 5px 5px;
     border-radius: 100px;
     z-index: 1000;
-    opacity: 0;
-    pointer-events: none;
+    opacity: 1;
+    pointer-events: auto;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
     transition: opacity 0.5s ease, transform 0.5s ease;
 }
@@ -927,8 +806,8 @@ html {
     border-radius: 100px;
     text-decoration: none;
     transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
-    opacity: 0;
-    transform: scale(0.9);
+    opacity: 1;
+    transform: scale(1);
 }
 
 .get-btn.visible {
@@ -1539,5 +1418,177 @@ html {
 
     .bento-card {
         min-height: 250px;
+    }
+}
+
+/* ==========================================
+   🦶 MODERN FOOTER
+   ========================================== */
+/* Reveal container: the black zone for the curved reveal */
+.footer-reveal-container {
+    background-color: #000;
+    width: 100%;
+}
+
+.main-footer {
+    width: 100%;
+    padding: 10vh 5vw 6vh 5vw;
+    background-color: #ffffff;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    box-sizing: border-box;
+    font-family: 'GoogleSans', sans-serif;
+    color: #1a1a1a;
+    position: relative;
+    z-index: 10;
+
+    /* Reveal design: Corners that create the plate look */
+    border-bottom-left-radius: 50px;
+    border-bottom-right-radius: 50px;
+
+    /* Subtle lift shadow */
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.1);
+}
+
+.footer-void {
+    width: 100%;
+    height: 600px;
+    background-color: #000;
+    overflow: hidden;
+    position: relative;
+    cursor: ns-resize;
+}
+
+.lines {
+    display: flex;
+    flex-direction: column;
+    padding: 0 2vw;
+}
+
+.lines-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.line-block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--line-gap, 20vh);
+    flex: 0 0 var(--line-gap, 20vh);
+}
+
+.line-text {
+    margin: 0;
+    font-size: min(11vw, 177px);
+    font-weight: 600;
+    letter-spacing: -0.06em;
+    text-align: center;
+    white-space: nowrap;
+    transform: scale(0.5);
+    transform-origin: center center;
+    color: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+    will-change: transform;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 2rem;
+    margin-bottom: 5rem;
+}
+
+.footer-col {
+    grid-column: span 1;
+}
+
+.footer-col.span-2 {
+    grid-column: span 2;
+}
+
+.footer-col.span-3 {
+    grid-column: span 3;
+}
+
+.footer-col h4 {
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 1.8rem;
+    color: rgba(0, 0, 0, 0.4);
+}
+
+.footer-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-list li {
+    margin-bottom: 0.8rem;
+}
+
+.footer-list a {
+    text-decoration: none;
+    color: #1a1a1a;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: color 0.2s ease, transform 0.2s ease;
+    display: inline-block;
+}
+
+.footer-list a:hover {
+    color: #6c5ce7;
+    transform: translateX(3px);
+}
+
+.footer-content p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #1a1a1a;
+    margin: 0;
+}
+
+.footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    padding-top: 2rem;
+    font-size: 0.85rem;
+    color: rgba(0, 0, 0, 0.4);
+}
+
+.footer-legal-links {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.footer-legal-links a {
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.2s ease;
+}
+
+.footer-legal-links a:hover {
+    color: #1a1a1a;
+}
+
+@media (max-width: 1200px) {
+    .footer-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        gap: 1.5rem;
+        text-align: center;
     }
 }
