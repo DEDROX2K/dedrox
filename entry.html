@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to GeoCities - Your Home On The Web!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #ffffff;
+            font-family: "Times New Roman", Times, serif;
+            color: #000000;
+            text-align: center;
+            overflow-x: hidden;
+        }
+
+        /* --- 90s NAV ICONS --- */
+        .top-nav {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 20px;
+            padding: 20px 0;
+            border-bottom: 2px solid #ccc;
+            margin-bottom: 20px;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        .nav-item img {
+            height: 40px;
+            width: auto;
+            margin-bottom: 5px;
+        }
+
+        .nav-item:hover {
+            color: blue;
+            text-decoration: underline;
+        }
+
+        /* --- MAIN LAYOUT --- */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+        }
+
+        .banners-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 30px;
+        }
+
+        .banner-box {
+            border: 2px solid #000;
+            padding: 5px;
+            background: #eee;
+            font-size: 0.7rem;
+            width: 120px;
+        }
+
+        .hero-text h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .hero-text h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+
+        a {
+            color: blue;
+            text-decoration: underline;
+        }
+
+        a:visited {
+            color: purple;
+        }
+
+        .cool-page {
+            margin: 30px 0;
+        }
+
+        .hot-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .hot-icon {
+            color: red;
+            font-weight: bold;
+            font-style: italic;
+            font-size: 1.5rem;
+            transform: skew(-15deg);
+            border: 2px solid red;
+            padding: 5px;
+            text-shadow: 2px 2px #fff;
+            animation: flicker 0.2s infinite;
+        }
+
+        @keyframes flicker {
+            0% { opacity: 1; }
+            50% { opacity: 0.8; }
+            100% { opacity: 1; }
+        }
+
+        .enter-here {
+            font-size: 1.5rem;
+            margin: 40px 0;
+        }
+
+        /* --- THE "TAKE STOCK" BANNER --- */
+        .take-stock {
+            background-color: #000;
+            color: #00ff00;
+            width: 100%;
+            max-width: 600px;
+            height: 80px;
+            margin: 40px auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            font-family: Arial, sans-serif;
+            border: 4px solid #333;
+        }
+
+        .take-stock .text-green {
+            font-size: 1.8rem;
+            font-weight: 950;
+            line-height: 1;
+            text-align: left;
+        }
+
+        .take-stock .money-mock {
+            height: 60px;
+            width: 120px;
+            background: #444;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 0.6rem;
+            border: 1px solid #777;
+        }
+
+        .take-stock .icode {
+            background: #f1c40f;
+            color: #000;
+            padding: 5px 10px;
+            font-weight: bold;
+            font-style: italic;
+        }
+
+        /* --- FOOTER BRACKETS --- */
+        .footer-links {
+            font-size: 0.9rem;
+            color: blue;
+            margin: 40px 0;
+            word-spacing: 12px;
+        }
+
+        .copyright {
+            font-size: 0.8rem;
+            margin-bottom: 50px;
+        }
+
+        /* --- REVEAL OVERLAY --- */
+        #geocities-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            z-index: 9999;
+            overflow-y: auto;
+        }
+
+        .sticky-action {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            z-index: 20000;
+            cursor: pointer;
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.6s;
+            opacity: 0;
+            text-align: center;
+            pointer-events: none;
+        }
+
+        .sticky-action.appear {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .sticky-action.pulsing {
+            animation: sticky-pulse 2.5s infinite ease-in-out;
+        }
+
+        @keyframes sticky-pulse {
+            0%, 100% { 
+                transform: translate(-50%, -50%) scale(1); 
+            }
+            50% { 
+                transform: translate(-50%, -50%) scale(1.1); 
+            }
+        }
+
+        .sticky-img {
+            width: 120px;
+            height: auto;
+        }
+
+        .hide {
+            display: none !important;
+        }
+
+        .fade-out {
+            animation: fadeOut 1s forwards;
+            pointer-events: none;
+        }
+
+        @keyframes fadeOut {
+            to { opacity: 0; visibility: hidden; }
+        }
+
+        /* --- AIRPASTE REVEALED --- */
+        /* --- COOKIE CHAOS (Win95 Style) --- */
+        .cookie-popup {
+            position: fixed;
+            z-index: 10001;
+            text-align: left;
+            animation: popUpEnergy 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        @keyframes popUpEnergy {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* --- THEME: WIN95 (Classic) --- */
+        .theme-win95 {
+            background: #c0c0c0;
+            border: 2px solid #fff;
+            border-right-color: #808080;
+            border-bottom-color: #808080;
+            padding: 2px;
+            width: 280px;
+            box-shadow: 4px 4px 0px rgba(0,0,0,0.3);
+        }
+        .theme-win95 .cookie-header {
+            background: #000080;
+            color: #fff;
+            padding: 2px 5px;
+            font-size: 0.85rem;
+            font-family: 'MS Sans Serif', 'Arial', sans-serif;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+        }
+        .theme-win95 .cookie-body {
+            padding: 12px;
+            font-family: 'MS Sans Serif', 'Arial', sans-serif;
+            font-size: 0.85rem;
+            color: #000;
+        }
+        .theme-win95 .cookie-btn {
+            background: #c0c0c0;
+            border: 2px solid #fff;
+            border-right-color: #808080;
+            border-bottom-color: #808080;
+            padding: 2px 15px;
+            font-size: 0.8rem;
+            margin-top: 10px;
+        }
+
+        /* --- THEME: MODERN (Ref Image Inspired) --- */
+        .theme-modern {
+            background: #ffffff;
+            border-radius: 16px;
+            border: 1px solid rgba(0,0,0,0.05);
+            padding: 28px;
+            width: 360px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
+            line-height: 1.5;
+        }
+        .theme-modern .cookie-header {
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: #1a1a1a;
+            margin-bottom: 14px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .theme-modern .cookie-body {
+            font-size: 0.95rem;
+            color: #4b5563;
+        }
+        .theme-modern .cookie-btn {
+            background: #2563eb;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 24px;
+            font-weight: 700;
+            margin-top: 20px;
+            width: 100%;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .theme-modern .cookie-btn:hover {
+            background: #1d4ed8;
+        }
+
+        /* --- THEME: NEON (Digital/Hacker) --- */
+        .theme-neon {
+            background: #000000;
+            border: 1px solid #00ff00;
+            padding: 15px;
+            width: 250px;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .theme-neon .cookie-header {
+            color: #00ff00;
+            border-bottom: 1px solid #00ff00;
+            margin-bottom: 10px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            display: flex;
+            justify-content: space-between;
+        }
+        .theme-neon .cookie-body {
+            color: #00ff00;
+            font-size: 0.8rem;
+        }
+        .theme-neon .cookie-btn {
+            background: transparent;
+            border: 1px solid #00ff00;
+            color: #00ff00;
+            padding: 5px 12px;
+            margin-top: 10px;
+            text-transform: uppercase;
+        }
+
+        /* --- THEME: SOFT (Minimalist/Pastel) --- */
+        .theme-soft {
+            background: #fff5f5;
+            border-radius: 30px;
+            padding: 20px;
+            width: 280px;
+            box-shadow: 0 8px 15px rgba(255, 182, 193, 0.3);
+            font-family: 'Inter', sans-serif;
+        }
+        .theme-soft .cookie-header {
+            color: #ff85a1;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .theme-soft .cookie-body {
+            color: #ff85a1;
+            font-size: 0.85rem;
+        }
+        .theme-soft .cookie-btn {
+            background: #ffc2d1;
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 20px;
+            margin-top: 10px;
+        }
+
+        /* --- THEME: CORPORATE GREEN (Variant A) --- */
+        .theme-green {
+            background: #ffffff;
+            border: 1px solid #ccc;
+            padding: 25px;
+            width: 350px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+        .theme-green .cookie-header {
+            font-size: 1.4rem;
+            color: #333;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .theme-green .cookie-body {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        .theme-green .cookie-btn {
+            background: #008000;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+        }
+
+        /* --- THEME: MINIMAL MONO (Variant B) --- */
+        .theme-minimal {
+            background: #ffffff;
+            border: 1px solid #eee;
+            padding: 22px;
+            width: 300px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            font-family: -apple-system, sans-serif;
+        }
+        .theme-minimal .cookie-header {
+            font-weight: 900;
+            font-size: 1.2rem;
+            color: #000;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .theme-minimal .cookie-body {
+            font-size: 0.85rem;
+            color: #555;
+        }
+        .theme-minimal .cookie-btn {
+            background: #000;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 25px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        /* --- THEME: DARK-NEON (Variant C) --- */
+        .theme-dark-neon {
+            background: #111122;
+            color: #ffffff;
+            padding: 30px;
+            width: 420px;
+            border-radius: 12px;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.6);
+            font-family: 'Inter', sans-serif;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .theme-dark-neon .cookie-header {
+            font-weight: 800;
+            font-size: 1.4rem;
+            margin-bottom: 18px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .theme-dark-neon .cookie-body {
+            font-size: 1rem;
+            opacity: 0.85;
+            margin-bottom: 25px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 20px;
+            line-height: 1.5;
+        }
+        .theme-dark-neon .cookie-btn {
+            background: #10b981;
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            padding: 14px 40px;
+            font-weight: 900;
+            text-transform: uppercase;
+            cursor: pointer;
+            letter-spacing: 0.05em;
+        }
+
+        .cookie-header {
+            background: #000080;
+            color: #fff;
+            padding: 2px 5px;
+            font-size: 0.85rem;
+            font-family: 'MS Sans Serif', 'Arial', sans-serif;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cookie-body {
+            padding: 12px;
+            font-family: 'MS Sans Serif', 'Arial', sans-serif;
+            font-size: 0.85rem;
+            color: #000;
+        }
+
+        .cookie-btn {
+            background: #c0c0c0;
+            border: 2px solid #fff;
+            border-right-color: #808080;
+            border-bottom-color: #808080;
+            padding: 2px 15px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            outline: none;
+            margin-top: 10px;
+        }
+
+        .cookie-btn:active {
+            border: 2px solid #808080;
+            border-right-color: #fff;
+            border-bottom-color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="geocities-overlay">
+        <!-- TOP NAV -->
+        <div class="top-nav">
+            <div class="nav-item">
+                <span style="font-size: 2rem;">🏠</span>
+                <span>HOME</span>
+            </div>
+            <div class="nav-item">
+                <span style="font-size: 2rem; color: red; font-weight: bold;">?</span>
+                <span>HELP</span>
+            </div>
+            <div class="nav-item">
+                <span style="font-size: 2rem;">🚪</span>
+                <span>ENTER</span>
+            </div>
+            <div class="nav-item">
+                <span style="font-size: 2rem;">📋</span>
+                <span>LIST</span>
+            </div>
+            <div class="nav-item">
+                <span style="font-size: 2rem;">✉️</span>
+                <span>MAIL</span>
+            </div>
+            <div class="nav-item">
+                <span style="font-size: 2rem;">👀</span>
+                <span>LOOK</span>
+            </div>
+            <div class="nav-item">
+                <span style="font-size: 2rem;">📢</span>
+                <span>HEAR</span>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="banners-top">
+                <div class="banner-box">
+                    🚀 Download<br>CyberPilot Pro!
+                </div>
+                <div class="banner-box" style="background: maroon; color: gold;">
+                    TRY<br>FREELOADER
+                </div>
+            </div>
+
+            <div class="hero-text">
+                <h1>Welcome to <a href="#">GeoCities</a></h1>
+                <h2>Your Home On The Web!</h2>
+                
+                <p style="color: blue; text-decoration: underline; cursor: pointer;">
+                    <span style="color: red; font-size: 1.2rem;">✦</span> What does this symbol mean?
+                </p>
+
+                <div class="cool-page">
+                    <p>Today's <span style="color: blue; text-decoration: underline; font-style: italic;">Cool</span> Home Page:</p>
+                    <div class="hot-section">
+                        <div class="hot-icon">Hot!</div>
+                        <a href="#">SoHo 1085 - Mike's got a Collection of Animated GIFs that must be experienced!</a>
+                    </div>
+                </div>
+
+                <div class="enter-here">
+                    <a href="#">Enter</a>
+                    <img src="https://web.archive.org/web/19961022175218im_/http://www.geocities.com/images/navbar/geocities.gif" alt="GeoCities" style="vertical-align: middle; margin: 0 10px;">
+                    <a href="#">Here!</a>
+                </div>
+
+                <p><strong>Tell us what you think!</strong></p>
+                <p>Take the first <a href="#">GeoCities User Survey!</a></p>
+            </div>
+
+            <hr style="margin: 40px 0; border: 0; border-top: 1px solid #ccc;">
+
+            <div class="take-stock">
+                <div class="text-green">TAKE<br>STOCK!</div>
+                <div class="money-mock">$ $ $ $ $</div>
+                <div class="icode">i/CODE</div>
+            </div>
+
+            <p><a href="#">Enter for a chance to win $2500 worth of stock in your favorite Internet company.</a></p>
+
+            <hr style="margin: 40px 0; border: 0; border-top: 1px solid #ccc;">
+
+            <div class="footer-links">
+                [New Stuff] [Info] [Free Homepages] [FAQ] [Announcements] [Neighborhoods] [Cool] [Mail] [Business_Partners] [Cameras]
+                [Search] [Utilities] [Bulletin_Board] [Neighborhood_Watch] [Help] [Map]
+            </div>
+
+            <div class="copyright">
+                © 1995, 1996 GeoCities. All rights reserved.
+            </div>
+        </div>
+    </div>
+
+    <!-- THE STICK REVEAL BUTTON -->
+    <div id="sticky-action" class="sticky-action">
+        <img src="images/Vector/logo.svg" alt="Stick" id="stick-img" class="sticky-img">
+        <p style="font-family: sans-serif; font-size: 0.7rem; font-weight: bold; margin-top: 5px;">PASTE TO ENTER</p>
+    </div>
+
+    <!-- THE TARGET PAGE -->
+    <iframe id="airpaste-frame" src="airpaste.html" class="hide" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; border: none;"></iframe>
+
+    <script>
+        const overlay = document.getElementById('geocities-overlay');
+        const sticky = document.getElementById('sticky-action');
+        const frame = document.getElementById('airpaste-frame');
+
+        function revealAirpaste() {
+            overlay.classList.add('fade-out');
+            sticky.classList.add('hide');
+            frame.classList.remove('hide');
+            
+            // Ensure all cookies also fade out
+            document.querySelectorAll('.cookie-popup').forEach(popup => {
+                popup.classList.add('fade-out');
+            });
+            
+            // Wait for animation then remove everything
+            setTimeout(() => {
+                overlay.remove();
+                document.querySelectorAll('.cookie-popup').forEach(p => p.remove());
+            }, 1000);
+        }
+
+        // Listen for "Paste" (Ctrl+V or Cmd+V)
+        window.addEventListener('paste', (e) => {
+            revealAirpaste();
+        });
+
+        // Also reveal on clicking the "stick"
+        sticky.addEventListener('click', () => {
+            revealAirpaste();
+        });
+
+        // Delay appearance of the sticky center button
+        setTimeout(() => {
+            sticky.classList.add('appear');
+        }, 2000);
+
+        // --- COOKIE CHAOS SPAWNING (STAGGERED & VARIED) ---
+        function spawnCookies() {
+            const messages = [
+                "This site uses cookies to track your browsing habits.",
+                "Accept cookies to see the rest of the web?",
+                "WARNING: High cookie density detected.",
+                "Cookie consent is mandatory for 1996 browsing.",
+                "By clicking 'Accept All', you consent to track your soul.",
+                "We value your privacy (not really, we want data)."
+            ];
+
+            const themes = ['win95', 'modern', 'neon', 'soft', 'green', 'minimal', 'dark-neon'];
+            let spawns = 0;
+            const maxSpawns = 45; // Even more madness
+
+            function next() {
+                if (spawns >= maxSpawns) return;
+
+                const theme = themes[Math.floor(Math.random() * themes.length)];
+                const popup = document.createElement('div');
+                popup.className = `cookie-popup theme-${theme}`;
+                popup.style.left = (Math.random() * 75 + 5) + 'vw';
+                popup.style.top = (Math.random() * 75 + 5) + 'vh';
+                
+                const randomMsg = messages[Math.floor(Math.random() * messages.length)];
+
+                // Structural variation based on theme
+                let headerText = "Legal Notice";
+                let btnText = "OK";
+                
+                if (theme === 'modern') { headerText = "We value your privacy"; btnText = "Accept All"; }
+                if (theme === 'neon') { headerText = "SYS_ALERT_COOK_01"; btnText = "EXEC_ACCEPT"; }
+                if (theme === 'soft') { headerText = "Cookie Time! 🍪"; btnText = "Yay!"; }
+                if (theme === 'green') { headerText = "Cookie settings"; btnText = "ACCEPT ALL"; }
+                if (theme === 'minimal') { headerText = "We use cookies"; btnText = "Accept"; }
+                if (theme === 'dark-neon') { headerText = "Cookie consent"; btnText = "ACCEPT ALL"; }
+
+                popup.innerHTML = `
+                    <div class="cookie-header">
+                        <span>${headerText}</span>
+                        <span style="cursor:pointer;" onclick="this.parentElement.parentElement.remove()">✕</span>
+                    </div>
+                    <div class="cookie-body">
+                        ${randomMsg}
+                        <br>
+                        <button class="cookie-btn" onclick="this.parentElement.parentElement.remove()">${btnText}</button>
+                    </div>
+                `;
+                document.body.appendChild(popup);
+                spawns++;
+
+                const nextDelay = Math.random() * (spawns < 10 ? 300 : 150) + 30;
+                setTimeout(next, nextDelay);
+            }
+
+            next();
+        }
+
+        // Spawn immediately on world load
+        spawnCookies();
+    </script>
+</body>
+</html>
