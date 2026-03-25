@@ -45,17 +45,22 @@
 }
 
 @font-face {
-    font-family: 'Mondwest';
+    font-family: 'p1';
     src: url('Fonts/ppmondwest-regular.otf');
 }
 
 @font-face {
-    font-family: 'Effloresce';
+    font-family: 'p2';
+    src: url('Fonts/ppneuebit-bold.otf');
+}
+
+@font-face {
+    font-family: 'e1';
     src: url('Fonts/Effloresce Bd.otf');
 }
 
 @font-face {
-    font-family: 'GoogleSans';
+    font-family: 'fg';
     src: url('Fonts/GoogleSans-VariableFont_GRAD,opsz,wght.ttf');
 }
 
@@ -67,6 +72,33 @@
 @font-face {
     font-family: 'fc1';
     src: url('Fonts/Chelsea.ttf');
+}
+
+@font-face {
+    font-family: 'z1';
+    src: url('Fonts/ZTBrosOskon90s-ExtraLight.ttf');
+}
+
+@font-face {
+    font-family: 'z2';
+    src: url('Fonts/ZTOtez-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'ASS';
+    src: url('Fonts/Astral\ Ink.ttf');
+}
+
+
+
+@font-face {
+    font-family: 'ztnb';
+    src: url('Fonts/ZTNature-Bold.otf');
+}
+
+@font-face {
+    font-family: 'ztnr';
+    src: url('Fonts/ZTNature-Regular.otf');
 }
 
 body,
@@ -189,27 +221,27 @@ html {
 
 @keyframes cycleColors {
     0% {
-        background-color: #96c2d9;
+        background-color: #F3AED2;
     }
 
     20% {
-        background-color: #786bff;
+        background-color: #B4D8B6;
     }
 
     40% {
-        background-color: #afffc0;
+        background-color: #3077d3;
     }
 
     60% {
-        background-color: #ff4848;
+        background-color: #FD5B60;
     }
 
     80% {
-        background-color: #ffacd1;
+        background-color: #A0D3D2;
     }
 
     100% {
-        background-color: #96c2d9;
+        background-color: #F3AED2;
     }
 
 }
@@ -217,11 +249,11 @@ html {
 /* --- CONTENT & LABELS --- */
 .hero-title {
     position: absolute;
-    top: 10%;
+    top: -2%;
     left: 50%;
     transform: translateX(-50%);
-    font-family: fc1;
-    font-size: clamp(3rem, 16vw, 15rem);
+    font-family: z1, serif;
+    font-size: clamp(3rem, 20vw, 20rem);
     color: white;
     z-index: 15;
     pointer-events: none;
@@ -231,20 +263,81 @@ html {
 }
 
 
-.floating-label {
+.hero-content {
     position: absolute;
-    font-size: 0.95rem;
-    color: #ffffff;
-    font-weight: 500;
-    line-height: 1.5;
-    pointer-events: none;
+    top: clamp(25%, 25vh, 30%);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 85%;
+    /* max-width: 1000px; */
     z-index: 15;
+    color: white;
+    font-family: ztnb;
+    pointer-events: none;
 }
 
-.label-mid-right {
-    top: 48%;
-    right: 26%;
+.hero-top-line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 6rem;
+    font-size: 1rem;
+    font-weight: 400;
+    font-family: 'p1';
 }
+
+.dashed-line {
+    flex-grow: 1;
+    border-bottom: 1px solid rgb(255 255 255 / 43%);
+    margin: 0 20px;
+}
+
+.hero-text-grid {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    row-gap: 2rem;
+    column-gap: 1rem;
+    width: 100%;
+    margin: 0 auto;
+    max-width: 900px;
+}
+
+.hero-text-left {
+    text-align: right;
+    /* Aligns "Core message" to sit near the text block */
+    padding-right: 20px;
+    padding-top: 30px;
+}
+
+.core-message {
+    font-size: 1rem;
+    font-weight: 400;
+    opacity: 0.9;
+    font-family: 'p1';
+}
+
+.hero-text-right {
+    display: flex;
+    flex-direction: column;
+}
+
+.hero-p-small {
+    font-size: 1.5rem;
+    margin: 0;
+    max-width: 880px;
+    color: #ffffffe6;
+    font-family: 'ztnr';
+}
+
+.hero-p-large {
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: -1;
+    margin: 0;
+    max-width: 850px;
+}
+
 
 /* --- GLOWING BUTTON --- */
 .btn-parallax-container {
@@ -569,7 +662,7 @@ html {
 }
 
 .manifesto-subtitle .word-head {
-    font-family: 'Mondwest', serif;
+    font-family: 'p1';
     font-weight: 400;
 }
 
@@ -733,7 +826,7 @@ html {
     top: 0;
     left: 0;
     width: 100%;
-    padding: 20px 2.5vw;
+    padding: 1vw;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -748,9 +841,51 @@ html {
     pointer-events: auto;
 }
 
-.nav-logo img {
+.nav-logo svg {
     height: 55px;
+    /* Your desired height */
     width: auto;
+    display: block;
+}
+
+#logo-hand {
+    fill: white;
+    /* Ensure the hand is white */
+}
+
+#logo-card {
+    /* 15 seconds for a very smooth, slow transition */
+    animation: airPasteColors 15s infinite ease-in-out;
+}
+
+@keyframes airPasteColors {
+
+    0%,
+    100% {
+        fill: #A5B4FC;
+    }
+
+    /* Soft Indigo */
+    20% {
+        fill: #FDA4AF;
+    }
+
+    /* Soft Rose */
+    40% {
+        fill: #6EE7B7;
+    }
+
+    /* Soft Emerald */
+    60% {
+        fill: #FDE68A;
+    }
+
+    /* Soft Amber */
+    80% {
+        fill: #7DD3FC;
+    }
+
+    /* Soft Sky Blue */
 }
 
 .nav-links {
