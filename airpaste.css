@@ -442,7 +442,7 @@ html {
    ========================================== */
 .books-section {
     width: 100%;
-    padding: 5vh 5vw 10vh 5vw;
+    padding: 5vh 5vw 10vh 0vw;
     display: flex;
     justify-content: center;
     position: relative;
@@ -451,7 +451,7 @@ html {
 
 .book-list-container {
     position: relative;
-    max-width: 500px;
+    max-width: 33%;
     width: 100%;
 }
 
@@ -472,14 +472,14 @@ html {
     display: flex;
     align-items: center;
     padding: 16px 20px;
-    color: #1a1a1a;
+    color: #1e59cf;
     text-decoration: none;
     font-size: 1.1rem;
-    font-weight: 600;
+    font-weight: 500;
     border-radius: 8px;
     transition: background-color 0.2s ease, transform 0.2s ease;
     position: relative;
-    font-family: 'Inter', sans-serif;
+    font-family: monospace;
 }
 
 .book-link::before {
@@ -493,32 +493,35 @@ html {
 
 .book-link:hover {
     background-color: rgba(255, 255, 255, 0.9);
-    transform: translateX(4px);
+    transform: translateX(-2px);
 }
 
-/* Tooltip positioned outside list item, appearing from left */
+/* Tooltip positioned outside list item, appearing from right */
 .book-preview {
     position: absolute;
-    left: -100px;
-    /* Outside the list container */
+    right: -200px;
+    /* Start position outside to the right */
+    left: 105%;
     top: 50%;
-    transform: translateY(-50%) scale(0.9);
-    width: 80px;
-    height: 110px;
-    border-radius: 6px;
-    object-fit: cover;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    transform: translateY(-50%) scale(0.8);
+    width: 200px;
+    /* Slightly wider base */
+    height: auto;
+    /* max-height: 180px; */
+    object-fit: contain;
+    /* Preserve aspect ratio without cropping */
+    /* box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2); */
     opacity: 0;
     pointer-events: none;
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     z-index: 100;
 }
 
 .book-link:hover .book-preview {
     opacity: 1;
     transform: translateY(-50%) scale(1);
-    left: -90px;
-    /* Slight movement on appear */
+    right: -130px;
+    /* Animate into final position on the right */
 }
 
 .book-meta {
@@ -581,7 +584,7 @@ html {
 
 .manifesto-text.highlight {
     font-weight: 700;
-    font-style: italic;
+    /* font-style: italic; */
 }
 
 .manifesto-promises {
@@ -800,10 +803,10 @@ html {
     font-family: 'GoogleSans', sans-serif;
     font-weight: 700;
     font-size: 0.95rem;
-    color: #ffffff;
-    background-color: #1a1a1a;
+    color: #1a1a1a;
+    background-color: #ffffff;
     padding: 12px 28px;
-    border-radius: 100px;
+    border-radius: 8px;
     text-decoration: none;
     transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
     opacity: 1;
