@@ -16,6 +16,12 @@
 </head>
 
 <body>
+    <!-- ==========================================
+         🔵 DOT PATTERN OVERLAY
+         Set DOTS_ENABLED = false below to disable
+         ========================================== -->
+    <div class="dot-pattern" id="dotPattern"></div>
+
     <nav class="top-nav">
         <div class="nav-logo">
             <svg width="355" height="323" viewBox="0 0 355 323" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -36,25 +42,15 @@
                     fill="black" />
             </svg>
         </div>
-    </nav>
-    </div>
 
-    <!-- <div class="nav-links">
-            <a href="#" class="nav-btn active">
-                <span class="nav-text">Home</span>
-            </a>
-            <a href="#" class="nav-btn">
-                <span class="nav-text">Why?</span>
-            </a>
-            <a href="#" class="nav-btn">
-                <span class="nav-text">For Free?</span>
-            </a>
-            <a href="#" class="nav-btn">
-                <span class="nav-text">What's Next*</span>
-            </a>
-        </div>
-
-        <a href="#" class="get-btn">Get AirPaste</a> -->
+        <!-- Download button with corner-dots effect -->
+        <a href="#" class="nav-download-btn" id="navDownloadBtn">
+            Download AirPaste
+            <div class="corner-dots top-left"><i></i><i></i><i></i><i></i></div>
+            <div class="corner-dots top-right"><i></i><i></i><i></i><i></i></div>
+            <div class="corner-dots bottom-left"><i></i><i></i><i></i><i></i></div>
+            <div class="corner-dots bottom-right"><i></i><i></i><i></i><i></i></div>
+        </a>
     </nav>
 
     <section class="hero-section" id="hero">
@@ -70,7 +66,7 @@
 
         <h1 class="hero-title">AirPaste</h1>
 
-        <div class="hero-content">
+        <!-- <div class="hero-content">
             <div class="hero-top-line">
                 <span>Close your eyes</span>
                 <div class="dashed-line"></div>
@@ -101,19 +97,287 @@
                         ideas visually.</p>
                 </div>
             </div>
-        </div>
+        </div> -->
 
-        <div class="btn-parallax-container" id="btnWrapper" data-speed="1.2">
-            <button class="hero-btn svg-button-style">
-                <!-- <img src="images/Vector/logo.svg" class="hero-logo-svg" alt="AirPaste Logo"> -->
+        <div class="hero-showcase" id="heroShowcase">
 
-                <div class="corner-dots top-left"><i></i><i></i><i></i><i></i></div>
-                <div class="corner-dots top-right"><i></i><i></i><i></i><i></i></div>
-                <div class="corner-dots bottom-left"><i></i><i></i><i></i><i></i></div>
-                <div class="corner-dots bottom-right"><i></i><i></i><i></i><i></i></div>
-            </button>
+            <!-- LEFT: AirPaste Window -->
+            <div class="showcase-window airpaste-window" id="showcaseAirpaste">
+                <!-- Title bar -->
+                <div class="sw-titlebar">
+                    <!-- Left: Active home tab + logo mark -->
+                    <div class="sw-left-group">
+                        <div class="sw-home-tab">
+                            <!-- House icon -->
+                            <svg width="12" height="11" viewBox="0 0 12 12" fill="none">
+                                <path d="M1 5.5L6 1L11 5.5V11H7.5V8H4.5V11H1V5.5Z" fill="white" stroke="white"
+                                    stroke-width="0.5" stroke-linejoin="round" />
+                            </svg>
+                            Home
+                        </div>
+                        <!-- AirPaste logo mark: stacked red + blue shapes -->
+                        <div class="sw-logo-mark">
+                            <span class="sw-logo-red"></span>
+                            <span class="sw-logo-blue"></span>
+                        </div>
+                    </div>
+
+                    <!-- Centre: open tabs -->
+                    <div class="sw-tabs">
+                        <span class="sw-tab">Test file <span class="sw-tab-close">×</span></span>
+                        <span class="sw-tab sw-tab-active-outline">Airpaste demo <span
+                                class="sw-tab-close">×</span></span>
+                        <span class="sw-tab">File 2 <span class="sw-tab-close">×</span></span>
+                    </div>
+
+                    <!-- Right: traffic-light rounded squares -->
+                    <div class="sw-traffic-right">
+                        <span class="sw-btn-sq sw-btn-green">
+                            <svg width="10" height="10" viewBox="0 0 10 10">
+                                <polyline points="1.5,5 4,7.5 8.5,2.5" stroke="white" stroke-width="1.5" fill="none"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </span>
+                        <span class="sw-btn-sq sw-btn-yellow">
+                            <svg width="10" height="10" viewBox="0 0 10 10">
+                                <line x1="2" y1="5" x2="8" y2="5" stroke="white" stroke-width="1.5"
+                                    stroke-linecap="round" />
+                            </svg>
+                        </span>
+                        <span class="sw-btn-sq sw-btn-red">
+                            <svg width="10" height="10" viewBox="0 0 10 10">
+                                <line x1="2.5" y1="2.5" x2="7.5" y2="7.5" stroke="white" stroke-width="1.5"
+                                    stroke-linecap="round" />
+                                <line x1="7.5" y1="2.5" x2="2.5" y2="7.5" stroke="white" stroke-width="1.5"
+                                    stroke-linecap="round" />
+                            </svg>
+                        </span>
+                    </div>
+                </div>
+                <!-- Canvas area with dot grid -->
+                <div class="sw-canvas">
+                    <div class="sw-dot-grid"></div>
+                    <!-- Floating mini tiles to show activity -->
+
+                    <div class="sw-tile sw-tile-4">
+                        <div class="sw-tile-thumb sw-tile-note"></div>
+                        <span>Quick note</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT: 3 Stacked Browser Windows -->
+            <div class="showcase-stack" id="showcaseStack">
+
+                <!-- Spotify Window -->
+                <div class="showcase-window browser-window bw-spotify" id="bwSpotify" data-drag-id="spotify"
+                    data-drag-label="www.spotify.com/tylerthecreator"
+                    data-drag-color="linear-gradient(135deg,#1db954,#191414)">
+                    <div class="bw-drag-overlay">
+                        <div class="bw-drag-label">Drag to AirPaste</div>
+                    </div>
+                    <div class="bw-bar">
+                        <div class="bw-navbtns">
+                            <span></span><span></span>
+                        </div>
+                        <div class="bw-address">
+                            <svg width="10" height="10" viewBox="0 0 20 20" fill="none">
+                                <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5" />
+                                <path d="M7 10l2 2 4-4" stroke="#1db954" stroke-width="1.5" stroke-linecap="round" />
+                            </svg>
+                            www.spotify.com/tylerthecreator
+                        </div>
+                    </div>
+                    <div class="bw-body">
+                        <div class="bw-spotify-hero">
+                            <div class="bw-spotify-cover"
+                                style="background: linear-gradient(135deg,#1db954 0%,#191414 100%)">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="#1db954">
+                                    <path
+                                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 14.36c-.18.3-.57.39-.87.21-2.39-1.46-5.4-1.79-8.94-.98-.34.08-.68-.13-.76-.47-.08-.34.13-.68.47-.76 3.87-.89 7.19-.51 9.89 1.13.3.18.39.57.21.87zm1.24-2.76c-.23.37-.71.49-1.08.26-2.73-1.68-6.9-2.17-10.13-1.18-.41.12-.85-.11-.97-.52-.12-.41.11-.85.52-.97 3.69-1.12 8.28-.58 11.4 1.34.37.23.49.71.26 1.07zm.11-2.87c-3.28-1.95-8.7-2.13-11.83-1.18-.5.15-1.03-.13-1.18-.63-.15-.5.13-1.03.63-1.18 3.6-1.09 9.59-.88 13.37 1.36.46.27.61.86.33 1.32-.27.45-.86.61-1.32.33z" />
+                                </svg>
+                            </div>
+                            <div class="bw-spotify-info">
+                                <p class="bw-spotify-label">ARTIST</p>
+                                <h3>Tyler, the Creator</h3>
+                                <p class="bw-spotify-sub">23.4M monthly listeners</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- YouTube Window -->
+                <div class="showcase-window browser-window bw-youtube" id="bwYoutube" data-drag-id="youtube"
+                    data-drag-label="www.youtube.com/watch?v=..."
+                    data-drag-color="linear-gradient(135deg,#cc0000,#282828)">
+                    <div class="bw-drag-overlay">
+                        <div class="bw-drag-label">Drag to AirPaste</div>
+                    </div>
+                    <div class="bw-bar">
+                        <div class="bw-navbtns">
+                            <span></span><span></span>
+                        </div>
+                        <div class="bw-address">
+                            <svg width="10" height="10" viewBox="0 0 20 20" fill="none">
+                                <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5" />
+                                <path d="M7 10l2 2 4-4" stroke="#ff0000" stroke-width="1.5" stroke-linecap="round" />
+                            </svg>
+                            www.youtube.com/watch?v=...
+                        </div>
+                    </div>
+                    <div class="bw-body">
+                        <div class="bw-yt-thumb">
+                            <div class="bw-yt-play">
+                                <svg viewBox="0 0 24 24" fill="white" width="28" height="28">
+                                    <path d="M8 5v14l11-7z" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="bw-yt-meta">
+                            <div class="bw-yt-title">Michael Jackson – Thriller (Official)</div>
+                            <div class="bw-yt-sub">1.2B views · 1983</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- X / Twitter Window -->
+                <div class="showcase-window browser-window bw-pinterest" id="bwPinterest" data-drag-id="twitter"
+                    data-drag-label="x.com/ui8/status/..." data-drag-color="linear-gradient(135deg,#000000,#1d9bf0)">
+                    <div class="bw-drag-overlay">
+                        <div class="bw-drag-label">Drag to AirPaste</div>
+                    </div>
+                    <div class="bw-bar bw-bar-dark">
+                        <div class="bw-navbtns">
+                            <span></span><span></span>
+                        </div>
+                        <div class="bw-address bw-address-dark">
+                            <svg width="10" height="10" viewBox="0 0 20 20" fill="none">
+                                <circle cx="10" cy="10" r="8" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" />
+                                <path d="M7 10l2 2 4-4" stroke="#1d9bf0" stroke-width="1.5" stroke-linecap="round" />
+                            </svg>
+                            x.com/ui8
+                        </div>
+                    </div>
+                    <!-- X dark body: sidebar + feed -->
+                    <div class="bw-body bw-x-body">
+                        <!-- Left sidebar -->
+                        <div class="bw-x-sidebar">
+                            <!-- X logo -->
+                            <svg class="bw-x-logo" viewBox="0 0 24 24" fill="white" width="20" height="20">
+                                <path
+                                    d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.262 5.636zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                            </svg>
+                            <div class="bw-x-nav">
+                                <div class="bw-x-nav-item bw-x-active">
+                                    <svg viewBox="0 0 24 24" fill="white" width="14" height="14">
+                                        <path
+                                            d="M22.46 7.57L12.357 2.115c-.223-.12-.49-.12-.713 0L1.543 7.57c-.364.197-.5.652-.303 1.017.135.25.394.393.66.393.12 0 .243-.03.356-.09l.815-.44L4.7 19.963c.214 1.215 1.308 2.062 2.658 2.062h9.282c1.352 0 2.445-.848 2.663-2.087l1.626-11.51.818.442c.364.193.82.06 1.017-.304.196-.363.06-.818-.304-1.016zm-4.638 12.133c-.107.606-.703 1.05-1.44 1.05H6.36c-.735 0-1.33-.444-1.437-1.018L3.29 8.365l8.71-4.705 8.71 4.705-2.888 11.338z" />
+                                    </svg>
+                                    Home
+                                </div>
+                                <div class="bw-x-nav-item">
+                                    <svg viewBox="0 0 24 24" fill="rgba(255,255,255,0.55)" width="14" height="14">
+                                        <path
+                                            d="M10.25 3.75c-3.59 0-6.5 2.91-6.5 6.5s2.91 6.5 6.5 6.5c1.795 0 3.419-.726 4.596-1.904 1.178-1.177 1.904-2.801 1.904-4.596 0-3.59-2.91-6.5-6.5-6.5zm-8.5 6.5c0-4.694 3.806-8.5 8.5-8.5s8.5 3.806 8.5 8.5c0 1.986-.682 3.815-1.814 5.272l4.521 4.521-.707.707-4.521-4.521C14.815 19.068 12.986 19.75 11 19.75c-4.694 0-8.5-3.806-8.5-8.5z" />
+                                    </svg>
+                                    Explore
+                                </div>
+                                <div class="bw-x-nav-item">
+                                    <svg viewBox="0 0 24 24" fill="rgba(255,255,255,0.55)" width="14" height="14">
+                                        <path
+                                            d="M19.993 9.042C19.48 5.017 16.054 2 11.996 2s-7.49 3.021-7.999 7.051L2.866 18H7.1c.463 2.282 2.481 4 4.9 4s4.437-1.718 4.9-4h4.236l-1.143-8.958zM12 20c-1.306 0-2.417-.835-2.829-2h5.658c-.412 1.165-1.523 2-2.829 2zm-6.866-4l.848-6.698C6.389 6.554 8.93 4 11.996 4s5.609 2.558 6.018 5.288L18.866 16H5.134z" />
+                                    </svg>
+                                    Notifications
+                                </div>
+                                <div class="bw-x-nav-item">
+                                    <svg viewBox="0 0 24 24" fill="rgba(255,255,255,0.55)" width="14" height="14">
+                                        <path
+                                            d="M17.5 11.25c0-3.17-2.58-5.75-5.75-5.75S6 8.08 6 11.25c0 3.18 2.58 5.75 5.75 5.75 3.17 0 5.75-2.57 5.75-5.75zm-5.75 4.25c-2.348 0-4.25-1.902-4.25-4.25S9.402 7 11.75 7s4.25 1.902 4.25 4.25-1.902 4.25-4.25 4.25zM20 21v-1.5c0-2.9-2.35-5.25-5.25-5.25h-6c-2.9 0-5.25 2.35-5.25 5.25V21h1.5v-1.5c0-2.07 1.68-3.75 3.75-3.75h6c2.07 0 3.75 1.68 3.75 3.75V21H20z" />
+                                    </svg>
+                                    Follow
+                                </div>
+                            </div>
+                            <div class="bw-x-post-btn">Post</div>
+                        </div>
+
+                        <!-- Centre feed column -->
+                        <div class="bw-x-feed">
+                            <!-- Tweet -->
+                            <div class="bw-x-tweet">
+                                <div class="bw-x-tweet-header">
+                                    <div class="bw-x-avatar"></div>
+                                    <div class="bw-x-tweet-meta">
+                                        <span class="bw-x-handle">UI8 🏆</span>
+                                        <span class="bw-x-time">@ui8 · Feb 20</span>
+                                    </div>
+                                </div>
+                                <!-- Phone mockup image representation -->
+                                <div class="bw-x-tweet-img">
+                                    <div class="bw-x-phone-mock">
+                                        <div class="bw-x-phone-screen">
+                                            <div class="bw-x-screen-content">
+                                                <div class="bw-x-sc-row"></div>
+                                                <div class="bw-x-sc-row bw-x-sc-short"></div>
+                                                <div class="bw-x-sc-dots">
+                                                    <span style="background:#ff5f57"></span>
+                                                    <span style="background:#1d9bf0"></span>
+                                                    <span style="background:#febc2e"></span>
+                                                    <span style="background:#28c840"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right panel -->
+                        <div class="bw-x-right">
+                            <div class="bw-x-search">
+                                <svg viewBox="0 0 24 24" fill="rgba(255,255,255,0.4)" width="11" height="11">
+                                    <path
+                                        d="M10.25 3.75c-3.59 0-6.5 2.91-6.5 6.5s2.91 6.5 6.5 6.5c1.795 0 3.419-.726 4.596-1.904 1.178-1.177 1.904-2.801 1.904-4.596 0-3.59-2.91-6.5-6.5-6.5zm-8.5 6.5c0-4.694 3.806-8.5 8.5-8.5s8.5 3.806 8.5 8.5c0 1.986-.682 3.815-1.814 5.272l4.521 4.521-.707.707-4.521-4.521C14.815 19.068 12.986 19.75 11 19.75c-4.694 0-8.5-3.806-8.5-8.5z" />
+                                </svg>
+                                Search
+                            </div>
+                            <div class="bw-x-who">
+                                <div class="bw-x-who-title">Who to follow</div>
+                                <div class="bw-x-who-item">
+                                    <div class="bw-x-who-avatar"
+                                        style="background:linear-gradient(135deg,#e14869,#c32aa3)">D</div>
+                                    <div class="bw-x-who-info">
+                                        <span>Dribbble ✓</span>
+                                        <span class="bw-x-who-handle">@dribbble</span>
+                                    </div>
+                                    <div class="bw-x-follow-btn">Follow</div>
+                                </div>
+                                <div class="bw-x-who-item">
+                                    <div class="bw-x-who-avatar"
+                                        style="background:linear-gradient(135deg,#ea4c89,#f5a623)">S</div>
+                                    <div class="bw-x-who-info">
+                                        <span>Sketch ✓</span>
+                                        <span class="bw-x-who-handle">@sketch</span>
+                                    </div>
+                                    <div class="bw-x-follow-btn">Follow</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </section>
+
+    <!-- Drag ghost pill — positioned by JS -->
+    <div id="dragGhost">
+        <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
+            <path d="M10.5 2.5L17.5 9.5M17.5 9.5L10.5 16.5M17.5 9.5H2.5" stroke="white" stroke-width="1.8"
+                stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <span id="dragGhostLabel">www.spotify.com/...</span>
+    </div>
+
 
     <section class="manifesto-section">
         <div class="manifesto-content">
@@ -350,6 +614,86 @@
         </div>
     </section>
 
+    <!-- ==========================================
+         🖼️ BEFORE / AFTER SCRUBBER
+         ========================================== -->
+    <section class="scrubber-section">
+        <div class="scrubber-label-row">
+            <span class="scrubber-label">Before</span>
+            <span class="scrubber-label">After</span>
+        </div>
+        <div class="scrubber-stage" id="scrubberStage">
+            <div class="scrubber-card" id="scrubberCard">
+                <!-- AFTER: shown underneath, full width -->
+                <img src="images/afterzip.png" class="scrubber-img scrubber-after" alt="AirPaste After"
+                    draggable="false">
+                <!-- BEFORE: clipped on the left by cursor position -->
+                <div class="scrubber-before-wrap" id="scrubberBefore">
+                    <img src="images/beforezip.png" class="scrubber-img scrubber-before-img" alt="AirPaste Before"
+                        draggable="false">
+                </div>
+                <!-- Divider line -->
+                <div class="scrubber-divider" id="scrubberDivider"></div>
+            </div>
+        </div>
+        <p class="scrubber-hint">← Move cursor to reveal →</p>
+    </section>
+
+    <!-- ==========================================
+         ⬇️ DOWNLOAD SECTION
+         ========================================== -->
+    <section class="dl-section">
+        <div class="dl-inner">
+            <div class="dl-badge">Open Source · Windows Only</div>
+
+            <h2 class="dl-headline">
+                Your canvas.<br>Your rules.
+            </h2>
+            <p class="dl-sub">
+                AirPaste is free, local-first, and completely open source.<br>
+                No account. No cloud. No tracking. Just your space.
+            </p>
+
+            <a href="#" class="dl-btn" id="dlBtn">
+                <svg class="dl-win-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path
+                        d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801" />
+                </svg>
+                Download for Windows
+                <span class="dl-btn-tag">.exe · free</span>
+            </a>
+
+            <div class="dl-meta-row">
+                <span class="dl-meta-item">
+                    <svg viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+                        <path fill-rule="evenodd"
+                            d="M4 5a2 2 0 012-2 1 1 0 000 2H4v11h12V5h-2a1 1 0 000-2 2 2 0 012 2v11a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-1z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    v0.1 Alpha
+                </span>
+                <span class="dl-meta-sep">·</span>
+                <span class="dl-meta-item">
+                    <svg viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 2a8 8 0 100 16A8 8 0 0010 2zm1 11H9v-4h2v4zm0-6H9V5h2v2z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    Windows 10 / 11
+                </span>
+                <span class="dl-meta-sep">·</span>
+                <a href="#" class="dl-meta-item dl-meta-link">
+                    <svg viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    View on GitHub
+                </a>
+            </div>
+        </div>
+    </section>
+
     <div class="footer-reveal-container">
         <footer class="main-footer">
             <div class="footer-grid">
@@ -433,6 +777,168 @@
     </div>
 
     <script>
+        // ==========================================
+        // 🔵 DOT PATTERN — TOGGLE HERE
+        // ==========================================
+        const DOTS_ENABLED = true; // ← Set to false to hide the dot overlay
+
+        (function () {
+            const el = document.getElementById('dotPattern');
+            if (!el) return;
+            el.style.display = DOTS_ENABLED ? 'block' : 'none';
+        })();
+
+        // ==========================================
+        // 🪟 SHOWCASE WINDOW TILT
+        // ==========================================
+        (function () {
+            const TILT = 6;    // max degrees
+            const EASE = 0.07;
+            const windows = [
+                document.getElementById('showcaseAirpaste'),
+                document.getElementById('bwSpotify'),
+                document.getElementById('bwYoutube'),
+                document.getElementById('bwPinterest'),
+            ];
+
+            windows.forEach(el => {
+                if (!el) return;
+                let tx = 0, ty = 0, cx = 0, cy = 0, raf;
+
+                el.addEventListener('mouseenter', () => {
+                    function loop() {
+                        cx += (tx - cx) * EASE;
+                        cy += (ty - cy) * EASE;
+                        el.style.transform = `${el.dataset.baseTransform || ''} perspective(600px) rotateY(${cx}deg) rotateX(${-cy}deg) scale(1.015)`;
+                        el.style.boxShadow = `0 30px 80px rgba(0,0,0,0.22), 0 6px 18px rgba(0,0,0,0.1)`;
+                        raf = requestAnimationFrame(loop);
+                    }
+                    loop();
+                });
+
+                el.addEventListener('mousemove', e => {
+                    const r = el.getBoundingClientRect();
+                    tx = ((e.clientX - r.left) / r.width - 0.5) * 2 * TILT;
+                    ty = ((e.clientY - r.top) / r.height - 0.5) * 2 * TILT;
+                });
+
+                el.addEventListener('mouseleave', () => {
+                    cancelAnimationFrame(raf);
+                    tx = 0; ty = 0;
+                    let f = 0;
+                    function settle() {
+                        cx += (0 - cx) * 0.07;
+                        cy += (0 - cy) * 0.07;
+                        el.style.transform = `${el.dataset.baseTransform || ''} perspective(600px) rotateY(${cx}deg) rotateX(${-cy}deg) scale(1)`;
+                        if (++f < 50) requestAnimationFrame(settle);
+                        else { el.style.transform = el.dataset.baseTransform || ''; el.style.boxShadow = ''; }
+                    }
+                    settle();
+                });
+            });
+
+            // No base transforms needed — positioning is purely via CSS top/left
+        })();
+
+        // ==========================================
+        // 🎯 DRAG-TO-AIRPASTE INTERACTION
+        // ==========================================
+        (function () {
+            const ghost = document.getElementById('dragGhost');
+            const ghostLabel = document.getElementById('dragGhostLabel');
+            const apWin = document.getElementById('showcaseAirpaste');
+            const canvas = apWin ? apWin.querySelector('.sw-canvas') : null;
+            const browsers = document.querySelectorAll('.browser-window');
+
+            if (!ghost || !canvas) return;
+
+            let dragging = null;   // the browser-window el being dragged
+            let isDragging = false;
+
+            // Tile counter for random placement
+            let tileCount = 5;
+
+            // Colours / thumb configs per source
+            const TILE_CONFIGS = {
+                spotify: { label: 'Spotify playlist', bg: 'linear-gradient(135deg,#1db954,#191414)' },
+                youtube: { label: 'YouTube video', bg: 'linear-gradient(135deg,#cc0000,#282828)' },
+                twitter: { label: 'x.com/ui8/...', bg: 'linear-gradient(135deg,#000000,#1d9bf0)' },
+            };
+
+            // ---- Move ghost with mouse ----
+            function onMouseMove(e) {
+                if (!isDragging) return;
+                ghost.style.left = e.clientX + 'px';
+                ghost.style.top = e.clientY + 'px';
+
+                // Highlight AirPaste window when cursor is over it
+                const apRect = apWin.getBoundingClientRect();
+                const over = e.clientX >= apRect.left && e.clientX <= apRect.right &&
+                    e.clientY >= apRect.top && e.clientY <= apRect.bottom;
+                apWin.classList.toggle('drop-active', over);
+            }
+
+            // ---- Drop ----
+            function onMouseUp(e) {
+                if (!isDragging || !dragging) return;
+                isDragging = false;
+
+                ghost.classList.remove('visible');
+                dragging.classList.remove('is-dragging');
+
+                const apRect = apWin.getBoundingClientRect();
+                const dropped = e.clientX >= apRect.left && e.clientX <= apRect.right &&
+                    e.clientY >= apRect.top && e.clientY <= apRect.bottom;
+
+                apWin.classList.remove('drop-active');
+
+                if (dropped) {
+                    const id = dragging.dataset.dragId;
+                    const cfg = TILE_CONFIGS[id] || { label: dragging.dataset.dragLabel, bg: '#ccc' };
+
+                    // Calculate drop position relative to canvas
+                    const canvasRect = canvas.getBoundingClientRect();
+                    const relX = Math.max(4, Math.min(e.clientX - canvasRect.left - 40, canvasRect.width - 140));
+                    const relY = Math.max(4, Math.min(e.clientY - canvasRect.top - 20, canvasRect.height - 60));
+
+                    const tile = document.createElement('div');
+                    tile.className = 'sw-tile sw-dropped';
+                    tile.style.cssText = `left:${relX}px; top:${relY}px; animation-delay:0s;`;
+                    tile.innerHTML = `
+                        <div class="sw-tile-thumb" style="background:${cfg.bg}"></div>
+                        <span>${cfg.label}</span>`;
+                    canvas.appendChild(tile);
+                }
+
+                dragging = null;
+                window.removeEventListener('mousemove', onMouseMove);
+                window.removeEventListener('mouseup', onMouseUp);
+            }
+
+            // ---- Attach mousedown to each overlay ----
+            browsers.forEach(bw => {
+                const overlay = bw.querySelector('.bw-drag-overlay');
+                if (!overlay) return;
+
+                overlay.addEventListener('mousedown', e => {
+                    e.preventDefault();
+                    dragging = bw;
+                    isDragging = true;
+
+                    bw.classList.add('is-dragging');
+
+                    // Set ghost label
+                    ghostLabel.textContent = bw.dataset.dragLabel || 'link';
+                    ghost.style.left = e.clientX + 'px';
+                    ghost.style.top = e.clientY + 'px';
+                    ghost.classList.add('visible');
+
+                    window.addEventListener('mousemove', onMouseMove);
+                    window.addEventListener('mouseup', onMouseUp);
+                });
+            });
+        })();
+
         // ==========================================
         // 🎛️ MASTER ANIMATION CONTROLS
         // ==========================================
@@ -617,6 +1123,69 @@
         updateHeroTitle();
         window.addEventListener('scroll', updateHeroTitle, { passive: true });
         window.addEventListener('resize', updateHeroTitle, { passive: true });
+
+        // ==========================================
+        // 🖼️ BEFORE / AFTER SCRUBBER
+        // ==========================================
+        (function () {
+            const card = document.getElementById('scrubberCard');
+            const before = document.getElementById('scrubberBefore');
+            const divider = document.getElementById('scrubberDivider');
+            if (!card) return;
+
+            let targetPct = 50;  // % revealed (left = before)
+            let currentPct = 50;
+            let tiltX = 0, tiltY = 0;
+            let targetTiltX = 0, targetTiltY = 0;
+            let rafId;
+
+            const TILT_MAX = 8;   // max degrees
+            const TILT_EASE = 0.08;
+            const SCRUB_EASE = 0.08;
+
+            function lerp(a, b, t) { return a + (b - a) * t; }
+
+            function loop() {
+                currentPct = lerp(currentPct, targetPct, SCRUB_EASE);
+                tiltX = lerp(tiltX, targetTiltX, TILT_EASE);
+                tiltY = lerp(tiltY, targetTiltY, TILT_EASE);
+
+                before.style.width = currentPct + '%';
+                divider.style.left = currentPct + '%';
+                card.style.transform =
+                    `rotateY(${tiltX}deg) rotateX(${-tiltY}deg)`;
+
+                rafId = requestAnimationFrame(loop);
+            }
+
+            card.addEventListener('mouseenter', () => {
+                loop();
+            });
+
+            card.addEventListener('mouseleave', () => {
+                cancelAnimationFrame(rafId);
+                targetTiltX = 0;
+                targetTiltY = 0;
+                // Ease back to neutral with a quick extra loop
+                let frames = 0;
+                function settle() {
+                    tiltX = lerp(tiltX, 0, 0.06);
+                    tiltY = lerp(tiltY, 0, 0.06);
+                    card.style.transform = `rotateY(${tiltX}deg) rotateX(${-tiltY}deg)`;
+                    if (++frames < 60) requestAnimationFrame(settle);
+                }
+                settle();
+            });
+
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width;    // 0 → 1
+                const y = (e.clientY - rect.top) / rect.height;   // 0 → 1
+                targetPct = x * 100;
+                targetTiltX = (x - 0.5) * 2 * TILT_MAX;
+                targetTiltY = (y - 0.5) * 2 * TILT_MAX;
+            });
+        })();
 
         // ==========================================
         // 🌀 INTERACTIVE ENDLESS MOTION (FOOTER VOID)
