@@ -969,8 +969,10 @@
             targetY = (e.clientY - window.innerHeight / 2);
         });
 
-        btn.addEventListener('mouseenter', () => { isButtonHovered = true; });
-        btn.addEventListener('mouseleave', () => { isButtonHovered = false; });
+        if (btn) {
+            btn.addEventListener('mouseenter', () => { isButtonHovered = true; });
+            btn.addEventListener('mouseleave', () => { isButtonHovered = false; });
+        }
 
         function animateParallax() {
             currentX += (targetX - currentX) * CONTROLS.parallaxEase;
@@ -1029,6 +1031,7 @@
 
         function scrambleTo(target) {
             if (scrambleRaf) cancelAnimationFrame(scrambleRaf);
+            if (!btnText) return;
 
             // 1. ADD THE BLUR CLASS HERE
             btnText.classList.add('is-scrambling');
@@ -1075,15 +1078,17 @@
         let cycleTimer = setInterval(nextPhrase, 6000);
 
         // Hover triggers the next phrase (with a short cooldown so it doesn't spam)
-        btn.addEventListener('mouseenter', () => {
-            const now = Date.now();
-            if (now - lastHoverTime > 800) {
-                lastHoverTime = now;
-                clearInterval(cycleTimer);
-                nextPhrase();
-                cycleTimer = setInterval(nextPhrase, 6000);
-            }
-        });
+        if (btn) {
+            btn.addEventListener('mouseenter', () => {
+                const now = Date.now();
+                if (now - lastHoverTime > 800) {
+                    lastHoverTime = now;
+                    clearInterval(cycleTimer);
+                    nextPhrase();
+                    cycleTimer = setInterval(nextPhrase, 6000);
+                }
+            });
+        }
 
         // ==========================================
         // 📜 HERO TITLE — SCROLL-DRIVEN SHRINK
