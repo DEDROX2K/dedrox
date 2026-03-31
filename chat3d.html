@@ -13,175 +13,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 
     <style>
-        :root {
-            --bg: #ECE7E3;
-            --l1-blur: 0.99vw;
-            --l1-radius: 5vh;
-            --l1-width: 44vh;
-            --l1-height: 88vh;
-            --l1-x: 0vw;
-            --l1-y: 0.93vh;
-            --l2-blur: 2.56vw;
-            --l2-radius: 25vh;
-            --l2-width: 42.52vw;
-            --l2-height: 90vh;
-            --l2-x: 0vw;
-            --l2-y: 0vh;
-            --l3-blur: 2.60vw;
-            --l3-radius: 46.88vw;
-            --l3-width: 62.85vw;
-            --l3-height: 93vh;
-            --l3-x: 0vw;
-            --l3-y: 0vh;
-            --l4-blur: 2.60vw;
-            --l4-radius: 46.88vw;
-            --l4-width: 55.75vw;
-            --l4-height: 91.41vh;
-            --l4-x: 0vw;
-            --l4-y: 0vh;
-            --l5-blur: 3.13vw;
-            --l5-radius: 30vh;
-            --l5-width: 170vh;
-            --l5-height: 95vh;
-            --l5-x: 0vw;
-            --l5-y: 0vh;
-            --l6-blur: 3.13vw;
-            --l6-radius: 30vh;
-            --l6-width: 95.52vw;
-            --l6-height: 113vh;
-            --l6-x: 0vw;
-            --l6-y: 0vh;
-            --l7-blur: 3.13vw;
-            --l7-radius: 46.88vw;
-            --l7-width: 137.58vw;
-            --l7-height: 130vh;
-            --l7-x: 0vw;
-            --l7-y: 0vh;
-        }
-
-
-
-        @keyframes cycleColors {
-            0% {
-                background-color: #CBEBFF;
-            }
-
-            20% {
-                background-color: #CFF0EC;
-            }
-
-            40% {
-                background-color: #D6F9D0;
-            }
-
-            60% {
-                background-color: #DBFFBB;
-            }
-
-            80% {
-                background-color: #CFF0EC;
-            }
-
-            100% {
-                background-color: #CBEBFF;
-            }
-        }
-
-
-        /* --- THE BACKGROUND LAYERS --- */
-        .hero-layers {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .layer {
-            position: absolute;
-            will-change: transform, background-color;
-            animation: cycleColors 18s infinite linear;
-        }
-
-        .layer-1 {
-            width: var(--l1-width);
-            height: var(--l1-height);
-            border-radius: var(--l1-radius);
-            filter: blur(var(--l1-blur));
-            margin-left: var(--l1-x);
-            margin-top: var(--l1-y);
-            z-index: 7;
-            animation-delay: 0s;
-        }
-
-        .layer-2 {
-            width: var(--l2-width);
-            height: var(--l2-height);
-            border-radius: var(--l2-radius);
-            filter: blur(var(--l2-blur));
-            margin-left: var(--l2-x);
-            margin-top: var(--l2-y);
-            z-index: 6;
-            animation-delay: -1.7s;
-        }
-
-        .layer-3 {
-            width: var(--l3-width);
-            height: var(--l3-height);
-            border-radius: var(--l3-radius);
-            filter: blur(var(--l3-blur));
-            margin-left: var(--l3-x);
-            margin-top: var(--l3-y);
-            z-index: 5;
-            animation-delay: -3.4s;
-        }
-
-        .layer-4 {
-            width: var(--l4-width);
-            height: var(--l4-height);
-            border-radius: var(--l4-radius);
-            filter: blur(var(--l4-blur));
-            margin-left: var(--l4-x);
-            margin-top: var(--l4-y);
-            z-index: 4;
-            animation-delay: -5.1s;
-        }
-
-        .layer-5 {
-            width: var(--l5-width);
-            height: var(--l5-height);
-            border-radius: var(--l5-radius);
-            filter: blur(var(--l5-blur));
-            margin-left: var(--l5-x);
-            margin-top: var(--l5-y);
-            z-index: 3;
-            animation-delay: -6.8s;
-        }
-
-        .layer-6 {
-            width: var(--l6-width);
-            height: var(--l6-height);
-            border-radius: var(--l6-radius);
-            filter: blur(var(--l6-blur));
-            margin-left: var(--l6-x);
-            margin-top: var(--l6-y);
-            z-index: 2;
-            animation-delay: -8.5s;
-        }
-
-        .layer-7 {
-            width: var(--l7-width);
-            height: var(--l7-height);
-            border-radius: var(--l7-radius);
-            filter: blur(var(--l7-blur));
-            margin-left: var(--l7-x);
-            margin-top: var(--l7-y);
-            z-index: 1;
-            animation-delay: -10.2s;
-        }
-
         body,
         html {
             margin: 0;
@@ -189,7 +20,7 @@
             width: 100vw;
             height: 100dvh;
             overflow: hidden;
-            background: var(--bg);
+            background: #4e4e50;
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
         }
 
@@ -208,8 +39,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: transparent;
-            color: #1a1a1a;
+            background: #4e4e50;
+            color: #f3f5f8;
             z-index: 9999;
             font-size: 1.2rem;
             transition: opacity 0.5s ease;
@@ -222,10 +53,10 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            border-radius: 18px;
+            border-radius: 23px;
             /* border: 2px solid #1f2630; */
             background: #d5d8e3;
-            box-shadow: 0 22px 60px #fdfffc, inset 0 1px 0 #e9fcff;
+            box-shadow: 0 22px 60px rgba(0, 0, 0, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.3);
             user-select: none;
             -webkit-user-select: none;
             pointer-events: auto;
@@ -437,7 +268,7 @@
             color: #141414;
         }
 
-        .chat-bubble-recv::before {
+        .chat-bubble-recv::after {
             content: '';
             position: absolute;
             left: -7px;
@@ -735,16 +566,6 @@
 </head>
 
 <body>
-
-    <div class="hero-layers">
-        <div class="layer layer-7" data-speed="0.1"></div>
-        <div class="layer layer-6" data-speed="0.2"></div>
-        <div class="layer layer-5" data-speed="0.4"></div>
-        <div class="layer layer-4" data-speed="0.6"></div>
-        <div class="layer layer-3" data-speed="0.8"></div>
-        <div class="layer layer-2" data-speed="1.0"></div>
-        <div class="layer layer-1" data-speed="1.2"></div>
-    </div>
 
     <div id="loading-overlay">Initializing 3D Chat...</div>
     <div id="container-3d"></div>
@@ -1218,7 +1039,7 @@
                     setDraft('');
 
                     const replies = Array.isArray(exchange.reply) ? exchange.reply : [exchange.reply];
-
+                    
                     const showNextReply = (replyIndex) => {
                         if (runId !== chatSequenceId) return;
 
@@ -1246,7 +1067,7 @@
                             }
 
                             appendBubble('contact', replies[replyIndex]);
-
+                            
                             // Small gap between multiple bubbles
                             scheduleStep(() => showNextReply(replyIndex + 1), 600);
                         }, exchange.typingDelay ?? CHAT_SETTINGS.replyTypingDelay);
