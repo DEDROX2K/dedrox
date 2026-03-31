@@ -85,7 +85,7 @@
                     <span class="core-message">Core message</span>
                 </div>
                 <div class="hero-text-right">
-                    <p class="hero-p-large">The visual bookmark task management tool;
+                    <p class="hero-p-large">The visual bookmark task management tool; <br>
                         A local-first workspace for links, notes, and ideas — designed to feel real, fast, and yours.
                     </p>
                 </div>
@@ -148,13 +148,100 @@
         </div>
     </section>
 
-    <section class="manifesto-section" style="padding: 20vh 5vw 0vh 5vw;">
+    <section class="manifesto-section" style="padding: 6vh 5vw 0vh 5vw;">
         <div class="manifesto-content">
             <h2 class="manifesto-subtitle">
                 <span class="word-head">Turn boring links into Interactive Tiles</span>
             </h2>
+        </div>
+    </section>
 
-            <p class="manifesto-text">
+        <!-- ==========================================
+         🖼️ BEFORE / AFTER SCRUBBER
+         ========================================== -->
+    <section class="scrubber-section">
+        <div class="scrubber-label-row">
+            <span class="scrubber-label">Before</span>
+            <span class="scrubber-label">After</span>
+        </div>
+        <div class="scrubber-stage" id="scrubberStage">
+            <div class="scrubber-card" id="scrubberCard">
+                <!-- AFTER: shown underneath, full width -->
+                <img src="images/afterzip.png" class="scrubber-img scrubber-after" alt="AirPaste After"
+                    draggable="false">
+                <!-- BEFORE: clipped on the left by cursor position -->
+                <div class="scrubber-before-wrap" id="scrubberBefore">
+                    <img src="images/beforezip.png" class="scrubber-img scrubber-before-img" alt="AirPaste Before"
+                        draggable="false">
+                </div>
+                <!-- Divider line -->
+                <div class="scrubber-divider" id="scrubberDivider"></div>
+            </div>
+        </div>
+        <p class="scrubber-hint">← Move cursor to reveal →</p>
+    </section>
+
+
+    <section class="books-section">
+        <!-- ==========================================
+         ⬇️ DOWNLOAD SECTION
+         ========================================== -->
+    <section class="dl-section">
+        <div class="dl-inner">
+            <div class="dl-badge">Open Source · Windows Only</div>
+
+            <h2 class="dl-headline">
+                Your canvas.<br>Your rules.
+            </h2>
+            <p class="dl-sub">
+                AirPaste is free, local-first, and completely open source.<br>
+                No account. No cloud. No tracking. Just your space.
+            </p>
+
+            <a href="#" class="dl-btn" id="dlBtn">
+                <svg class="dl-win-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path
+                        d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801" />
+                </svg>
+                Download for Windows
+                <span class="dl-btn-tag">.exe · free</span>
+            </a>
+
+            <div class="dl-meta-row">
+                <span class="dl-meta-item">
+                    <svg viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+                        <path fill-rule="evenodd"
+                            d="M4 5a2 2 0 012-2 1 1 0 000 2H4v11h12V5h-2a1 1 0 000-2 2 2 0 012 2v11a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-1z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    v0.1 Alpha
+                </span>
+                <span class="dl-meta-sep">·</span>
+                <span class="dl-meta-item">
+                    <svg viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 2a8 8 0 100 16A8 8 0 0010 2zm1 11H9v-4h2v4zm0-6H9V5h2v2z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    Windows 10 / 11
+                </span>
+                <span class="dl-meta-sep">·</span>
+                <a href="#" class="dl-meta-item dl-meta-link">
+                    <svg viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    View on GitHub
+                </a>
+            </div>
+        </div>
+    </section>
+
+
+
+<!--             
+        <p class="manifesto-text">
                 Long are those days with links and plain text that fill our bookmarks tab. When you paste it in AirPaste
                 it turns into an interactive tile with the content of the link. Soon we will get AI generated Summaries
                 for tese tiles.
@@ -163,13 +250,8 @@
             </p>
 
 
-
-        </div>
-    </section>
-
-
-    <section class="books-section">
         <div class="book-list-container">
+                        
             <ul class="book-list">
                 <li class="book-item">
                     <a href="#" class="book-link" data-number="Music Albums -">
@@ -215,36 +297,9 @@
                 </li>
 
             </ul>
-        </div>
+        </div> -->
     </section>
 
-    <section class="download-section section-container">
-        <h2 class="manifesto-subtitle">
-            <span class="word-head">Always with <i>you</i>.</span>
-        </h2>
-        <div class="download-grid">
-            <div class="download-item">
-                <div class="icon-wrap"><img src="images/icon_web.png" alt="Web"></div>
-                <h3>Web</h3>
-                <p>Sign in</p>
-            </div>
-            <div class="download-item">
-                <div class="icon-wrap"><img src="images/icon_ios.png" alt="iOS"></div>
-                <h3>iOS</h3>
-                <p>Get app</p>
-            </div>
-            <div class="download-item">
-                <div class="icon-wrap"><img src="images/icon_android.png" alt="Android"></div>
-                <h3>Android</h3>
-                <p>Get app</p>
-            </div>
-            <div class="download-item">
-                <div class="icon-wrap"><img src="images/icon_chrome.png" alt="Chrome"></div>
-                <h3>Chrome</h3>
-                <p>Get extension</p>
-            </div>
-        </div>
-    </section>
 
     <!-- ==========================================
          🍱 PORTFOLIO BENTO GRID
@@ -345,85 +400,8 @@
         </div>
     </section>
 
-    <!-- ==========================================
-         🖼️ BEFORE / AFTER SCRUBBER
-         ========================================== -->
-    <section class="scrubber-section">
-        <div class="scrubber-label-row">
-            <span class="scrubber-label">Before</span>
-            <span class="scrubber-label">After</span>
-        </div>
-        <div class="scrubber-stage" id="scrubberStage">
-            <div class="scrubber-card" id="scrubberCard">
-                <!-- AFTER: shown underneath, full width -->
-                <img src="images/afterzip.png" class="scrubber-img scrubber-after" alt="AirPaste After"
-                    draggable="false">
-                <!-- BEFORE: clipped on the left by cursor position -->
-                <div class="scrubber-before-wrap" id="scrubberBefore">
-                    <img src="images/beforezip.png" class="scrubber-img scrubber-before-img" alt="AirPaste Before"
-                        draggable="false">
-                </div>
-                <!-- Divider line -->
-                <div class="scrubber-divider" id="scrubberDivider"></div>
-            </div>
-        </div>
-        <p class="scrubber-hint">← Move cursor to reveal →</p>
-    </section>
 
-    <!-- ==========================================
-         ⬇️ DOWNLOAD SECTION
-         ========================================== -->
-    <section class="dl-section">
-        <div class="dl-inner">
-            <div class="dl-badge">Open Source · Windows Only</div>
-
-            <h2 class="dl-headline">
-                Your canvas.<br>Your rules.
-            </h2>
-            <p class="dl-sub">
-                AirPaste is free, local-first, and completely open source.<br>
-                No account. No cloud. No tracking. Just your space.
-            </p>
-
-            <a href="#" class="dl-btn" id="dlBtn">
-                <svg class="dl-win-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path
-                        d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801" />
-                </svg>
-                Download for Windows
-                <span class="dl-btn-tag">.exe · free</span>
-            </a>
-
-            <div class="dl-meta-row">
-                <span class="dl-meta-item">
-                    <svg viewBox="0 0 20 20" fill="currentColor">
-                        <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
-                        <path fill-rule="evenodd"
-                            d="M4 5a2 2 0 012-2 1 1 0 000 2H4v11h12V5h-2a1 1 0 000-2 2 2 0 012 2v11a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-1z"
-                            clip-rule="evenodd" />
-                    </svg>
-                    v0.1 Alpha
-                </span>
-                <span class="dl-meta-sep">·</span>
-                <span class="dl-meta-item">
-                    <svg viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M10 2a8 8 0 100 16A8 8 0 0010 2zm1 11H9v-4h2v4zm0-6H9V5h2v2z"
-                            clip-rule="evenodd" />
-                    </svg>
-                    Windows 10 / 11
-                </span>
-                <span class="dl-meta-sep">·</span>
-                <a href="#" class="dl-meta-item dl-meta-link">
-                    <svg viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd"
-                            d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z"
-                            clip-rule="evenodd" />
-                    </svg>
-                    View on GitHub
-                </a>
-            </div>
-        </div>
-    </section>
+    
 
     <div class="footer-reveal-container">
         <footer class="main-footer">
@@ -678,7 +656,7 @@
         // 🎛️ MASTER ANIMATION CONTROLS
         // ==========================================
         const CONTROLS = {
-            parallaxMagnitude: 0.1,
+            parallaxMagnitude: 0.2,
             parallaxEase: 0.08,
             squeezeAmount: 0.09,
             squeezeBaseSpeed: 0.01,
