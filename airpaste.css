@@ -44,6 +44,33 @@
     --l7-y: 0vh;
 }
 
+@keyframes cycleColors {
+    0% {
+        background-color: #e386b6;
+    }
+
+    20% {
+        background-color: #ee4a4f;
+    }
+
+    40% {
+        background-color: #eaaa69;
+    }
+
+    60% {
+        background-color: #f17997;
+    }
+
+    80% {
+        background-color: #435add;
+    }
+
+    100% {
+        background-color: #e386b6;
+    }
+
+}
+
 @font-face {
     font-family: 'p1';
     src: url('Fonts/ppmondwest-regular.otf');
@@ -1011,32 +1038,7 @@ html {
     animation-delay: -10.2s;
 }
 
-@keyframes cycleColors {
-    0% {
-        background-color: #F3AED2;
-    }
 
-    20% {
-        background-color: #FD5B60;
-    }
-
-    40% {
-        background-color: #F5A793;
-    }
-
-    60% {
-        background-color: #C3D1A1;
-    }
-
-    80% {
-        background-color: #8998EC;
-    }
-
-    100% {
-        background-color: #F3AED2;
-    }
-
-}
 
 /* --- CONTENT & LABELS --- */
 .hero-title {
