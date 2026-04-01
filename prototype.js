@@ -105,6 +105,14 @@ const SITE_CONFIG = {
             return fallbackCaseLinks[caseId] || '';
         };
 
+        const normalizeHref = (rawHref) => {
+            const href = typeof rawHref === 'string' ? rawHref.trim() : '';
+            if (!href || href === '#') return '';
+            return href;
+        };
+
+        const escapeAttr = (value) => String(value || '').replace(/"/g, '&quot;');
+
         const setCaseLayout = (isOpen) => {
             document.body.classList.toggle('case-open', isOpen);
         };
@@ -143,9 +151,29 @@ const SITE_CONFIG = {
         };
 
         const showCase = (data, caseHref = '') => {
+            caseWindow.classList.remove('is-external-content');
             titleDisp.textContent = data.title;
             contentArea.innerHTML = data.images.map(img => `<img src="${img}" alt="Case Image">`).join('');
             activeCaseHref = caseHref;
+            syncOpenButton();
+
+            setCaseLayout(true);
+            clearCaseMotion();
+            caseWindow.classList.remove('minimized');
+            caseWindow.classList.add('visible');
+            caseWindow.classList.add('is-opening');
+            contentArea.scrollTop = 0;
+
+            caseMotionTimer = window.setTimeout(() => {
+                clearCaseMotion();
+            }, CASE_ANIM_MS);
+        };
+
+        const showCaseExternal = (title, embedHref, caseHref = '') => {
+            caseWindow.classList.add('is-external-content');
+            titleDisp.textContent = title;
+            contentArea.innerHTML = `<iframe class="case-content-iframe" src="${escapeAttr(embedHref)}" title="${escapeAttr(title)}" loading="eager"></iframe>`;
+            activeCaseHref = caseHref || embedHref;
             syncOpenButton();
 
             setCaseLayout(true);
@@ -178,6 +206,24 @@ const SITE_CONFIG = {
             }
         };
 
+        const openExternalCase = (title, href) => {
+            if (isTransitioning) return;
+            const resolvedHref = normalizeHref(href);
+            if (!resolvedHref) return;
+            const resolvedTitle = (typeof title === 'string' && title.trim()) ? title.trim() : 'Article';
+
+            if (caseWindow.classList.contains('visible')) {
+                isTransitioning = true;
+                closeCase({ keepLayout: true });
+                window.setTimeout(() => {
+                    showCaseExternal(resolvedTitle, resolvedHref, resolvedHref);
+                    isTransitioning = false;
+                }, CASE_ANIM_MS + 20);
+            } else {
+                showCaseExternal(resolvedTitle, resolvedHref, resolvedHref);
+            }
+        };
+
         cards.forEach(card => {
             card.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -204,7 +250,8 @@ const SITE_CONFIG = {
         window.CaseOverlayControl = {
             close: () => closeCase(),
             closeImmediate: () => closeCase({ immediate: true }),
-            isVisible: () => caseWindow.classList.contains('visible') || caseWindow.classList.contains('is-closing')
+            isVisible: () => caseWindow.classList.contains('visible') || caseWindow.classList.contains('is-closing'),
+            openExternal: ({ title = 'Article', href = '' } = {}) => openExternalCase(title, href)
         };
     },
     pillSizes: {
@@ -303,11 +350,6 @@ const pillNotesBtn = document.getElementById('pill-notes-btn');
 const pillResumeBtn = document.getElementById('pill-resume-btn');
 const pillThirdBtn = document.getElementById('pill-third-btn');
 const resumePopoutEl = document.getElementById('resume-popout');
-const workTogetherWrapEl = document.getElementById('work-together-wrap');
-const workTogetherBtn = document.getElementById('work-together-btn');
-const workAssistantPanelEl = document.getElementById('work-assistant-panel');
-const workAssistantCloseBtn = document.getElementById('work-assistant-close');
-const workAssistantVideoEl = document.getElementById('work-assistant-video');
 const readerInlineEl = document.getElementById('reader-inline');
 const showIdBtn = document.getElementById('show-id-btn');
 const idCardDock = document.getElementById('id-card-dock');
@@ -391,11 +433,21 @@ function initLeftOrbControls() {
     if (!leftControlsEl || !orbCursorHandle) return noop;
 
     const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
-    const maxTravelPx = 88;
     let scrollTarget = 0;
     let scrollCurrent = 0;
     let rafId = 0;
     let timeIntervalId = 0;
+
+    const getThumbTravelLimit = () => {
+        const trackEl = leftControlsEl.querySelector('.orb-track-line');
+        if (!trackEl) return 0;
+
+        const trackRect = trackEl.getBoundingClientRect();
+        const thumbRect = orbCursorHandle.getBoundingClientRect();
+        if (!trackRect.height || !thumbRect.height) return 0;
+
+        return Math.max(0, (trackRect.height - thumbRect.height) / 2);
+    };
 
     const resolveScrollable = () => {
         if (scrollableContentEl && scrollableContentEl.scrollHeight > scrollableContentEl.clientHeight + 2) {
@@ -420,8 +472,8 @@ function initLeftOrbControls() {
     const render = () => {
         scrollCurrent += (scrollTarget - scrollCurrent) * 0.18;
         const centered = (scrollCurrent * 2) - 1;
-        const yOffset = centered * maxTravelPx;
-        leftControlsEl.style.setProperty('--orb-scroll-offset-y', `${yOffset.toFixed(2)}px`);
+        const yOffset = centered * getThumbTravelLimit();
+        leftControlsEl.style.setProperty('--orb-thumb-offset-y', `${yOffset.toFixed(2)}px`);
         rafId = window.requestAnimationFrame(render);
     };
 
@@ -1029,6 +1081,43 @@ function initBackgrounds() {
     }
     applyMatrixPausedState();
     miniMatrixInstance = null;
+}
+
+function withTemporaryDeviceTransition(loadFn, duration = 620) {
+    document.body.classList.add('device-transitioning');
+    const shouldTemporarilyPauseMatrix = backgroundMatrixInstance && !matrixPaused;
+    if (shouldTemporarilyPauseMatrix) {
+        backgroundMatrixInstance.setPaused(true);
+    }
+    loadFn();
+    window.setTimeout(() => {
+        document.body.classList.remove('device-transitioning');
+        if (shouldTemporarilyPauseMatrix && backgroundMatrixInstance) {
+            backgroundMatrixInstance.setPaused(false);
+        }
+    }, duration);
+}
+
+let hasPrimedExpandableAssets = false;
+function primeExpandableAssets() {
+    if (hasPrimedExpandableAssets) return;
+    hasPrimedExpandableAssets = true;
+
+    const imageUrls = Array.from(document.querySelectorAll('.site-content img'))
+        .map((img) => img.currentSrc || img.getAttribute('src'))
+        .filter(Boolean);
+    imageUrls.forEach((url) => {
+        const warm = new Image();
+        warm.decoding = 'async';
+        warm.src = url;
+    });
+
+    const modelViewer = document.querySelector('model-viewer[src]');
+    const modelUrl = modelViewer?.getAttribute('src');
+    if (modelUrl) {
+        fetch(modelUrl, { cache: 'force-cache' }).catch(() => { });
+    }
+
 }
 
 // --------------------------------------------------------
@@ -2057,88 +2146,6 @@ function initResumePopout() {
     };
 }
 
-function initWorkTogetherPanel() {
-    if (!workTogetherBtn || !workAssistantPanelEl) {
-        return {
-            open: () => { },
-            close: () => { },
-            toggle: () => { },
-            isVisible: () => false,
-            isInside: () => false
-        };
-    }
-
-    const isVisible = () => workAssistantPanelEl.classList.contains('is-open');
-
-    const playVideo = () => {
-        if (!workAssistantVideoEl) return;
-        const playPromise = workAssistantVideoEl.play();
-        if (playPromise && typeof playPromise.catch === 'function') {
-            playPromise.catch(() => { });
-        }
-    };
-
-    const pauseVideo = () => {
-        if (!workAssistantVideoEl) return;
-        workAssistantVideoEl.pause();
-    };
-
-    const open = () => {
-        workAssistantPanelEl.classList.add('is-open');
-        workAssistantPanelEl.setAttribute('aria-hidden', 'false');
-        workTogetherBtn.setAttribute('aria-expanded', 'true');
-        playVideo();
-    };
-
-    const close = () => {
-        workAssistantPanelEl.classList.remove('is-open');
-        workAssistantPanelEl.setAttribute('aria-hidden', 'true');
-        workTogetherBtn.setAttribute('aria-expanded', 'false');
-        pauseVideo();
-    };
-
-    const toggle = () => {
-        if (isVisible()) {
-            close();
-            return;
-        }
-        open();
-    };
-
-    workTogetherBtn.addEventListener('click', (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        toggle();
-    });
-
-    workAssistantCloseBtn?.addEventListener('click', (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        close();
-    });
-
-    workAssistantPanelEl.addEventListener('click', (event) => {
-        event.stopPropagation();
-    });
-
-    document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape' && isVisible()) {
-            close();
-        }
-    });
-
-    return {
-        open,
-        close,
-        toggle,
-        isVisible,
-        isInside: (target) => {
-            if (!(target instanceof Node)) return false;
-            return workAssistantPanelEl.contains(target) || workTogetherBtn.contains(target);
-        }
-    };
-}
-
 function initReaderMode(onboardingFlow = null) {
     if (!device || !readerInlineEl) {
         return {
@@ -2189,11 +2196,90 @@ function initReaderMode(onboardingFlow = null) {
     };
 }
 
+function initReaderBlogs() {
+    const blogListEl = document.getElementById('reader-blog-list');
+    if (!blogListEl) return;
+
+    const escapeHtml = (value) => String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+
+    const escapeAttr = (value) => escapeHtml(value).replace(/"/g, '&quot;');
+
+    const formatDate = (rawDate) => {
+        const date = new Date(rawDate);
+        if (Number.isNaN(date.getTime())) return rawDate || '';
+        return new Intl.DateTimeFormat('en-GB', {
+            year: 'numeric',
+            month: 'short',
+            day: '2-digit'
+        }).format(date);
+    };
+
+    const renderStatus = (message) => {
+        blogListEl.innerHTML = `<p class="reader-blog-status">${message}</p>`;
+    };
+
+    const renderBlogs = (posts) => {
+        if (!Array.isArray(posts) || posts.length === 0) {
+            renderStatus('No blog posts yet.');
+            return;
+        }
+
+        const sortedPosts = [...posts].sort((a, b) => new Date(b.date) - new Date(a.date));
+        blogListEl.innerHTML = sortedPosts.map((post) => {
+            const title = typeof post.title === 'string' ? post.title : 'Untitled Post';
+            const date = formatDate(post.date);
+            const file = typeof post.file === 'string' ? post.file : '';
+            const tags = Array.isArray(post.tags) ? post.tags : [];
+            const href = `blog.html?post=${encodeURIComponent(file)}`;
+            const tagsMarkup = tags.map((tag) => `<li class="reader-blog-tag">${escapeHtml(tag)}</li>`).join('');
+
+            return `
+                <article class="reader-blog-card">
+                    <p class="reader-blog-date">${escapeHtml(date)}</p>
+                    <a href="${escapeAttr(href)}" class="reader-blog-link" data-blog-title="${escapeAttr(title)}" data-cursor="link">${escapeHtml(title)}</a>
+                    <ul class="reader-blog-tags">${tagsMarkup}</ul>
+                </article>
+            `;
+        }).join('');
+    };
+
+    blogListEl.addEventListener('click', (event) => {
+        const link = event.target instanceof Element ? event.target.closest('.reader-blog-link') : null;
+        if (!link) return;
+
+        const overlay = window.CaseOverlayControl;
+        if (!overlay || typeof overlay.openExternal !== 'function') return;
+
+        event.preventDefault();
+        const href = link.getAttribute('href') || '';
+        const title = link.getAttribute('data-blog-title') || link.textContent || 'Blog Post';
+        overlay.openExternal({ title, href });
+    });
+
+    const loadBlogs = async () => {
+        try {
+            const response = await fetch('./posts.json', { cache: 'no-store' });
+            if (!response.ok) {
+                throw new Error(`Unable to load posts.json (${response.status})`);
+            }
+            const posts = await response.json();
+            renderBlogs(posts);
+        } catch (error) {
+            console.error(error);
+            renderStatus('Unable to load blog posts.');
+        }
+    };
+
+    loadBlogs();
+}
+
 function initSmoothWheelScrolling() {
     const targets = [
         document.scrollingElement,
-        document.getElementById('scrollable-content'),
-        document.getElementById('case-content-area')
+        document.getElementById('scrollable-content')
     ].filter(Boolean);
 
     targets.forEach((el) => {
@@ -2762,16 +2848,33 @@ document.addEventListener('DOMContentLoaded', () => {
     const leftOrbControls = initLeftOrbControls();
     const stickyNote = initStickyNote();
     const resumePopout = initResumePopout();
-    const workTogetherPanel = initWorkTogetherPanel();
     const readerMode = initReaderMode(onboardingFlow);
     const chatMode = init3DChatMode();
     const idCardSystem = initIdCardSystem();
+    let fittyRefreshTimer = null;
+
+    const scheduleFittyRefresh = () => {
+        if (typeof fitty === 'undefined') return;
+        if (fittyRefreshTimer) {
+            window.clearTimeout(fittyRefreshTimer);
+        }
+        fittyRefreshTimer = window.setTimeout(() => {
+            const run = () => fitty.fitAll();
+            if ('requestIdleCallback' in window) {
+                window.requestIdleCallback(run, { timeout: 350 });
+            } else {
+                window.setTimeout(run, 120);
+            }
+        }, 120);
+    };
 
     const expandDeviceShell = (autoOpenNotes = true) => {
         if (!device || device.classList.contains('expanded')) return;
-        device.classList.add('expanded');
-        document.body.classList.add('device-expanded');
-        applyPillSizes('expanded');
+        withTemporaryDeviceTransition(() => {
+            device.classList.add('expanded');
+            document.body.classList.add('device-expanded');
+            applyPillSizes('expanded');
+        });
 
         // Start Matrix Effect only on first open
         if (!window.hasMatrixStarted) {
@@ -2812,14 +2915,24 @@ document.addEventListener('DOMContentLoaded', () => {
             document.body.classList.toggle('device-maximized');
             e.stopPropagation();
             expandFabAnchor.schedule();
-            setTimeout(() => {
-                if (typeof fitty !== 'undefined') fitty.fitAll();
-            }, 350);
+            scheduleFittyRefresh();
         });
     }
 
     applyMatrixPausedState();
     leftOrbControls.refreshTime();
+    window.addEventListener('resize', scheduleFittyRefresh, { passive: true });
+
+    const scheduleAssetPriming = () => {
+        if ('requestIdleCallback' in window) {
+            window.requestIdleCallback(primeExpandableAssets, { timeout: 1200 });
+        } else {
+            window.setTimeout(primeExpandableAssets, 450);
+        }
+    };
+    scheduleAssetPriming();
+    topBar?.addEventListener('pointerenter', primeExpandableAssets, { once: true, passive: true });
+    expandBtn?.addEventListener('pointerenter', primeExpandableAssets, { once: true, passive: true });
 
     leftControlsEl?.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -2866,7 +2979,6 @@ document.addEventListener('DOMContentLoaded', () => {
         expandDeviceShell(false);
         if (readerMode.isActive()) readerMode.close();
         if (stickyNote.isVisible()) stickyNote.close();
-        if (workTogetherPanel.isVisible()) workTogetherPanel.close();
 
         window.location.href = 'chat3d.html';
     });
@@ -2912,7 +3024,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const clickedInsideSticky = stickyNoteEl && stickyNoteEl.contains(e.target);
         const clickedInsideResume = resumePopoutEl && resumePopoutEl.contains(e.target);
         const clickedInsideIdCard = idCardSystem.isInside(e.target);
-        const clickedInsideWorkAssistant = workTogetherPanel.isInside(e.target);
 
         const idWasOpen = idCardSystem.isOpen();
         if (idWasOpen && !clickedInsideIdCard && !(showIdBtn && showIdBtn.contains(e.target))) {
@@ -2920,15 +3031,10 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        if (workTogetherPanel.isVisible() && !clickedInsideWorkAssistant) {
-            workTogetherPanel.close();
-            return;
-        }
-
         // Priority close order:
         // 1) Close the side case window first.
         // 2) Only after that, allow closing the mini portfolio on a later outside click.
-        if (caseIsOpen && !clickedInsideCase && !clickedInsideDevice && !clickedInsideSticky && !clickedInsideResume && !clickedInsideIdCard && !clickedInsideWorkAssistant) {
+        if (caseIsOpen && !clickedInsideCase && !clickedInsideDevice && !clickedInsideSticky && !clickedInsideResume && !clickedInsideIdCard) {
             if (caseOverlayControl) {
                 caseOverlayControl.close();
             } else if (caseWindowEl) {
@@ -2945,18 +3051,19 @@ document.addEventListener('DOMContentLoaded', () => {
             !clickedInsideCase &&
             !clickedInsideSticky &&
             !clickedInsideResume &&
-            !clickedInsideIdCard &&
-            !clickedInsideWorkAssistant
+            !clickedInsideIdCard
         ) {
-            device.classList.remove('expanded');
-            document.body.classList.remove('device-expanded');
-            device.classList.remove('maximized');
-            document.body.classList.remove('device-maximized');
-            applyPillSizes('collapsed');
-            readerMode.close();
-            stickyNote.close();
-            resumePopout.close();
-            idCardSystem.hide();
+            withTemporaryDeviceTransition(() => {
+                device.classList.remove('expanded');
+                document.body.classList.remove('device-expanded');
+                device.classList.remove('maximized');
+                document.body.classList.remove('device-maximized');
+                applyPillSizes('collapsed');
+                readerMode.close();
+                stickyNote.close();
+                resumePopout.close();
+                idCardSystem.hide();
+            });
             setTimeout(() => { if (miniMatrixInstance) miniMatrixInstance.resize(); }, 520);
         }
     });
@@ -2970,6 +3077,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initIndexGrid();
     initFeaturedCardHoverMotion();
     initHeroLanguageLoop();
+    initReaderBlogs();
 
     // Initialize Scramble Animations
     const pillTextEl = document.querySelector('.pill-text');

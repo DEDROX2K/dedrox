@@ -56,8 +56,17 @@
         <div class="top-bar" id="top-bar" data-cursor="link">
 
             <div class="top-bar-pill">
-                <div class="pill-greeting">Nice to meet you! <br> I’m Raghav! I’d love to be your partner in problem
-                    -solving.
+                <div class="pill-greeting">
+                    <p class="greeting-overline">PRESENTING</p>
+                    <p class="greeting-subline">BEAUTIFUL AND DEVIOUS</p>
+                    <h2 class="greeting-display" aria-label="Monster of the nightmare comes">
+                        <span>WELCOME</span>
+                        <span>TO MY</span>
+                        <span>PORTFOLIO</span>
+                        <span>SITE</span>
+                    </h2>
+                    <p class="greeting-side greeting-side-left">TYPOGRAPHY<br>/245</p>
+                    <p class="greeting-side greeting-side-right">TYPOGRAPHY<br>/245</p>
                 </div>
                 <div class="pill-left">
                     <!-- <div class="pill-bar"></div> -->
@@ -90,65 +99,11 @@
 
         <div class="site-content" id="scrollable-content">
             <div id="reader-inline" class="reader-inline" aria-hidden="true">
-                <header class="reader-inline-top">
-                    <div class="reader-top-brand">RAGHAV PRASANNA</div>
-                    <div class="reader-top-links">
-                        <a href="https://www.behance.net/raghavprasanna">BEHANCE</a>
-                        <a href="#">DRIBBBLE</a>
-                        <a href="#">GITHUB</a>
-                    </div>
-                    <div class="reader-top-phone">+44 7466 552 666</div>
-                    <div class="reader-top-cart">RAGHAVPRASANNA2000@GMAIL.COM</div>
-                </header>
-
-                <section class="onboarding-header" id="onboarding-header" aria-label="Interactive intro">
-                    <p class="onboarding-kicker">Yes, I am a Product Designer but...</p>
-                    <p class="onboarding-line" id="onboarding-line" aria-live="polite"></p>
-                </section>
-
-                <section class="reader-about-grid">
-                    <div class="reader-left-label">About</div>
-                    <div class="reader-about-main">
-                        <h2>
-                            I build bridges between complex technical systems and intuitive human experiences.
-                        </h2>
-                        <p>
-                            My background isn't a straight line—and that is my greatest asset. By blending an MS in User
-                            Experience with deep roots in 3D game design and spatial computing, I approach problems from
-                            multiple angles. Whether I am architecting a gamified mobile app, prototyping AR/VR
-                            environments, or streamlining dense data platforms, my goal is always the same: remove the
-                            noise and translate complexity into clear, actionable design.
-                        </p>
+                <section class="reader-blog-section">
+                    <div id="reader-blog-list" class="reader-blog-list" aria-live="polite">
+                        <p class="reader-blog-status">Loading blog posts...</p>
                     </div>
                 </section>
-
-                <section class="reader-quote-grid">
-                    <div class="reader-quote">
-                        <p>
-                            "Good design doesn't happen in a vacuum. It lives in the exact space between a user's pain
-                            points and an engineer's technical constraints. My job is to navigate that space and make
-                            the intricate feel effortless."
-                        </p>
-                    </div>
-                    <div class="reader-image-placeholder" aria-hidden="true">
-                        <img src="images/bwme.png" alt="Raghav Prasanna">
-                    </div>
-                </section>
-
-                <section class="reader-contact-grid">
-                    <div>
-                        <h3>Contacts</h3>
-                        <p>Email:<br>raghavprasanna2000@gmail.com</p>
-                        <p>Phone:<br>+44 75534 3333</p>
-                        <p>Location:<br>Newcastle upon Tyne, UK (Open to Remote & Hybrid)</p>
-                    </div>
-                </section>
-
-                <footer class="reader-inline-foot">
-                    <div>&copy;2026 DEDROX. ALL RIGHTS RESERVED</div>
-                    <div>TERMS AND CONDITIONS / PAYMENT AND DELIVERY</div>
-                    <div>INSTAGRAM &nbsp;&nbsp; BEHANCE</div>
-                </footer>
             </div>
 
             <section class="hero-clean reveal delay-1">
@@ -671,61 +626,21 @@
         </div>
     </div>
 
-    <div class="work-together-wrap hidden-mobile" id="work-together-wrap">
-        <button class="work-together-btn" id="work-together-btn" type="button" aria-haspopup="dialog"
-            aria-expanded="false" data-cursor="link">
-            <span class="work-together-icon" aria-hidden="true"></span>
-            <span class="work-together-label">Let's work together</span>
-        </button>
-    </div>
-
-    <div class="work-assistant-panel hidden-mobile" id="work-assistant-panel" role="dialog"
-        aria-label="Cadence assistant" aria-hidden="true">
-        <video class="work-assistant-video" id="work-assistant-video" muted loop playsinline preload="metadata">
-            <source src="videos/cadence.mp4" type="video/mp4">
-        </video>
-        <div class="work-assistant-overlay" aria-hidden="true"></div>
-
-        <div class="work-assistant-header">
-            <span>Cadence</span>
-            <button class="work-assistant-close" id="work-assistant-close" type="button" aria-label="Close assistant"
-                data-cursor="link">×</button>
-        </div>
-
-        <div class="work-assistant-body">
-            <p class="work-assistant-copy">
-                Hello and welcome! I'm Cadence, the executive assistant at DEDROX.
-            </p>
-            <p class="work-assistant-copy">How can I assist you today?</p>
-
-            <div class="work-assistant-actions" aria-label="Assistant quick actions">
-                <button type="button" class="work-chip work-chip-primary" data-cursor="link">Hire your agency</button>
-                <button type="button" class="work-chip" data-cursor="link">Ask about your pricing</button>
-                <button type="button" class="work-chip" data-cursor="link">Learn more about DEDROX</button>
-                <button type="button" class="work-chip" data-cursor="link">Demo</button>
-            </div>
-        </div>
-
-        <div class="work-assistant-footer">
-            <span class="work-together-icon work-together-icon-sm" aria-hidden="true"></span>
-            <span class="work-assistant-input">Ask me anything...</span>
-        </div>
-    </div>
-
     <!-- WIP Swinging Image -->
     <img src="images/wip.png" alt="Work In Progress" class="wip-swinging-img hidden-mobile">
     <div class="global-controls" style="pointer-events: none;">
         <div class="left-controls hidden-mobile" id="left-orb-controls" aria-label="Quick actions">
             <button class="orb-cursor-handle" id="orb-cursor-handle" type="button" aria-label="Open quick controls"
-                data-cursor="link">
-                <span class="orb-handle-dot" aria-hidden="true"></span>
-            </button>
+                data-cursor="link"></button>
+            <div class="orb-track-line" aria-hidden="true"></div>
 
             <div class="orb-control-rail" id="orb-control-rail" role="group" aria-label="Quick actions panel">
                 <div class="orb-scroll-line" aria-hidden="true"></div>
                 <button class="orb-rail-btn orb-rail-expand" id="expand-btn" type="button"
                     aria-label="Toggle fullscreen" title="Expand" data-cursor="link">
-                    <span class="orb-btn-icon orb-btn-icon-expand" aria-hidden="true"></span>
+                    <span class="orb-btn-icon" aria-hidden="true">
+                        <img class="orb-btn-icon-img" src="iconset/sticky_note_2.png" alt="">
+                    </span>
                     <span class="pill-tooltip">Expand</span>
                 </button>
 
@@ -733,13 +648,17 @@
 
                 <button class="orb-rail-btn orb-rail-matrix" id="matrix-toggle-btn" type="button"
                     aria-label="Pause matrix animation" title="Pause matrix animation" data-cursor="link">
-                    <span class="orb-btn-icon orb-btn-icon-matrix" aria-hidden="true"></span>
+                    <span class="orb-btn-icon" aria-hidden="true">
+                        <img class="orb-btn-icon-img" src="iconset/conversation.png" alt="">
+                    </span>
                     <span class="pill-tooltip" id="matrix-toggle-hint">Pause matrix</span>
                 </button>
 
                 <a class="orb-rail-btn orb-rail-resume" id="orb-resume-btn" href="threeD/CV_RESUME-RAGHAV.pdf"
                     target="_blank" rel="noopener noreferrer" aria-label="Open resume" data-cursor="link">
-                    <span class="orb-btn-icon orb-btn-icon-resume" aria-hidden="true"></span>
+                    <span class="orb-btn-icon" aria-hidden="true">
+                        <img class="orb-btn-icon-img" src="iconset/move_down.png" alt="">
+                    </span>
                     <span class="pill-tooltip">Resume</span>
                 </a>
             </div>

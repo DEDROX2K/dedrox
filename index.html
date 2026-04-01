@@ -2,596 +2,84 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-
-    <!-- // description -->
-    <title>BSOD Page</title>
-    <meta property="og:description"
-        content="Hey! I’m Raghav, Product designer. 1 person with an all-in-one production ability" />
-    <meta content="https://i.imgur.com/4Sz5x1Z.png" property="og:image">
-    <meta property="og:type" content="website" />
-
-    <meta name="twitter:card" content="https://i.imgur.com/4Sz5x1Z.png" />
-    <meta name="twitter:title" content="Select portfolio" />
-    <meta name="twitter:description"
-        content="Hey! I’m Raghav, Product designer. 1 person with an all-in-one production ability" />
-    <meta name="twitter:image" content="https://i.imgur.com/4Sz5x1Z.png" />
-
-
-
-
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Frijole&family=Micro+5+Charted&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="arti.css">
-
-    <link rel="icon" href="logo.png" type="png">
-    <meta name="theme-color" content="#5561ff">
-
-    <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
-
-    <link rel="stylesheet" href="bsod.css">
-    <!-- <script src="ux.js"></script> -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog</title>
+  <link rel="stylesheet" href="./styles.css" />
 </head>
 
-
-
-
 <body>
-
-    <div class="red-top-bar dispmob">| This website is best viewed on a PC |</div>
-    <style>
-        .dispmob {
-            display: none;
-            /* Initially hide the element on all screens */
-        }
-
-        @media (max-width: 768px) {
-            .dispmob {
-                display: block;
-                /* Display the element on screens with a maximum width of 768px */
-            }
-        }
-
-        .red-top-bar {
-            background-color: #ff3f3f;
-            color: rgb(0, 0, 0);
-            padding: 10px 20px;
-            /* font-family: vcr; */
-            font-weight: bold;
-            text-align: center;
-            z-index: 10;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-        }
-    </style>
-
-    <!-- <div class="sticker" id="stickerBannerAd1">
-        <img src="images/ba1.png">
-    </div>
-    <div class="sticker" id="stickerBannerAd2">
-        <img src="images/ba2.png">
-    </div>
-    <div class="sticker" id="stickerBannerAd3">
-        <img src="images/ba3.png">
-    </div>
-    <div class="sticker" id="stickerBannerAd4">
-        <img src="images/ba4.png">
-    </div>
-    <div class="sticker" id="stickerBannerAd5">
-        <img src="images/ba5.png">
-    </div>
-    <div class="sticker" id="stickerBannerAd6">
-        <img src="images/ba6.png">
-    </div>
-    <div class="sticker" id="stickerBannerAd7">
-        <img src="images/ba7.png">
-    </div>
-    <div class="sticker" id="stickerBannerAd8">
-        <img src="images/ba8.png">
-    </div> -->
-
-
-
-
-
-    <!-- <a href="Testinggg.html">3D testing</a> -->
-
-    <!-- Image Overlay -->
-    <div class="image-overlay"></div>
-
-    <style>
-        /* Create the image overlay */
-        .image-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('images/displaytv.jpg');
-            /* Replace with the path to your image */
-            background-size: 100% 40%;
-            /* Make the image stretch to cover the full screen */
-            background-position: center;
-            opacity: 40%;
-            z-index: 100;
-            mix-blend-mode: soft-light;
-            pointer-events: none;
-
-        }
-    </style>
-
-    <div class="screen">
-        <div class="menu-top">
-            <div id="london-time" class="time">12:34:28</div>
-            <div class="help">| Currently online*</div>
-
-            <!-- Timezone live -->
-            <script>
-                function updateLondonTime() {
-                    const londonTimeElement = document.getElementById('london-time');
-                    const now = new Date();
-                    const options = {
-                        timeZone: 'Europe/London',
-                        hour12: true,
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        second: '2-digit'
-                    };
-                    londonTimeElement.textContent = now.toLocaleTimeString('en-GB', options);
-                }
-
-                setInterval(updateLondonTime, 1000);
-                updateLondonTime(); // Initial call to set the time immediately on load
-            </script>
-        </div>
-
-
-
-        <div class="info off">
-            <div class="container">
-                <!-- <div class="error-code" href="index.html" style="font-size: 4rem;">:)</div> -->
-
-
-
-
-
-                <div class="error-message" style="text-align: left;">
-                    Hey there! This is an interactive site <br>fun—tap, click, and play around with stuffs!<br>
-                    They are all stickers<br><br>
-                </div>
-
-                <script>
-                    // Initialize Typed.js
-                    document.addEventListener('DOMContentLoaded', function () {
-                        var typed = new Typed("#typed", {
-                            strings: [" send a message to this mail.", " If you face any issues..."],
-                            typeSpeed: 30,
-                            backSpeed: 15,
-                            loop: true
-                        });
-                    });
-                </script>
-
-
-                <div style="text-align: left;     color: #bee1ff;">
-                    ----/<span class="value"><span id="typed"></span></span>
-                </div>
-
-
-
-                <div class="emaillink d-flex align-items-center">RAGHAVPRASANNA2000@GMAIL.COM</div>
-
-                <div class="error-message"><br>
-                    I have 2 unique portfolios down here ->
-                </div>
-
-                <div style="display: flex; justify-content: center; align-items: center; padding: 10px;">
-                    <a href='gamedes.html' class='link-download dispmob'>3D & Game design</a>
-                </div>
-
-
-
-
-
-                <div class="container nodispmob">
-                    <a href="prototype.html" class="link-download">Product design/UX</a>
-                    <a href='gamedes.html' class='link-download'>3D & Game design</a>
-                </div>
-                <div style="display: flex; justify-content: center; align-items: center; padding: 10px;">
-                    <a href="prototype.html" class="link-download dispmob">Product design/UX</a>
-                </div>
-
-
-
-            </div>
-
-        </div>
-
-
-
-        <div class="menu-bottom">
-            <div><span>Press</span> F11 <span>to activate full immersion</span></div>
-            <div>|<span>
-                    <a style="
-            background: none;
-                text-decoration: none;
-                padding: 0px;
-                margin: 0;
-                border: 0;
-                box-shadow: none; color: var(--redColor);" href="prototype.html" class="link-download">Skip >
-                    </a>
-                </span>
-            </div>
-        </div>
-
-
-
-        <section class="modals">
-            <div class="testing dialog">
-                <p>Preparing portfolio...</p>
-            </div>
-
-            <div class="reading dialog" hidden>
-                <p>Creating 2 links...</p>
-            </div>
-
-            <div class="analyzing dialog" hidden>
-                <p>Loading easter eggs</p>
-                <p class="folders center">GAMES</p>
-            </div>
-
-            <div class="finished dialog" hidden>
-                <p class="center">Optimization for Your Screen: Complete</p>
-                <div>
-                    <p class="center">You may optimize another drive or reconfigure optimization for the current
-                        drive.
-                    </p>
-                </div>
-                <div>
-                    <a href="https://twitter.com/Manz/status/1130789484726038529" target="_blank">More info</a>
-                    <a href="https://manzdev.github.io/" target="_blank">Exit DEFRAG</a>
-                </div>
-            </div>
-        </section>
-    </div>
-    <!-- <img class="scan" src="images/scanlines.png" alt="Background Image"> -->
-
-</body>
-
-
-
-<script>
-    // DOM references for modals and screens
-    const modals = document.querySelectorAll('.testing.dialog, .reading.dialog, .analyzing.dialog, .finished.dialog');
-    const screens = document.querySelectorAll('.surface, .info');
-
-    // Tags to display during the "Analyzing" phase
-    const TAGS = ['UX', 'PRODUCT DESIGN', 'GAME DESIGN', 'UI GRAPHIC', 'FREELANCE', 'JNR.FRONT END', 'FIGMA', 'DONE', 'DONE'];
-    const folders = document.querySelector('.folders');
-
-    // Function to extract and show tags
-    const extractTags = (tags) => {
-        if (tags.length > 0) {
-            setTimeout(() => {
-                folders.textContent = tags.shift();
-                extractTags(tags);
-            }, 200);
-        }
-    }
-
-    // Function to handle modal transitions
-    const startDialogs = () => {
-        // Show "Reading disk information" after "Testing system memory"
-        setTimeout(() => {
-            modals[0].hidden = true;
-            modals[1].hidden = false;
-        }, 1000);
-
-        // Show "Analyzing disk information" after "Reading disk information"
-        setTimeout(() => {
-            modals[1].hidden = true;
-            modals[2].hidden = false;
-            extractTags(TAGS); // Start showing tags like GAMES, WINDOWS, etc.
-        }, 2000);
-
-        // Hide "Analyzing" and show the main screens after 2 seconds
-        setTimeout(() => {
-            modals[2].hidden = true;
-            screens[0].classList.remove('off');
-            screens[1].classList.remove('off');
-        }, 3000);
-    }
-
-    // Start the modal sequence when the page loads
-    startDialogs();
-
-</script>
-
-
-<script>
-    // Select all links with the class 'link-download'
-    const links = document.querySelectorAll('.link-download');
-
-    // Create an audio object
-    const hoverSound = new Audio('threeD/old-computer-click-152513.mp3');
-
-    // Add hover event listeners to each link
-    links.forEach(link => {
-        link.addEventListener('mouseenter', () => {
-            hoverSound.currentTime = 0;  // Reset the sound to the beginning
-            hoverSound.play();
-        });
-    });
-</script>
-
-<script>
-
-    class Draggable {
-
-        constructor(element, initialLeftPercent = null, initialTopPercent = null) {
-            this.element = element;
-            this.parent = this.element.parentElement;
-
-            // Ensure the parent element is relatively positioned
-            this.parent.style.position = 'relative';
-
-            // Function to convert percentage to pixel value
-            const toPixels = (percentage, totalSize) => (percentage / 100) * totalSize;
-
-            // Function to set position based on percentage
-            const setPosition = () => {
-                const parentRect = this.parent.getBoundingClientRect();
-                const initialLeft = initialLeftPercent !== null ? toPixels(initialLeftPercent, parentRect.width) : 0;
-                const initialTop = initialTopPercent !== null ? toPixels(initialTopPercent, parentRect.height) : 0;
-                this.element.style.left = `${initialLeft}px`;
-                this.element.style.top = `${initialTop}px`;
-            };
-
-            // Set initial position
-            setPosition();
-
-            // Update position on resize
-            window.addEventListener('resize', setPosition);
-
-            // Event listeners for dragging
-            this.element.addEventListener('mousedown', this.onMouseDown.bind(this));
-            this.element.addEventListener('touchstart', this.onTouchStart.bind(this));
-
-            document.addEventListener('mousemove', this.onMouseMove.bind(this));
-            document.addEventListener('touchmove', this.onTouchMove.bind(this));
-
-            document.addEventListener('mouseup', this.onMouseUp.bind(this));
-            document.addEventListener('touchend', this.onTouchEnd.bind(this));
-
-            this.currentElement = null;
-            this.offsetX = 0;
-            this.offsetY = 0;
-        }
-
-        onMouseDown(e) {
-            this.currentElement = this.element;
-            const rect = this.currentElement.getBoundingClientRect();
-            this.offsetX = e.clientX - rect.left;
-            this.offsetY = e.clientY - rect.top;
-            // this.currentElement.style.cursor = 'grabbing';
-            this.currentElement.style.cursor = 'url("ggrabbingcursor.png"), grabbing';
-        }
-
-        onMouseMove(e) {
-            if (this.currentElement) {
-                e.preventDefault();
-                const parentRect = this.parent.getBoundingClientRect();
-                this.currentElement.style.left = `${e.clientX - this.offsetX - parentRect.left}px`;
-                this.currentElement.style.top = `${e.clientY - this.offsetY - parentRect.top}px`;
-            }
-        }
-
-        onMouseUp() {
-            if (this.currentElement) {
-                // this.currentElement.style.cursor = 'grab';
-                this.currentElement.style.cursor = 'url("grabcursor.png"), grab';
-
-                this.currentElement = null;
-            }
-        }
-
-        onTouchStart(e) {
-            const touch = e.touches[0];
-            this.currentElement = this.element;
-            const rect = this.currentElement.getBoundingClientRect();
-            this.offsetX = touch.clientX - rect.left;
-            this.offsetY = touch.clientY - rect.top;
-        }
-
-        onTouchMove(e) {
-            if (this.currentElement) {
-                e.preventDefault();
-                const touch = e.touches[0];
-                const parentRect = this.parent.getBoundingClientRect();
-                this.currentElement.style.left = `${touch.clientX - this.offsetX - parentRect.left}px`;
-                this.currentElement.style.top = `${touch.clientY - this.offsetY - parentRect.top}px`;
-            }
-        }
-
-        onTouchEnd() {
-            this.currentElement = null;
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        const container = document.querySelector('.sticker-container');
-
-        function getPercentagePosition(element) {
-            const parentRect = container.getBoundingClientRect();
-            const rect = element.getBoundingClientRect();
-            const left = ((rect.left - parentRect.left) / parentRect.width) * 100;
-            const top = ((rect.top - parentRect.top) / parentRect.height) * 100;
-            return { left, top };
-        }
-
-        const stickers = [
-            { id: 'stickerBannerAd1', left: 85, top: 70 },
-            { id: 'stickerBannerAd2', left: 83, top: 84 },
-            { id: 'stickerBannerAd3', left: 70, top: 2 },
-            { id: 'stickerBannerAd4', left: 80, top: 88 },
-            { id: 'stickerBannerAd5', left: 77, top: 80 },
-            { id: 'stickerBannerAd6', left: 3, top: 71 },
-            { id: 'stickerBannerAd7', left: 5, top: 82 },
-            { id: 'stickerBannerAd8', left: 12, top: 66 },
-        ];
-
-        stickers.forEach(({ id, left, top }) => {
-            const sticker = document.getElementById(id);
-            if (sticker) {
-                console.log(`Initializing draggable for: ${id}`);
-                new Draggable(sticker, left, top);
-            } else {
-                console.error(`Sticker with id ${id} not found.`);
-            }
-        });
-    });
-</script>
-
-<!-- <script>
-    // Constants
-    const TOTAL_BLOCKS = 1300;
-    const TOTALCLUSTERS = 12600 + ~~(Math.random() * 4250);
-    const CLUSTERSPERBLOCK = ~~(TOTALCLUSTERS / TOTAL_BLOCKS);
-
-    // DOM
-    const modals = document.querySelectorAll('.testing.dialog, .reading.dialog, .analyzing.dialog, .finished.dialog');
-    const screens = document.querySelectorAll('.surface, .info');
-    const surface = document.querySelector('.surface');
-    const currentCluster = document.querySelector('.currentcluster');
-    const percent = document.querySelector('.percent');
-    const fill = document.querySelector('.fill');
-    const elapsedTime = document.querySelector('.elapsedtime');
-
-    // Block generator
-    const genBlock = () => {
-        const num = ~~(Math.random() * 500);
-
-        if (num < 1)
-            return 'bad';
-        if (num < 2)
-            return 'unmovable';
-        if (num < 175)
-            return 'used frag';
-        else
-            return 'unused';
+  <header class="site-shell site-shell--header">
+    <p class="eyebrow">Obsidian-Powered Journal</p>
+    <h1 class="page-title">Blogs</h1>
+    <p class="page-subtitle">Thoughts, process notes, and design experiments.</p>
+  </header>
+
+  <main class="site-shell">
+    <section id="posts-list" class="posts-grid" aria-live="polite"></section>
+  </main>
+
+  <script>
+    const postsList = document.getElementById('posts-list');
+
+    const formatDate = (rawDate) => {
+      const date = new Date(rawDate);
+      if (Number.isNaN(date.getTime())) return rawDate;
+      return new Intl.DateTimeFormat('en-GB', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      }).format(date);
     };
 
-    // Generate surface
-    for (let i = 0; i < TOTAL_BLOCKS; i++) {
-        const span = document.createElement('span');
-        span.className = `block ${genBlock()}`;
-        surface.appendChild(span);
-    }
+    const renderMessage = (message) => {
+      postsList.innerHTML = `<p class="status-message">${message}</p>`;
+    };
 
-    document.querySelector('.clustersperblock').textContent = CLUSTERSPERBLOCK.toLocaleString('en');
+    const renderPosts = (posts) => {
+      if (!Array.isArray(posts) || posts.length === 0) {
+        renderMessage('No posts yet.');
+        return;
+      }
 
-    // Time Counter
-    let time = 0;
-    const updateTime = () => {
-        elapsedTime.textContent = new Date(time * 1000).toISOString().substr(11, 8);
-        time++;
-    }
+      const sortedPosts = [...posts].sort((a, b) => new Date(b.date) - new Date(a.date));
 
-    // Ending phase
-    const endDefrag = () => {
-        modals[3].hidden = false;
-        clearInterval(timer);
-    }
+      const cards = sortedPosts.map((post) => {
+        const safeTags = Array.isArray(post.tags) ? post.tags : [];
+        const tagMarkup = safeTags.map((tag) => `<li class="tag-chip">${tag}</li>`).join('');
+        const postUrl = `blog.html?post=${encodeURIComponent(post.file)}`;
 
-    // Reading phase
-    const readBlock = () => {
-        currentCluster.textContent = CLUSTERSPERBLOCK * currentBlock;
-        if (blocks[currentBlock].classList.contains('frag')) {
-            console.log(currentBlock, 'fragment detected');
-            blocks[currentBlock].classList.remove('frag');
+        return `
+          <article class="post-card">
+            <p class="post-date">${formatDate(post.date)}</p>
+            <h2 class="post-title">
+              <a href="${postUrl}">${post.title}</a>
+            </h2>
+            <ul class="tag-list" aria-label="Tags">${tagMarkup}</ul>
+            <a class="post-link" href="${postUrl}">Read article</a>
+          </article>
+        `;
+      }).join('');
+
+      postsList.innerHTML = cards;
+    };
+
+    const loadPosts = async () => {
+      try {
+        const response = await fetch('./posts.json', { cache: 'no-store' });
+        if (!response.ok) {
+          throw new Error(`Failed to load posts.json (${response.status})`);
         }
-        else if (blocks[currentBlock].classList.contains('unused')) {
-            const fragments = document.querySelectorAll('.used.frag');
-            const p = ~~((currentBlock * 100) / totalBlocks);
-            percent.textContent = p;
-            fill.style.setProperty('width', `${p}%`);
-            if (fragments.length == 0) {
-                endDefrag();
-                return;
-            }
-            const num = ~~(Math.random() * fragments.length);
-            fragments[num].classList.remove('used', 'frag');
-            fragments[num].classList.add('unused', 'reading');
-            setTimeout(() => fragments[num].classList.remove('reading'), 200 + ~~(Math.random() * 800));
-            blocks[currentBlock].classList.remove('unused');
-            blocks[currentBlock].classList.add('used');
-        }
-        else
-            currentBlock++;
+        const posts = await response.json();
+        renderPosts(posts);
+      } catch (error) {
+        console.error(error);
+        renderMessage('Unable to load posts.');
+      }
+    };
 
-        setTimeout(readBlock, 50 + ~~(Math.random() * 50) + [0, 0, 0, 50, 200][~~(Math.random() * 5)]);
-    }
-
-    let currentBlock = 0;
-    const totalBlocks = document.querySelectorAll('.used.frag').length;
-    const blocks = document.querySelectorAll('.block');
-    const folders = document.querySelector('.folders');
-
-    const startDefrag = () => {
-        timer = setInterval(updateTime, 1000);
-        setTimeout(readBlock, 500);
-    }
-
-    const TAGS = ['GAMES', 'DOS', 'WINDOWS', 'AUTODESK', 'EMM386', 'PCSHELL',
-        'ZIP', 'RAR', 'PORN', 'COREL', 'WOLF3D', 'TRACKERS', 'WORM',
-        'NORTON', 'DOSHELL', 'INDY', 'MONKEY', 'SIMON', 'WORKS', '2DISK'];
-
-    const startDialogs = () => {
-        setTimeout(() => {
-            modals[0].hidden = true;
-            modals[1].hidden = false;
-        }, 3000);
-
-        setTimeout(() => {
-            modals[1].hidden = true;
-            modals[2].hidden = false;
-            extractTags(TAGS);
-        }, 5000);
-
-        setTimeout(() => {
-            modals[2].hidden = true;
-            screens[0].classList.remove('off');
-            screens[1].classList.remove('off');
-            startDefrag();
-        }, 7000);
-    }
-
-    const extractTags = tags => {
-        if (tags.length > 0)
-            setTimeout(() => {
-                folders.textContent = tags.shift();
-                extractTags(tags);
-            }, 100);
-    }
-
-    startDialogs();
-
-    document.addEventListener('keydown', function (event) {
-        if ((event.altKey) || (event.code == 'F10'))
-            location.href = '#';
-    });
-</script> -->
+    loadPosts();
+  </script>
+</body>
 
 </html>

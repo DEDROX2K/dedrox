@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog Article</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+
+<body>
+  <header class="site-shell site-shell--header article-header">
+    <a class="back-link" href="./index.html">← Back to all posts</a>
+  </header>
+
+  <main class="blog-content" id="blog-content" aria-live="polite"></main>
+
+  <script>
+    const contentEl = document.getElementById('blog-content');
+
+    const renderError = (message) => {
+      contentEl.innerHTML = `<p class="status-message">${message}</p>`;
+    };
+
+    const getPostFilename = () => {
+      const params = new URLSearchParams(window.location.search);
+      const post = params.get('post');
+      if (!post) return null;
+
+      const isValidPattern = /^[a-zA-Z0-9._-]+\.md$/.test(post);
+      const hasTraversal = post.includes('..') || post.includes('/') || post.includes('\\');
+
+      if (!isValidPattern || hasTraversal) return null;
+      return post;
+    };
+
+    const loadPost = async () => {
+      const fileName = getPostFilename();
+
+      if (!fileName) {
+        renderError('Missing or invalid post parameter.');
+        return;
+      }
+
+      try {
+        const response = await fetch(`./posts/${fileName}`, { cache: 'no-store' });
+        if (response.status === 404) {
+          renderError('Post not found.');
+          return;
+        }
+        if (!response.ok) {
+          throw new Error(`Failed to load post (${response.status})`);
+        }
+
+        const markdown = await response.text();
+        const parsedHtml = marked.parse(markdown);
+        contentEl.innerHTML = parsedHtml;
+
+        const heading = contentEl.querySelector('h1, h2');
+        if (heading) {
+          document.title = `${heading.textContent} | Blog`;
+        }
+      } catch (error) {
+        console.error(error);
+        renderError('Unable to load this article right now.');
+      }
+    };
+
+    loadPost();
+  </script>
+</body>
+
+</html>
