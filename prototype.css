@@ -129,6 +129,7 @@ body {
     overflow: hidden;
     font-family: 'Google Sans', sans-serif;
     font-weight: 400;
+    transition: background-color 0.45s var(--ease-lux), color 0.45s var(--ease-lux);
 }
 
 /* -------------------------- */
@@ -351,6 +352,39 @@ body.cursor-system :where([data-cursor='default']) {
     gap: 2px;
     position: relative;
     box-shadow: inset 0px 4px 3px 0px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.45s var(--ease-lux), box-shadow 0.45s var(--ease-lux);
+}
+
+/* Collapsed landing state: dark mode */
+body:not(.device-expanded):not(.reader-mode) {
+    background: #0e0e0f;
+    color: #ededed;
+}
+
+body:not(.device-expanded):not(.reader-mode) .top-bar-pill {
+    background: #1b1b1d;
+    box-shadow: inset 0px 2px 5px 0px rgba(255, 255, 255, 0.07), 0 10px 22px rgba(0, 0, 0, 0.45);
+}
+
+body:not(.device-expanded):not(.reader-mode) .pill-plain-circle,
+body:not(.device-expanded):not(.reader-mode) #pill-circle2,
+body:not(.device-expanded):not(.reader-mode) #pill-circle3,
+body:not(.device-expanded):not(.reader-mode) .pill-square {
+    background: #2a2a2d;
+}
+
+body:not(.device-expanded):not(.reader-mode) .pill-dark-block {
+    background: #38383c;
+}
+
+body:not(.device-expanded):not(.reader-mode) .pill-greeting .greeting-overline,
+body:not(.device-expanded):not(.reader-mode) .pill-greeting .greeting-subline,
+body:not(.device-expanded):not(.reader-mode) .pill-greeting .greeting-side {
+    color: rgba(238, 238, 240, 0.9);
+}
+
+body:not(.device-expanded):not(.reader-mode) .pill-greeting .greeting-display {
+    color: #f6f6f7;
 }
 
 /* --- Greeting Text Above Pill --- */
