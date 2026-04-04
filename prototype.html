@@ -40,14 +40,9 @@
 <body>
 
     <!-- 4 Second Startup Overlay Removed per request -->
-    <!-- ASCII Animated Background Container -->
-    <div id="ascii-bg" class="ascii-bg" aria-hidden="true">
-        <canvas id="canvas-bg"></canvas>
-    </div>
+    <!-- 4 Second Startup Overlay Removed per request -->
 
     <div id="portfolio-device" class="device-container">
-        <!-- Mini Matrix Canvas -->
-        <canvas id="mini-matrix" class="mini-matrix-bg"></canvas>
 
         <div class="content-mask top"></div>
         <div class="content-mask bottom"></div>
@@ -57,16 +52,14 @@
 
             <div class="top-bar-pill">
                 <div class="pill-greeting">
-                    <p class="greeting-overline">PRESENTING</p>
-                    <p class="greeting-subline">BEAUTIFUL AND DEVIOUS</p>
+                    <p class="greeting-overline"></p>
+                    <p class="greeting-subline"></p>
                     <h2 class="greeting-display" aria-label="Monster of the nightmare comes">
                         <span>WELCOME</span>
                         <span>TO MY</span>
                         <span>PORTFOLIO</span>
                         <span>SITE</span>
                     </h2>
-                    <p class="greeting-side greeting-side-left">TYPOGRAPHY<br>/245</p>
-                    <p class="greeting-side greeting-side-right">TYPOGRAPHY<br>/245</p>
                 </div>
                 <div class="pill-left">
                     <!-- <div class="pill-bar"></div> -->
@@ -98,117 +91,125 @@
 
 
         <div class="site-content" id="scrollable-content">
-            <div id="reader-inline" class="reader-inline" aria-hidden="true">
-                <section class="reader-blog-section">
-                    <div id="reader-blog-list" class="reader-blog-list" aria-live="polite">
-                        <p class="reader-blog-status">Loading blog posts...</p>
+            <div class="content-block-white top-block">
+                <div id="reader-inline" class="reader-inline" aria-hidden="true">
+                    <section class="reader-blog-section">
+                        <div id="reader-blog-list" class="reader-blog-list" aria-live="polite">
+                            <p class="reader-blog-status">Loading blog posts...</p>
+                        </div>
+                    </section>
+                </div>
+
+                <section class="hero-clean reveal delay-1">
+                    <h1 class="hero-clean-title">
+                        <div class="hero-title-line"><span class="hero-title-text">Raghav.</span></div>
+                        <div class="hero-title-line hero-title-line-rotating"><span
+                                class="hero-title-text hero-title-rotating-text" id="hero-language-line">ராகவ்</span>
+                        </div>
+                    </h1>
+                    <p class="hero-clean-subtitle">
+                        Mid level <strong>Digital product designer</strong> based in London with a background in jnr
+                        dev.
+                        Building a bookmark management tool called Airpaste.
+                    </p>
+                    <div class="hero-clean-actions">
+                        <a href="https://www.linkedin.com/in/raghav-prasanna-b530621b0/" target="_blank"
+                            class="btn-primary" data-cursor="link">
+                            Linked-in <img src="images/Vector/linkedin-svgrepo-com.svg" alt="" class="linkedin-icon"
+                                aria-hidden="true">
+                        </a>
+                        <a href="#" class="btn-secondary" id="show-id-btn" data-cursor="link">
+                            Show ID <img src="iconset/Badge.png" alt="" class="show-id-icon" aria-hidden="true">
+                        </a>
                     </div>
+                </section>
+
+                <section class="hero-model reveal delay-2" aria-label="3D Interactive character model">
+                    <model-viewer data-cursor="grab" src="threeD/me.glb" alt="3D character of Raghav" auto-rotate
+                        camera-controls interaction-prompt="none" disable-zoom rotation-per-second="40deg"
+                        shadow-intensity="1" min-camera-orbit="auto auto 3.5m" max-camera-orbit="auto auto 3.5m"
+                        environment-image="neutral" tabindex="0">
+                        <div class="model-fallback" slot="poster">Loading my 3D model...</div>
+                    </model-viewer>
+                </section>
+
+                <section class="company-dock-section reveal delay-2" aria-label="Companies worked with">
+                    <p class="dock-kicker">Companies I've worked with</p>
+                    <div class="company-dock" id="company-dock"></div>
                 </section>
             </div>
 
-            <section class="hero-clean reveal delay-1">
-                <h1 class="hero-clean-title">
-                    <div class="hero-title-line"><span class="hero-title-text">Raghav.</span></div>
-                    <div class="hero-title-line hero-title-line-rotating"><span
-                            class="hero-title-text hero-title-rotating-text" id="hero-language-line">ராகவ்</span></div>
-                </h1>
-                <p class="hero-clean-subtitle">
-                    Mid level <strong>Digital product designer</strong> based in London with a background in jnr dev.
-                    Building a bookmark management tool called Airpaste.
-                </p>
-                <div class="hero-clean-actions">
-                    <a href="https://www.linkedin.com/in/raghav-prasanna-b530621b0/" target="_blank" class="btn-primary"
-                        data-cursor="link">
-                        Linked-in <img src="images/Vector/linkedin-svgrepo-com.svg" alt="" class="linkedin-icon"
-                            aria-hidden="true">
-                    </a>
-                    <a href="#" class="btn-secondary" id="show-id-btn" data-cursor="link">
-                        Show ID <img src="iconset/Badge.png" alt="" class="show-id-icon" aria-hidden="true">
-                    </a>
-                </div>
-            </section>
+            <!-- ==========================================
+                 🪪 IDENTITY STATUS CARD
+                 ========================================== -->
 
-            <section class="hero-model reveal delay-2" aria-label="3D Interactive character model">
-                <model-viewer data-cursor="grab" src="threeD/me.glb" alt="3D character of Raghav" auto-rotate
-                    camera-controls interaction-prompt="none" disable-zoom rotation-per-second="40deg"
-                    shadow-intensity="1" min-camera-orbit="auto auto 3.5m" max-camera-orbit="auto auto 3.5m"
-                    environment-image="neutral" tabindex="0">
-                    <div class="model-fallback" slot="poster">Loading my 3D model...</div>
-                </model-viewer>
-            </section>
+            <section class="isolated-section" aria-label="Isolated content block">
+                <div class="isolated-card">
+                    <h3 class="mini-editorial-title">Raghav Prasanna &copy;</h3>
+                    <p class="mini-editorial-copy" style="padding: 0px 10px; font-size: 19px;">
+                        Systems thinker based in Newcastle/London, working on XR, Python, AI and UX. Working as a
+                        <strong>product
+                            development assistant in AIRCARDS.</strong>
+                        <br>
+                        <br>
+                        Background includes AR-Depth experiences, interactive installations, large-scale touch
+                        interfaces, and data platforms, with a strong focus on research, experimentation, and iterative
+                        design.
+                        Comfortable operating in remote and fast-moving environments, bridging the gap between design,
+                        technology, and product development.
+                    </p>
 
-            <section class="company-dock-section reveal delay-2" aria-label="Companies worked with">
-                <p class="dock-kicker">Companies I've worked with</p>
-                <div class="company-dock" id="company-dock"></div>
-            </section>
-
-
-
-            <section class="mini-editorial-section reveal delay-2" aria-label="Profile snapshot">
-                <h3 class="mini-editorial-title">Raghav Prasanna &copy;</h3>
-
-                <div class="mini-editorial-pills mini-editorial-pills-primary" style="padding: 10px 10px;">
-                    <a href="#" class="mini-pill mini-pill-highlight" id="email-pill-btn" data-cursor="link">Email
-                        <span class="pill-tooltip" id="email-pill-tooltip">Copy email address</span>
-                    </a>
-                    <a href="https://drive.google.com/file/d/1fr2YmRnY8EZXXE1qrLNsNi8FGXbhD9Sw/view?usp=sharing"
-                        target="_blank" rel="noopener noreferrer" class="mini-pill mini-pill-highlight"
-                        data-cursor="link">Resume</a>
-                </div>
-
-                <!-- <div class="mini-editorial-pills">
+                    <!-- <div class="mini-editorial-pills">
                     <span class="mini-pill">Packaging</span>
                     <span class="mini-pill">Logos</span>
                     <span class="mini-pill">Interfaces</span>
                     <span class="mini-pill">Print</span>
                     <span class="mini-pill">AR / XR</span>
                 </div> -->
-
-                <p class="mini-editorial-copy" style="padding: 0px 10px; font-size: 19px;">
-                    Systems thinker based in Newcastle/London, working on XR, Python, AI and UX. Working as a
-                    <strong>product
-                        development assistant in AIRCARDS.</strong>
                     <br>
-                    <br>
-                    Background includes AR-Depth experiences, interactive installations, large-scale touch
-                    interfaces, and data platforms, with a strong focus on research, experimentation, and iterative
-                    design.
-                    Comfortable operating in remote and fast-moving environments, bridging the gap between design,
-                    technology, and product development.
-                </p>
-                <br>
 
 
-                <!-- <h4 class="mini-editorial-projects">Selected Projects</h4> -->
+                    <!-- <h4 class="mini-editorial-projects">Selected Projects</h4> -->
 
-                <article class="mini-project-row" aria-label="Selected project 017" style="padding: 0px 10px;">
-                    <!-- <div class="mini-project-id">017</div> -->
+                    <article class="mini-project-row" aria-label="Selected project 017" style="padding: 0px 10px;">
 
-                    <div class="mini-project-grid">
-                        <div class="mini-project-item">
-                            <div class="mini-project-label">Looking for</div>
-                            <div class="mini-project-value">
-                                <span class="mini-role-pill mini-role-pill-blue">Remote</span>
-                                <span class="mini-role-pill mini-role-pill-green">Hybrid</span>
+                        <div class="mini-project-grid">
+                            <div class="mini-project-item">
+                                <div class="mini-project-label">Looking for</div>
+                                <div class="mini-project-value">
+                                    <span class="mini-role-pill mini-role-pill-blue">Remote</span>
+                                    <span class="mini-role-pill mini-role-pill-green">Hybrid</span>
+                                </div>
+                            </div>
+
+                            <div class="mini-project-item">
+                                <div class="mini-project-label">Location</div>
+                                <div class="mini-project-value">United Kingdom</div>
+                            </div>
+                            <div class="mini-project-item">
+                                <div class="mini-project-label">Skills</div>
+                                <div class="mini-project-value">Creative technologist | Product development assistant
+                                </div>
                             </div>
                         </div>
+                        <br>
 
-                        <div class="mini-project-item">
-                            <div class="mini-project-label">Location</div>
-                            <div class="mini-project-value">United Kingdom</div>
-                        </div>
-                        <div class="mini-project-item">
-                            <div class="mini-project-label">Skills</div>
-                            <div class="mini-project-value">Creative technologist | Product development assistant</div>
-                        </div>
-                    </div>
-                    <br>
-
-                </article>
-
+                    </article>
+                </div>
             </section>
 
-            <!-- <section class="node-system-section reveal delay-2" aria-label="Data Grid System">
+            <section class="isolated-section" aria-label="Isolated status bar">
+
+                <div class="id-status-bar">
+                    <span class="id-day-badge" id="idDayBadge">THU</span>
+                    <span class="id-location">GB - Newcastle upon Tyne</span>
+                    <span class="id-time" id="idTimeBadge">--:--</span>
+                </div>
+            </section>
+
+
+            <div class="content-block-white bottom-block">
+                <!-- <section class="node-system-section reveal delay-2" aria-label="Data Grid System">
                 <div class="node-system-badge">Introspective Section: "At my core"</div>
                 <div class="node-graph-container" id="node-graph-container">
                     <svg class="node-edges" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"></svg>
@@ -317,78 +318,90 @@
                 </div>
             </section> -->
 
-            <section class="portfolio-section" aria-label="Portfolio case studies">
-                <header class="portfolio-section-header reveal delay-2">
-                    <h2 class="portfolio-section-title">Portfolio case studies
-                        <!-- <span>(Click on the tiles below)</span> -->
-                    </h2>
-                </header>
-                <section class="case-studies reveal delay-2">
-                    <a href="#" target="_blank" class="featured-card">
-                        <div class="folder-top">
-                            <img src="images/port4.jpg" alt="AIRPASTE">
-                        </div>
-                        <div class="folder-body">
-                            <div class="folder-head">
-                                <div>
-                                    <h3>AIRPASTE</h3>
-                                    <p>Interactive bookmark tool which me and few others made for the community</p>
-                                </div>
-                                <span class="folder-menu" aria-hidden="true">2026</span>
-                            </div>
-                            <p class="folder-foot">Open source project</p>
-                        </div>
-                    </a>
 
-                    <a href="Case1.html" class="featured-card" data-case="case1">
-                        <div class="folder-top">
-                            <img src="images/port1.jpg" alt="Clear Breath App">
-                        </div>
-                        <div class="folder-body">
-                            <div class="folder-head">
-                                <div>
-                                    <h3>Clear Breath CBT</h3>
-                                    <p>App with behavioral therapy for people with cigarette addiction</p>
-                                </div>
-                                <span class="folder-menu" aria-hidden="true">2024</span>
-                            </div>
-                            <p class="folder-foot">UX case study</p>
-                        </div>
-                    </a>
 
-                    <a href="case3.html" class="featured-card" data-case="case3">
-                        <div class="folder-top">
-                            <img src="images/port2.jpg" alt="Air Buddy Navigation">
-                        </div>
-                        <div class="folder-body">
-                            <div class="folder-head">
-                                <div>
-                                    <h3>Quick Work in progress showcase</h3>
-                                    <p>This is how I would work with a client from day one</p>
-                                </div>
-                                <span class="folder-menu" aria-hidden="true">2025</span>
-                            </div>
-                            <p class="folder-foot">Open case study</p>
-                        </div>
-                    </a>
 
-                    <a href="Case2.html" class="featured-card" data-case="case2">
-                        <div class="folder-top">
-                            <img src="images/port3.jpg" alt="Research Process">
-                        </div>
-                        <div class="folder-body">
-                            <div class="folder-head">
-                                <div>
-                                    <h3>AR navigation app</h3>
-                                    <p>Made specifically for heathrow airport!!!</p>
-                                </div>
-                                <span class="folder-menu" aria-hidden="true">2023</span>
-                            </div>
-                            <p class="folder-foot">Open case study</p>
-                        </div>
-                    </a>
+                <!-- <section class="isolated-section" aria-label="Isolated content block">
+                <div class="isolated-card">
+                
+                
+                </div>
+            </section> -->
 
-                    <!-- <div class="indie-tool-promo" style="text-align: left; margin-top: 40px;">
+
+
+                <section class="portfolio-section" aria-label="Portfolio case studies">
+                    <header class="portfolio-section-header reveal delay-2">
+                        <h2 class="portfolio-section-title">Portfolio case studies
+                            <!-- <span>(Click on the tiles below)</span> -->
+                        </h2>
+                    </header>
+                    <section class="case-studies reveal delay-2">
+                        <a href="#" target="_blank" class="featured-card">
+                            <div class="folder-top">
+                                <img src="images/port4.jpg" alt="AIRPASTE">
+                            </div>
+                            <div class="folder-body">
+                                <div class="folder-head">
+                                    <div>
+                                        <h3>AIRPASTE</h3>
+                                        <p>Interactive bookmark tool which me and few others made for the community</p>
+                                    </div>
+                                    <span class="folder-menu" aria-hidden="true">2026</span>
+                                </div>
+                                <p class="folder-foot">Open source project</p>
+                            </div>
+                        </a>
+
+                        <a href="Case1.html" class="featured-card" data-case="case1">
+                            <div class="folder-top">
+                                <img src="images/port1.jpg" alt="Clear Breath App">
+                            </div>
+                            <div class="folder-body">
+                                <div class="folder-head">
+                                    <div>
+                                        <h3>Clear Breath CBT</h3>
+                                        <p>App with behavioral therapy for people with cigarette addiction</p>
+                                    </div>
+                                    <span class="folder-menu" aria-hidden="true">2024</span>
+                                </div>
+                                <p class="folder-foot">UX case study</p>
+                            </div>
+                        </a>
+
+                        <a href="case3.html" class="featured-card" data-case="case3">
+                            <div class="folder-top">
+                                <img src="images/port2.jpg" alt="Air Buddy Navigation">
+                            </div>
+                            <div class="folder-body">
+                                <div class="folder-head">
+                                    <div>
+                                        <h3>Quick Work in progress showcase</h3>
+                                        <p>This is how I would work with a client from day one</p>
+                                    </div>
+                                    <span class="folder-menu" aria-hidden="true">2025</span>
+                                </div>
+                                <p class="folder-foot">Open case study</p>
+                            </div>
+                        </a>
+
+                        <a href="Case2.html" class="featured-card" data-case="case2">
+                            <div class="folder-top">
+                                <img src="images/port3.jpg" alt="Research Process">
+                            </div>
+                            <div class="folder-body">
+                                <div class="folder-head">
+                                    <div>
+                                        <h3>AR navigation app</h3>
+                                        <p>Made specifically for heathrow airport!!!</p>
+                                    </div>
+                                    <span class="folder-menu" aria-hidden="true">2023</span>
+                                </div>
+                                <p class="folder-foot">Open case study</p>
+                            </div>
+                        </a>
+
+                        <!-- <div class="indie-tool-promo" style="text-align: left; margin-top: 40px;">
                         <a href="#" class="indie-tool-btn"
                             style="display: inline-block; transition: transform 0.3s ease; text-decoration: none;">
                             <img src="images/Line1.png" alt="Indie Project Management Tool"
@@ -400,14 +413,20 @@
                             team.
                         </p>
                     </div> -->
-                    <!-- <div class="arrow-marquee"></div> -->
+                        <!-- <div class="arrow-marquee"></div> -->
 
+                    </section>
+
+                    <div class="bottom-bar"></div>
                 </section>
 
-                <div class="bottom-bar"></div>
-            </section>
 
-            <!-- <section class="portfolio-more reveal delay-3">
+                <section class="isolated-section" aria-label="Isolated content block">
+                    <div class="isolated-card">
+                        here 3d career timeline
+                    </div>
+                </section>
+                <!-- <section class="portfolio-more reveal delay-3">
                 <h2 class="more-title">More Projects</h2>
                 <div class="more-projects-grid">
                     <a href="#" target="_blank" class="more-project-item">
@@ -455,88 +474,88 @@
 
 
 
-            <section class="pixel-section reveal delay-4">
-                <h2 class="pixel-title">Draw Pixel Art</h2>
-                <div class="pixel-tools" id="pixel-palette"></div>
-                <div class="pixel-canvas-wrap">
-                    <canvas id="pixel-canvas" width="40" height="40" aria-label="Pixel drawing canvas"></canvas>
-                </div>
-            </section>
-            <section class="mini-site-actions reveal delay-4" aria-label="Site actions">
-                <a href="index.html" class="mini-site-action-btn mini-site-action-exit" data-cursor="link">
-                    <img src="images/Exit.png" alt="Exit" style="border: 4px solid rgb(255, 254, 230);">
-                </a>
-                <a class="mini-site-action-btn mini-site-action-resume"
-                    href="https://drive.google.com/file/d/1fr2YmRnY8EZXXE1qrLNsNi8FGXbhD9Sw/view?usp=sharing"
-                    target="_blank" rel="noopener noreferrer" data-cursor="link">
-                    <img src="images/Resume.png" alt="Resume" style="border: 4px solid rgb(255, 254, 230);">
-                </a>
-            </section>
-
-            <section class="index-footer reveal delay-5">
-                <!-- Squares generated by JS -->
-                <!-- <div class="index-grid-wrap" id="index-grid">
-                </div> -->
-                <section class="brand-section">
-                    <a href="https://www.behance.net/raghavprasanna" target="_blank" class="brand-block"
-                        style="background: #9FD2E3; color: #111;">
-                        <span class="brand-text">BEHANCE</span>
+                <section class="pixel-section reveal delay-4">
+                    <h2 class="pixel-title">Draw Pixel Art</h2>
+                    <div class="pixel-tools" id="pixel-palette"></div>
+                    <div class="pixel-canvas-wrap">
+                        <canvas id="pixel-canvas" width="40" height="40" aria-label="Pixel drawing canvas"></canvas>
+                    </div>
+                </section>
+                <section class="mini-site-actions reveal delay-4" aria-label="Site actions">
+                    <a href="index.html" class="mini-site-action-btn mini-site-action-exit" data-cursor="link">
+                        <img src="images/Exit.png" alt="Exit" style="border: 4px solid rgb(255, 254, 230);">
                     </a>
-                    <a href="https://www.artstation.com/raghavprasanna" target="_blank" class="brand-block"
-                        style="background: #D4A879; color: #111;">
-                        <span class="brand-text">ARTSTATION</span>
-                    </a>
-                    <a href="https://www.instagram.com/dedrox__/?hl=en" target="_blank" class="brand-block"
-                        style="background: #F6B8C3; color: #111;">
-                        <span class="brand-text">INSTAGRAM</span>
-                    </a>
-                    <a href="https://medium.com/@RaghavPrasannaUX" target="_blank" class="brand-block"
-                        style="background: #EF7800; color: #111;">
-                        <span class="brand-text">MEDIUM</span>
-                    </a>
-                    <a href="https://www.youtube.com/@dedrox3d491/videos" target="_blank" class="brand-block"
-                        style="background: #FFDF01; color: #111;">
-                        <span class="brand-text">YOUTUBE</span>
-                    </a>
-                    <a href="https://codepen.io/Raghav-Prasanna-Lakshminarayanan" target="_blank" class="brand-block"
-                        style="background: #A1D2E0; color: #111;">
-                        <span class="brand-text">CODEPEN</span>
-                    </a>
-                    <a href="https://dribbble.com/DEDROX2K" target="_blank" class="brand-block"
-                        style="background: #7EBE82; color: #111;">
-                        <span class="brand-text">DRIBBBLE</span>
-                    </a>
-                    <a href="https://letterboxd.com/dedrox/films/reviews/" target="_blank" class="brand-block"
-                        style="background: #D4A879; color: #111;">
-                        <span class="brand-text">LETTERBOXD</span>
-                    </a>
-                    <a href="https://www.instagram.com/raghavprasanna_photography/?hl=en" target="_blank"
-                        class="brand-block" style="background: #F3DFBF; color: #111;">
-                        <span class="brand-text">PHOTOGRAPHY</span>
-                    </a>
-                    <a href="https://sketchfab.com/Raghavprasanna" target="_blank" class="brand-block"
-                        style="background: #5577A1; color: #111;">
-                        <span class="brand-text">SKETCHFAB</span>
+                    <a class="mini-site-action-btn mini-site-action-resume"
+                        href="https://drive.google.com/file/d/1fr2YmRnY8EZXXE1qrLNsNi8FGXbhD9Sw/view?usp=sharing"
+                        target="_blank" rel="noopener noreferrer" data-cursor="link">
+                        <img src="images/Resume.png" alt="Resume" style="border: 4px solid rgb(255, 254, 230);">
                     </a>
                 </section>
 
+                <section class="index-footer reveal delay-5">
+                    <!-- Squares generated by JS -->
+                    <!-- <div class="index-grid-wrap" id="index-grid">
+                </div> -->
+                    <section class="brand-section">
+                        <a href="https://www.behance.net/raghavprasanna" target="_blank" class="brand-block"
+                            style="background: #9FD2E3; color: #111;">
+                            <span class="brand-text">BEHANCE</span>
+                        </a>
+                        <a href="https://www.artstation.com/raghavprasanna" target="_blank" class="brand-block"
+                            style="background: #D4A879; color: #111;">
+                            <span class="brand-text">ARTSTATION</span>
+                        </a>
+                        <a href="https://www.instagram.com/dedrox__/?hl=en" target="_blank" class="brand-block"
+                            style="background: #F6B8C3; color: #111;">
+                            <span class="brand-text">INSTAGRAM</span>
+                        </a>
+                        <a href="https://medium.com/@RaghavPrasannaUX" target="_blank" class="brand-block"
+                            style="background: #EF7800; color: #111;">
+                            <span class="brand-text">MEDIUM</span>
+                        </a>
+                        <a href="https://www.youtube.com/@dedrox3d491/videos" target="_blank" class="brand-block"
+                            style="background: #FFDF01; color: #111;">
+                            <span class="brand-text">YOUTUBE</span>
+                        </a>
+                        <a href="https://codepen.io/Raghav-Prasanna-Lakshminarayanan" target="_blank"
+                            class="brand-block" style="background: #A1D2E0; color: #111;">
+                            <span class="brand-text">CODEPEN</span>
+                        </a>
+                        <a href="https://dribbble.com/DEDROX2K" target="_blank" class="brand-block"
+                            style="background: #7EBE82; color: #111;">
+                            <span class="brand-text">DRIBBBLE</span>
+                        </a>
+                        <a href="https://letterboxd.com/dedrox/films/reviews/" target="_blank" class="brand-block"
+                            style="background: #D4A879; color: #111;">
+                            <span class="brand-text">LETTERBOXD</span>
+                        </a>
+                        <a href="https://www.instagram.com/raghavprasanna_photography/?hl=en" target="_blank"
+                            class="brand-block" style="background: #F3DFBF; color: #111;">
+                            <span class="brand-text">PHOTOGRAPHY</span>
+                        </a>
+                        <a href="https://sketchfab.com/Raghavprasanna" target="_blank" class="brand-block"
+                            style="background: #5577A1; color: #111;">
+                            <span class="brand-text">SKETCHFAB</span>
+                        </a>
+                    </section>
 
-                <div class="index-main">
-                    <h2 class="index-title">See me in action!</h2>
-                    <div class="index-right">
-                        <p class="index-desc">
-                            Measurable, actionable, and scalable, the real
-                            challenge—and often the hardest part—is achieving effective teamwork.
-                        </p>
-                        <p class="index-desc">
-                            Let's go beyond words
-                            and talk. I’d love to be your problem-solving partner.<br>
-                            <a href="#" class="index-contact-link">Call me <span>&rarr;</span></a>
-                        </p>
+
+                    <div class="index-main">
+                        <h2 class="index-title">See me in action!</h2>
+                        <div class="index-right">
+                            <p class="index-desc">
+                                Measurable, actionable, and scalable, the real
+                                challenge—and often the hardest part—is achieving effective teamwork.
+                            </p>
+                            <p class="index-desc">
+                                Let's go beyond words
+                                and talk. I’d love to be your problem-solving partner.<br>
+                                <a href="#" class="index-contact-link">Call me <span>&rarr;</span></a>
+                            </p>
+                        </div>
                     </div>
-                </div>
 
-                <!-- <div class="index-partners">
+                    <!-- <div class="index-partners">
                     <span class="partners-label">I'm also known for</span>
                     <span class="partner-logo">Spatial</span>
                     <span class="partner-logo">Gamification </span>
@@ -545,25 +564,26 @@
                 </div> -->
 
 
-                <div class="index-bottom">
-                    <span>&copy; 2026 DEDROX. All rights reserved.</span>
-                    <a href="#">Privacy Policy</a>
-                </div>
+                    <div class="index-bottom">
+                        <span>&copy; 2026 DEDROX. All rights reserved.</span>
+                        <a href="#">Privacy Policy</a>
+                    </div>
 
-                <div class="ask-ai-footer">
-                    <a href="https://chatgpt.com/?q=Tell+me+about+DEDROX+and+what+they+do.+They+build+UX+design+and+digital+product+experiences.+What+services+do+they+offer%3F"
-                        target="_blank" rel="noopener noreferrer" class="ask-ai-btn" data-cursor="link">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="1.8" aria-hidden="true">
-                            <circle cx="12" cy="12" r="10" />
-                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
-                            <line x1="12" y1="17" x2="12.01" y2="17" />
-                        </svg>
-                        Ask ChatGPT about us
-                    </a>
-                    <p class="ask-ai-tagline">Where UX meets AI</p>
-                </div>
-            </section>
+                    <div class="ask-ai-footer">
+                        <a href="https://chatgpt.com/?q=Tell+me+about+DEDROX+and+what+they+do.+They+build+UX+design+and+digital+product+experiences.+What+services+do+they+offer%3F"
+                            target="_blank" rel="noopener noreferrer" class="ask-ai-btn" data-cursor="link">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.8" aria-hidden="true">
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                                <line x1="12" y1="17" x2="12.01" y2="17" />
+                            </svg>
+                            Ask ChatGPT about us
+                        </a>
+                        <p class="ask-ai-tagline">Where UX meets AI</p>
+                    </div>
+                </section>
+            </div>
 
 
         </div> <!-- End site-content -->
@@ -669,6 +689,7 @@
                 <img src="images/showid.png" alt="Traveler ID card">
             </button>
         </div>
+
     </div>
     <!-- Custom Device Bottom Blur Styles -->
     <style>
@@ -705,6 +726,46 @@
         }
     </style>
 
+    <script>
+        // ---- Live clock + day badge for identity card ----
+        (function () {
+            const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const timeBadge = document.getElementById('idTimeBadge');
+            const dayBadge = document.getElementById('idDayBadge');
+            if (!timeBadge || !dayBadge) return;
+
+            function tick() {
+                // Use UK (Europe/London) time
+                const now = new Date();
+                const opts = { timeZone: 'Europe/London', hour: '2-digit', minute: '2-digit', hour12: false };
+                const dayOpts = { timeZone: 'Europe/London', weekday: 'short' };
+                timeBadge.textContent = now.toLocaleTimeString('en-GB', opts);
+                dayBadge.textContent = now.toLocaleDateString('en-GB', dayOpts).toUpperCase();
+            }
+            tick();
+            setInterval(tick, 10000); // refresh every 10s
+        })();
+
+        // ---- Scroll Entrance Animations for Isolated Sections ----
+        document.addEventListener("DOMContentLoaded", () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Add class to trigger CSS animation
+                        entry.target.classList.add('is-revealed');
+                        // Stop observing once animated
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                root: document.getElementById('scrollable-content'), // Observe within the scrollable div
+                threshold: 0.05, // Trigger as soon as 5% is visible
+                rootMargin: '0px 0px -20px 0px'
+            });
+
+            document.querySelectorAll('.isolated-section').forEach(sec => observer.observe(sec));
+        });
+    </script>
     <script src="prototype.js" defer></script>
 </body>
 

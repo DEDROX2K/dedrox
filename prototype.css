@@ -297,8 +297,8 @@ body.cursor-system :where([data-cursor='default']) {
 .device-container.expanded {
     width: min(96vw, var(--device-width));
     height: min(var(--device-expanded-height), var(--device-expanded-max-height));
-    background: var(--panel);
-    box-shadow: 14px 17px 20px 0px rgba(0, 0, 0, 0.1);
+    background: transparent;
+    /* box-shadow: 14px 17px 20px 0px rgba(0, 0, 0, 0.1); */
     border-radius: var(--site-radius);
     overflow: hidden;
     /* Restored to clip children preventing border radius bugs */
@@ -338,6 +338,7 @@ body.cursor-system :where([data-cursor='default']) {
 .device-container.expanded .top-bar {
     transform: translateY(0);
     border-radius: var(--site-radius) var(--site-radius) 0 0;
+    background: var(--panel);
 }
 
 .top-bar-pill {
@@ -351,7 +352,7 @@ body.cursor-system :where([data-cursor='default']) {
     padding: 4px;
     gap: 2px;
     position: relative;
-    box-shadow: inset 0px 4px 3px 0px rgba(0, 0, 0, 0.1);
+    /* box-shadow: inset 0px 4px 3px 0px rgba(0, 0, 0, 0.1); */
     transition: background-color 0.45s var(--ease-lux), box-shadow 0.45s var(--ease-lux);
 }
 
@@ -1185,7 +1186,7 @@ body.device-maximized .expand-fab .icon-expand {
     position: absolute;
     left: 0;
     right: 0;
-    height: 80px;
+    height: 100px;
     z-index: 5;
     /* Above content, below navigation if needed */
     pointer-events: none;
@@ -1682,8 +1683,7 @@ body.device-transitioning .device-container.expanded #pill-third-btn {
 
 .company-dock-section {
     margin-bottom: var(--section-gap-lg);
-    padding: 40px 0;
-
+    /* padding: 40px 0; */
 }
 
 .arrow-marquee {
@@ -1951,6 +1951,7 @@ body.device-transitioning .device-container.expanded #pill-third-btn {
 }
 
 .mini-editorial-title {
+    padding: 20px 0px 0px 10px;
     margin: 0 0 14px;
     font-size: clamp(1.85rem, 4.6vw, 3rem);
     font-weight: 500;
@@ -2105,7 +2106,7 @@ body.device-transitioning .device-container.expanded #pill-third-btn {
     margin-left: calc(var(--site-padding-x) * -1);
     margin-right: calc(var(--site-padding-x) * -1);
     margin-bottom: var(--section-gap-lg);
-    padding: clamp(20px, 3vw, 32px) calc(var(--site-padding-x) + 12px) clamp(24px, 3.2vw, 42px);
+    padding: 0 calc(var(--site-padding-x) + 12px) clamp(24px, 3.2vw, 42px);
     /* background: #f5f5f5; */
     border-radius: 14px;
     overflow: hidden;
@@ -2176,7 +2177,7 @@ body.device-transitioning .device-container.expanded #pill-third-btn {
     min-height: var(--featured-card-min-height);
     /* background: #ffffff; */
     border: 1px solid rgba(0, 0, 0, 0.08);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+    box-shadow: 1px 5px 0px rgba(0, 0, 0, 0.06);
     --card-tilt-x: 0deg;
     --card-tilt-y: 0deg;
     --card-shift-x: 0px;
@@ -2191,7 +2192,7 @@ body.device-transitioning .device-container.expanded #pill-third-btn {
 
 .featured-card:hover {
     --card-hover-lift: -2px;
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+    box-shadow: 1px 1px 0px rgba(139, 139, 139, 0.06);
 }
 
 .folder-top {
@@ -4077,4 +4078,148 @@ body.reader-mode .wip-swinging-img {
         height: 500px;
         margin: 40px 0;
     }
+}
+
+/* ============================================
+   🪪 IDENTITY STATUS CARD
+   ============================================ */
+
+.isolated-section {
+    width: calc(100% + 2 * var(--site-padding-x));
+    margin-left: calc(-1 * var(--site-padding-x));
+    margin-right: calc(-1 * var(--site-padding-x));
+    padding: 12px 0px;
+    background: transparent;
+    opacity: 0;
+    transform: translateY(30px) scale(0.98);
+    transition: opacity 0.8s var(--ease-lux), transform 0.8s var(--ease-lux);
+    will-change: opacity, transform;
+}
+
+.isolated-section.is-revealed {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.isolated-card {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 14px 14px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    overflow: hidden;
+}
+
+/* ---- Status bar ---- */
+.id-status-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 10px;
+    height: 30px;
+}
+
+.id-day-badge {
+    height: 50px;
+    background: #ffffff;
+    /* color: #3e3e3e; */
+    font-size: 20px;
+    /* font-weight: 700; */
+    /* letter-spacing: 0.06em; */
+    /* text-transform: uppercase; */
+    padding: 4px 10px;
+    border-radius: 20px;
+    text-align: center;
+    align-content: center;
+}
+
+.id-location {
+    height: 50px;
+    flex: 1;
+    background: #ffffff;
+    /* color: #3e3e3e; */
+    font-size: 20px;
+    /* font-weight: 700; */
+    /* letter-spacing: 0.06em; */
+    /* text-transform: uppercase; */
+    padding: 4px 10px;
+    border-radius: 20px;
+    text-align: center;
+    align-content: center;
+}
+
+.id-time {
+    height: 50px;
+    background: #ffffff;
+    /* color: #3e3e3e; */
+    font-size: 20px;
+    /* font-weight: 700; */
+    /* letter-spacing: 0.06em; */
+    /* text-transform: uppercase; */
+    padding: 4px 10px;
+    border-radius: 20px;
+    text-align: center;
+    align-content: center;
+}
+
+/* ---- Name wordmark ---- */
+.id-wordmark {
+    font-size: clamp(44px, 17vw, 64px);
+    font-weight: 900;
+    color: #c8c8c8;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    padding: 4px 2px 10px;
+    font-family: 'Google Sans', sans-serif;
+    user-select: none;
+}
+
+/* ---- Divider rule ---- */
+.id-rule {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.15);
+    margin-bottom: 12px;
+}
+
+/* ---- Inner description card ---- */
+.id-desc-card {
+    background: #ebebeb;
+    border-radius: 12px;
+    padding: 14px 14px;
+}
+
+.id-desc-card p {
+    font-size: 13px;
+    font-weight: 500;
+    color: #111;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* ============================================
+   WHITE BACKGROUND BLOCKS (ISOLATING THE ID CARD)
+   ============================================ */
+.content-block-white {
+    background: var(--panel);
+    width: calc(100% + 2 * var(--site-padding-x));
+    margin-left: calc(-1 * var(--site-padding-x));
+    margin-right: calc(-1 * var(--site-padding-x));
+    padding-left: var(--site-padding-x);
+    padding-right: var(--site-padding-x);
+}
+
+.content-block-white.top-block {
+    margin-top: calc(-1 * var(--site-padding-top));
+    padding-top: var(--site-padding-top);
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    padding-bottom: 24px;
+}
+
+.content-block-white.bottom-block {
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    padding-top: 24px;
+    padding-bottom: 24px;
 }
