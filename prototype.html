@@ -145,19 +145,55 @@
 
             <section class="isolated-section" aria-label="Isolated content block">
                 <div class="isolated-card">
-                    <h3 class="mini-editorial-title">Raghav Prasanna &copy;</h3>
-                    <p class="mini-editorial-copy" style="padding: 0px 10px; font-size: 19px;">
-                        Systems thinker based in Newcastle/London, working on XR, Python, AI and UX. Working as a
-                        <strong>product
-                            development assistant in AIRCARDS.</strong>
-                        <br>
-                        <br>
-                        Background includes AR-Depth experiences, interactive installations, large-scale touch
-                        interfaces, and data platforms, with a strong focus on research, experimentation, and iterative
-                        design.
-                        Comfortable operating in remote and fast-moving environments, bridging the gap between design,
-                        technology, and product development.
-                    </p>
+
+                    <!-- Segmented Control -->
+                    <div class="about-segment-control">
+                        <button class="segment-btn active" data-target="content-about">About me*</button>
+                        <button class="segment-btn" data-target="content-ai">Thoughts on AI</button>
+                        <button class="segment-btn" data-target="content-app">My next app</button>
+                    </div>
+
+                    <!-- <h3 class="mini-editorial-title">Raghav Prasanna &copy;</h3> -->
+
+                    <!-- About Me Tab -->
+                    <div id="content-about" class="about-content-section active fade-in">
+                        <p class="mini-editorial-copy" style="padding: 0px 10px; font-size: 20px;     color: #4d4d4d;">
+                            Systems thinker based in Newcastle/London, working on XR, Python, AI and UX. Working as a
+                            <strong>product development assistant in AIRCARDS.</strong>
+                            <br>
+                            <br>
+                            Background includes AR-Depth experiences, interactive installations, large-scale touch
+                            interfaces, and data platforms, with a strong focus on research, experimentation, and
+                            iterative design.
+                            Comfortable operating in remote and fast-moving environments, bridging the gap between
+                            design,
+                            technology, and product development.
+                        </p>
+                    </div>
+
+                    <!-- AI Tab -->
+                    <div id="content-ai" class="about-content-section">
+                        <p class="mini-editorial-copy" style="padding: 0px 10px; font-size: 20px; color: #4d4d4d;">
+                            I believe AI fundamentally shifts human-computer interaction from <strong>point-and-click to
+                                intent-driven workflows.</strong>
+                            <br><br>
+                            As a UX designer, my goal isn't just to add chat interfaces everywhere, but to seamlessly
+                            integrate autonomous agents that anticipate needs, reducing friction while preserving user
+                            control and creative agency.
+                        </p>
+                    </div>
+
+                    <!-- My Next App Tab -->
+                    <div id="content-app" class="about-content-section">
+                        <p class="mini-editorial-copy" style="padding: 0px 10px; font-size: 20px; color: #4d4d4d;">
+                            I'm currently building a <strong>project management tool</strong> for designers and
+                            developers who work as a one-person team.
+                            <br><br>
+                            It's meant to bridge the gap between creative ideation and technical execution without
+                            getting bogged down by massive enterprise features. Simple, fast, and purely focused on
+                            momentum.
+                        </p>
+                    </div>
 
                     <!-- <div class="mini-editorial-pills">
                     <span class="mini-pill">Packaging</span>
@@ -171,30 +207,7 @@
 
                     <!-- <h4 class="mini-editorial-projects">Selected Projects</h4> -->
 
-                    <article class="mini-project-row" aria-label="Selected project 017" style="padding: 0px 10px;">
 
-                        <div class="mini-project-grid">
-                            <div class="mini-project-item">
-                                <div class="mini-project-label">Looking for</div>
-                                <div class="mini-project-value">
-                                    <span class="mini-role-pill mini-role-pill-blue">Remote</span>
-                                    <span class="mini-role-pill mini-role-pill-green">Hybrid</span>
-                                </div>
-                            </div>
-
-                            <div class="mini-project-item">
-                                <div class="mini-project-label">Location</div>
-                                <div class="mini-project-value">United Kingdom</div>
-                            </div>
-                            <div class="mini-project-item">
-                                <div class="mini-project-label">Skills</div>
-                                <div class="mini-project-value">Creative technologist | Product development assistant
-                                </div>
-                            </div>
-                        </div>
-                        <br>
-
-                    </article>
                 </div>
             </section>
 
@@ -208,7 +221,7 @@
             </section>
 
 
-            <div class="content-block-white bottom-block">
+            <div class="content-block-white mid-block">
                 <!-- <section class="node-system-section reveal delay-2" aria-label="Data Grid System">
                 <div class="node-system-badge">Introspective Section: "At my core"</div>
                 <div class="node-graph-container" id="node-graph-container">
@@ -416,16 +429,42 @@
                         <!-- <div class="arrow-marquee"></div> -->
 
                     </section>
-
-                    <div class="bottom-bar"></div>
                 </section>
+            </div> <!-- Close mid-block -->
 
+            <!-- Isolated Timeline/Skills section breaks the block -->
+            <section class="isolated-section" aria-label="Isolated content block">
+                <div class="isolated-card">
+                    <article class="mini-project-row" aria-label="Selected project 017" style="padding: 0px 10px;">
 
-                <section class="isolated-section" aria-label="Isolated content block">
-                    <div class="isolated-card">
-                        here 3d career timeline
-                    </div>
-                </section>
+                        <div class="mini-project-grid">
+                            <div class="mini-project-item">
+                                <div class="mini-project-label">Looking for</div>
+                                <div class="mini-project-value">
+                                    <span class="mini-role-pill mini-role-pill-blue">Remote</span>
+                                    <span class="mini-role-pill mini-role-pill-green">Hybrid</span>
+                                </div>
+                            </div>
+
+                            <div class="mini-project-item">
+                                <div class="mini-project-label">Location</div>
+                                <div class="mini-project-value">United Kingdom</div>
+                            </div>
+                            <div class="mini-project-item">
+                                <div class="mini-project-label">Skills</div>
+                                <div class="mini-project-value">Creative technologist | Product development
+                                    assistant
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+
+                    </article>
+                </div>
+            </section>
+
+            <!-- Re-open block for bottom sections -->
+            <div class="content-block-white bottom-block">
                 <!-- <section class="portfolio-more reveal delay-3">
                 <h2 class="more-title">More Projects</h2>
                 <div class="more-projects-grid">
@@ -481,7 +520,7 @@
                         <canvas id="pixel-canvas" width="40" height="40" aria-label="Pixel drawing canvas"></canvas>
                     </div>
                 </section>
-                <section class="mini-site-actions reveal delay-4" aria-label="Site actions">
+                <!-- <section class="mini-site-actions reveal delay-4" aria-label="Site actions">
                     <a href="index.html" class="mini-site-action-btn mini-site-action-exit" data-cursor="link">
                         <img src="images/Exit.png" alt="Exit" style="border: 4px solid rgb(255, 254, 230);">
                     </a>
@@ -490,7 +529,7 @@
                         target="_blank" rel="noopener noreferrer" data-cursor="link">
                         <img src="images/Resume.png" alt="Resume" style="border: 4px solid rgb(255, 254, 230);">
                     </a>
-                </section>
+                </section> -->
 
                 <section class="index-footer reveal delay-5">
                     <!-- Squares generated by JS -->
@@ -746,25 +785,48 @@
             setInterval(tick, 10000); // refresh every 10s
         })();
 
-        // ---- Scroll Entrance Animations for Isolated Sections ----
-        document.addEventListener("DOMContentLoaded", () => {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        // Add class to trigger CSS animation
-                        entry.target.classList.add('is-revealed');
-                        // Stop observing once animated
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, {
-                root: document.getElementById('scrollable-content'), // Observe within the scrollable div
-                threshold: 0.05, // Trigger as soon as 5% is visible
-                rootMargin: '0px 0px -20px 0px'
-            });
+        // ---- About Segment Control Logic ----
+        document.addEventListener('DOMContentLoaded', () => {
+            const buttons = document.querySelectorAll('.about-segment-control .segment-btn');
+            const sections = document.querySelectorAll('.about-content-section');
 
-            document.querySelectorAll('.isolated-section').forEach(sec => observer.observe(sec));
+            buttons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Ignore if already active
+                    if (btn.classList.contains('active')) return;
+
+                    // Update button states
+                    buttons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    // Find target content
+                    const targetId = btn.getAttribute('data-target');
+
+                    // Fade out current active section
+                    sections.forEach(sec => {
+                        if (sec.classList.contains('active')) {
+                            sec.classList.remove('fade-in');
+                            setTimeout(() => {
+                                sec.classList.remove('active');
+                            }, 300); // match transition duration
+                        }
+                    });
+
+                    // Fade in new target section properly synced
+                    setTimeout(() => {
+                        const targetSec = document.getElementById(targetId);
+                        if (targetSec) {
+                            targetSec.classList.add('active');
+                            // Delay adding fade-in slightly to allow display:block to render first
+                            setTimeout(() => {
+                                targetSec.classList.add('fade-in');
+                            }, 50);
+                        }
+                    }, 300);
+                });
+            });
         });
+
     </script>
     <script src="prototype.js" defer></script>
 </body>

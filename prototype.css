@@ -4090,15 +4090,8 @@ body.reader-mode .wip-swinging-img {
     margin-right: calc(-1 * var(--site-padding-x));
     padding: 12px 0px;
     background: transparent;
-    opacity: 0;
-    transform: translateY(30px) scale(0.98);
-    transition: opacity 0.8s var(--ease-lux), transform 0.8s var(--ease-lux);
-    will-change: opacity, transform;
-}
-
-.isolated-section.is-revealed {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: none;
 }
 
 .isolated-card {
@@ -4111,7 +4104,54 @@ body.reader-mode .wip-swinging-img {
     overflow: hidden;
 }
 
-/* ---- Status bar ---- */
+/* ---- About Segment Control ---- */
+.about-segment-control {
+    display: inline-flex;
+    background: #f0f0f0;
+    border-radius: 24px;
+    padding: 4px;
+    margin-bottom: 24px;
+    margin-top: 6px;
+    align-self: center;
+}
+
+.segment-btn {
+    background: transparent;
+    border: 2px solid transparent;
+    border-radius: 20px;
+    padding: 5px 16px; /* Adjusted padding to compensate for 2px border */
+    font-size: 16px;
+    font-family: inherit;
+    color: #484848;
+    cursor: pointer;
+    transition: all 0.35s var(--ease-lux);
+}
+
+.segment-btn.active {
+    background: linear-gradient(to bottom, #F4F4F4, #FFFFFF);
+    color: #393939;
+    border: 2px solid #FFFFFF;
+    box-shadow: 0px 4px 7px -5px rgba(0, 0, 0, 0.12), 0px 0px 0px 2px #e7e7e7;
+    font-weight: 500;
+}
+
+.about-content-section {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.4s var(--ease-lux), transform 0.4s var(--ease-lux);
+    transform: translateY(4px);
+}
+
+.about-content-section.active {
+    display: block;
+}
+
+.about-content-section.fade-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ---- Identity Status Bar ---- */
 .id-status-bar {
     display: flex;
     align-items: center;
@@ -4214,6 +4254,12 @@ body.reader-mode .wip-swinging-img {
     padding-top: var(--site-padding-top);
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
+    padding-bottom: 24px;
+}
+
+.content-block-white.mid-block {
+    border-radius: 20px;
+    padding-top: 24px;
     padding-bottom: 24px;
 }
 
