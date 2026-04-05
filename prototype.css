@@ -72,22 +72,55 @@
     --bar-collapsed-width: 180px;
 
     /* Pill Component Sizes (Configurable via JS) */
+    --marquee-speed: 0.5s;
+    --marquee-bg: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCA0MCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cG9seWdvbiBwb2ludHM9IjAsMTIgMTUsMCAyOCwwIDEzLDEyIDI4LDI0IDE1LDI0IiBmaWxsPSIjZDJkMmQyZmYiLz48L3N2Zz4=);
+    
+    --pill-1-w: 74px;
+    --pill-1-h: 44px;
+    --pill-1-c: #e7e7e7;
+    --pill-1-br: 99px;
+    
+    --pill-2-w: 29px;
+    --pill-2-h: 8px;
+    --pill-2-c: #e7e7e7;
+    --pill-2-br: 14px;
+    
+    --pill-3-w: 49px;
+    --pill-3-h: 44px;
+    --pill-3-c: #e7e7e7;
+    --pill-3-br: 99px;
+    
+    --pill-4-w: 74px;
+    --pill-4-h: 44px;
+    --pill-4-c: #e7e7e7;
+    --pill-4-br: 99px;
+
+    --pill-5-w: 29px;
+    --pill-5-h: 8px;
+    --pill-5-c: #e7e7e7;
+    --pill-5-br: 22px;
+    
+    --pill-6-w: 74px;
+    --pill-6-h: 44px;
+    --pill-6-c: #e7e7e7;
+    --pill-6-br: 99px;
+    
+    --pill-7-w: 74px;
+    --pill-7-h: 44px;
+    --pill-7-c: #e7e7e7;
+    --pill-7-br: 99px;
+    
     --pill-bar-w: 10px;
     --pill-bar-h: 34px;
-    --pill-circle-w: 36px;
-    --pill-circle-h: 36px;
-    --pill-square-w: 47px;
-    --pill-square-h: 14px;
-    --pill-dark-w: 44px;
-    --pill-dark-h: 24px;
 
     /* Overall Bar Dimensions */
-    --pill-container-w: var(--bar-collapsed-width);
-    --pill-container-h: var(--device-collapsed-height);
+    --pill-container-w: 450px;
+    --pill-container-h: 64px;
+    --pill-container-c: #ffffff;
 
     /* Blur Mask Settings (Configurable via JS) */
-    --blur-mask-strength: 10px;
-    --blur-mask-opacity: 0.8;
+    --blur-mask-strength: 15px;
+    --blur-mask-opacity: 0.85;
 
     /* Cursor assets - Reduced size by using smaller pngs or adjusting transform if DOM based, wait let me check if there's a custom cursor div */
     --cursor-default: url('pointercursor.png') 4 4, auto;
@@ -96,7 +129,7 @@
     --cursor-grab: url('grabcursor.png') 12 12, grab;
     --cursor-grabbing: url('ggrabbingcursor.png') 12 12, grabbing;
 
-    /* Pill Button Animation Variables */
+    /* Pill Button Animation LOOP LOOP LOOP */
     --pulse-initial-delay: 7s;
     --pulse-cycle-interval: 10s;
     --pulse-spring: ease-in-out;
@@ -132,7 +165,79 @@ body {
     transition: background-color 0.45s var(--ease-lux), color 0.45s var(--ease-lux);
 }
 
+
 /* -------------------------- */
+/* -------------------------- */
+/* -------------------------- */
+/* -------------------------- */
+/* -------------------------- */
+/* -------------------------- */
+/* -------------------------- */
+
+
+
+@font-face {
+    font-family: 'p1';
+    src: url('Fonts/ppmondwest-regular.otf');
+}
+
+@font-face {
+    font-family: 'p2';
+    src: url('Fonts/ppneuebit-bold.otf');
+}
+
+@font-face {
+    font-family: 'e1';
+    src: url('Fonts/Effloresce Bd.otf');
+}
+
+@font-face {
+    font-family: 'fg';
+    src: url('Fonts/GoogleSans-VariableFont_GRAD,opsz,wght.ttf');
+}
+
+@font-face {
+    font-family: 'f1';
+    src: url('Fonts/Effloresce\ Antique.otf');
+}
+
+@font-face {
+    font-family: 'fc1';
+    src: url('Fonts/Chelsea.ttf');
+}
+
+@font-face {
+    font-family: 'z1';
+    src: url('Fonts/ZTBrosOskon90s-ExtraLight.ttf');
+}
+
+@font-face {
+    font-family: 'z2';
+    src: url('Fonts/ZTOtez-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'ASS';
+    src: url('Fonts/Astral\ Ink.ttf');
+}
+
+
+
+@font-face {
+    font-family: 'ztnb';
+    src: url('Fonts/ZTNature-Bold.otf');
+}
+
+@font-face {
+    font-family: 'ztnr';
+    src: url('Fonts/ZTNature-Regular.otf');
+}
+
+
+
+
+
+
 
 body.reader-mode {
     background: #f1c84b;
@@ -506,50 +611,75 @@ body:not(.device-expanded):not(.reader-mode) .pill-greeting .greeting-display {
     transition: all 0.52s var(--ease-genie);
 }
 
-.pill-plain-circle {
-    width: var(--pill-circle-w);
-    height: var(--pill-circle-h);
-    border-radius: 99px;
-    background-color: var(--pill-circle-c, #e7e7e7);
+/* Base structural behavior */
+.pill-plain-circle, .pill-square, .pill-dark-block {
+    flex-shrink: 0;
+    transition: all 0.52s var(--ease-genie);
+}
+#pill-circle2, #pill-circle3 {
     flex-shrink: 0;
     transition: all 0.52s var(--ease-genie);
 }
 
-#pill-circle2 {
-    width: var(--pill-circle2-w);
-    height: var(--pill-circle2-h);
-    background-color: var(--pill-circle2-c, #e7e7e7);
-    border-radius: var(--pill-circle2-br, 99px);
+/* Individual Stylings 1-7 */
+
+#pill-notes-btn {  /* Item 1 */
+    --base-w: var(--pill-1-w);
+    width: var(--pill-1-w);
+    height: var(--pill-1-h);
+    border-radius: var(--pill-1-br, 99px);
+    background-color: var(--pill-1-c, #e7e7e7);
 }
 
-#pill-circle3 {
-    width: var(--pill-circle3-w);
-    height: var(--pill-circle3-h);
-    background-color: var(--pill-circle3-c, #e7e7e7);
-    border-radius: var(--pill-circle3-br, 99px);
+#pill-circle2 { /* Item 2 */
+    width: var(--pill-2-w);
+    height: var(--pill-2-h);
+    border-radius: var(--pill-2-br, 99px);
+    background-color: var(--pill-2-c, #e7e7e7);
+}
+
+#pill-resume-btn { /* Item 3 */
+    --base-w: var(--pill-3-w);
+    width: var(--pill-3-w);
+    height: var(--pill-3-h);
+    border-radius: var(--pill-3-br, 99px);
+    background-color: var(--pill-3-c, #e7e7e7);
+}
+
+#pill-third-btn { /* Item 4 */
+    --base-w: var(--pill-4-w);
+    width: var(--pill-4-w);
+    height: var(--pill-4-h);
+    border-radius: var(--pill-4-br, 99px);
+    background-color: var(--pill-4-c, #e7e7e7);
+}
+
+#pill-circle3 { /* Item 5 */
+    width: var(--pill-5-w);
+    height: var(--pill-5-h);
+    border-radius: var(--pill-5-br, 99px);
+    background-color: var(--pill-5-c, #e7e7e7);
+}
+
+#pill-fourth-btn { /* Item 6 */
+    --base-w: var(--pill-6-w);
+    width: var(--pill-6-w);
+    height: var(--pill-6-h);
+    border-radius: var(--pill-6-br, 99px);
+    background-color: var(--pill-6-c, #e7e7e7);
+}
+
+#pill-fifth-btn { /* Item 7 */
+    --base-w: var(--pill-7-w);
+    width: var(--pill-7-w);
+    height: var(--pill-7-h);
+    border-radius: var(--pill-7-br, 99px);
+    background-color: var(--pill-7-c, #e7e7e7);
 }
 
 body.notes-active .pill-plain-circle {
     background-color: #1d1d1d;
     border-radius: 30px 12px 12px 30px;
-}
-
-.pill-square {
-    width: var(--pill-square-w);
-    height: var(--pill-square-h);
-    background: var(--pill-square-c, #e7e7e7);
-    /* Medium grey square */
-    border-radius: 99px;
-    transition: all 0.52s var(--ease-genie);
-}
-
-.pill-dark-block {
-    width: var(--pill-dark-w);
-    height: var(--pill-dark-h);
-    background: var(--pill-dark-c, #f2f2f2);
-    /* Dark grey block */
-    border-radius: 99px;
-    transition: all 0.52s var(--ease-genie);
 }
 
 body.reader-mode .pill-dark-block {
@@ -609,6 +739,14 @@ body.reader-mode .pill-dark-block .pill-icon-slot {
     transition-delay: 0.25s;
 }
 
+.device-container.expanded #pill-fourth-btn img {
+    transition-delay: 0.30s;
+}
+
+.device-container.expanded #pill-fifth-btn img {
+    transition-delay: 0.35s;
+}
+
 .pill-icon-btn::before {
     content: '';
     position: absolute;
@@ -655,21 +793,19 @@ body.reader-mode .pill-dark-block .pill-icon-slot {
 }
 
 @keyframes pill-pulse-sequence-square {
-
-    0%,
-    10% {
-        width: var(--pill-square-w);
+    0% {
+        width: var(--base-w);
         filter: brightness(1);
     }
 
-    15% {
-        width: calc(var(--pill-square-w) + 20px);
+    5% {
+        width: calc(var(--base-w) + 20px);
         filter: brightness(1.2);
     }
 
-    20%,
+    25%,
     100% {
-        width: var(--pill-square-w);
+        width: var(--base-w);
         filter: brightness(1);
     }
 }
@@ -678,18 +814,18 @@ body.reader-mode .pill-dark-block .pill-icon-slot {
 
     0%,
     10% {
-        width: var(--pill-dark-w);
+        width: var(--base-w);
         filter: brightness(1);
     }
 
     15% {
-        width: calc(var(--pill-dark-w) + 20px);
+        width: calc(var(--base-w) + 20px);
         filter: brightness(1.2);
     }
 
     20%,
     100% {
-        width: var(--pill-dark-w);
+        width: var(--base-w);
         filter: brightness(1);
     }
 }
@@ -714,7 +850,9 @@ body.reader-mode .pill-dark-block .pill-icon-slot {
     border-radius: 4px;
 }
 
-#pill-third-btn .pill-icon-slot {
+#pill-third-btn .pill-icon-slot,
+#pill-fourth-btn .pill-icon-slot,
+#pill-fifth-btn .pill-icon-slot {
     border-radius: 3px;
     border-style: solid;
 }
@@ -752,6 +890,16 @@ body.reader-mode .pill-dark-block .pill-icon-slot {
 .device-container.expanded #pill-third-btn {
     animation: pill-pulse-sequence-dark var(--pulse-cycle-interval) var(--pulse-spring) infinite;
     animation-delay: calc(var(--pulse-initial-delay) + 0.6s);
+}
+
+.device-container.expanded #pill-fourth-btn {
+    animation: pill-pulse-sequence-dark var(--pulse-cycle-interval) var(--pulse-spring) infinite;
+    animation-delay: calc(var(--pulse-initial-delay) + 0.9s);
+}
+
+.device-container.expanded #pill-fifth-btn {
+    animation: pill-pulse-sequence-dark var(--pulse-cycle-interval) var(--pulse-spring) infinite;
+    animation-delay: calc(var(--pulse-initial-delay) + 1.2s);
 }
 
 .device-container.expanded .pill-icon-btn:active {
@@ -803,7 +951,7 @@ body.reader-mode .pill-dark-block .pill-icon-slot {
 .pill-right {
     flex: 1;
     height: calc(100% - 2px);
-    background: #ffffff;
+    background: #080808;
     border-radius: 999px;
     display: flex;
     align-items: center;
@@ -818,6 +966,28 @@ body.reader-mode .pill-dark-block .pill-icon-slot {
     font-weight: 600;
     text-transform: uppercase;
     line-height: 1;
+    letter-spacing: 0.05em;
+    user-select: none;
+    pointer-events: none;
+}
+
+/* Toggle 5th button and hide pill-right background when expanded */
+#pill-fifth-btn {
+    display: none;
+}
+
+.device-container.expanded .pill-text {
+    display: none;
+}
+
+.device-container.expanded .pill-right {
+    background: transparent;
+    padding: 0;
+    margin-right: 0;
+}
+
+.device-container.expanded #pill-fifth-btn {
+    display: flex;
 }
 
 /* Legacy header pieces hidden */
@@ -1210,7 +1380,9 @@ body.device-transitioning .device-bottom-blur {
 
 body.device-transitioning .device-container.expanded #pill-notes-btn,
 body.device-transitioning .device-container.expanded #pill-resume-btn,
-body.device-transitioning .device-container.expanded #pill-third-btn {
+body.device-transitioning .device-container.expanded #pill-third-btn,
+body.device-transitioning .device-container.expanded #pill-fourth-btn,
+body.device-transitioning .device-container.expanded #pill-fifth-btn {
     animation-play-state: paused;
 }
 
@@ -1990,12 +2162,20 @@ body.device-transitioning .device-container.expanded #pill-third-btn {
     background: #e9f255;
 }
 
+/* Unified Typography Block */
+.mini-editorial-copy,
+.folder-head p,
+.hero-clean-subtitle {
+    font-size: clamp(1.05rem, 1.5vw + 0.1rem, 1.25rem);
+    line-height: 1.5;
+    color: #484848;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+}
+
 .mini-editorial-copy {
-    margin: 14px 0 0;
+    margin: 14px 10px 0 10px;
     max-width: 740px;
-    font-size: clamp(0.98rem, 1.15vw, 1.18rem);
-    line-height: 1.28;
-    letter-spacing: -0.012em;
 }
 
 .mini-editorial-projects {
@@ -2070,10 +2250,7 @@ body.device-transitioning .device-container.expanded #pill-third-btn {
         padding: 4px 12px;
     }
 
-    .mini-editorial-copy {
-        font-size: 0.98rem;
-        line-height: 1.34;
-    }
+
 
     .mini-editorial-projects {
         font-size: clamp(2.2rem, 14vw, 3rem);
@@ -2192,7 +2369,7 @@ body.device-transitioning .device-container.expanded #pill-third-btn {
 
 .featured-card:hover {
     --card-hover-lift: -2px;
-    box-shadow: 1px 1px 0px rgba(139, 139, 139, 0.06);
+    box-shadow: 0px 0px 0px 6px #1715180f;
 }
 
 .folder-top {
@@ -2253,9 +2430,7 @@ body.device-transitioning .device-container.expanded #pill-third-btn {
 }
 
 .folder-head p {
-    font-size: 0.9rem;
-    line-height: 1.3;
-    color: #666;
+    margin: 4px 0 0;
 }
 
 .folder-menu {
@@ -2806,9 +2981,7 @@ body.matrix-paused #canvas-bg {
         font-size: 1rem;
     }
 
-    .folder-head p {
-        font-size: 0.84rem;
-    }
+
 
     .folder-foot {
         font-size: 0.78rem;
@@ -3430,11 +3603,6 @@ body.case-open .case-window {
 }
 
 .hero-clean-subtitle {
-    font-size: clamp(1.1rem, 2vw, 1.3rem);
-    line-height: 1.6;
-    color: var(--soft-ink);
-    font-weight: 400;
-    letter-spacing: -0.01em;
     max-width: 600px;
     margin: 0 auto 32px;
 }
@@ -4110,7 +4278,7 @@ body.reader-mode .wip-swinging-img {
     background: #f0f0f0;
     border-radius: 24px;
     padding: 4px;
-    margin-bottom: 24px;
+    margin-bottom: 9px;
     margin-top: 6px;
     align-self: center;
 }
@@ -4119,7 +4287,8 @@ body.reader-mode .wip-swinging-img {
     background: transparent;
     border: 2px solid transparent;
     border-radius: 20px;
-    padding: 5px 16px; /* Adjusted padding to compensate for 2px border */
+    padding: 5px 16px;
+    /* Adjusted padding to compensate for 2px border */
     font-size: 16px;
     font-family: inherit;
     color: #484848;
