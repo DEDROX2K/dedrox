@@ -256,20 +256,24 @@ const SITE_CONFIG = {
     },
     pillSizes: {
         collapsed: {
-            circle: { w: '4px', h: '20px', c: '#ffffffff' },
-            circle2: { w: '10px', h: '10px', c: '#ffffffff', br: '99px' },
-            square: { w: '25px', h: '24px', c: '#ffffffff' },
-            dark: { w: '8px', h: '34px', c: '#ffffffff' },
-            circle3: { w: '10px', h: '10px', c: '#ffffffff', br: '99px' },
+            r1: { w: '4px', h: '20px', c: '#ffffffff', br: '99px' },
+            r2: { w: '10px', h: '10px', c: '#ffffffff', br: '99px' },
+            r3: { w: '25px', h: '24px', c: '#ffffffff', br: '99px' },
+            r4: { w: '8px', h: '34px', c: '#ffffffff', br: '99px' },
+            r5: { w: '10px', h: '10px', c: '#ffffffff', br: '99px' },
+            r6: { w: '8px', h: '34px', c: '#ffffffff', br: '99px' },
+            r7: { w: '8px', h: '34px', c: '#ffffffff', br: '99px' },
 
             container: { w: '280px', h: '56px', c: '#ffffff' }
         },
         expanded: {
-            circle: { w: '74px', h: '44px', c: '#e7e7e7' },
-            circle2: { w: '29px', h: '8px', c: '#e7e7e7', br: '14px' },
-            square: { w: '49px', h: '44px', c: '#e7e7e7' },
-            dark: { w: '74px', h: '44px', c: '#e7e7e7' },
-            circle3: { w: '29px', h: '8px', c: '#e7e7e7', br: '22px' },
+            r1: { w: '74px', h: '44px', c: '#e7e7e7', br: '99px' },
+            r2: { w: '29px', h: '8px', c: '#e7e7e7', br: '14px' },
+            r3: { w: '49px', h: '44px', c: '#e7e7e7', br: '99px' },
+            r4: { w: '74px', h: '44px', c: '#e7e7e7', br: '99px' },
+            r5: { w: '29px', h: '8px', c: '#e7e7e7', br: '22px' },
+            r6: { w: '74px', h: '44px', c: '#e7e7e7', br: '99px' },
+            r7: { w: '74px', h: '44px', c: '#e7e7e7', br: '99px' },
 
             container: { w: '450px', h: '64px', c: '#ffffff' }
         }
@@ -318,12 +322,13 @@ function applyPillSizes(state) {
         if (obj.br) root.style.setProperty(`--pill-${prefix}-br`, obj.br);
     };
 
-    setProps('bar', sizes.bar);
-    setProps('circle', sizes.circle);
-    setProps('circle2', sizes.circle2);
-    setProps('circle3', sizes.circle3);
-    setProps('square', sizes.square);
-    setProps('dark', sizes.dark);
+    setProps('1', sizes.r1);
+    setProps('2', sizes.r2);
+    setProps('3', sizes.r3);
+    setProps('4', sizes.r4);
+    setProps('5', sizes.r5);
+    setProps('6', sizes.r6);
+    setProps('7', sizes.r7);
 
     if (sizes.container) {
         if (sizes.container.w) root.style.setProperty('--pill-container-w', sizes.container.w);

@@ -74,22 +74,22 @@
     /* Pill Component Sizes (Configurable via JS) */
     --marquee-speed: 0.5s;
     --marquee-bg: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCA0MCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cG9seWdvbiBwb2ludHM9IjAsMTIgMTUsMCAyOCwwIDEzLDEyIDI4LDI0IDE1LDI0IiBmaWxsPSIjZDJkMmQyZmYiLz48L3N2Zz4=);
-    
+
     --pill-1-w: 74px;
     --pill-1-h: 44px;
     --pill-1-c: #e7e7e7;
     --pill-1-br: 99px;
-    
+
     --pill-2-w: 29px;
     --pill-2-h: 8px;
     --pill-2-c: #e7e7e7;
     --pill-2-br: 14px;
-    
+
     --pill-3-w: 49px;
     --pill-3-h: 44px;
-    --pill-3-c: #e7e7e7;
+    --pill-3-c: #ff0000;
     --pill-3-br: 99px;
-    
+
     --pill-4-w: 74px;
     --pill-4-h: 44px;
     --pill-4-c: #e7e7e7;
@@ -99,17 +99,17 @@
     --pill-5-h: 8px;
     --pill-5-c: #e7e7e7;
     --pill-5-br: 22px;
-    
-    --pill-6-w: 74px;
+
+    --pill-6-w: 50px;
     --pill-6-h: 44px;
     --pill-6-c: #e7e7e7;
     --pill-6-br: 99px;
-    
+
     --pill-7-w: 74px;
     --pill-7-h: 44px;
     --pill-7-c: #e7e7e7;
     --pill-7-br: 99px;
-    
+
     --pill-bar-w: 10px;
     --pill-bar-h: 34px;
 
@@ -393,10 +393,18 @@ body.cursor-system :where([data-cursor='default']) {
         width 0.82s var(--ease-genie),
         height 0.22s var(--ease-genie),
         transform 0.22s var(--ease-genie),
+        top 0.82s var(--ease-genie),
+        left 0.82s var(--ease-genie),
         border-radius 0s var(--ease-genie),
         box-shadow 0.22s var(--ease-genie);
-    /* Shortened from 0.8s */
     z-index: 10;
+}
+
+.device-container:not(.expanded) {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .device-container.expanded {
@@ -437,7 +445,7 @@ body.cursor-system :where([data-cursor='default']) {
 }
 
 .device-container:not(.expanded) .top-bar {
-    transform: translateY(310%);
+    transform: translateY(0);
 }
 
 .device-container.expanded .top-bar {
@@ -473,14 +481,11 @@ body:not(.device-expanded):not(.reader-mode) .top-bar-pill {
 }
 
 body:not(.device-expanded):not(.reader-mode) .pill-plain-circle,
+body:not(.device-expanded):not(.reader-mode) .pill-square,
+body:not(.device-expanded):not(.reader-mode) .pill-dark-block,
 body:not(.device-expanded):not(.reader-mode) #pill-circle2,
-body:not(.device-expanded):not(.reader-mode) #pill-circle3,
-body:not(.device-expanded):not(.reader-mode) .pill-square {
+body:not(.device-expanded):not(.reader-mode) #pill-circle3 {
     background: #2a2a2d;
-}
-
-body:not(.device-expanded):not(.reader-mode) .pill-dark-block {
-    background: #38383c;
 }
 
 body:not(.device-expanded):not(.reader-mode) .pill-greeting .greeting-overline,
@@ -612,18 +617,23 @@ body:not(.device-expanded):not(.reader-mode) .pill-greeting .greeting-display {
 }
 
 /* Base structural behavior */
-.pill-plain-circle, .pill-square, .pill-dark-block {
+.pill-plain-circle,
+.pill-square,
+.pill-dark-block {
     flex-shrink: 0;
     transition: all 0.52s var(--ease-genie);
 }
-#pill-circle2, #pill-circle3 {
+
+#pill-circle2,
+#pill-circle3 {
     flex-shrink: 0;
     transition: all 0.52s var(--ease-genie);
 }
 
 /* Individual Stylings 1-7 */
 
-#pill-notes-btn {  /* Item 1 */
+#pill-notes-btn {
+    /* Item 1 */
     --base-w: var(--pill-1-w);
     width: var(--pill-1-w);
     height: var(--pill-1-h);
@@ -631,14 +641,16 @@ body:not(.device-expanded):not(.reader-mode) .pill-greeting .greeting-display {
     background-color: var(--pill-1-c, #e7e7e7);
 }
 
-#pill-circle2 { /* Item 2 */
+#pill-circle2 {
+    /* Item 2 */
     width: var(--pill-2-w);
     height: var(--pill-2-h);
     border-radius: var(--pill-2-br, 99px);
     background-color: var(--pill-2-c, #e7e7e7);
 }
 
-#pill-resume-btn { /* Item 3 */
+#pill-resume-btn {
+    /* Item 3 */
     --base-w: var(--pill-3-w);
     width: var(--pill-3-w);
     height: var(--pill-3-h);
@@ -646,7 +658,8 @@ body:not(.device-expanded):not(.reader-mode) .pill-greeting .greeting-display {
     background-color: var(--pill-3-c, #e7e7e7);
 }
 
-#pill-third-btn { /* Item 4 */
+#pill-third-btn {
+    /* Item 4 */
     --base-w: var(--pill-4-w);
     width: var(--pill-4-w);
     height: var(--pill-4-h);
@@ -654,14 +667,16 @@ body:not(.device-expanded):not(.reader-mode) .pill-greeting .greeting-display {
     background-color: var(--pill-4-c, #e7e7e7);
 }
 
-#pill-circle3 { /* Item 5 */
+#pill-circle3 {
+    /* Item 5 */
     width: var(--pill-5-w);
     height: var(--pill-5-h);
     border-radius: var(--pill-5-br, 99px);
     background-color: var(--pill-5-c, #e7e7e7);
 }
 
-#pill-fourth-btn { /* Item 6 */
+#pill-fourth-btn {
+    /* Item 6 */
     --base-w: var(--pill-6-w);
     width: var(--pill-6-w);
     height: var(--pill-6-h);
@@ -669,7 +684,8 @@ body:not(.device-expanded):not(.reader-mode) .pill-greeting .greeting-display {
     background-color: var(--pill-6-c, #e7e7e7);
 }
 
-#pill-fifth-btn { /* Item 7 */
+#pill-fifth-btn {
+    /* Item 7 */
     --base-w: var(--pill-7-w);
     width: var(--pill-7-w);
     height: var(--pill-7-h);
@@ -776,34 +792,36 @@ body.reader-mode .pill-dark-block .pill-icon-slot {
 
     0%,
     10% {
-        width: var(--pill-circle-w);
+        width: var(--base-w);
         filter: brightness(1);
     }
 
     15% {
-        width: calc(var(--pill-circle-w) + 20px);
+        width: calc(var(--base-w) + 20px);
         filter: brightness(1.2);
     }
 
     20%,
     100% {
-        width: var(--pill-circle-w);
+        width: var(--base-w);
         filter: brightness(1);
     }
 }
 
 @keyframes pill-pulse-sequence-square {
-    0% {
+
+    0%,
+    10% {
         width: var(--base-w);
         filter: brightness(1);
     }
 
-    5% {
+    15% {
         width: calc(var(--base-w) + 20px);
         filter: brightness(1.2);
     }
 
-    25%,
+    20%,
     100% {
         width: var(--base-w);
         filter: brightness(1);
@@ -877,30 +895,7 @@ body.reader-mode .pill-dark-block .pill-icon-slot {
     transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.device-container.expanded #pill-notes-btn {
-    animation: pill-pulse-sequence-circle var(--pulse-cycle-interval) var(--pulse-spring) infinite;
-    animation-delay: var(--pulse-initial-delay);
-}
 
-.device-container.expanded #pill-resume-btn {
-    animation: pill-pulse-sequence-square var(--pulse-cycle-interval) var(--pulse-spring) infinite;
-    animation-delay: calc(var(--pulse-initial-delay) + 0.3s);
-}
-
-.device-container.expanded #pill-third-btn {
-    animation: pill-pulse-sequence-dark var(--pulse-cycle-interval) var(--pulse-spring) infinite;
-    animation-delay: calc(var(--pulse-initial-delay) + 0.6s);
-}
-
-.device-container.expanded #pill-fourth-btn {
-    animation: pill-pulse-sequence-dark var(--pulse-cycle-interval) var(--pulse-spring) infinite;
-    animation-delay: calc(var(--pulse-initial-delay) + 0.9s);
-}
-
-.device-container.expanded #pill-fifth-btn {
-    animation: pill-pulse-sequence-dark var(--pulse-cycle-interval) var(--pulse-spring) infinite;
-    animation-delay: calc(var(--pulse-initial-delay) + 1.2s);
-}
 
 .device-container.expanded .pill-icon-btn:active {
     transform: scale(0.88, 0.94);
@@ -984,6 +979,8 @@ body.reader-mode .pill-dark-block .pill-icon-slot {
     background: transparent;
     padding: 0;
     margin-right: 0;
+    justify-content: flex-end;
+    padding-right: 3px;
 }
 
 .device-container.expanded #pill-fifth-btn {
@@ -1884,12 +1881,12 @@ body.device-transitioning .device-container.expanded #pill-fifth-btn {
 /* --- DATA GRID NODE SYSTEM --- */
 .node-system-section {
     position: relative;
-    background-color: #e8e6df;
+    background-color: #ffffff;
     width: calc(100% + 2 * var(--site-padding-x));
     margin-left: calc(-1 * var(--site-padding-x));
-    margin-right: calc(-1 * var(--site-padding-x));
-    padding: 60px 20px;
-    margin-bottom: var(--section-gap-lg);
+    /* margin-right: calc(-1 * var(--site-padding-x)); */
+    padding: 0px 20px;
+    /* margin-bottom: var(--section-gap-lg); */
 }
 
 .node-system-badge {
@@ -2282,8 +2279,8 @@ body.device-transitioning .device-container.expanded #pill-fifth-btn {
     width: calc(100% + (var(--site-padding-x) * 2));
     margin-left: calc(var(--site-padding-x) * -1);
     margin-right: calc(var(--site-padding-x) * -1);
-    margin-bottom: var(--section-gap-lg);
-    padding: 0 calc(var(--site-padding-x) + 12px) clamp(24px, 3.2vw, 42px);
+    /* margin-bottom: var(--section-gap-lg); */
+    padding: 0px 35px;
     /* background: #f5f5f5; */
     border-radius: 14px;
     overflow: hidden;
