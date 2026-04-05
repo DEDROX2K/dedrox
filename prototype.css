@@ -25,6 +25,8 @@
     --site-padding-x: 24px;
     --site-padding-top: 30px;
     --site-radius: 30px;
+    --master-content-radius: 40px;
+    --isolated-card-radius: 40px;
 
     /* ID Card Controls */
     --id-anchor-offset-x: 6px;
@@ -484,8 +486,13 @@ body:not(.device-expanded):not(.reader-mode) .pill-plain-circle,
 body:not(.device-expanded):not(.reader-mode) .pill-square,
 body:not(.device-expanded):not(.reader-mode) .pill-dark-block,
 body:not(.device-expanded):not(.reader-mode) #pill-circle2,
-body:not(.device-expanded):not(.reader-mode) #pill-circle3 {
-    background: #2a2a2d;
+body:not(.device-expanded):not(.reader-mode) #pill-circle3,
+body:not(.device-expanded):not(.reader-mode) #pill-notes-btn,
+body:not(.device-expanded):not(.reader-mode) #pill-resume-btn,
+body:not(.device-expanded):not(.reader-mode) #pill-third-btn,
+body:not(.device-expanded):not(.reader-mode) #pill-fourth-btn,
+body:not(.device-expanded):not(.reader-mode) #pill-fifth-btn {
+    background: #2a2a2d !important;
 }
 
 body:not(.device-expanded):not(.reader-mode) .pill-greeting .greeting-overline,
@@ -4261,7 +4268,7 @@ body.reader-mode .wip-swinging-img {
 
 .isolated-card {
     background: #ffffff;
-    border-radius: 18px;
+    border-radius: var(--isolated-card-radius);
     padding: 14px 14px 14px;
     display: flex;
     flex-direction: column;
@@ -4418,20 +4425,20 @@ body.reader-mode .wip-swinging-img {
 .content-block-white.top-block {
     margin-top: calc(-1 * var(--site-padding-top));
     padding-top: var(--site-padding-top);
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: var(--master-content-radius);
+    border-bottom-right-radius: var(--master-content-radius);
     padding-bottom: 24px;
 }
 
 .content-block-white.mid-block {
-    border-radius: 20px;
+    border-radius: var(--master-content-radius);
     padding-top: 24px;
     padding-bottom: 24px;
 }
 
 .content-block-white.bottom-block {
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
+    border-top-left-radius: var(--master-content-radius);
+    border-top-right-radius: var(--master-content-radius);
     padding-top: 24px;
     padding-bottom: 24px;
 }
