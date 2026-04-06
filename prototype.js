@@ -2981,11 +2981,18 @@ document.addEventListener('DOMContentLoaded', () => {
     pillResumeBtn?.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
-        expandDeviceShell(false);
-        if (readerMode.isActive()) readerMode.close();
-        if (stickyNote.isVisible()) stickyNote.close();
-
-        window.location.href = 'chat3d.html';
+        
+        const overlay = document.getElementById('page-overlay');
+        if (overlay) {
+            overlay.classList.add('active');
+            // Store that we was expanded so we come back to this state
+            localStorage.setItem('forcePillExpanded', 'true');
+            setTimeout(() => {
+                window.location.href = 'chat3d.html';
+            }, 600);
+        } else {
+            window.location.href = 'chat3d.html';
+        }
     });
 
     pillThirdBtn?.addEventListener('click', (e) => {
@@ -3091,7 +3098,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const resumeBtnEl = document.querySelector('.resume-fab');
     scrambleText(resumeBtnEl, "/-Resume", 1000);
 
-    applyPillSizes('collapsed'); // Ensure initial state is collapsed
+    // Page Transition: Fade in from white
+    const pageOverlay = document.getElementById('page-overlay');
+    if (pageOverlay) {
+        setTimeout(() => {
+            pageOverlay.classList.remove('on-load');
+        }, 100);
+    }
+
+    // Check if we should force expand (returning from chat/resume)
+    if (localStorage.getItem('forcePillExpanded') === 'true') {
+        expandDeviceShell(true);
+        localStorage.removeItem('forcePillExpanded');
+    } else {
+        applyPillSizes('collapsed'); // Default initial state
+    }
     applyBlurMaskSettings();
 
     // Lucide Icons

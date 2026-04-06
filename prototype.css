@@ -415,8 +415,8 @@ body.cursor-system :where([data-cursor='default']) {
     background: transparent;
     /* box-shadow: 14px 17px 20px 0px rgba(0, 0, 0, 0.1); */
     border-radius: var(--site-radius);
-    overflow: hidden;
-    /* Restored to clip children preventing border radius bugs */
+    overflow: visible;
+    /* Changed from hidden to allow tooltips to pop out of the top */
 }
 
 
@@ -916,9 +916,9 @@ body.reader-mode .pill-dark-block .pill-icon-slot {
 
 .pill-tooltip {
     position: absolute;
-    top: calc(100% + 14px);
+    bottom: calc(100% + 14px);
     left: 50%;
-    transform: translateX(-50%) translateY(-5px);
+    transform: translateX(-50%) translateY(5px);
     background: rgba(0, 0, 0, 0.85);
     color: #fff;
     padding: 6px 10px;
@@ -1944,18 +1944,18 @@ body.device-transitioning .device-container.expanded #pill-fifth-btn {
     font-weight: 500;
     color: #111;
     transform: translate(-50%, -50%);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); */
     user-select: none;
     transition: box-shadow 0.25s cubic-bezier(0.2, 0.9, 0.2, 1), transform 0.25s cubic-bezier(0.2, 0.9, 0.2, 1), border 0.2s cubic-bezier(0.2, 0.9, 0.2, 1);
     /* transition transform dynamically handled in JS where needed */
     cursor: grab;
-    border: 2px solid #e8e6df;
+    /* border: 2px solid #e8e6df; */
 }
 
 .node-item:hover {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
     transform: translate(-50%, -50%) scale(1.05);
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    /* border: 1px solid rgba(0, 0, 0, 0.05); */
     z-index: 5;
 }
 
@@ -4441,4 +4441,27 @@ body.reader-mode .wip-swinging-img {
     border-top-right-radius: var(--master-content-radius);
     padding-top: 24px;
     padding-bottom: 24px;
+}
+
+/* --- Page Transition Overlay --- */
+.page-transition-overlay {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: #ffffff;
+    z-index: 99999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.page-transition-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.page-transition-overlay.on-load {
+    opacity: 1 !important;
+    pointer-events: auto;
 }

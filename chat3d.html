@@ -731,10 +731,34 @@
                 opacity: 1;
             }
         }
+
+        /* --- Page Transition Overlay --- */
+        .page-transition-overlay {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+            z-index: 99999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .page-transition-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .page-transition-overlay.on-load {
+            opacity: 1 !important;
+            pointer-events: auto;
+        }
     </style>
 </head>
 
 <body>
+    <div class="page-transition-overlay on-load" id="page-overlay"></div>
 
     <div class="hero-layers">
         <div class="layer layer-7" data-speed="0.1"></div>
@@ -1263,9 +1287,29 @@
                 playExchange(activeExchange);
             });
 
-            btnBack.addEventListener('click', () => {
-                window.location.href = 'prototype.html';
+            btnBack.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const overlay = document.getElementById('page-overlay');
+                if (overlay) {
+                    overlay.classList.add('active');
+                    // Store that we want to return to expanded state
+                    localStorage.setItem('forcePillExpanded', 'true');
+                    setTimeout(() => {
+                        window.location.href = 'prototype.html';
+                    }, 600);
+                } else {
+                    localStorage.setItem('forcePillExpanded', 'true');
+                    window.location.href = 'prototype.html';
+                }
             });
+
+            // Fade in from white on load
+            const overlay = document.getElementById('page-overlay');
+            if (overlay) {
+                setTimeout(() => overlay.classList.remove('on-load'), 100);
+            }
 
             btnClear.addEventListener('click', () => {
                 resetConversation(true);
