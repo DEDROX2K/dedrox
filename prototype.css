@@ -919,19 +919,20 @@ body.reader-mode .pill-dark-block .pill-icon-slot {
     bottom: calc(100% + 14px);
     left: 50%;
     transform: translateX(-50%) translateY(5px);
-    background: rgba(0, 0, 0, 0.85);
+    background: rgba(0, 0, 0, 0.9);
     color: #fff;
-    padding: 6px 10px;
+    padding: 6px 12px;
     border-radius: 8px;
     font-size: 0.72rem;
     font-weight: 600;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
     white-space: nowrap;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.12s ease-out, transform 0.12s ease-out;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    z-index: 100;
+    transition: opacity 0.22s var(--ease-lux), transform 0.22s var(--ease-lux);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+    z-index: 200; /* High enough to be over anything */
 }
 
 @media (hover: hover) {
@@ -943,7 +944,6 @@ body.reader-mode .pill-dark-block .pill-icon-slot {
         transform: translateX(-50%) translateY(0);
     }
 
-    .orb-cursor-handle:hover .pill-tooltip,
     .orb-rail-btn:hover .pill-tooltip {
         opacity: 1;
         transform: translateX(0) translateY(-50%);
@@ -1038,20 +1038,31 @@ body.device-expanded.case-open .left-controls {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 20px;
-    height: 38px;
-    border-radius: 7px;
+    width: 10px;
+    height: 40px;
+    border-radius: 50px;
     border: 1px solid rgba(255, 255, 255, 0.12);
     background: #4f4f4f;
     color: #fff;
-    display: inline-flex;
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+    padding: 0;
     cursor: pointer;
     transform: translate(-50%, calc(-50% + var(--orb-thumb-offset-y, 0px))) scale(1);
-    transition: transform 0.2s linear, opacity 0.18s ease;
+    transform-origin: center center;
+    transition:
+        width 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+        height 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.22s linear,
+        background 0.28s ease,
+        padding 0.28s ease,
+        border-radius 0.28s ease,
+        opacity 0.18s ease;
     box-shadow: 0 10px 14px rgba(0, 0, 0, 0.2);
     z-index: 3;
+    overflow: hidden;
 }
 
 .orb-track-line {
@@ -1059,44 +1070,29 @@ body.device-expanded.case-open .left-controls {
     top: 6%;
     bottom: 6%;
     left: 50%;
-    width: 8px;
+    width: 5px;
     transform: translateX(-50%);
     border-radius: 999px;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.2), rgba(160, 160, 160, 0.58) 14%, rgba(160, 160, 160, 0.58) 86%, rgba(255, 255, 255, 0.2));
+    background: #dddddd;
     z-index: 1;
     pointer-events: none;
 }
 
 .left-controls:hover .orb-cursor-handle,
 .left-controls:focus-within .orb-cursor-handle {
-    opacity: 0;
-    pointer-events: none;
-    transform: translate(-50%, calc(-50% + var(--orb-thumb-offset-y, 0px))) scale(0.88);
-}
-
-.orb-control-rail {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 78px;
-    min-height: 78px;
-    border-radius: 39px;
+    width: 44px;
+    height: 320px;
     background: #0a0a0a;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    gap: 11px;
-    padding: 10px 8px 12px;
-    box-shadow: 0 18px 34px rgba(0, 0, 0, 0.36);
-    opacity: 0;
-    pointer-events: none;
-    transform: translate(-50%, -50%) scale(0.88);
-    transform-origin: center center;
-    transition: opacity 0.14s ease, min-height 0.24s cubic-bezier(0.22, 1, 0.36, 1), transform 0.24s cubic-bezier(0.22, 1, 0.36, 1);
-    overflow: hidden;
-    z-index: 4;
+    border-radius: 22px;
+    padding: 6px 4px 10px;
+    cursor: default;
+    box-shadow: 0 18px 34px rgba(0, 0, 0, 0.45);
+    /* Stay centered on the track while expanded */
+    transform: translate(-50%, calc(-50% + var(--orb-thumb-offset-y, 0px))) scale(1);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    justify-content: flex-start;
+    /* Switch to flex-start for grouping */
+    overflow: visible; /* Allow tooltips to show outside the boundaries */
 }
 
 .orb-scroll-line {
@@ -1110,33 +1106,43 @@ body.device-expanded.case-open .left-controls {
     z-index: 0;
     pointer-events: none;
     border-radius: 999px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.left-controls:hover .orb-scroll-line {
+    opacity: 1;
 }
 
 .orb-rail-btn,
 .orb-rail-time {
     z-index: 2;
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.85);
+    transition: opacity 0.18s ease 0.08s, transform 0.24s cubic-bezier(0.22, 1, 0.36, 1) 0.08s;
 }
 
-.left-controls:hover .orb-control-rail,
-.left-controls:focus-within .orb-control-rail {
+.left-controls:hover .orb-rail-btn,
+.left-controls:hover .orb-rail-time {
     opacity: 1;
-    min-height: 220px;
-    transform: translate(-50%, -50%) scale(1);
     pointer-events: auto;
+    transform: scale(1);
 }
 
 .orb-rail-btn {
-    width: 54px;
-    height: 54px;
-    border: 1px solid rgba(0, 0, 0, 0.12);
+    width: 36px;
+    height: 36px;
+    border: 0;
     border-radius: 999px;
-    display: inline-flex;
+    display: flex;
     align-items: center;
     justify-content: center;
     text-decoration: none;
     cursor: pointer;
     position: relative;
     transition: transform 0.18s ease, filter 0.18s ease;
+    flex-shrink: 0;
 }
 
 .orb-rail-btn:hover {
@@ -1151,37 +1157,42 @@ body.device-expanded.case-open .left-controls {
 }
 
 .orb-rail-expand {
-    background: #d6d6d6;
+    background: #ffffff;
     color: #111111;
 }
 
 .orb-rail-matrix {
-    width: 56px;
-    height: 48px;
-    border-radius: 10px;
-    background: #df595a;
-    color: #1c1c1c;
+    background: #6b7336;
+    /* Olive/Leaf */
+    color: #fff;
 }
 
 body.matrix-paused .orb-rail-matrix {
-    background: #c65656;
+    background: #5a612d;
 }
 
 .orb-rail-resume {
-    background: #83c7a9;
-    color: #111111;
+    background: #f27c3e;
+    /* Orange/Vibrant */
+    color: #fff;
 }
 
 .orb-rail-time {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    clip-path: inset(50%);
+    display: block;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip: auto;
+    clip-path: none;
     user-select: none;
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    margin: 4px 0;
+    letter-spacing: 0;
+    margin-top: auto;
 }
+
 
 .orb-btn-icon {
     display: inline-flex;
@@ -1195,16 +1206,27 @@ body.matrix-paused .orb-rail-matrix {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    mix-blend-mode: multiply;
+    filter: brightness(0) invert(1);
+    /* Force white for icons as per reference look */
     opacity: 0.9;
     pointer-events: none;
 }
 
-.orb-cursor-handle .pill-tooltip,
+.orb-rail-expand .orb-btn-icon-img {
+    filter: brightness(0);
+    /* Black icon for white circle */
+}
+
 .orb-rail-btn .pill-tooltip {
+    bottom: auto;
+    left: calc(100% + 14px);
     top: 50%;
-    left: calc(100% + 12px);
-    transform: translateX(0) translateY(-50%);
+    transform: translateY(-50%) translateX(-8px);
+}
+
+.orb-rail-btn:hover .pill-tooltip {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
 }
 
 .contact-btn:hover {
@@ -1888,7 +1910,7 @@ body.device-transitioning .device-container.expanded #pill-fifth-btn {
 /* --- DATA GRID NODE SYSTEM --- */
 .node-system-section {
     position: relative;
-    background-color: #ffffff;
+    background-color: #fff;
     width: calc(100% + 2 * var(--site-padding-x));
     margin-left: calc(-1 * var(--site-padding-x));
     /* margin-right: calc(-1 * var(--site-padding-x)); */
@@ -1911,8 +1933,8 @@ body.device-transitioning .device-container.expanded #pill-fifth-btn {
 .node-graph-container {
     position: relative;
     width: 100%;
-    max-width: 600px;
-    height: 380px;
+    max-width: 500px;
+    height: 200px;
     margin: 0 auto;
 }
 
@@ -2617,11 +2639,19 @@ body.device-transitioning .device-container.expanded #pill-fifth-btn {
 
 .pixel-tools {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 8px;
     flex-wrap: wrap;
     margin-bottom: calc(var(--section-gap-xs) + 2px);
+}
+
+#pixel-palette {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+    align-items: center;
 }
 
 .swatch {
@@ -2644,15 +2674,21 @@ body.device-transitioning .device-container.expanded #pill-fifth-btn {
     border: 0;
     background: #111;
     color: #fff;
-    font-size: 0.76rem;
-    letter-spacing: 0.06em;
+    font-size: 0.64rem;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
-    padding: 7px 10px;
-    display: block;
-    flex: 0 0 100%;
-    margin: 6px auto 0;
-    text-align: center;
-    border-radius: 999px;
+    padding: 6px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.22s var(--ease-lux);
+    margin: 12px auto 0;
+}
+
+.clear-pixel:hover {
+    background: #333;
 }
 
 .pixel-canvas-wrap {
@@ -2710,8 +2746,8 @@ body.pixel-draw-cursor-active #custom-cursor {
     display: flex;
     align-items: center;
     position: relative;
-    min-height: 74px;
-    padding: 19px var(--site-padding-x);
+    min-height: 34px;
+    padding: 9px var(--site-padding-x);
     text-decoration: none;
     border-bottom: 1px solid rgba(0, 0, 0, 0.16);
     transition: filter 0.2s var(--ease-lux);
@@ -3751,6 +3787,7 @@ body.case-open .case-window {
     margin-left: calc(-1 * var(--site-padding-x));
     margin-right: calc(-1 * var(--site-padding-x));
     border-top: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 40px;
 }
 
 /* The colorful square grid */

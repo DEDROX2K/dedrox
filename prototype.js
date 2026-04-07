@@ -45,7 +45,45 @@ const SITE_CONFIG = {
         palette: ['#141414ff', '#ec726c', '#ffcc00', '#99e24f', '#75d3ff', '#f996cb'],
         pixelSize: 1,
         background: '#f3f3f3',
-        resolution: 40
+        resolution: 40,
+        initialArt: [
+            "                XXXXXX                  ",
+            "             XXXXXXXXXXXX               ",
+            "           XXXXXXXXXXXXXXXX             ",
+            "          XXXXXXXXXXXXXXXXXX            ",
+            "         XXXXXXXXXXXXXXXXXXXX           ",
+            "        XXXXXXXXXXXXXXXXXXXXXX          ",
+            "        XXXXXX          XXXXXX          ",
+            "       XXXXXX            XXXXXX         ",
+            "       XXXXXX            XXXXXX         ",
+            "       XXXXXX            XXXXXX         ",
+            "       XXXXXX            XXXXXX         ",
+            "       XXXXXX            XXXXXX         ",
+            "       XXXXXX            XXXXXX         ",
+            "       XXXXXX            XXXXXX         ",
+            "       XXXXXX            XXXXXX         ",
+            "       XXXXXX            XXXXXX         ",
+            "       XXXXXX            XXXXXX         ",
+            "       XXXXXX            XXXXXX         ",
+            "       XXXXXX            XXXXXX         ",
+            "       XXXXXX            XXXXXX         ",
+            "       XXXXXX            XXXXXX         ",
+            "       XXXXXX            XXXXXX         ",
+            "       XXXXXX            XXXXXX         ",
+            "       XXXXXX            XXXXXX         ",
+            "       XXXXXX            XXXXXX         ",
+            "       XXXXXX            XXXXXX         ",
+            "       XXXXXX            XXXXXX         ",
+            "       XXXXXX            XXXXXX         ",
+            "       XXXXXX            XXXXXX         ",
+            "        XXXXXX          XXXXXX          ",
+            "        XXXXXX          XXXXXX          ",
+            "         XXXXXXXXXXXXXXXXXXXX           ",
+            "          XXXXXXXXXXXXXXXXXX            ",
+            "           XXXXXXXXXXXXXXXX             ",
+            "             XXXXXXXXXXXX               ",
+            "                XXXXXX                  "
+        ]
     },
     caseData: {
         case1: {
@@ -1378,12 +1416,10 @@ function buildPalette() {
         paletteRoot.appendChild(swatch);
     });
 
-    const clearBtn = document.createElement('button');
-    clearBtn.className = 'clear-pixel';
-    clearBtn.type = 'button';
-    clearBtn.textContent = 'Clear';
-    clearBtn.addEventListener('click', clearPixelCanvas);
-    paletteRoot.appendChild(clearBtn);
+    const clearBtn = document.getElementById('pixel-clear-btn');
+    if (clearBtn) {
+        clearBtn.addEventListener('click', clearPixelCanvas);
+    }
 }
 
 function clearPixelCanvas() {
@@ -1405,6 +1441,32 @@ function paintFromEvent(event) {
         SITE_CONFIG.pixel.pixelSize,
         SITE_CONFIG.pixel.pixelSize
     );
+}
+
+function drawRandomArt(count = 8) {
+    if (!pixelCtx || !pixelCanvas) return;
+    const res = SITE_CONFIG.pixel.resolution;
+    const colors = SITE_CONFIG.pixel.palette;
+
+    for (let i = 0; i < count; i++) {
+        // Pick random color from palette
+        pixelCtx.fillStyle = colors[Math.floor(Math.random() * (colors.length - 1)) + 1];
+        
+        const isHorizontal = Math.random() > 0.5;
+        const x = Math.floor(Math.random() * res);
+        const y = Math.floor(Math.random() * res);
+        const length = Math.floor(Math.random() * (res * 0.4)) + 5;
+
+        if (isHorizontal) {
+            pixelCtx.fillRect(x, y, length, 1);
+        } else {
+            pixelCtx.fillRect(x, y, 1, length);
+        }
+    }
+}
+
+function drawPremadeArt() {
+    drawRandomArt();
 }
 
 if (pixelCanvas) {
@@ -2921,6 +2983,7 @@ document.addEventListener('DOMContentLoaded', () => {
             e.stopPropagation();
             expandFabAnchor.schedule();
             scheduleFittyRefresh();
+            if (e.target instanceof HTMLElement) e.target.blur();
         });
     }
 
@@ -2946,16 +3009,19 @@ document.addEventListener('DOMContentLoaded', () => {
     orbCursorHandle?.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
+        if (e.target instanceof HTMLElement) e.target.blur();
     });
 
     matrixToggleBtn?.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
         toggleMatrixPaused();
+        if (e.target instanceof HTMLElement) e.target.blur();
     });
 
     orbResumeBtn?.addEventListener('click', (e) => {
         e.stopPropagation();
+        if (e.target instanceof HTMLElement) e.target.blur();
     });
 
     if (topBar) {
@@ -2981,7 +3047,7 @@ document.addEventListener('DOMContentLoaded', () => {
     pillResumeBtn?.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
-        
+
         const overlay = document.getElementById('page-overlay');
         if (overlay) {
             overlay.classList.add('active');
@@ -3085,6 +3151,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initCompanyDock();
     buildPalette();
     clearPixelCanvas();
+    drawPremadeArt();
     SITE_CONFIG.setupCaseOverlays();
     initIndexGrid();
     initFeaturedCardHoverMotion();
@@ -3171,7 +3238,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let cssObject;
     let targetRotX = 0, targetRotY = 0;
     let currentRotX = 0, currentRotY = 0;
-    
+
     let currentExchangeIndex = 0;
     let isTyping = false;
     let isSending = false;
@@ -3224,7 +3291,7 @@ document.addEventListener('DOMContentLoaded', () => {
         window.addEventListener('resize', onWindowResize);
         window.addEventListener('scroll', onScrollSync, { passive: true });
         window.addEventListener('mousemove', onMouseMove);
-        
+
         requestAnimationFrame(animate);
 
         // Start conversation when revealed
@@ -3275,7 +3342,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const inputText = screenEl.querySelector('#chat-input-text');
         const btnSend = screenEl.querySelector('#chat-btn-send');
         const btnClear = screenEl.querySelector('#chat-btn-clear');
-        
+
         const scheduleStep = (callback, delay) => {
             if (pendingTimeoutId) clearTimeout(pendingTimeoutId);
             pendingTimeoutId = window.setTimeout(callback, delay);
@@ -3290,7 +3357,7 @@ document.addEventListener('DOMContentLoaded', () => {
             isDraftTyping = true;
             let visibleChars = 0;
             const start = performance.now();
-            
+
             const step = () => {
                 const elapsed = performance.now() - start;
                 const progress = Math.min(1, elapsed / duration);
@@ -3340,7 +3407,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 isSending = false;
                 appendBubble('viewer', sentText);
                 inputText.value = '';
-                
+
                 isTyping = true;
                 const typing = showTypingIndicator();
 
@@ -3349,7 +3416,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     appendBubble('contact', exchange.reply);
                     isTyping = false;
                     currentExchangeIndex++;
-                    
+
                     scheduleStep(window.stageCurrentDraft, CHAT_SETTINGS.nextDraftDelay);
                 }, CHAT_SETTINGS.replyTypingDelay);
             }, CHAT_SETTINGS.sendMorphDuration);
