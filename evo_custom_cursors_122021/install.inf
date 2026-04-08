@@ -1,0 +1,51 @@
+[Version]
+signature="$CHICAGO$"
+
+[DefaultInstall]
+CopyFiles = Scheme.Cur, 
+AddReg    = Scheme.Reg
+
+[DestinationDirs]
+Scheme.Cur = 10,"%CUR_DIR%"
+Scheme.Txt = 10,"%CUR_DIR%"
+
+[Scheme.Reg]
+HKCU,"Control Panel\Cursors\Schemes","%SCHEME_NAME%",,"%10%\%CUR_DIR%\%pointer%,%10%\%CUR_DIR%\%help%,%10%\%CUR_DIR%\%work%,%10%\%CUR_DIR%\%busy%,%10%\%CUR_DIR%\%Cross%,%10%\%CUR_DIR%\%Text%,%10%\%CUR_DIR%\%Hand%,%10%\%CUR_DIR%\%Unavailiable%,%10%\%CUR_DIR%\%Vert%,%10%\%CUR_DIR%\%Horz%,%10%\%CUR_DIR%\%Dgn1%,%10%\%CUR_DIR%\%Dgn2%,%10%\%CUR_DIR%\%move%,%10%\%CUR_DIR%\%alternate%,%10%\%CUR_DIR%\%link%"
+
+; -- Common Information
+
+[Scheme.Cur]
+"default.cur"
+"help.cur"
+"progress.ani"
+"busy.ani"
+"crosshair.cur"
+"select.cur"
+"draft.cur"
+"not-allowed.cur"
+"row-resize.cur"
+"col-resize.cur"
+"diag-resize1.cur"
+"diag-resize2.cur"
+"move.cur"
+"alternative.cur"
+"link.cur"
+
+[Strings]
+CUR_DIR         = "Cursors\EvolutionOS"
+SCHEME_NAME     = "EvolutionOS"
+pointer = "default.cur"
+help = "help.cur"
+work = "progress.ani"
+busy = "busy.ani"
+cross = "crosshair.cur"
+text = "select.cur"
+hand = "draft.cur"
+unavailiable = "not-allowed.cur"
+vert = "row-resize.cur"
+horz = "col-resize.cur"
+dgn1 = "diag-resize2.cur"
+dgn2 = "diag-resize1.cur"
+move = "move.cur"
+alternate = "alternative.cur"
+link = "link.cur"
