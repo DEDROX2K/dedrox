@@ -2890,3 +2890,41 @@ html {
         text-align: center;
     }
 }
+
+/* ==========================================
+   🕹️ PIXEL GRID CURSOR
+   ========================================== */
+* {
+    cursor: none !important;
+}
+
+/* The cursor square — all sizing/color driven by JS CURSOR_CONFIG */
+.custom-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: none;
+    pointer-events: none;
+    z-index: 9999991;
+    image-rendering: pixelated;
+}
+
+/* Grid cells snapped to the pixel grid — fade on entry */
+.grid-cell {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 9999990;
+    background: #000;
+    animation: gridCellFade 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    image-rendering: pixelated;
+}
+
+@keyframes gridCellFade {
+    0%   { opacity: 1;    background: #000000; }
+    30%  { opacity: 0.75; background: #333333; }
+    70%  { opacity: 0.35; background: #888888; }
+    100% { opacity: 0;    background: #cccccc; }
+}
+
