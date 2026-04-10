@@ -2346,10 +2346,12 @@ function initReaderBlogs() {
 function initSmoothWheelScrolling() {
     const targets = [
         document.scrollingElement,
-        document.getElementById('scrollable-content')
+        document.getElementById('scrollable-content'),
+        document.getElementById('case-content-area')
     ].filter(Boolean);
+    const uniqueTargets = Array.from(new Set(targets));
 
-    targets.forEach((el) => {
+    uniqueTargets.forEach((el) => {
         const state = {
             current: el.scrollTop,
             target: el.scrollTop,

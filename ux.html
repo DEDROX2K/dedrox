@@ -1,1047 +1,194 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UX raghav prasanna</title>
-
-  <meta property="og:description"
-    content="Hey! I’m Raghav, Product designer. 1 person with an all-in-one production ability" />
-  <meta content="https://i.imgur.com/4Sz5x1Z.png" property="og:image">
-  <meta property="og:type" content="website" />
-
-  <meta name="twitter:card" content="https://i.imgur.com/4Sz5x1Z.png" />
-  <meta name="twitter:title" content="Select portfolio" />
-  <meta name="twitter:description"
-    content="Hey! I’m Raghav, Product designer. 1 person with an all-in-one production ability" />
-  <meta name="twitter:image" content="https://i.imgur.com/4Sz5x1Z.png" />
-
-
-
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&family=Bebas+Neue&family=Calistoga&family=DotGothic16&family=Instrument+Serif:ital@0;1&family=Maiden+Orange&family=Pixelify+Sans:wght@400..700&family=Staatliches&display=swap"
-    rel="stylesheet">
-  <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@100..900&display=swap" rel="stylesheet">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-    rel="stylesheet">
-
-  <!-- GSAP and ScrollTrigger -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/ScrollTrigger.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css">
-
-  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
-
-
-
-  <!--
-    Barlow Semi Condensed
-    Maiden Orange
-    Staatliches
-    Pixelify Sans
-    DotGothic16
-    Instrument Serif
-    Bebas Neue
-    Archivo
-    fallsend
-    Onest
-     -->
-
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <link rel="stylesheet" href="ux.css">
-  <script src="ux.js"></script>
-
-  <!-- Add this script to ux.html, gamedes.html, and any other pages where you want the sound to play on load -->
-  <script>
-    window.addEventListener('DOMContentLoaded', () => {
-      // Create an audio object
-      const pageLoadSound = new Audio('threeD/sfx-accent-eye-glitter-tinkle-1-6342.mp3');
-
-      // Play the sound
-      pageLoadSound.play().catch(error => {
-        console.log('Sound play prevented by browser autoplay policy:', error);
-      });
-    });
-  </script>
-
-
-  <!-- Logo and bar color -->
-  <link rel="icon" href="logo.png" type="png">
-  <meta name="theme-color" content="#ff3f3f">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Raghav Prasanna | UX Portfolio</title>
+  <link rel="stylesheet" href="ux.css" />
 </head>
-
-
-
-
-
-
-
-
-<!-- navbar and the logo pc-->
-<header>
-  <nav class="navtext navbar fixed-top nodispmob" data-aos="fade-down" data-aos-duration="1000" data-aos-delay="50"
-    data-aos-once="true">
-    <div class="custom-container">
-      <div class="row" style="align-content: center;">
-        <div class="col-2 " style="text-align: start; margin-top: 1.9%">
-          <a href="ux.html">
-            <img src="images/DEDROX.DSGN/dedroxLogo.svg"
-              style="width: 40px; height: auto; z-index: 100; transform: rotate(-10deg);">
-          </a>
-        </div>
-
-        <div class="col-8 black-link" style="margin-top: 20px">
-          <a href="freefonts.html" class="s-t">FREE FONTS /</a>
-          <!-- <a href="articlepage.html" class="w-t">ARTICLES /</a> -->
-          <a href="gamedes.html" target="_blank" class="d-t">3D & GAME-DESIGN /</a>
-        </div>
-
-        <div class="col-2 " style="text-align: end; margin-top: 20px">
-          <a href="threeD/CV_RESUME-RAGHAV.pdf" target="_blank" class="a-t"> ->RESUME*</a>
-        </div>
-      </div>
-    </div>
-  </nav>
-  <div class="blurtop"></div>
-</header>
-
-<!-- navbar and the logo mobile-->
-<header data-aos="fade-down" data-aos-duration="1000" data-aos-delay="50" data-aos-once="true">
-
-  <div class="red-top-bar dispmob">--| This website is best viewed on a PC |--</div>
-  </nav>
-
-  <nav class="navtext navbar fixed-top dispmob">
-    <div class="custom-container">
-      <div class="row" style="align-content: center;">
-        <div class="col-2" style="align-content: center;">
-          <a href="ux.html">
-            <img src="images/DEDROX.DSGN/dedroxLogo.svg" style="width: 30px;">
-          </a>
-        </div>
-
-        <div class="col-6 black-link" style="align-content: center;">
-          <a href="gamedes.html" target="_blank" class="d-t">3D & GAME-DESIGN*</a>
-        </div>
-
-        <div class="col-4" style="align-content: center;">
-          <a href="threeD/CV_RESUME-RAGHAV.pdf" target="_blank" class="a-t"> ->RESUME*</a>
-        </div>
-      </div>
-    </div>
-  </nav>
-</header>
-
-<div class="pixborder">
-  <!-- <img class="lefpix" src="images/pixel-border.png">
-  <img class="ritpix" src="images/pixel-border.png">
-  <img class="ritdownpix" src="images/pixel-border.png"> -->
-  <img class="lefdownpix" src="images/pixel-border.png">
-</div>
-<style>
-  .pixborder img {
-    opacity: 50%;
-    height: 50px;
-    z-index: 1000;
-    filter: invert(100%);
-  }
-
-  .lefpix {
-    position: fixed;
-    transform: rotate(-90deg);
-  }
-
-  .ritpix {
-    position: fixed;
-    right: 0%;
-  }
-
-  .ritdownpix {
-    position: fixed;
-    right: 0%;
-    bottom: 0%;
-    transform: rotate(90deg);
-  }
-
-  .lefdownpix {
-    position: fixed;
-    left: 0%;
-    bottom: 0%;
-    transform: rotate(180deg);
-  }
-</style>
-
 <body>
-
-
-
-  <!-- DEDROX.DESGN HEE! -->
-  <!-- <div class="logosec" data-aos="fade-down" data-aos-duration="700" data-aos-delay="500" data-aos-once="true">
-
-    <div class="sticker" id="sticker1">
-      <img src="images/lessgoo.png">
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="#top">Raghav Prasanna</a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="#about">About</a>
+        <a href="#experience">Experience</a>
+        <a href="#skills">Skills</a>
+        <a href="#education">Education</a>
+        <a href="#contact">Contact</a>
+      </nav>
     </div>
+  </header>
 
-    <div class="sticker" id="sticker2">
-      <img src="images/londonuk.png">
-    </div>
+  <main id="top">
+    <section class="hero section">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <h1 class="load-reveal">RAGHAV PRASANNA</h1>
+          <p class="hero-title load-reveal">UX • Product Designer • Creative Technologist</p>
+          <!-- Replace this line with your preferred short intro text later -->
+          <p class="hero-intro load-reveal">Designing immersive, human-centered experiences across digital and physical spaces.</p>
+          <p class="visa load-reveal"><span>Right to Work:</span> UK Graduate Route Visa (Valid until May 2027)</p>
 
-    <div class="sticker" id="sticker2.1">
-      <img src="images/yesthatme.png">
-    </div>
-
-
- 
-
-  <div class="sticker" id="sticker3.9">
-    <img src="images/flow5.png">
-  </div>
-    <div class="sticker" id="sticker3">
-      <img src="images/since.png">
-    </div>
-
-    <script>
-      const clickableImages = document.querySelectorAll('#sticker1');
-      const targetDivs = document.querySelectorAll('#pagesecshort');
-
-      clickableImages.forEach((image, index) => {
-        image.addEventListener('click', () => {
-          targetDivs[index].scrollIntoView({ behavior: 'smooth' });
-        });
-      });
-    </script>
-
-    <div id="logo" class="d-flex justify-content-center align-items-center"> </div>
-  </div> -->
-
-
-
-
-
-
-
-  <!-- About me -->
-  <div id="pagesecshort" data-aos="fade-down" data-aos-duration="700" data-aos-delay="500" data-aos-once="true">
-    <div class="custom-container">
-      <div class="row align-items-center">
-        <!-- Text and Social Links -->
-        <div class="col-lg-7 col-md-12">
-          <!-- <div style="max-width: 60%; @media (max-width: 480px) { max-width: 90%; }"> -->
-          <div class="heyhiraghav">
-            <span style="color: #5a5a5a;">Hey, Hi! I’m </span>
-            <span style="color: #2a2a2a;">Raghav.</span> </br>
-            <span style="color: #5a5a5a;">Mid level </span>
-            <span style="color: #2a2a2a;">Digital product designer </span>
-            <span style="color: #5a5a5a;">based in London with a background in </span>
-            <span style="color: #2a2a2a;">game mechanics.</span>
-          </div>
-
-          <!-- <button class="cta-button">Go to case study</button>
-          <style>
-            .cta-button {
-              font-family: Onest;
-              font-weight: light;
-              font-size: 23px;
-              padding: 1px 28px;
-              border: none;
-              border-radius: 3px;
-              cursor: pointer;
-              transition: background-color 0.3s ease;
-            }
-
-            .cta-button:hover {
-              background-color: #ffffff;}
-          </style> -->
-
-          <div style="font-size: 23px; padding-top: 10px;">
-            <a href="https://www.behance.net/raghavprasanna" target="_blank"
-              style="padding-right: 20px; color: #686868;">Behance </a>
-
-            <a href="https://dribbble.com/DEDROX2K" target="_blank"
-              style="padding-right: 20px; color: #686868;">Dribble</a>
-
-            <a href="https://www.linkedin.com/in/raghav-prasanna-b530621b0/recent-activity/all/" target="_blank"
-              style="padding-right: 20px; color: #686868;">linkedIn</a>
-
-            <a href="https://www.artstation.com/raghavprasanna" target="_blank"
-              style="padding-right: 20px; color: #686868;">Artstation</a>
-
-            <a href="https://www.fiverr.com/dedrox_?source=gig_cards&referrer_gig_slug=create-a-low-poly-3d-environments-models&ref_ctx_id=fa09f517671c4267b9fda576d680dbc1&imp_id=0cd568ff-3782-465e-a989-2a726dfeea34"
-              target="_blank" style="padding-right: 20px; color: #686868;">Freelance</a>
+          <div class="hero-links load-reveal">
+            <a href="tel:+447553433333">Phone</a>
+            <a href="mailto:raghavprasanna2000@gmail.com">Email</a>
+            <a href="https://dedrox2k.github.io/dedrox/prototype.html" target="_blank" rel="noopener noreferrer">Website</a>
+            <a href="https://behance.net/raghavprasanna" target="_blank" rel="noopener noreferrer">Behance</a>
+            <a href="https://artstation.com/raghavprasanna" target="_blank" rel="noopener noreferrer">ArtStation</a>
           </div>
         </div>
 
-        <!-- 3D Model Placeholder -->
-        <div class="col-lg-5 col-md-12 mt-5 mt-lg-0">
-          <div id="hero-3d-container"
-            style="width: 100%; min-height: 400px; display: flex; justify-content: center; align-items: center; background: rgba(0,0,0,0.03); border-radius: 12px; border: 2px dashed #bbb;">
-            <p style="color: #888; text-align: center; margin: 0; font-family: Onest; font-size: 18px;">[ 3D Model
-              Placeholder ]</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-
-  <!-- Case Study -->
-  <section class="content-section" id="portfolio">
-    <h1 class="text-center he1mob" data-aos="fade-top" data-aos-duration="1000" data-aos-once="false"> Case Studies
-    </h1>
-
-
-    <script>
-      // JavaScript to handle modal behavior
-      const modal = document.getElementById('caseStudyModal');
-      const openModal = document.getElementById('openModal');
-
-      // Show modal when the link is clicked
-      openModal.addEventListener('click', function (event) {
-        event.preventDefault(); // Prevent default link behavior
-        modal.style.display = 'flex'; // Show the modal
-      });
-
-      // Close modal when clicking outside the modal content
-      modal.addEventListener('click', function (event) {
-        if (event.target === modal) {
-          modal.style.display = 'none'; // Hide the modal
-        }
-      });
-    </script>
-
-    <section id="portfoliooo" data-aos="fade-top" data-aos-duration="700" data-aos-once="false">
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-md-12 col-lg-8 mb-4"> <a href="Case1.html">
-              <div class="card" style="background-color: #e4e4e4; border: solid 2px #e8e8e8;">
-                <div class="image-container">
-                  <img src="images/port1.jpg" alt="Portfolio Item" class="img-fluid">
-                </div>
-                <div class="card-body">
-                  <h5 class="card-title" style="color: #000000;"><span
-                      style=" margin-top: 1rem; font-weight: 700; ">Summary:
-                    </span> App
-                    to assist addicts in quitting smoking by integrating Cognitive Behavioral Therapy (CBT)
-                    techniques.
-                  </h5>
-
-                  <h5 class="card-title" style="color: #000000; margin-bottom: 1rem;"> <span
-                      style=" font-weight: 700;">Problem
-                      solved: </span>
-                    Made the app 3X more
-                    efficient and quicker than the
-                    competitors. Reducing the user flow for logging a cigarette from 7 steps to just 3, making it
-                    quicker and more user-friendly.
-                  </h5>
-
-                  <!-- <p class="indicator-highli " style="margin: 0% 7%;">Mobile application</p> -->
-
-                  <!-- <h5 class="card-title"><span style="color:#5b7e31; margin-top: 1rem;">Value added: </span> Integrated
-                    Cognitive
-                    Behavioral Therapy (CBT) system to make the habbit ease off quicker
-                  </h5> -->
-
-                </div>
-              </div>
-            </a>
-          </div>
+        <div class="hero-media load-reveal" aria-hidden="true">
+          <!-- Replace src with your real profile image path -->
+          <img src="images/profile-placeholder.jpg" alt="Profile placeholder" />
         </div>
       </div>
     </section>
 
-    <section id="portfoliooo" data-aos="fade-top" data-aos-duration="700" data-aos-once="false">
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-md-12 col-lg-8
-           mb-4"> <a href="Case2.html">
-              <div class="card" style="background-color: #e4e4e4; border: solid 2px #e8e8e8;">
-                <div class="image-container">
-                  <img src="images/port2.jpg" alt="Portfolio Item" class="img-fluid">
-                </div>
-                <div class="card-body">
-
-                  <h5 class="card-title" style="color: #000000;"><span
-                      style=" margin-top: 1rem; font-weight: 700;">Summary:
-                    </span> App
-                    AR app designed to simplify navigation in complex airports and enhance the travel experience.
-                  </h5>
-
-                  <h5 class="card-title" style="color: #000000; margin-bottom: 1rem;"> <span
-                      style=" font-weight: 700;">Value added: </span>
-                    The app also acts as a people finder, enabling users to locate children or elderly family members,
-                    enhancing both convenience and safety while improving the overall travel experience. </h5>
-
-                </div>
-              </div>
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="portfoliooo" data-aos="fade-top" data-aos-duration="700" data-aos-once="false">
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-md-12 col-lg-8 mb-4"><a target="_blank" href="case3.html">
-              <div class="card" style="background-color: #e4e4e4;  border: solid 2px #e8e8e8;">
-                <div class="image-container">
-                  <img src="images/port4.jpg" alt="Portfolio Item" class="img-fluid">
-                </div>
-                <div class="card-body">
-
-                  <h5 class="card-title" style="color: #000000; margin-bottom: 1rem;"> <span
-                      style=" font-weight: 700;">Summary: </span> This project is designed to showcase how I would
-                    approach
-                    desk research, particularly for new application ideas that we develop from scratch.
-                    I'm presenting an ongoing project that I recently completed with a previous client.
-                  </h5>
-
-                </div>
-              </div>
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- <section id="portfoliooo" data-aos="fade-top" data-aos-duration="700" data-aos-once="false">
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="col-md-12 col-lg-9 mb-4"><a target="_blank"
-              href="https://medium.com/@RaghavPrasannaUX/case-study-gym-finder-app-3ac05a38abe3">
-              <div class="card" style="background-color: #C8FD01;">
-                <div class="image-container">
-                  <img src="images/port3.jpg" alt="Portfolio Item" class="img-fluid">
-                </div>
-                <div class="card-body">
-                  <h5 class="card-title">An app for those who travel a lot and someone who wants to try different gyms
-                    and
-                    trainee easily without getting into a subscription trap.</h5>
-                  <p class="card-text text-muted">Case study</p>
-                </div>
-              </div>
-            </a>
-          </div>
-        </div>
-      </div>
-    </section> -->
-
-
-
-
-    <style>
-      #portfoliooo .card {
-        border-radius: 18px;
-        padding: 10px;
-        transition: filter 0.5s ease, transform 0.2s;
-        transform: translateY(0);
-        border: none;
-      }
-
-
-      #portfoliooo .card img {
-        border-radius: 8px;
-        object-fit: cover;
-        width: 100%;
-        aspect-ratio: 16 / 9;
-      }
-
-      .card:hover {
-        /* border: 1px solid black; */
-        transform: translateY(-6px);
-        box-shadow: 0 0 10px 0 rgba(78, 91, 110, 0.1);
-        cursor: url('linkcursor.png'), pointer;
-      }
-
-      #portfoliooo .card-body {
-        text-align: center;
-        padding: 4%;
-      }
-
-      /* ... other styles ... */
-
-      #portfoliooo .card-title {
-        font-size: 1.3rem;
-        margin-top: 1.1rem;
-        margin-bottom: 0.1rem;
-        font-family: Onest;
-        text-align: left;
-      }
-
-      #portfoliooo .card-text {
-        font-size: 1rem;
-        font-family: Onest;
-        font-weight: 600;
-        margin-bottom: 0.6rem;
-
-      }
-
-      /* Maintain aspect ratio */
-      .image-container {
-        aspect-ratio: 1080 / 430;
-        overflow: hidden;
-        display: block;
-      }
-
-      .image-container img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-    </style>
-  </section>
-
-
-  <!-- Tiles Portfolio-->
-  <section class="content-section" id="portfolio" data-aos="fade-top" data-aos-duration="1000" data-aos-once="false">
-
-
-    <h1 class="text-center nodispmob" style="margin-top: 10rem;" data-aos="fade-top" data-aos-duration="2000"
-      data-aos-once="true"> More & More Projects!
-      <div class="custom-container" style="font-size: 23px; padding-top: 10px; ">
-
-        <a href="https://www.behance.net/raghavprasanna" target="_blank"
-          style="padding-right: 20px; color: #686868; font-family: onest;">Behance </a>
-
-        <a href="https://dribbble.com/DEDROX2K" target="_blank"
-          style="padding-right: 20px; color: #686868; font-family: onest;">Dribble</a>
-      </div>
-
-    </h1>
-
-    <div class="container px-4 px-lg-5 nodispmob">
-      <div class="row gx-0">
-        <div class="col-lg-4">
-          <a class="portfolio-item text-center"
-            href="https://www.behance.net/gallery/209743653/AR-AIRPORT-NAVIGATION-Case-study" target="_blank">
-            <img class="img-fluid" src="images/portpie 1.png" />
-            <p class="indicator-highli " style="margin: 0% 7%;">Case study</p>
-
-            <p style="padding: 0% 7%;
-" class="mb-0">AR application to navigate airports</p>
-          </a>
-        </div>
-        <div class="col-lg-4">
-          <a class="portfolio-item text-center"
-            href="https://www.behance.net/gallery/200529521/CLEAR-BREATH-case-study-No-smoking-app" target="_blank">
-            <img class="img-fluid" src="images/portpie 2.png" />
-            <p class="indicator-highli" style="margin: 0% 7%;">Case study</p>
-
-            <p style="padding: 0% 7%;
-" class="mb-0">Detailed project on tackling smoking addiction</p>
-          </a>
-
-        </div>
-        <div class="col-lg-4">
-          <a class="portfolio-item text-center"
-            href="https://medium.com/@RaghavPrasannaUX/case-study-gym-finder-app-3ac05a38abe3" target="_blank">
-            <img class="img-fluid" src="images/portpie 3.png" />
-            <p class="indicator-highli" style="margin: 0% 7%;">mini Case study</p>
-
-            <p style="padding: 0% 7%;
-" class="mb-0">App designed for those who travel a lot and wants a quick gym sessions</p>
-          </a>
-
-        </div>
-      </div>
-
-      <div class="row gx-0">
-        <div class="col-lg-4">
-          <a class="portfolio-item text-center" href="https://dribbble.com/DEDROX2K" target="_blank">
-            <img class="img-fluid" src="images/portpie 4.png" />
-            <p class="indicator-highli" style="margin: 0% 7%;">CASE STUDY</p>
-
-            <p style="padding: 0% 7%;
-" class="mb-0">3D UI interfaces</p>
-          </a>
-        </div>
-        <div class="col-lg-4">
-          <a class="portfolio-item text-center" href="https://dribbble.com/shots/22200518-UI-screen-practices"
-            target="_blank">
-            <img class="img-fluid" src="images/portpie 5.png" />
-            <p class="indicator-highli" style="margin: 0% 7%;">App UI</p>
-
-            <p style="padding: 0% 7%;
-" class="mb-0">Sets of UI designs explorations</p>
-          </a>
-        </div>
-        <div class="col-lg-4">
-          <a class="portfolio-item text-center"
-            href="https://www.behance.net/gallery/184315285/Currency-Converter-app-Case-Study" target="_blank">
-            <img class="img-fluid" src="images/portpie 6.png" />
-            <p class="indicator-highli" style="margin: 0% 7%;">Mini case study</p>
-
-            <p style="padding: 0% 7%;
-" class="mb-0">Simple, currency calculator</p>
-          </a>
-        </div>
-      </div>
-
-      <div class="row gx-0">
-        <div class="col-lg-4">
-          <a class="portfolio-item text-center"
-            href="https://www.behance.net/gallery/175170719/Dashboard-design-UI-Mondaycom-redesign" target="_blank">
-            <img class="img-fluid" src="images/portpie 7.png" />
-            <p class="indicator-highli" style="margin: 0% 7%;">Web UI</p>
-
-            <p style="padding: 0% 7%;
-" class="mb-0">Dashboard re-design Monday.com</p>
-          </a>
-        </div>
-        <div class="col-lg-4">
-          <a class="portfolio-item text-center"
-            href="https://dribbble.com/shots/24985083-Portfolio-Mobile-website-design-03" target="_blank">
-            <img class="img-fluid" src="images/portpie 8.png" />
-            <p class="indicator-highli" style="margin: 0% 7%;">App UI</p>
-
-            <p style="padding: 0% 7%;
-" class="mb-0">Sets of UI designs explorations</p>
-          </a>
-        </div>
-        <div class="col-lg-4">
-          <a class="portfolio-item text-center" href="https://dribbble.com/shots/24985076-Portfolio-website-design-02"
-            target="_blank">
-            <img class="img-fluid" src="images/portpie 9.png" />
-            <p class="indicator-highli" style="margin: 0% 7%;">Web UI</p>
-
-            <p style="padding: 0% 7%;
-" class="mb-0">Sets of UI designs explorations</p>
-          </a>
-        </div>
-      </div>
-    </div>
-
-  </section>
-
-
-
-  <!-- Coreporate experience paragraph -->
-  <!-- <div id="pagesecshort2" data-aos="fade-bottom" data-aos-duration="1000" data-aos-once="false">
-
-
-    <div class="custom-container">
-      <div>
-        <span style="color: #5a5a5a;">As a person who is obsessed with the world of design and 3D! <br /></span>
-        <span style="color: #5a5a5a;"><br />I
-          initially started off as a </span>
-        <span style="color: black;">game designer & 3D artist.</span>
-        <span style="color: #5a5a5a;">
-          Since 2018, I’ve expanded into various markets, creating custom designs and helping </span>
-        <span style="color: black;">35+
-          clients</span>
-        <span style="color: #5a5a5a;">
-          develop applications, software, and games.</span>
-      </div>
-    </div>
-  </div> -->
-
-
-
-  <!-- Experience list
-  <h1 class="text-center he1mob nodispmob" style="    padding: 20% 0% 0% 0%;" data-aos="fade-top"
-    data-aos-duration="1000" data-aos-once="false">My experience </h1>
-  <div class="custom-container experience-section" data-aos="fade-top" data-aos-duration="1000" data-aos-once="false">
-    <div class="sticker" id="sticker3.8">
-      <img src="images/lasupdate.png">
-    </div>
-    <div class="sticker" id="sticker8">
-      <img src="images/me.png">
-    </div>
-
-
-    <div class="row mb-3">
-      <div class="col-md-8 job-title"> Product Designer </div>
-      <div class="col-md-4 text-md-right">October - Current · 3 Months</div>
-      <p class="w-100" style="font-weight: 800;">Opendatabay · Internship <span style="font-weight: 500;">(London,
-          UK ·
-          Remote)</span></p>
-    </div>
-
-    <div class="row mb-3">
-      <div class="col-md-8 job-title"> Designer</div>
-      <div class="col-md-4 text-md-right">Apr 2024 - Jun 2024 · 3 mos</div>
-      <p class="w-100" style="font-weight: 800;">Noun Town · Part-time
-        <span style="font-weight: 500;">(London,
-          UK ·
-          Remote)</span>
-      </p>
-
-    </div>
-
-    <div class="row mb-3">
-      <div class="col-md-8 job-title"> Creative Designer</div>
-      <div class="col-md-4 text-md-right">Jun 2022 - Nov 2023 · 1 yr 6 mos</div>
-      <p class="w-100" style="font-weight: 800;">LeagueX · Full-time
-        <span style="font-weight: 500;">(Bangalore · On-site)</span>
-      </p>
-
-    </div>
-
-    <div class="row mb-3">
-      <div class="col-md-8 job-title"> Junior 3D Artist/generalist</div>
-      <div class="col-md-4 text-md-right">Feb 2022 - Jun 2022 · 5 mos</div>
-      <p class="w-100" style="font-weight: 800;">Do. Creative · Internship
-        <span style="font-weight: 500;">(Bangalore · On-site)</span>
-      </p>
-
-    </div>
-
-    <div class="row mb-3">
-      <div class="col-md-8 job-title"> Design Generalist </div>
-      <div class="col-md-4 text-md-right">From 2019 - 2023 · 5+ yrs</div>
-      <p class="w-100" style="font-weight: 800;">Fiverr · Freelance <span style="font-weight: 500;">(Remote)</span></p>
-      <p class="w-50" style="padding-left: 2%;">From my early teen I started my freelancing journey. <a
-          href="https://youtu.be/fWZTuIvpyEE?si=1042FWnZJR-SoBrK">Click here! </a>to see
-        the
-        profile</p>
-    </div>
-  </div> -->
-
-
-
-
-
-
-  <!-- Fiverr image -->
-  <a class="justify-content-center align-items-center nodispmob" data-aos="fade-top" data-aos-duration="1000"
-    data-aos-once="false" target="_blank" class="fivbanner"
-    href="https://www.fiverr.com/dedrox_?source=gig_cards&referrer_gig_slug=create-a-low-poly-3d-environments-models&ref_ctx_id=fa09f517671c4267b9fda576d680dbc1&imp_id=0cd568ff-3782-465e-a989-2a726dfeea34">
-    <img class="fivbanner" style="width: 100%; height: auto; display: block; margin-top: 17%;" src="images/allrevs.png">
-  </a>
-
-  <!-- <a class="d-flex justify-content-center align-items-center" target="_blank"
-    href="https://www.fiverr.com/dedrox_?up_rollout=true">
-    <img class="fadeemg" style="width: 50%; height: auto; transform: rotate(2deg);" src="images/fiveestats.jpg">
-  </a> -->
-
-
-  <!-- Puzzle -->
-  <!-- <div id="puzzle" class="nodispmob" data-aos="fade-top" data-aos-duration="4000" data-aos-once="false"
-    data-aos-delay="100">
-    <div class="redbox d-flex justify-content-center align-items-center" style="z-index: 998;">
-    </div>
-
-    <div class="sticker" id="stickerBannerAd2">
-      <img src="images/body.png">
-    </div>
-    <div class="sticker" id="stickerBannerAd3">
-      <img src="images/head.png">
-    </div>
-    <div class="sticker" id="stickerBannerAd1">
-      <img src="images/ba2.png">
-    </div>
-
-
-    <div class="sticker" id="sticker1">
-      <img src="images/tape.png">
-    </div>
-    <div class="sticker" id="sticker2">
-      <img src="images/londonuk.png">
-    </div>
-    <div class="sticker" id="sticker2.1">
-      <img src="images/yesthatme.png">
-    </div>
-
-    <div class="sticker" id="sticker3">
-      <img src="images/since.png">
-    </div>
-    <div class="sticker" id="sticker3.9">
-      <img src="images/meee.png">
-    </div>
-
-
-
-
-
-    <div class="sticker" id="stickerBannerAd5">
-      <img src="images/ba4.png">
-    </div>
-    <div class="sticker" id="stickerBannerAd4">
-      <img src="images/ba3.png">
-    </div>
-
-    <div class="sticker" id="sticker9">
-      <img src="images/ba1.png">
-    </div>
-    <div class="sticker" id="sticker10">
-      <img src="images/ba8.png">
-    </div>
-    <div class="sticker" id="sticker11">
-      <img src="images/ba2.png">
-    </div>
-    <div class="sticker" id="sticker12">
-      <img src="images/ba5.png">
-    </div>
-    <div class="sticker" id="sticker13">
-      <img src="images/flow5.png">
-    </div>
-
-
-
-
-
-  </div> -->
-
-  <!-- Free fonts -->
-  <!-- <div id="pagesecshort2" data-aos="fade-top" data-aos-duration="1000" data-aos-once="false" data-aos-delay="100">
-    <div class="custom-container">
-      <span style="color: #5a5a5a;">
-        I don't want you to leave empty handed. Here you can </span>
-      <span style="color: black;">get some free fonts.</span>
-
-
-
-    </div>
-    <a vibrantcursor href="freefonts.html">
-      <img class="downcur" style="padding: 0% 0% 10% 20%;" src="images/font-download.png"> </a>
-
-
-
-  </div> -->
-
-  <!-- Consultation button -->
-  <div id="pagesec4" data-aos="fade-top" data-aos-duration="1000" data-aos-once="false" data-aos-delay="100">
-    <div class="consu nodispmob">
-      <div class="custom-container text-center consutex" style="padding-top: 0%; margin-bottom: 30px;">
-        <span style="font-family: Instrument Serif; font-weight: 700;">Have an idea? Let's talk. I'm currently
-          interested
-          in projects related to games, softwares, Applications or Corporate projects. <br>
-      </div>
-      <a href="index.html">
-        <div class="consubtn mx-auto text-center" style="letter-spacing: 0.1rem;">
-          SEND ME A QUICK MESSAGE
-        </div>
-      </a>
-    </div>
-
-
-    <div class="sticker" id="sticker2.2">
-      <img src="images/ba3.png">
-    </div>
-    <div class="sticker" id="sticker14">
-      <img src="images/me.png">
-    </div>
-
-  </div>
-
-
-  <div class="blur-box" style="    
-  height: 110px;
-  opacity: 90%;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: none; backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); user-select: none;     pointer-events: none;
-
-
-    background: rgba(225, 225, 225, 0.05);
-    mask-image: linear-gradient(rgb(255 255 255 / 0%) 0%, rgb(223 223 223) 100%, rgb(255 255 255 / 0%) 50%);">
-  </div>
-
-  <button class="summary" style="z-index: 100;"><a href="compressed.html">About me</a></button>
-
-  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-  <script>AOS.init();</script>
-</body>
-
-
-
-
-<!-- Footer -->
-<footer class="footer" style="margin-top: 1%;">
-
-
-  <div class="container">
-    <div class="row">
-      <div class="col-md-6">
-        <h3>Contact Me</h3>
-        <p> <a href="https://www.linkedin.com/in/raghav-prasanna-b530621b0/"
-            target="_blank">linkedin.com/raghav-prasanna</a><br>
-          raghavprasanna2000@gmail.com<br>
-          +44 7553 433334<br>
+    <section id="about" class="section reveal-on-scroll">
+      <div class="container section-shell">
+        <h2>About</h2>
+        <!-- Replace this section text any time with your updated profile summary -->
+        <p>
+          Experiential Designer and Creative Technologist with experience designing immersive brand experiences,
+          interactive installations, and spatial interfaces across digital and physical environments. Skilled in
+          combining 2D visual design, 3D environments, and emerging technologies to create engaging, user-centered
+          experiences.
+        </p>
+        <p>
+          Experienced in translating complex product and technology concepts into interactive demos and visual
+          storytelling systems, with a strong focus on AI-assisted creative workflows and rapid prototyping.
         </p>
       </div>
-      <div class="col-md-6">
-        <h3 style="text-align: end;">Follow Me</h3>
-        <ul class="list-inline" style="text-align: end;">
-          <li><a href="https://www.behance.net/raghavprasanna" target="_blank">Behance</a></li>
-          <li><a href="https://www.artstation.com/raghavprasanna" target="_blank">Artstation</a></li>
+    </section>
 
-          <li><a href="https://www.instagram.com/dedrox__/?hl=en" target="_blank">Instagram</a></li>
-          <li><a href="https://medium.com/@RaghavPrasannaUX" target="_blank">Medium</a></li>
-          <li><a href="https://www.youtube.com/@dedrox3d491/videos" target="_blank">Youtube</a></li>
-          <li><a href="https://codepen.io/Raghav-Prasanna-Lakshminarayanan" target="_blank">Codepen</a></li>
-          <li><a href="https://dribbble.com/DEDROX2K" target="_blank">Dribbble</a></li>
-          <li><a href="https://letterboxd.com/dedrox/films/reviews/" target="_blank">Letterboxd</a></li>
-          <li><a href="https://www.instagram.com/raghavprasanna_photography/?hl=en" target="_blank">Photography</a></li>
-          <li><a href="https://sketchfab.com/Raghavprasanna" target="_blank">Sketchfab</a></li>
+    <section id="experience" class="section reveal-on-scroll">
+      <div class="container">
+        <h2>Experience</h2>
+        <div class="stack">
+          <article class="card">
+            <h3>Aircards</h3>
+            <p class="meta">Product Development Assistant / Creative Technologist</p>
+            <p class="meta">March 2025 – Present</p>
+            <p>Supporting product and creative technology execution for interactive, experience-led outputs.</p>
+          </article>
 
+          <article class="card">
+            <h3>Studio Nefce</h3>
+            <p class="meta">Gamified UX Designer</p>
+            <p class="meta">Jan 2025 – March 2025</p>
+            <p>Designed gamified UX flows and interaction concepts for engagement-focused digital experiences.</p>
+          </article>
 
+          <article class="card">
+            <h3>Opendatabay</h3>
+            <p class="meta">Product Designer (Part-time)</p>
+            <p class="meta">Oct 2024 – Jan 2025</p>
+            <p>Contributed to product direction through clean interface design and rapid concept iteration.</p>
+          </article>
 
-        </ul>
+          <article class="card">
+            <h3>Noun Town</h3>
+            <p class="meta">Designer (Part-time)</p>
+            <p class="meta">April 2024 – June 2024</p>
+            <p>Created visual and UX assets to support learning-focused digital product experiences.</p>
+          </article>
+
+          <article class="card">
+            <h3>LeagueX</h3>
+            <p class="meta">Design Generalist</p>
+            <p class="meta">Jun 2022 – Nov 2023</p>
+            <p>Handled cross-disciplinary design across brand, product visuals, and digital touchpoints.</p>
+          </article>
+
+          <article class="card">
+            <h3>Do Creative Labs Ltd</h3>
+            <p class="meta">3D Designer</p>
+            <p class="meta">April 2022 – May 2022</p>
+            <p>Built spatial and 3D visual concepts for campaign and experiential design initiatives.</p>
+          </article>
+
+          <article class="card">
+            <h3>Freelance Designer &amp; Developer</h3>
+            <p class="meta">2018 – Present</p>
+            <p>Delivering end-to-end design and development support across independent client projects.</p>
+          </article>
+        </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-md-12">
-        <!-- <img src="images/footerhand.png" alt="Footer Image" class="image"
-          style="padding-top: 50px; z-index: 100; opacity: 85%; pointer-events: none;">
-        <img src="images/footerhand2.png" alt="Footer Image" class="image hidden"
-          style="padding-top: 50px; z-index: 100; opacity: 85%; pointer-events: none;"> -->
+    </section>
 
-        <img src="images/footerhand.png" alt="Footer Image" class="img-fluid"
-          style="padding-top: 50px; z-index: 100; opacity: 85%; pointer-events: none;">
+    <section id="skills" class="section reveal-on-scroll">
+      <div class="container">
+        <h2>Skills</h2>
+        <div class="skills-grid">
+          <article class="card">
+            <h3>Experiential &amp; Spatial Design</h3>
+            <ul>
+              <li>Interactive installations</li>
+              <li>Spatial design &amp; layouts</li>
+              <li>Physical-digital experiences</li>
+              <li>Environmental storytelling</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <h3>Visual &amp; Brand Design</h3>
+            <ul>
+              <li>Brand identity</li>
+              <li>Typography &amp; layout</li>
+              <li>Marketing assets</li>
+              <li>Presentation &amp; event design</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <h3>Creative Technology &amp; AI</h3>
+            <ul>
+              <li>Generative AI workflows</li>
+              <li>Rapid prototyping</li>
+              <li>Creative coding</li>
+              <li>Computer vision / depth sensing</li>
+            </ul>
+          </article>
+        </div>
       </div>
-    </div>
-  </div>
-</footer>
+    </section>
 
+    <section id="education" class="section reveal-on-scroll">
+      <div class="container">
+        <h2>Education</h2>
+        <div class="stack">
+          <article class="card">
+            <h3>MSc User Experience Design</h3>
+            <p>Birmingham City University, UK (2024 – 2025)</p>
+          </article>
+          <article class="card">
+            <h3>International Diploma in Communication Design</h3>
+            <p>NICC International Design College, India (2019 – 2022)</p>
+          </article>
+          <article class="card">
+            <h3>BSc Visual Communication</h3>
+            <p>Bharathiar University, India (2019 – 2021)</p>
+          </article>
+        </div>
+      </div>
+    </section>
 
+    <section id="contact" class="section reveal-on-scroll">
+      <div class="container section-shell">
+        <h2>Contact</h2>
+        <div class="contact-list">
+          <a href="tel:+447553433333">+44 75534 3333</a>
+          <a href="mailto:raghavprasanna2000@gmail.com">raghavprasanna2000@gmail.com</a>
+          <a href="https://dedrox2k.github.io/dedrox/prototype.html" target="_blank" rel="noopener noreferrer">dedrox2k.github.io/dedrox/prototype.html</a>
+          <a href="https://behance.net/raghavprasanna" target="_blank" rel="noopener noreferrer">behance.net/raghavprasanna</a>
+          <a href="https://artstation.com/raghavprasanna" target="_blank" rel="noopener noreferrer">artstation.com/raghavprasanna</a>
+        </div>
+      </div>
+    </section>
+  </main>
 
-<style>
-  footer h3 {
-    font-family: Onest;
-    font-weight: 800;
-    font-size: 30px;
-    color: #424242;
-  }
-
-
-  footer p {
-    font-family: Onest;
-    font-size: 20px;
-    font-weight: 500;
-
-    color: #424242;
-  }
-
-  .footer a {
-    color: #424242;
-    border-bottom: none;
-    text-decoration: none;
-    border-bottom: #424242 solid;
-
-    letter-spacing: 0.3px;
-    font-size: 25px;
-    font-weight: 400;
-
-    transition: letter-spacing 0.8s;
-    font-family: vcr;
-
-
-  }
-
-  .footer a :hover {
-    color: #5e5e5e;
-    transition: 0.5s;
-
-    letter-spacing: -1px;
-    transition: 0.5s;
-    border: solid #000000;
-  }
-
-  footer {
-    padding-top: 80px;
-    background-color: rgb(240, 240, 240);
-    border-top: solid #424242 3px;
-  }
-</style>
-
-
-
-
-
-<!-- GSAP SCROLL CLR CHANGE -->
-<!-- <script>
-  gsap.registerPlugin(ScrollTrigger);
-
-
-  // Define the common options for all animations
-  const commonOptions = {
-    toggleActions: "play none none reverse", // Change back to original color when scrolling back
-    markers: true,                           // Debug markers
-    immediateRender: false,                  // Ensures CSS initial color is not overwritten
-  };
-
-  // Start with body having a white background color (CSS handles initial color)
-  gsap.to("body", {
-    backgroundColor: "#47C6FC",  // Yellow when reaching the second div
-    scrollTrigger: {
-      trigger: "#pagesec1",       // Trigger the color change on the second section
-      start: "top center",        // Change color when the top of the second section reaches the center of the viewport
-      end: "bottom center",
-
-      // scrub: true,
-      duration: 0.1, // Faster transition     // Continue this color until the second section leaves the viewport
-      ...commonOptions,
-    },
-  });
-
-  // Revert to white background when going back to the first div
-  gsap.to("body", {
-    backgroundColor: "#46BE73",  // White when back on the home page (first div)
-    scrollTrigger: {
-      trigger: "#pagesec2",     // Trigger the color change based on the first section
-      start: "top center",      // Change back when the top of the first section reaches the center of the viewport
-      end: "bottom center",     // Continue white color until the first section leaves the viewport
-
-      // scrub: true,
-      duration: 0.1, // Faster transition     // Continue this color until the second section leaves the viewport
-
-      ...commonOptions,
-    },
-  });
-
-  // Revert to white background when going back to the first div
-  gsap.to("body", {
-    backgroundColor: "#E86AA6",  // White when back on the home page (first div)
-    scrollTrigger: {
-      trigger: "#pagesec3",     // Trigger the color change based on the first section
-      start: "top center",      // Change back when the top of the first section reaches the center of the viewport
-      end: "bottom center",     // Continue white color until the first section leaves the viewport
-
-      // scrub: true,
-      duration: 0.1, // Faster transition     // Continue this color until the second section leaves the viewport
-
-      ...commonOptions,
-    },
-  });
-
-
-  gsap.registerPlugin(ScrollTrigger);
-
-  let footer = document.querySelector("footer"),
-    getOverlap = () => Math.min(window.innerHeight, footer.offsetHeight), // we never want it to overlap more than the height of the screen
-    adjustFooterOverlap = () => footer.style.marginTop = -getOverlap() + "px"; // adjusts the margin-top of the footer to overlap the proper amount
-
-  adjustFooterOverlap();
-
-  // to make it responsive, re-calculate the margin-top on the footer when the ScrollTriggers revert
-  ScrollTrigger.addEventListener("revert", adjustFooterOverlap);
-
-  // magic
-  ScrollTrigger.create({
-    trigger: footer,
-    start: () => "top " + (window.innerHeight - getOverlap()),
-    end: () => "+=" + getOverlap(),
-    pin: true,
-  });
-
-</script> -->
-
-
-
+  <script src="ux.js"></script>
+</body>
 </html>

@@ -1084,6 +1084,53 @@
             if (!contactNameEl || !inputArea || !btnBack || !btnClear || !messagesArea || !inputText || !btnSend) {
                 return;
             }
+
+            const enableSmoothWheelOn = (el) => {
+                if (!el || el.dataset.smoothWheelBound === 'true') return;
+                el.dataset.smoothWheelBound = 'true';
+
+                const state = {
+                    current: el.scrollTop,
+                    target: el.scrollTop,
+                    raf: 0
+                };
+
+                const tick = () => {
+                    state.current += (state.target - state.current) * 0.18;
+                    if (Math.abs(state.target - state.current) < 0.35) {
+                        state.current = state.target;
+                    }
+                    el.scrollTop = state.current;
+                    if (Math.abs(state.target - state.current) > 0.35) {
+                        state.raf = requestAnimationFrame(tick);
+                    } else {
+                        state.raf = 0;
+                    }
+                };
+
+                el.addEventListener('wheel', (event) => {
+                    if (event.ctrlKey) return;
+                    const maxScroll = Math.max(0, el.scrollHeight - el.clientHeight);
+                    if (maxScroll <= 0) return;
+
+                    const delta = Math.abs(event.deltaY) >= Math.abs(event.deltaX) ? event.deltaY : event.deltaX;
+                    if (!Number.isFinite(delta) || Math.abs(delta) < 0.2) return;
+
+                    state.target = Math.min(Math.max(state.target + (delta * 1.05), 0), maxScroll);
+                    event.preventDefault();
+                    if (!state.raf) {
+                        state.raf = requestAnimationFrame(tick);
+                    }
+                }, { passive: false });
+
+                el.addEventListener('scroll', () => {
+                    if (state.raf) return;
+                    state.current = el.scrollTop;
+                    state.target = el.scrollTop;
+                }, { passive: true });
+            };
+
+            enableSmoothWheelOn(messagesArea);
             let activeExchange = null;
             let pendingTimeoutId = null;
 
