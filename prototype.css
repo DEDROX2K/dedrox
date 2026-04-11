@@ -932,7 +932,8 @@ body.reader-mode .pill-dark-block .pill-icon-slot {
     pointer-events: none;
     transition: opacity 0.22s var(--ease-lux), transform 0.22s var(--ease-lux);
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
-    z-index: 200; /* High enough to be over anything */
+    z-index: 200;
+    /* High enough to be over anything */
 }
 
 @media (hover: hover) {
@@ -1092,7 +1093,8 @@ body.device-expanded.case-open .left-controls {
     border: 1px solid rgba(255, 255, 255, 0.16);
     justify-content: flex-start;
     /* Switch to flex-start for grouping */
-    overflow: visible; /* Allow tooltips to show outside the boundaries */
+    overflow: visible;
+    /* Allow tooltips to show outside the boundaries */
 }
 
 .orb-scroll-line {
@@ -1439,8 +1441,8 @@ body.device-transitioning .device-container.expanded #pill-fifth-btn {
     overflow-x: hidden;
     padding: var(--site-padding-top) var(--site-padding-x) 0;
     /* Adding border radius here to inherit from device container */
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
 }
 
 .device-container.expanded .site-content {
