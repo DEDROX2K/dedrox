@@ -1,5 +1,5 @@
 :root {
-    --bg: #ECE7E3;
+    --bg: #e9e9e9;
     --l1-blur: 0.99vw;
     --l1-radius: 15.63vw;
     --l1-width: 7.58vw;
@@ -46,27 +46,27 @@
 
 @keyframes cycleColors {
     0% {
-        background-color: #e386b6;
+        background-color: #ffffff;
     }
 
     20% {
-        background-color: #ee4a4f;
+        background-color: #ffffff;
     }
 
     40% {
-        background-color: #eaaa69;
+        background-color: #ffffff;
     }
 
     60% {
-        background-color: #f17997;
+        background-color: #ffffff;
     }
 
     80% {
-        background-color: #435add;
+        background-color: #ffffff;
     }
 
     100% {
-        background-color: #e386b6;
+        background-color: #ffffff;
     }
 
 }
@@ -140,25 +140,9 @@ html {
     color: #1a1a1a;
 }
 
-/* ==========================================
-   🔵 DOT PATTERN OVERLAY
-   ========================================== */
-.dot-pattern {
-    position: fixed;
-    inset: 0;
-    z-index: -0;
-    pointer-events: none;
-    /* Completely non-interactive */
 
-    /* Dot tile: small radial dot repeated on a transparent grid */
-    background-image: radial-gradient(circle, rgba(0, 0, 0, 0.12) 1px, transparent 0px);
-    background-size: 22px 22px;
-    /* ← Tile size / dot spacing */
 
-    /* Only visible on the beige content, not on the black void */
-    mix-blend-mode: multiply;
-}
-
+/* --- HERO SECTION --- */
 /* --- HERO SECTION --- */
 .hero-section {
     position: relative;
@@ -168,7 +152,62 @@ html {
     align-items: center;
     justify-content: center;
     z-index: 1;
+    background: #f4f4f2; /* Light off-white background */
+    overflow: hidden;
 }
+
+.reactive-container {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* MAGIC FILTER: Everything inside this div will merge based on proximity */
+    filter: blur(14px) contrast(35);
+    background: #f4f4f2;
+}
+
+#pixelCanvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.hero-title-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    font-family: 'p1', serif;
+    font-size: 15vw;
+    color: #0047FF; /* Solid Bright Blue */
+    pointer-events: none;
+    margin: 0;
+    line-height: 1;
+    text-transform: none; /* mixed case as requested */
+}
+
+
+
+
+
+
+/* Reference Colors */
+.col-blue { background: #1e4d8c; }
+.col-red { background: #ff3b3b; }
+.col-green { background: #3ea055; }
+.col-pink { background: #e33e8c; }
+.col-cyan { background: #00bcd4; }
+.col-yellow { background: #f1c40f; }
+.col-black { background: #111111; }
+.col-navy { background: #0a2472; }
+.col-teal { background: #008080; }
+.col-orange { background: #ff8c00; }
+
 
 /* ==========================================
    🪟 HERO WINDOW SHOWCASE
@@ -442,8 +481,6 @@ html {
 .sw-canvas {
     flex: 1;
     position: relative;
-    background-image: radial-gradient(circle, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
-    background-size: 18px 18px;
     overflow: hidden;
 }
 
@@ -2922,9 +2959,23 @@ html {
 }
 
 @keyframes gridCellFade {
-    0%   { opacity: 1;    background: #000000; }
-    30%  { opacity: 0.75; background: #333333; }
-    70%  { opacity: 0.35; background: #888888; }
-    100% { opacity: 0;    background: #cccccc; }
+    0% {
+        opacity: 1;
+        background: #000000;
+    }
+
+    30% {
+        opacity: 0.75;
+        background: #333333;
+    }
+
+    70% {
+        opacity: 0.35;
+        background: #888888;
+    }
+
+    100% {
+        opacity: 0;
+        background: #cccccc;
+    }
 }
-

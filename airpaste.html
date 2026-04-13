@@ -16,11 +16,7 @@
 </head>
 
 <body>
-    <!-- ==========================================
-         🔵 DOT PATTERN OVERLAY
-         Set DOTS_ENABLED = false below to disable
-         ========================================== -->
-    <div class="dot-pattern" id="dotPattern"></div>
+
 
     <nav class="top-nav">
         <div class="nav-logo">
@@ -54,48 +50,12 @@
     </nav>
 
     <section class="hero-section" id="hero">
-        <div class="hero-layers">
-            <div class="layer layer-7" data-speed="0.1"></div>
-            <div class="layer layer-6" data-speed="0.2"></div>
-            <div class="layer layer-5" data-speed="0.4"></div>
-            <div class="layer layer-4" data-speed="0.6"></div>
-            <div class="layer layer-3" data-speed="0.8"></div>
-            <div class="layer layer-2" data-speed="1.0"></div>
-            <div class="layer layer-1" data-speed="1.2"></div>
+        <div class="reactive-container">
+            <canvas id="pixelCanvas"></canvas>
+            <h1 class="hero-title-center">AirPaste</h1>
         </div>
 
-        <h1 class="hero-title">AirPaste</h1>
 
-        <div class="hero-content">
-            <div class="hero-top-line">
-                <!-- <span>Close your eyes</span> -->
-                <!-- <div class="dashed-line"></div> -->
-                <!-- <span>to see clarity</span> -->
-            </div>
-
-            <div class="hero-text-grid">
-                <div class="hero-text-left"> <span class="core-message" style="line-height: -15px;"></span>
-                </div>
-                <div class="hero-text-right">
-                    <p class="hero-p-small">AirPaste is a local-<br>first workspace for<br>everything you<br>save —
-                        links, notes, images, and ideas, all in one place.</p>
-                </div>
-
-                <div class="hero-text-left">
-                    <span class="core-message">Core message</span>
-                </div>
-                <div class="hero-text-right">
-                    <p class="hero-p-large">The visual bookmark task management tool; <br>
-                        A local-first workspace for links, notes, and ideas — designed to feel real, fast, and yours.
-                    </p>
-                </div>
-
-                <div class="hero-text-left"></div>
-                <div class="hero-text-right">
-
-                </div>
-            </div>
-        </div>
 
 
     </section>
@@ -491,15 +451,78 @@
         window.scrollTo(0, 0);
 
         // ==========================================
-        // 🔵 DOT PATTERN — TOGGLE HERE
+        // 🔵 MORPHING METABALL CIRCLES
         // ==========================================
-        const DOTS_ENABLED = true; // ← Set to false to hide the dot overlay
+        (function() {
+            const canvas = document.getElementById('pixelCanvas');
+            if(!canvas) return;
+            const ctx = canvas.getContext('2d');
+            
+            let w, h;
+            const BALL_COUNT = 45;
+            const balls = [];
+            const BLUE = '#0047FF';
+            
+            function resize() {
+                w = canvas.width = window.innerWidth;
+                h = canvas.height = window.innerHeight;
+            }
+            
+            class Ball {
+                constructor() {
+                    this.reset();
+                }
+                reset() {
+                    this.x = Math.random() * w;
+                    this.y = Math.random() * h;
+                    this.vx = (Math.random() - 0.5) * 6;
+                    this.vy = (Math.random() - 0.5) * 6;
+                    this.radius = 40 + Math.random() * 80;
+                }
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    
+                    if (this.x < -this.radius) this.x = w + this.radius;
+                    if (this.x > w + this.radius) this.x = -this.radius;
+                    if (this.y < -this.radius) this.y = h + this.radius;
+                    if (this.y > h + this.radius) this.y = -this.radius;
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
 
-        (function () {
-            const el = document.getElementById('dotPattern');
-            if (!el) return;
-            el.style.display = DOTS_ENABLED ? 'block' : 'none';
+            function init() {
+                resize();
+                for(let i = 0; i < BALL_COUNT; i++) {
+                    balls.push(new Ball());
+                }
+            }
+
+            function animate() {
+                // Clear with background color (must match CSS background to avoid artifacting)
+                ctx.fillStyle = '#f4f4f2';
+                ctx.fillRect(0, 0, w, h);
+                
+                // NO JS filter here - it's handled by the CSS container
+                ctx.fillStyle = BLUE;
+                balls.forEach(b => {
+                    b.update();
+                    b.draw();
+                });
+
+                requestAnimationFrame(animate);
+            }
+
+            window.addEventListener('resize', resize);
+            init();
+            animate();
         })();
+
+
 
         // ==========================================
         // 🪟 SHOWCASE WINDOW TILT
@@ -806,7 +829,7 @@
         // ==========================================
         // 📜 HERO TITLE — SCROLL-DRIVEN SHRINK
         // ==========================================
-        const heroTitle = document.querySelector('.hero-title');
+        const heroTitle = document.querySelector('.hero-title-center');
 
         // The font size range (in px) JS will interpolate between.
         // We measure the starting size from the element itself after render.
@@ -814,7 +837,7 @@
         const RISE_PX = 50;   // rises 50px by the time hero is fully scrolled past
 
         // Snapshot the starting font size ONCE before any mutation
-        const FONT_START_PX = parseFloat(getComputedStyle(heroTitle).fontSize);
+        const FONT_START_PX = heroTitle ? parseFloat(getComputedStyle(heroTitle).fontSize) : 0;
 
         const navLinks = document.querySelector('.nav-links');
         const getBtn = document.querySelector('.get-btn');
@@ -822,11 +845,11 @@
         function updateHeroTitle() {
             const progress = Math.min(window.scrollY / 500, 1);
 
-            // Title Fly-out and Fade
+            // Title Fly-out
             const flyY = -300 * progress;
             if (heroTitle) {
-                heroTitle.style.opacity = 1 - progress;
-                heroTitle.style.transform = `translateX(-50%) translateY(${flyY}px)`;
+                heroTitle.style.opacity = 1;
+                heroTitle.style.transform = `translate(-50%, calc(-50% + ${flyY}px))`;
             }
 
             // Nav Elements Reveal
@@ -984,11 +1007,11 @@
         // ==========================================
         const CURSOR_CONFIG = {
             // --- Grid & cursor size ---
-            cellSize: 20,       // px — size of each grid tile (cursor snaps to this grid)
-            cursorSize: 20,       // px — width & height of the main cursor square
+            cellSize: 10,       // px — size of each grid tile (cursor snaps to this grid)
+            cursorSize: 10,       // px — width & height of the main cursor square
 
             // --- Trail ---
-            trailDuration: 450,      // ms — how long a cell stays visible before fully fading out
+            trailDuration: 100,      // ms — how long a cell stays visible before fully fading out
 
             // --- Color gradient (start = fresh cell, end = fully faded) ---
             colorStart: '#000000',  // color when a cell first activates
@@ -1081,7 +1104,7 @@
 
                 // Snap cursor to grid cell origin (top-left of the current cell)
                 cursor.style.left = (col * CFG.cellSize) + 'px';
-                cursor.style.top  = (row * CFG.cellSize) + 'px';
+                cursor.style.top = (row * CFG.cellSize) + 'px';
 
                 if (col === lastCol && row === lastRow) return;
                 lastCol = col;
