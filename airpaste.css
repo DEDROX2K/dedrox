@@ -152,7 +152,7 @@ html {
     align-items: center;
     justify-content: center;
     z-index: 1;
-    background: #f4f4f2; /* Light off-white background */
+    background: transparent; /* Removed background-color to allow transparency */
     overflow: hidden;
 }
 
@@ -165,8 +165,8 @@ html {
     align-items: center;
     justify-content: center;
     /* MAGIC FILTER: Everything inside this div will merge based on proximity */
-    filter: blur(14px) contrast(35);
-    background: #f4f4f2;
+    /* Removed heavy blur/contrast to make ASCII characters crisp */
+    background: transparent;
 }
 
 #pixelCanvas {
@@ -174,6 +174,11 @@ html {
     inset: 0;
     width: 100%;
     height: 100%;
+    /* Subtle grid background to emphasize the CA structure */
+    background-image: 
+        linear-gradient(rgba(0, 71, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 71, 255, 0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
 }
 
 .hero-title-center {
@@ -188,7 +193,9 @@ html {
     pointer-events: none;
     margin: 0;
     line-height: 1;
-    text-transform: none; /* mixed case as requested */
+    text-transform: none; 
+    /* Subtle glow for the title to maintain premium feel without heavy blur */
+    text-shadow: 0 0 20px rgba(0, 71, 255, 0.2);
 }
 
 
@@ -341,6 +348,136 @@ html {
 }
 
 /* AirPaste window - left, taller, matches reference */
+/* ==========================================
+   🎛️ CA CONTROL PANEL
+   ========================================== */
+.ca-controls {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1000;
+    width: 200px;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(0, 71, 255, 0.15);
+    border-radius: 14px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0 15px 35px rgba(0, 71, 255, 0.1);
+    color: #1a1a1a;
+    pointer-events: auto;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.ca-controls:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.85);
+}
+
+.ca-controls-drag-handle {
+    font-size: 10px;
+    color: rgba(0, 71, 255, 0.3);
+    text-align: center;
+    margin-top: -8px;
+    margin-bottom: -4px;
+    letter-spacing: 2px;
+    cursor: default;
+}
+
+.ca-controls h4 {
+    margin: 0;
+    font-family: 'fg', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #0047FF;
+}
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.control-label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.control-group label {
+    font-family: 'fg', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.control-group span {
+    font-family: monospace;
+    font-size: 0.6rem;
+    color: #0047FF;
+    font-weight: 700;
+}
+
+/* Range input styling */
+.control-group input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 4px;
+    background: rgba(0, 71, 255, 0.1);
+    border-radius: 2px;
+    outline: none;
+}
+
+.control-group input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px;
+    height: 12px;
+    background: #0047FF;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 71, 255, 0.3);
+    transition: transform 0.1s ease;
+}
+
+.control-group input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+.control-buttons {
+    display: flex;
+    gap: 6px;
+    margin-top: 4px;
+}
+
+.control-btn {
+    flex: 1;
+    background: #0047FF;
+    color: white;
+    border: none;
+    padding: 7px 0;
+    border-radius: 7px;
+    font-family: 'fg', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.control-btn:hover {
+    background: #003ECC;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 71, 255, 0.2);
+}
+
+.control-btn:active {
+    transform: translateY(0);
+}
+
 .airpaste-window {
     width: 48%;
     height: 100%;
