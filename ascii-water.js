@@ -11,14 +11,14 @@
 
     // --- 🎛️ SETTINGS ---
     const SETTINGS = {
-        gridSize: 20,       // Smaller cells for more detail
+        gridSize: 25,       // Smaller cells for more detail
         viscosity: 0.98,    // How much velocity is kept (0.9-0.99)
         diffusion: 0.97,    // How much 'residue' is kept (0.9-0.99)
         mouseForce: 0.4,    // Pushing strength
         residueStrength: 8, // Added density per move
-        fontSize: 14,
+        fontSize: 24,
         blue: '#0047FF',    // AirPaste Blue
-        white: '#FFFFFF'
+        white: '#e9e9e9'
     };
 
     let w, h, cols, rows;
@@ -29,7 +29,7 @@
         h = canvas.height = window.innerHeight;
         cols = Math.ceil(w / SETTINGS.gridSize) + 1;
         rows = Math.ceil(h / SETTINGS.gridSize) + 1;
-        
+
         grid = [];
         for (let y = 0; y < rows; y++) {
             for (let x = 0; x < cols; x++) {
@@ -62,13 +62,21 @@
     let moved = false;
 
     window.addEventListener('mousemove', (e) => {
-        if (!moved) { pmx = e.clientX; pmy = e.clientY; moved = true; }
-        mx = e.clientX;
-        my = e.clientY;
+        const rect = canvas.getBoundingClientRect();
+        // Check if cursor is within the hero section boundaries
+        if (e.clientY > rect.bottom || e.clientY < rect.top ||
+            e.clientX > rect.right || e.clientX < rect.left) {
+            moved = false; // Reset for when we re-enter
+            return;
+        }
+
+        if (!moved) { pmx = e.clientX - rect.left; pmy = e.clientY - rect.top; moved = true; }
+        mx = e.clientX - rect.left;
+        my = e.clientY - rect.top;
 
         const gx = Math.floor(mx / SETTINGS.gridSize);
         const gy = Math.floor(my / SETTINGS.gridSize);
-        
+
         const dvx = (mx - pmx) * SETTINGS.mouseForce;
         const dvy = (my - pmy) * SETTINGS.mouseForce;
 
@@ -90,9 +98,50 @@
         pmx = mx; pmy = my;
     });
 
+    // --- 👆 TAP TO RIPPLE ---
+    window.addEventListener('mousedown', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        // Check if cursor is within the hero
+        if (e.clientY > rect.bottom || e.clientY < rect.top ||
+            e.clientX > rect.right || e.clientX < rect.left) {
+            return;
+        }
+
+        const localMx = e.clientX - rect.left;
+        const localMy = e.clientY - rect.top;
+
+        const gx = Math.floor(localMx / SETTINGS.gridSize);
+        const gy = Math.floor(localMy / SETTINGS.gridSize);
+
+        const rippleRadius = 10;
+        const rippleStrength = 40;
+        const rippleVelocity = 2.5;
+
+        for (let j = -rippleRadius; j <= rippleRadius; j++) {
+            for (let i = -rippleRadius; i <= rippleRadius; i++) {
+                const tx = gx + i;
+                const ty = gy + j;
+                if (tx >= 0 && tx < cols && ty >= 0 && ty < rows) {
+                    const idx = ty * cols + tx;
+                    const d = Math.hypot(i, j);
+                    const falloff = Math.max(0, 1 - d / rippleRadius);
+
+                    if (falloff > 0) {
+                        // Outward velocity
+                        const angle = Math.atan2(j, i);
+                        grid[idx].vx += Math.cos(angle) * rippleVelocity * falloff;
+                        grid[idx].vy += Math.sin(angle) * rippleVelocity * falloff;
+                        // Massive density burst
+                        grid[idx].density += rippleStrength * falloff;
+                    }
+                }
+            }
+        }
+    });
+
     function update() {
-        const nextGrid = grid.map(c => ({...c}));
-        
+        const nextGrid = grid.map(c => ({ ...c }));
+
         for (let y = 0; y < rows; y++) {
             for (let x = 0; x < cols; x++) {
                 const idx = y * cols + x;
@@ -114,15 +163,15 @@
                         cell.density -= amt;
                     }
                 }
-                
+
                 // Add tiny swirl/curl effect to make it feel like "water"
                 const neighbors = [
-                    y > 0 ? grid[(y-1)*cols+x] : null,
-                    y < rows-1 ? grid[(y+1)*cols+x] : null,
-                    x > 0 ? grid[y*cols+(x-1)] : null,
-                    x < cols-1 ? grid[y*cols+(x+1)] : null
+                    y > 0 ? grid[(y - 1) * cols + x] : null,
+                    y < rows - 1 ? grid[(y + 1) * cols + x] : null,
+                    x > 0 ? grid[y * cols + (x - 1)] : null,
+                    x < cols - 1 ? grid[y * cols + (x + 1)] : null
                 ];
-                
+
                 neighbors.forEach((n, i) => {
                     if (n) {
                         const pull = 0.01;
@@ -145,7 +194,7 @@
             for (let x = 0; x < cols; x++) {
                 const cell = grid[y * cols + x];
                 const d = Math.min(cell.density, 10) / 10;
-                
+
                 const char = getArrow(cell.vx, cell.vy);
                 const sx = x * SETTINGS.gridSize;
                 const sy = y * SETTINGS.gridSize;
@@ -155,12 +204,12 @@
                     ctx.fillStyle = SETTINGS.blue;
                     ctx.fillRect(sx, sy, SETTINGS.gridSize, SETTINGS.gridSize);
                     ctx.fillStyle = SETTINGS.white;
-                    ctx.fillText(char, sx + SETTINGS.gridSize/2, sy + SETTINGS.gridSize/2);
+                    ctx.fillText(char, sx + SETTINGS.gridSize / 2, sy + SETTINGS.gridSize / 2);
                 } else {
                     // In low density, white background and blue arrow (strength based on density)
                     ctx.fillStyle = SETTINGS.blue;
                     ctx.globalAlpha = 0.1 + d * 0.9;
-                    ctx.fillText(char, sx + SETTINGS.gridSize/2, sy + SETTINGS.gridSize/2);
+                    ctx.fillText(char, sx + SETTINGS.gridSize / 2, sy + SETTINGS.gridSize / 2);
                     ctx.globalAlpha = 1.0;
                 }
             }

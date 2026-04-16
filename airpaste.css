@@ -162,8 +162,8 @@ html {
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1;
-    background: #FFFFFF;
+    z-index: 2000; /* Above everything including nav */
+    background: #e9e9e9;
     overflow: hidden;
 }
 
@@ -185,7 +185,8 @@ html {
     inset: 0;
     width: 100%;
     height: 100%;
-    z-index: 6; /* On top of cubes */
+    z-index: 6;
+    /* On top of cubes */
     pointer-events: none;
     background: transparent;
 }
@@ -195,7 +196,8 @@ html {
     inset: 0;
     width: 100vw;
     height: 100vh;
-    z-index: 5; /* Above background, but below ASCII */
+    z-index: 5;
+    /* Above background, but below ASCII */
     pointer-events: none;
 }
 
