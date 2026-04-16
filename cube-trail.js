@@ -13,7 +13,7 @@
         interval: 2,        // Update speed in ms (lower = smoother/faster)
     };
 
-    const canvas = document.getElementById('pixelCanvas');
+    const canvas = document.getElementById('cubeCanvas');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
 
