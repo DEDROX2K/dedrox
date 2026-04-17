@@ -162,7 +162,8 @@ html {
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 2000; /* Above everything including nav */
+    z-index: 2000;
+    /* Above everything including nav */
     background: #e9e9e9;
     overflow: hidden;
 }
@@ -219,50 +220,50 @@ html {
     text-shadow: 0 0 20px rgba(0, 71, 255, 0.2);
 }
 
-.hero-subtext {
-    position: relative;
-    margin-top: 2rem;
-    font-family: 'p2', monospace;
-    font-size: 1.1rem;
-    color: #000000;
-    letter-spacing: 0.6em;
-    /* font-weight: 700; */
-    text-transform: uppercase;
-    z-index: 10;
-    pointer-events: none;
-    opacity: 0.8;
+.hero-reveal-layer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    /* Behind the white canvas mask */
+    overflow: hidden;
 }
 
-/* ==========================================
-   🖼️ SKILLS-STYLE TITLE
-   ========================================== */
+.hero-bg-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
 .title-stack-wrapper {
     position: absolute;
-    bottom: 1vh;
-    /* Adjusted to balance the giant title and subtext */
-    width: 100%;
+    bottom: 3vh;
+    right: 2vw;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    /* padding: 0 2vw; */
+    align-items: flex-end;
+    justify-content: flex-end;
+    z-index: 10;
 }
 
-.hero-title-skills {
-    font-size: 15vw;
-    /* Maximize to fill full width */
-    font-family: 'p1', sans-serif;
-    color: #000;
-    text-transform: none;
-    line-height: 0.8;
-    letter-spacing: -0.05em;
-    /* Tighten for full-width impact */
-    position: relative;
-    margin: 0;
-    width: 100%;
-    text-align: center;
-    font-weight: normal;
-    /* Stacked extrusion effect matching the SKILLS reference */
+.hero-top-left-text {
+    position: absolute;
+    top: 3vh;
+    left: 2vw;
+    font-family: 'p1', serif;
+    font-size: 3rem;
+    color: #23413e;
+    z-index: 10;
+}
+
+.hero-logo-img {
+    width: 35vw;
+    height: auto;
+    pointer-events: none;
 }
 
 @media (max-width: 768px) {
@@ -1932,225 +1933,95 @@ html {
     /* Soft Sky Blue */
 }
 
-.nav-links {
-    position: fixed;
-    top: 28px;
-    left: 50%;
-    transform: translateX(-50%) translateY(0);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: #ffffff28;
-    backdrop-filter: blur(12px);
-    padding: 5px 5px 5px 5px;
-    border-radius: 100px;
-    z-index: 1000;
-    opacity: 1;
-    pointer-events: auto;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-    transition: opacity 0.5s ease, transform 0.5s ease;
-}
+/* ==========================================
+   💧 LIQUID GLASS NAV TOGGLE
+   ========================================== */
 
-.nav-btn {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 8px 18px;
-    background-color: transparent;
-    border-radius: 100px;
-    text-decoration: none;
-    transition: all 0.3s ease;
-}
-
-.nav-btn.active {
-    background-color: #ffffff;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
-.nav-text {
-    font-family: 'GoogleSans', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: #1a1a1a;
-    position: relative;
-    z-index: 2;
-}
-
-/* --- GET AIRPASTE BUTTON (Standard Pill) --- */
-.get-btn {
-    font-family: 'GoogleSans', sans-serif;
-    font-weight: 700;
-    font-size: 0.95rem;
-    color: #1a1a1a;
-    background-color: #ffffff;
-    padding: 12px 28px;
-    border-radius: 8px;
-    text-decoration: none;
-    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
-    opacity: 1;
-    transform: scale(1);
-}
-
-.get-btn.visible {
-    opacity: 1;
-    transform: scale(1);
-}
-
-.get-btn:hover {
-    background-color: #333;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-}
-
-.get-btn:active {
-    transform: translateY(1px) scale(0.98);
-}
-
-.nav-btn {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 7px 14px;
-    /* 10px 20px * 0.7 */
-    background-color: transparent;
-    border-radius: 100px;
-    text-decoration: none;
-    transition: all 0.3s ease;
-}
-
-.nav-btn .corner-dots {
-    display: grid;
-}
-
-.nav-btn.active {
-    background-color: #ffffff;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
-.nav-btn:last-child {
-    background-color: transparent;
-    padding: 7px 14px;
-    box-shadow: none;
-}
-
-
-.nav-text {
-    font-family: 'GoogleSans', sans-serif;
-    font-size: 0.8rem;
-    /* 1.1rem * 0.7 approx */
-    font-weight: 600;
-    color: #242424;
-    position: relative;
-    z-index: 2;
-}
-
-.nav-btn:hover {
-    box-shadow: 0 0 10px 4px #ffffff3d;
-}
-
-.corner-dots {
+.nav-toggle-wrapper {
     position: absolute;
-    width: 7px;
-    /* 10px * 0.7 */
-    height: 7px;
-    /* 10px * 0.7 */
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    gap: 2px;
-    /* 3px * 0.7 approx */
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    pointer-events: auto;
+}
+
+.nav-toggle-container {
+    background: rgba(220, 220, 220, 0.4); /* Matches grey background in reference */
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 100px;
+    padding: 4px;
+    display: flex;
+    position: relative;
+    box-shadow: 
+        0 12px 30px rgba(0, 0, 0, 0.08),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+/* Layer specifically for the morphing indicator background */
+.nav-toggle-gooey-layer {
+    position: absolute;
+    inset: 4px; /* match container padding */
+    filter: url("#goo");
     pointer-events: none;
+    z-index: 1;
 }
 
-.top-left {
-    top: -7px;
-    left: -7px;
+.nav-toggle-indicator {
+    position: absolute;
+    height: 100%;
+    width: 60px; /* dynamic in JS */
+    background: #ffffff;
+    border-radius: 100px;
+    /* Use transitions for the liquid stretch feel */
+    transition: transform 0.7s cubic-bezier(0.85, 0, 0.15, 1), 
+                width 0.4s cubic-bezier(0.85, 0, 0.15, 1);
+    top: 0;
+    left: 0;
 }
 
-.top-right {
-    top: -7px;
-    right: -7px;
+.nav-toggle-buttons {
+    display: flex;
+    position: relative;
+    z-index: 2; /* ABOVE the gooey layer */
 }
 
-.bottom-left {
-    bottom: -7px;
-    left: -7px;
+.nav-toggle-btn {
+    border: none;
+    background: transparent;
+    padding: 12px 28px;
+    border-radius: 100px;
+    font-family: 'fg', sans-serif;
+    font-weight: 700;
+    font-size: 1.25rem; /* Larger text as in reference */
+    color: #1a1a1a;
+    cursor: pointer;
+    transition: color 0.4s ease;
+    white-space: nowrap;
 }
 
-.bottom-right {
-    bottom: -7px;
-    right: -7px;
+.nav-toggle-btn.active {
+    color: #000;
 }
 
-.corner-dots i {
-    background-color: #ffffff;
-    border-radius: 1px;
-    opacity: 0;
-    transform: scale(0.5);
-    transition: opacity 0.1s ease, transform 0.1s ease;
+.nav-toggle-btn:not(.active) {
+    color: rgba(26, 26, 26, 0.5);
 }
 
-.top-left i:nth-child(4),
-.top-right i:nth-child(3),
-.bottom-left i:nth-child(2),
-.bottom-right i:nth-child(1) {
-    visibility: hidden;
+.nav-toggle-btn:hover:not(.active) {
+    color: rgba(26, 26, 26, 0.8);
 }
 
-.nav-btn:hover .corner-dots i {
-    opacity: 1;
-    transform: scale(1);
+/* Logo Alignment fix */
+.nav-logo svg {
+    height: 48px;
+    width: auto;
+    display: block;
+    margin-top: -10px; /* Slight optical adjustment */
 }
 
-.nav-btn .top-left i:nth-child(1) {
-    transition-delay: 0.05s;
-}
-
-.nav-btn .top-left i:nth-child(2) {
-    transition-delay: 0.12s;
-}
-
-.nav-btn .top-left i:nth-child(3) {
-    transition-delay: 0.02s;
-}
-
-.nav-btn .top-right i:nth-child(1) {
-    transition-delay: 0.18s;
-}
-
-.nav-btn .top-right i:nth-child(2) {
-    transition-delay: 0.08s;
-}
-
-.nav-btn .top-right i:nth-child(4) {
-    transition-delay: 0.15s;
-}
-
-.nav-btn .bottom-left i:nth-child(1) {
-    transition-delay: 0.09s;
-}
-
-.nav-btn .bottom-left i:nth-child(3) {
-    transition-delay: 0.19s;
-}
-
-.nav-btn .bottom-left i:nth-child(4) {
-    transition-delay: 0.04s;
-}
-
-.nav-btn .bottom-right i:nth-child(2) {
-    transition-delay: 0.14s;
-}
-
-.nav-btn .bottom-right i:nth-child(3) {
-    transition-delay: 0.07s;
-}
-
-.nav-btn .bottom-right i:nth-child(4) {
-    transition-delay: 0.22s;
-}
 
 /* ==========================================
    🖊️ HIGHLIGHT / MARKER TEXT SECTION

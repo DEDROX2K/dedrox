@@ -11,18 +11,21 @@
 
     // --- 🎛️ SETTINGS ---
     const SETTINGS = {
-        gridSize: 25,       // Smaller cells for more detail
+        gridSize: 20,       // Smaller cells for more detail
         viscosity: 0.98,    // How much velocity is kept (0.9-0.99)
         diffusion: 0.97,    // How much 'residue' is kept (0.9-0.99)
         mouseForce: 0.4,    // Pushing strength
-        residueStrength: 8, // Added density per move
-        fontSize: 24,
-        blue: '#0047FF',    // AirPaste Blue
-        white: '#e9e9e9'
+        residueStrength: 29, // Added density per move
+        fontSize: 14,
+        blue: '#a1a1a1ff',    // AirPaste Blue
+        white: '#ff0000ff',
+        coverImgSrc: 'images/bg19.jpg'
     };
 
     let w, h, cols, rows;
     let grid = [];
+    const coverImg = new Image();
+    coverImg.src = SETTINGS.coverImgSrc;
 
     function init() {
         w = canvas.width = window.innerWidth;
@@ -184,8 +187,48 @@
     }
 
     function draw() {
-        ctx.clearRect(0, 0, w, h);
+        // 1. Fill/Draw the cover image as the mask
+        ctx.globalCompositeOperation = 'source-over';
 
+        if (coverImg.complete) {
+            // "Cover" scaling logic for drawing image on canvas
+            const imgAspect = coverImg.width / coverImg.height;
+            const canvasAspect = w / h;
+            let renderW, renderH, offsetX, offsetY;
+
+            if (canvasAspect > imgAspect) {
+                renderW = w;
+                renderH = w / imgAspect;
+                offsetX = 0;
+                offsetY = -(renderH - h) / 2;
+            } else {
+                renderW = h * imgAspect;
+                renderH = h;
+                offsetX = -(renderW - w) / 2;
+                offsetY = 0;
+            }
+            ctx.drawImage(coverImg, offsetX, offsetY, renderW, renderH);
+        } else {
+            // Fallback while loading
+            ctx.fillStyle = SETTINGS.white;
+            ctx.fillRect(0, 0, w, h);
+        }
+
+        // 2. Punch holes where the density is high
+        ctx.globalCompositeOperation = 'destination-out';
+        for (let y = 0; y < rows; y++) {
+            for (let x = 0; x < cols; x++) {
+                const cell = grid[y * cols + x];
+                if (cell.density > 2) {
+                    const sx = x * SETTINGS.gridSize;
+                    const sy = y * SETTINGS.gridSize;
+                    ctx.fillRect(sx, sy, SETTINGS.gridSize, SETTINGS.gridSize);
+                }
+            }
+        }
+
+        // 3. Draw the arrows on top
+        ctx.globalCompositeOperation = 'source-over';
         ctx.font = `${SETTINGS.fontSize}px 'Courier New', monospace`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
@@ -196,22 +239,13 @@
                 const d = Math.min(cell.density, 10) / 10;
 
                 const char = getArrow(cell.vx, cell.vy);
-                const sx = x * SETTINGS.gridSize;
-                const sy = y * SETTINGS.gridSize;
+                const sx = x * SETTINGS.gridSize + SETTINGS.gridSize / 2;
+                const sy = y * SETTINGS.gridSize + SETTINGS.gridSize / 2;
 
-                // In high density areas, fill the background blue and show white arrow
-                if (cell.density > 2) {
-                    ctx.fillStyle = SETTINGS.blue;
-                    ctx.fillRect(sx, sy, SETTINGS.gridSize, SETTINGS.gridSize);
-                    ctx.fillStyle = SETTINGS.white;
-                    ctx.fillText(char, sx + SETTINGS.gridSize / 2, sy + SETTINGS.gridSize / 2);
-                } else {
-                    // In low density, white background and blue arrow (strength based on density)
-                    ctx.fillStyle = SETTINGS.blue;
-                    ctx.globalAlpha = 0.1 + d * 0.9;
-                    ctx.fillText(char, sx + SETTINGS.gridSize / 2, sy + SETTINGS.gridSize / 2);
-                    ctx.globalAlpha = 1.0;
-                }
+                ctx.fillStyle = SETTINGS.blue;
+                ctx.globalAlpha = cell.density > 2 ? 1.0 : (0.1 + d * 0.9);
+                ctx.fillText(char, sx, sy);
+                ctx.globalAlpha = 1.0;
             }
         }
     }

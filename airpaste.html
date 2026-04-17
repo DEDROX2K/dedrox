@@ -43,6 +43,24 @@
             </svg>
         </div>
 
+        <div class="nav-toggle-wrapper">
+            <div class="nav-toggle-container">
+                <!-- Filtered Layer (for gooey morphing only) -->
+                <div class="nav-toggle-gooey-layer">
+                    <div class="nav-toggle-indicator"></div>
+                </div>
+
+                <!-- Crisp Layer (for text visibility) -->
+                <div class="nav-toggle-buttons">
+                    <button class="nav-toggle-btn active" id="toggleWhat">What!</button>
+                    <button class="nav-toggle-btn" id="toggleWhy">Why?</button>
+                    <button class="nav-toggle-btn" id="toggleFree">For Free?</button>
+                    <button class="nav-toggle-btn" id="toggleNext">What's Next*</button>
+                </div>
+            </div>
+        </div>
+
+
         <!-- Download button with corner-dots effect -->
         <!-- <a href="#" class="nav-download-btn" id="navDownloadBtn">
             Download AirPaste
@@ -55,10 +73,19 @@
 
     <section class="hero-section" id="hero">
         <canvas id="pixelCanvas"></canvas>
-        <div class="reactive-container">
-            <div class="title-stack-wrapper">
-                <h1 class="hero-title-skills" data-text="AirPaste">AirPaste</h1>
-                <div class="hero-subtext">BOOKMARK TOOL</div>
+        <div class="hero-reveal-layer">
+            <img src="images/bg10.jpg" class="hero-bg-img" alt="Background">
+            <div class="reactive-container">
+                <div class="hero-top-left-text">
+                    Local first -Free and Open-Source <br>
+                    <br>
+                    In our opinion... <br>
+                    It should not cost 10£ monthly to save your bookmarks. <br>
+                    | - Raghav
+                </div>
+                <div class="title-stack-wrapper">
+                    <img src="images/Vector/namenlogo.png" alt="Name Logo" class="hero-logo-img">
+                </div>
             </div>
         </div>
     </section>
@@ -267,16 +294,14 @@
     <!-- ==========================================
          🍱 PORTFOLIO BENTO GRID
          ========================================== -->
-    <section class="portfolio-bento-section">
+    <!-- <section class="portfolio-bento-section">
         <div class="bento-grid">
-            <!-- Blue Card (Folder) -->
             <div class="bento-card blue folder">
                 <div class="card-content">
                     <span class="badge">About me</span>
                 </div>
             </div>
 
-            <!-- White Card (Role) -->
             <div class="bento-card white">
                 <div class="card-content">
                     <h3>Head of Brand + Creative at Plumb</h3>
@@ -287,7 +312,6 @@
                 </div>
             </div>
 
-            <!-- Orange Card (Font) -->
             <div class="bento-card orange">
                 <div class="card-content">
                     <p>In 2020 I designed Mango, a reverse contrast text typeface, in Latin and Gujarati script. I
@@ -296,7 +320,6 @@
                 </div>
             </div>
 
-            <!-- Red Card (Tall) -->
             <div class="bento-card red span-row-3">
                 <div class="card-content">
                     <img src="images/DEDROX.DSGN/AN1.jpg" alt="illustration" class="full-img">
@@ -305,13 +328,10 @@
                 </div>
             </div>
 
-            <!-- Illustration Card (Tall/Procreate) -->
             <div class="bento-card illustration-card span-row-2">
                 <img src="images/DEDROX.DSGN/AN2.jpg" alt="procreate drawing" class="full-img">
                 <span class="badge bottom">Sometimes I draw in Procreate.</span>
             </div>
-
-            <!-- Green Card (Goopy) -->
             <div class="bento-card green">
                 <div class="card-content centered">
                     <h2 class="goopy-text">keya</h2>
@@ -319,7 +339,6 @@
                 </div>
             </div>
 
-            <!-- Yellow Card (Dissertation) -->
             <div class="bento-card yellow">
                 <div class="card-content">
                     <img src="images/DEDROX.DSGN/IT.svg" alt="icon" class="top-icon">
@@ -330,7 +349,6 @@
                 </div>
             </div>
 
-            <!-- Dark Green Card (Wide) -->
             <div class="bento-card dark-green span-col-2">
                 <div class="card-content">
                     <h3>I always come back to letterforms</h3>
@@ -341,7 +359,6 @@
                 </div>
             </div>
 
-            <!-- Light Green Card (Scholarship) -->
             <div class="bento-card light-green">
                 <div class="card-content centered">
                     <div class="circular-logo">
@@ -351,7 +368,6 @@
                 </div>
             </div>
 
-            <!-- White Card (Newsletter) -->
             <div class="bento-card white">
                 <div class="card-content">
                     <img src="images/DEDROX.DSGN/PIX.svg" alt="icon" class="top-icon">
@@ -361,7 +377,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
 
 
 
@@ -447,6 +463,19 @@
             </div>
         </div>
     </div>
+
+    <!-- Gooey Filter for Liquid Nav -->
+    <svg style="visibility: hidden; position: absolute;" width="0" height="0" xmlns="http://www.w3.org/2000/svg"
+        version="1.1">
+        <defs>
+            <filter id="goo">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
+                    result="goo" />
+            </filter>
+        </defs>
+    </svg>
+
 
     <script>
         // Force scroll to top on every page load (prevents ScrollTrigger.refresh drift)
@@ -799,15 +828,14 @@
 
             card.addEventListener('mouseleave', () => {
                 cancelAnimationFrame(rafId);
-                targetTiltX = 0;
-                targetTiltY = 0;
-                // Ease back to neutral with a quick extra loop
+                targetTiltX = 0; targetTiltY = 0;
+
                 let frames = 0;
                 function settle() {
-                    tiltX = lerp(tiltX, 0, 0.06);
-                    tiltY = lerp(tiltY, 0, 0.06);
+                    tiltX = lerp(tiltX, 0, 0.08);
+                    tiltY = lerp(tiltY, 0, 0.08);
                     card.style.transform = `rotateY(${tiltX}deg) rotateX(${-tiltY}deg)`;
-                    if (++frames < 60) requestAnimationFrame(settle);
+                    if (++frames < 50) requestAnimationFrame(settle);
                 }
                 settle();
             });
@@ -897,7 +925,54 @@
             ScrollTrigger.refresh();
         });
 
+
+        // ==========================================
+        // 💧 LIQUID NAV TOGGLE LOGIC
+        // ==========================================
+        (function () {
+            const container = document.querySelector('.nav-toggle-container');
+            const indicator = document.querySelector('.nav-toggle-indicator');
+            const btns = document.querySelectorAll('.nav-toggle-btn');
+
+            if (!container || !indicator) return;
+
+            function updateToggle(btn) {
+                if (!btn) return;
+
+                btns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                // Get positions relative to the container
+                const btnRect = btn.getBoundingClientRect();
+                const containerRect = container.getBoundingClientRect();
+
+                // Calculate the relative X position
+                // We subtract 4 to account for the container's padding
+                const leftOffset = btnRect.left - containerRect.left - 4;
+
+                indicator.style.width = btnRect.width + 'px';
+                indicator.style.transform = `translateX(${leftOffset}px)`;
+            }
+
+            btns.forEach(btn => {
+                btn.addEventListener('click', () => updateToggle(btn));
+            });
+
+            // Initial position sync - more delay to ensure layout is perfect
+            window.addEventListener('load', () => {
+                const activeBtn = document.querySelector('.nav-toggle-btn.active');
+                if (activeBtn) updateToggle(activeBtn);
+            });
+
+            // Also sync on resize
+            window.addEventListener('resize', () => {
+                const activeBtn = document.querySelector('.nav-toggle-btn.active');
+                if (activeBtn) updateToggle(activeBtn);
+            });
+        })();
+
     </script>
+
 </body>
 
 </html>
