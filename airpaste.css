@@ -162,7 +162,7 @@ html {
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 2000;
+    z-index: 99999;
     /* Above everything including nav */
     background: #e9e9e9;
     overflow: hidden;
@@ -197,8 +197,8 @@ html {
     inset: 0;
     width: 100vw;
     height: 100vh;
-    z-index: 5;
-    /* Above background, but below ASCII */
+    z-index: 9000;
+    /* Above nav bar, but below hero section */
     pointer-events: none;
 }
 
@@ -2086,6 +2086,8 @@ html {
    🃏 FAN CARD GALLERY
    ========================================== */
 .fan-section {
+    position: relative;
+    z-index: 20;
     width: 100%;
     padding: 10vh 0 20vh;
     display: flex;
@@ -2493,7 +2495,7 @@ html {
    ========================================== */
 .dl-section {
     width: 100%;
-    background-color: #0f0f0f;
+    background-color: var(--bg);
     padding: 16vh 5vw 14vh 5vw;
     box-sizing: border-box;
     display: flex;
@@ -2512,7 +2514,7 @@ html {
     width: 60vw;
     height: 60vw;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(108, 92, 231, 0.12) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(108, 92, 231, 0.08) 0%, transparent 70%);
     pointer-events: none;
 }
 
@@ -2532,9 +2534,9 @@ html {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    color: rgba(255, 255, 255, 0.55);
+    background: rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    color: rgba(0, 0, 0, 0.6);
     font-size: 0.72rem;
     font-weight: 600;
     letter-spacing: 0.12em;
@@ -2548,7 +2550,7 @@ html {
     font-family: 'p1', serif;
     font-size: clamp(3rem, 9vw, 7rem);
     font-weight: 400;
-    color: #ffffff;
+    color: #1a1a1a;
     line-height: 1.05;
     margin: 0;
     letter-spacing: -0.03em;
@@ -2557,7 +2559,7 @@ html {
 .dl-sub {
     font-family: 'fg', sans-serif;
     font-size: 1.05rem;
-    color: rgba(255, 255, 255, 0.45);
+    color: rgba(0, 0, 0, 0.6);
     line-height: 1.7;
     margin: 0;
 }
@@ -2568,8 +2570,8 @@ html {
     gap: 0.75rem;
     margin-top: 1rem;
     padding: 18px 36px;
-    background: #ffffff;
-    color: #0f0f0f;
+    background: #111111;
+    color: #ffffff;
     font-family: 'fg', sans-serif;
     font-weight: 700;
     font-size: 1rem;
@@ -2580,13 +2582,13 @@ html {
     transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
         box-shadow 0.3s ease,
         background-color 0.2s ease;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
 }
 
 .dl-btn:hover {
     transform: translateY(-4px) scale(1.02);
-    box-shadow: 0 20px 50px rgba(108, 92, 231, 0.35);
-    background-color: #f0edff;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+    background-color: #000000;
 }
 
 .dl-btn:active {
@@ -2604,8 +2606,8 @@ html {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: rgba(0, 0, 0, 0.4);
-    background: rgba(0, 0, 0, 0.07);
+    color: rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.15);
     padding: 3px 9px;
     border-radius: 100px;
 }
@@ -2622,7 +2624,7 @@ html {
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
-    color: rgba(255, 255, 255, 0.3);
+    color: rgba(0, 0, 0, 0.4);
     font-size: 0.82rem;
     font-family: 'fg', sans-serif;
 }
@@ -2634,7 +2636,7 @@ html {
 }
 
 .dl-meta-sep {
-    color: rgba(255, 255, 255, 0.15);
+    color: rgba(0, 0, 0, 0.2);
 }
 
 .dl-meta-link {
@@ -2643,7 +2645,7 @@ html {
 }
 
 .dl-meta-link:hover {
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(0, 0, 0, 0.8);
 }
 
 .scrubber-label-row {
