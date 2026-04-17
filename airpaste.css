@@ -1899,42 +1899,12 @@ html {
 }
 
 #logo-card {
-    /* 15 seconds for a very smooth, slow transition */
-    animation: airPasteColors 25s infinite ease-in-out;
-}
-
-@keyframes airPasteColors {
-
-    0%,
-    100% {
-        fill: #ffffff;
-    }
-
-    /* Soft Indigo */
-    20% {
-        fill: #ffffffe0;
-    }
-
-    /* Soft Rose */
-    40% {
-        fill: #ffffff;
-    }
-
-    /* Soft Emerald */
-    60% {
-        fill: #ffffff;
-    }
-
-    /* Soft Amber */
-    80% {
-        fill: #ffffff;
-    }
-
-    /* Soft Sky Blue */
+    /* Static color, no animation */
+    fill: #BAB2FF;
 }
 
 /* ==========================================
-   💧 LIQUID GLASS NAV TOGGLE
+   👾 ASCII / PIXEL NAV TOGGLE
    ========================================== */
 
 .nav-toggle-wrapper {
@@ -1947,71 +1917,88 @@ html {
 }
 
 .nav-toggle-container {
-    background: rgba(220, 220, 220, 0.4); /* Matches grey background in reference */
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 100px;
+    background: #222; /* Darker bar */
     padding: 4px;
     display: flex;
     position: relative;
-    box-shadow: 
-        0 12px 30px rgba(0, 0, 0, 0.08),
-        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    /* Pixelated corner cutouts */
+    clip-path: polygon(
+        0 6px, 2px 6px, 2px 4px, 4px 4px, 4px 2px, 6px 2px, 6px 0,
+        calc(100% - 6px) 0, calc(100% - 6px) 2px, calc(100% - 4px) 2px, calc(100% - 4px) 4px, calc(100% - 2px) 4px, calc(100% - 2px) 6px, 100% 6px,
+        100% calc(100% - 6px), calc(100% - 2px) calc(100% - 6px), calc(100% - 2px) calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) calc(100% - 2px), calc(100% - 6px) calc(100% - 2px), calc(100% - 6px) 100%,
+        6px 100%, 6px calc(100% - 2px), 4px calc(100% - 2px), 4px calc(100% - 4px), 2px calc(100% - 4px), 2px calc(100% - 6px), 0 calc(100% - 6px)
+    );
 }
 
-/* Layer specifically for the morphing indicator background */
+/* Morphing indicator background */
 .nav-toggle-gooey-layer {
     position: absolute;
-    inset: 4px; /* match container padding */
-    filter: url("#goo");
+    inset: 4px; 
     pointer-events: none;
     z-index: 1;
+    filter: none !important; /* Remove gooey effect */
 }
 
 .nav-toggle-indicator {
     position: absolute;
     height: 100%;
-    width: 60px; /* dynamic in JS */
-    background: #ffffff;
-    border-radius: 100px;
-    /* Use transitions for the liquid stretch feel */
-    transition: transform 0.7s cubic-bezier(0.85, 0, 0.15, 1), 
-                width 0.4s cubic-bezier(0.85, 0, 0.15, 1);
+    width: 60px;
+    background: #dcdcdc; /* Light grey from reference */
+    border-radius: 0;
+    /* Snap transition */
+    transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1), 
+                width 0.4s cubic-bezier(0.19, 1, 0.22, 1);
     top: 0;
     left: 0;
+    
+    /* Pixel corners for the indicator box */
+    clip-path: polygon(
+        0 6px, 2px 6px, 2px 4px, 4px 4px, 4px 2px, 6px 2px, 6px 0,
+        calc(100% - 6px) 0, calc(100% - 6px) 2px, calc(100% - 4px) 2px, calc(100% - 4px) 4px, calc(100% - 2px) 4px, calc(100% - 2px) 6px, 100% 6px,
+        100% calc(100% - 6px), calc(100% - 2px) calc(100% - 6px), calc(100% - 2px) calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) calc(100% - 2px), calc(100% - 6px) calc(100% - 2px), calc(100% - 6px) 100%,
+        6px 100%, 6px calc(100% - 2px), 4px calc(100% - 2px), 4px calc(100% - 4px), 2px calc(100% - 4px), 2px calc(100% - 6px), 0 calc(100% - 6px)
+    );
 }
 
 .nav-toggle-buttons {
     display: flex;
     position: relative;
-    z-index: 2; /* ABOVE the gooey layer */
+    z-index: 2;
 }
 
 .nav-toggle-btn {
     border: none;
     background: transparent;
-    padding: 12px 28px;
-    border-radius: 100px;
-    font-family: 'fg', sans-serif;
+    padding: 10px 24px;
+    font-family: 'p2', monospace; /* Pixel font */
     font-weight: 700;
-    font-size: 1.25rem; /* Larger text as in reference */
-    color: #1a1a1a;
+    font-size: 1.5rem;
+    color: #ffffff;
     cursor: pointer;
-    transition: color 0.4s ease;
+    transition: color 0.3s ease;
     white-space: nowrap;
+    text-transform: uppercase;
 }
 
 .nav-toggle-btn.active {
-    color: #000;
+    color: #000; /* Black text on grey background */
 }
 
-.nav-toggle-btn:not(.active) {
-    color: rgba(26, 26, 26, 0.5);
+@keyframes asciiJitter {
+    0% { transform: translate(0, 0); }
+    20% { transform: translate(-1.5px, 0.5px); }
+    40% { transform: translate(1.5px, -0.5px); }
+    60% { transform: translate(-0.5px, -1.5px); }
+    80% { transform: translate(0.5px, 1.5px); }
+    100% { transform: translate(0, 0); }
+}
+
+.nav-toggle-btn:hover {
+    color: #fff;
 }
 
 .nav-toggle-btn:hover:not(.active) {
-    color: rgba(26, 26, 26, 0.8);
+    color: #fff;
 }
 
 /* Logo Alignment fix */

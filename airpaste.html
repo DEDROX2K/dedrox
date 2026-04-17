@@ -17,6 +17,8 @@
     <script src="cube-trail.js" defer></script>
     <script src="ascii-water.js" defer></script>
     <script src="carousel.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.162.0/three.min.js"></script>
+    <script src="transition.js" defer></script>
 </head>
 
 <body>
@@ -53,7 +55,7 @@
 
                 <!-- Crisp Layer (for text visibility) -->
                 <div class="nav-toggle-buttons">
-                    <button class="nav-toggle-btn active" id="toggleWhat">What!</button>
+                    <button class="nav-toggle-btn" id="toggleWhat">What!</button>
                     <button class="nav-toggle-btn" id="toggleWhy">Why?</button>
                     <button class="nav-toggle-btn" id="toggleFree">For Free?</button>
                     <button class="nav-toggle-btn" id="toggleNext">What's Next*</button>
@@ -85,7 +87,7 @@
                     | - Raghav
                 </div>
                 <div class="title-stack-wrapper">
-                    <img src="images/Vector/namenlogo.png" alt="Name Logo" class="hero-logo-img">
+                    <!-- Hero logo removed for cleaner aesthetic -->
                 </div>
             </div>
         </div>
@@ -968,8 +970,59 @@
 
 
         // ==========================================
-        // 💧 LIQUID NAV TOGGLE LOGIC
+        // 👾 ASCII / ARROW SWEEP EFFECT
         // ==========================================
+        (function () {
+            function initArrowSweep(selector) {
+                const elements = document.querySelectorAll(selector);
+                
+                elements.forEach(el => {
+                    let sweepInterval = null;
+
+                    el.addEventListener('mouseenter', () => {
+                        // Skip if element has complex HTML inside (like icons) to avoid breaking them
+                        if (el.children.length > 0 && !el.classList.contains('nav-toggle-btn')) return;
+
+                        const originalText = el.dataset.text || el.textContent.trim();
+                        if (!el.dataset.text) el.dataset.text = originalText;
+
+                        // Lock width to prevent layout shift
+                        el.style.width = el.offsetWidth + 'px';
+                        el.style.display = 'inline-block';
+                        el.style.textAlign = 'center';
+
+                        let iteration = 0;
+                        clearInterval(sweepInterval);
+
+                        sweepInterval = setInterval(() => {
+                            const len = originalText.length;
+                            let displayArray = originalText.split("");
+
+                            for (let i = 0; i < len; i++) {
+                                if (iteration < len) {
+                                    if (i <= iteration) displayArray[i] = ">";
+                                } else {
+                                    const restoreIndex = iteration - len;
+                                    displayArray[i] = (i <= restoreIndex) ? originalText[i] : ">";
+                                }
+                            }
+
+                            el.textContent = displayArray.join("");
+
+                            if (iteration >= len * 2) {
+                                clearInterval(sweepInterval);
+                                el.textContent = originalText;
+                            }
+                            iteration++;
+                        }, 40);
+                    });
+                });
+            }
+
+            // Apply to nav buttons, footer links, and showcase tabs
+            initArrowSweep('.nav-toggle-btn, .footer-link, .sw-tab, .dl-meta-link');
+        })();
+
         (function () {
             const container = document.querySelector('.nav-toggle-container');
             const indicator = document.querySelector('.nav-toggle-indicator');
@@ -983,20 +1036,33 @@
                 btns.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
 
-                // Get positions relative to the container
                 const btnRect = btn.getBoundingClientRect();
                 const containerRect = container.getBoundingClientRect();
-
-                // Calculate the relative X position
-                // We subtract 4 to account for the container's padding
                 const leftOffset = btnRect.left - containerRect.left - 4;
 
                 indicator.style.width = btnRect.width + 'px';
                 indicator.style.transform = `translateX(${leftOffset}px)`;
             }
 
+            const navMap = {
+                'toggleWhat': 'what.html',
+                'toggleWhy': 'why.html',
+                'toggleFree': 'forfree.html',
+                'toggleNext': 'whatsnext.html'
+            };
+
             btns.forEach(btn => {
-                btn.addEventListener('click', () => updateToggle(btn));
+                btn.addEventListener('click', () => {
+                    updateToggle(btn);
+                    
+                    // Redirect after a tiny delay to allow the animation to start
+                    const targetUrl = navMap[btn.id];
+                    if (targetUrl) {
+                        setTimeout(() => {
+                            window.location.href = targetUrl;
+                        }, 150);
+                    }
+                });
             });
 
             // Initial position sync - more delay to ensure layout is perfect
@@ -1013,7 +1079,6 @@
         })();
 
     </script>
-
 </body>
 
 </html>
