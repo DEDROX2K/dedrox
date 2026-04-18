@@ -168,6 +168,61 @@ html {
     overflow: hidden;
 }
 
+.hero-logo-bottom {
+    position: absolute;
+    bottom: 110px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    /* Above the canvas mask */
+    pointer-events: none;
+}
+
+.hero-logo-bottom img {
+    /* height: 50px; */
+    width: auto;
+}
+
+.hero-scroll-indicator {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    /* Above the canvas mask */
+    pointer-events: none;
+    animation: scrollBounce 0.8s infinite steps(2);
+}
+
+.ascii-block-v {
+    display: grid;
+    grid-template-columns: repeat(5, 10px);
+    grid-template-rows: repeat(3, 7px);
+    gap: 0px;
+}
+
+.ascii-block-v span {
+    width: 10px;
+    height: 10px;
+}
+
+.ascii-block-v span.filled {
+    background: #ffffffd0;
+    /* box-shadow: 0 0 8px rgba(78, 112, 106, 0.4); */
+}
+
+@keyframes scrollBounce {
+
+    0%,
+    100% {
+        transform: translate(-50%, 0);
+    }
+
+    50% {
+        transform: translate(-50%, 10px);
+    }
+}
+
 .reactive-container {
     position: absolute;
     inset: 0;
@@ -1772,7 +1827,7 @@ html {
     top: 0;
     left: 0;
     width: 100%;
-    padding: 4vw;
+    padding: 2vw 32vw;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1917,47 +1972,46 @@ html {
 }
 
 .nav-toggle-container {
-    background: #222; /* Darker bar */
+    background: #222;
+    /* Darker bar */
     padding: 4px;
     display: flex;
     position: relative;
     /* Pixelated corner cutouts */
-    clip-path: polygon(
-        0 6px, 2px 6px, 2px 4px, 4px 4px, 4px 2px, 6px 2px, 6px 0,
-        calc(100% - 6px) 0, calc(100% - 6px) 2px, calc(100% - 4px) 2px, calc(100% - 4px) 4px, calc(100% - 2px) 4px, calc(100% - 2px) 6px, 100% 6px,
-        100% calc(100% - 6px), calc(100% - 2px) calc(100% - 6px), calc(100% - 2px) calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) calc(100% - 2px), calc(100% - 6px) calc(100% - 2px), calc(100% - 6px) 100%,
-        6px 100%, 6px calc(100% - 2px), 4px calc(100% - 2px), 4px calc(100% - 4px), 2px calc(100% - 4px), 2px calc(100% - 6px), 0 calc(100% - 6px)
-    );
+    clip-path: polygon(0 6px, 2px 6px, 2px 4px, 4px 4px, 4px 2px, 6px 2px, 6px 0,
+            calc(100% - 6px) 0, calc(100% - 6px) 2px, calc(100% - 4px) 2px, calc(100% - 4px) 4px, calc(100% - 2px) 4px, calc(100% - 2px) 6px, 100% 6px,
+            100% calc(100% - 6px), calc(100% - 2px) calc(100% - 6px), calc(100% - 2px) calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) calc(100% - 2px), calc(100% - 6px) calc(100% - 2px), calc(100% - 6px) 100%,
+            6px 100%, 6px calc(100% - 2px), 4px calc(100% - 2px), 4px calc(100% - 4px), 2px calc(100% - 4px), 2px calc(100% - 6px), 0 calc(100% - 6px));
 }
 
 /* Morphing indicator background */
 .nav-toggle-gooey-layer {
     position: absolute;
-    inset: 4px; 
+    inset: 4px;
     pointer-events: none;
     z-index: 1;
-    filter: none !important; /* Remove gooey effect */
+    filter: none !important;
+    /* Remove gooey effect */
 }
 
 .nav-toggle-indicator {
     position: absolute;
     height: 100%;
     width: 60px;
-    background: #dcdcdc; /* Light grey from reference */
+    background: #dcdcdc;
+    /* Light grey from reference */
     border-radius: 0;
     /* Snap transition */
-    transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1), 
-                width 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+    transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1),
+        width 0.4s cubic-bezier(0.19, 1, 0.22, 1);
     top: 0;
     left: 0;
-    
+
     /* Pixel corners for the indicator box */
-    clip-path: polygon(
-        0 6px, 2px 6px, 2px 4px, 4px 4px, 4px 2px, 6px 2px, 6px 0,
-        calc(100% - 6px) 0, calc(100% - 6px) 2px, calc(100% - 4px) 2px, calc(100% - 4px) 4px, calc(100% - 2px) 4px, calc(100% - 2px) 6px, 100% 6px,
-        100% calc(100% - 6px), calc(100% - 2px) calc(100% - 6px), calc(100% - 2px) calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) calc(100% - 2px), calc(100% - 6px) calc(100% - 2px), calc(100% - 6px) 100%,
-        6px 100%, 6px calc(100% - 2px), 4px calc(100% - 2px), 4px calc(100% - 4px), 2px calc(100% - 4px), 2px calc(100% - 6px), 0 calc(100% - 6px)
-    );
+    clip-path: polygon(0 6px, 2px 6px, 2px 4px, 4px 4px, 4px 2px, 6px 2px, 6px 0,
+            calc(100% - 6px) 0, calc(100% - 6px) 2px, calc(100% - 4px) 2px, calc(100% - 4px) 4px, calc(100% - 2px) 4px, calc(100% - 2px) 6px, 100% 6px,
+            100% calc(100% - 6px), calc(100% - 2px) calc(100% - 6px), calc(100% - 2px) calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) calc(100% - 2px), calc(100% - 6px) calc(100% - 2px), calc(100% - 6px) 100%,
+            6px 100%, 6px calc(100% - 2px), 4px calc(100% - 2px), 4px calc(100% - 4px), 2px calc(100% - 4px), 2px calc(100% - 6px), 0 calc(100% - 6px));
 }
 
 .nav-toggle-buttons {
@@ -1970,7 +2024,8 @@ html {
     border: none;
     background: transparent;
     padding: 10px 24px;
-    font-family: 'p2', monospace; /* Pixel font */
+    font-family: 'p2', monospace;
+    /* Pixel font */
     font-weight: 700;
     font-size: 1.5rem;
     color: #ffffff;
@@ -1981,32 +2036,48 @@ html {
 }
 
 .nav-toggle-btn.active {
-    color: #000; /* Black text on grey background */
+    color: #000;
+    /* Black text on grey background */
 }
 
 @keyframes asciiJitter {
-    0% { transform: translate(0, 0); }
-    20% { transform: translate(-1.5px, 0.5px); }
-    40% { transform: translate(1.5px, -0.5px); }
-    60% { transform: translate(-0.5px, -1.5px); }
-    80% { transform: translate(0.5px, 1.5px); }
-    100% { transform: translate(0, 0); }
+    0% {
+        transform: translate(0, 0);
+    }
+
+    20% {
+        transform: translate(-1.5px, 0.5px);
+    }
+
+    40% {
+        transform: translate(1.5px, -0.5px);
+    }
+
+    60% {
+        transform: translate(-0.5px, -1.5px);
+    }
+
+    80% {
+        transform: translate(0.5px, 1.5px);
+    }
+
+    100% {
+        transform: translate(0, 0);
+    }
 }
 
-.nav-toggle-btn:hover {
-    color: #fff;
-}
+.nav-toggle-btn:hover {}
 
-.nav-toggle-btn:hover:not(.active) {
-    color: #fff;
-}
+.nav-toggle-btn:hover:not(.active) {}
 
 /* Logo Alignment fix */
-.nav-logo svg {
-    height: 48px;
+.nav-logo svg,
+.nav-logo img {
+    height: 58px;
     width: auto;
     display: block;
-    margin-top: -10px; /* Slight optical adjustment */
+    /* margin-top: -10px; */
+    /* Slight optical adjustment */
 }
 
 
@@ -2845,7 +2916,6 @@ html {
 }
 
 .footer-list a:hover {
-    color: #6c5ce7;
     transform: translateX(3px);
 }
 
@@ -2877,9 +2947,7 @@ html {
     transition: color 0.2s ease;
 }
 
-.footer-legal-links a:hover {
-    color: #1a1a1a;
-}
+.footer-legal-links a:hover {}
 
 @media (max-width: 1200px) {
     .footer-grid {
@@ -3000,11 +3068,12 @@ html {
 .carousel-item img {
     height: 100%;
     width: auto;
-    object-fit: contain; /* Maintain PNG aspect ratio exactly without clipping */
+    object-fit: contain;
+    /* Maintain PNG aspect ratio exactly without clipping */
     pointer-events: none;
     user-select: none;
     -webkit-user-drag: none;
     display: block;
-    filter: drop-shadow(0 25px 35px rgba(0,0,0,0.15)) drop-shadow(0 5px 15px rgba(0,0,0,0.05));
+    filter: drop-shadow(0 25px 35px rgba(0, 0, 0, 0.15)) drop-shadow(0 5px 15px rgba(0, 0, 0, 0.05));
     will-change: transform;
 }
