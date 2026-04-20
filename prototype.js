@@ -1415,7 +1415,7 @@ function drawRandomArt(count = 8) {
     for (let i = 0; i < count; i++) {
         // Pick random color from palette
         pixelCtx.fillStyle = colors[Math.floor(Math.random() * (colors.length - 1)) + 1];
-        
+
         const isHorizontal = Math.random() > 0.5;
         const x = Math.floor(Math.random() * res);
         const y = Math.floor(Math.random() * res);

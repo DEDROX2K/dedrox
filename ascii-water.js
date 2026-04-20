@@ -187,42 +187,49 @@
     }
 
     function draw() {
+        const isMobile = window.innerWidth <= 800;
+
         // 1. Fill/Draw the cover image as the mask
         ctx.globalCompositeOperation = 'source-over';
+        ctx.clearRect(0, 0, w, h); // Clear previous frame
 
-        if (coverImg.complete) {
-            // "Cover" scaling logic for drawing image on canvas
-            const imgAspect = coverImg.width / coverImg.height;
-            const canvasAspect = w / h;
-            let renderW, renderH, offsetX, offsetY;
+        if (!isMobile) {
+            if (coverImg.complete) {
+                // "Cover" scaling logic for drawing image on canvas
+                const imgAspect = coverImg.width / coverImg.height;
+                const canvasAspect = w / h;
+                let renderW, renderH, offsetX, offsetY;
 
-            if (canvasAspect > imgAspect) {
-                renderW = w;
-                renderH = w / imgAspect;
-                offsetX = 0;
-                offsetY = -(renderH - h) / 2;
+                if (canvasAspect > imgAspect) {
+                    renderW = w;
+                    renderH = w / imgAspect;
+                    offsetX = 0;
+                    offsetY = -(renderH - h) / 2;
+                } else {
+                    renderW = h * imgAspect;
+                    renderH = h;
+                    offsetX = -(renderW - w) / 2;
+                    offsetY = 0;
+                }
+                ctx.drawImage(coverImg, offsetX, offsetY, renderW, renderH);
             } else {
-                renderW = h * imgAspect;
-                renderH = h;
-                offsetX = -(renderW - w) / 2;
-                offsetY = 0;
+                // Fallback while loading
+                ctx.fillStyle = SETTINGS.white;
+                ctx.fillRect(0, 0, w, h);
             }
-            ctx.drawImage(coverImg, offsetX, offsetY, renderW, renderH);
-        } else {
-            // Fallback while loading
-            ctx.fillStyle = SETTINGS.white;
-            ctx.fillRect(0, 0, w, h);
         }
 
         // 2. Punch holes where the density is high
-        ctx.globalCompositeOperation = 'destination-out';
-        for (let y = 0; y < rows; y++) {
-            for (let x = 0; x < cols; x++) {
-                const cell = grid[y * cols + x];
-                if (cell.density > 2) {
-                    const sx = x * SETTINGS.gridSize;
-                    const sy = y * SETTINGS.gridSize;
-                    ctx.fillRect(sx, sy, SETTINGS.gridSize, SETTINGS.gridSize);
+        if (!isMobile) {
+            ctx.globalCompositeOperation = 'destination-out';
+            for (let y = 0; y < rows; y++) {
+                for (let x = 0; x < cols; x++) {
+                    const cell = grid[y * cols + x];
+                    if (cell.density > 2) {
+                        const sx = x * SETTINGS.gridSize;
+                        const sy = y * SETTINGS.gridSize;
+                        ctx.fillRect(sx, sy, SETTINGS.gridSize, SETTINGS.gridSize);
+                    }
                 }
             }
         }

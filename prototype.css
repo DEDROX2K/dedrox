@@ -4524,3 +4524,20 @@ body.reader-mode .wip-swinging-img {
     opacity: 1 !important;
     pointer-events: auto;
 }
+
+@media (max-width: 600px) {
+    .device-container.expanded {
+        position: fixed !important;
+        inset: 10px !important;
+        width: auto !important;
+        height: auto !important;
+        max-width: none !important;
+        max-height: none !important;
+        transform: none !important;
+        margin: 0 !important;
+    }
+
+    #left-orb-controls {
+        display: none !important;
+    }
+}

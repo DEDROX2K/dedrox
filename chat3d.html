@@ -754,6 +754,28 @@
             opacity: 1 !important;
             pointer-events: auto;
         }
+
+        @media (max-width: 800px) {
+            #container-3d, #loading-overlay, .page-transition-overlay, .hero-layers {
+                display: none !important;
+            }
+            .chat-phone-shell {
+                display: flex !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                position: fixed !important;
+                inset: 10px !important;
+                z-index: 999999 !important;
+                width: auto !important;
+                height: auto !important;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.1) !important;
+                border-radius: 24px !important;
+            }
+            body {
+                overflow: auto !important;
+                background: #d5d8e3 !important;
+            }
+        }
     </style>
 </head>
 
@@ -773,89 +795,86 @@
     <div id="loading-overlay">Initializing 3D Chat...</div>
     <div id="container-3d"></div>
 
-    <!-- Hidden UI Source for CSS3DRenderer -->
-    <div id="ui-source" style="display: none;">
-        <div class="chat-phone-shell">
-            <div class="ios-status-bar">
-                <div class="ios-status-left">
-                    <div class="ios-signal">
-                        <div class="ios-signal-bar ios-signal-1"></div>
-                        <div class="ios-signal-bar ios-signal-2"></div>
-                        <div class="ios-signal-bar ios-signal-3"></div>
-                        <div class="ios-signal-bar ios-signal-4"></div>
-                        <div class="ios-signal-bar ios-signal-5"></div>
-                    </div>
-                    <span>Verizon</span>
-                    <span>3G</span>
+    <div class="chat-phone-shell">
+        <div class="ios-status-bar">
+            <div class="ios-status-left">
+                <div class="ios-signal">
+                    <div class="ios-signal-bar ios-signal-1"></div>
+                    <div class="ios-signal-bar ios-signal-2"></div>
+                    <div class="ios-signal-bar ios-signal-3"></div>
+                    <div class="ios-signal-bar ios-signal-4"></div>
+                    <div class="ios-signal-bar ios-signal-5"></div>
                 </div>
-                <div class="ios-status-center">10:51 AM</div>
-                <div class="ios-status-right">
-                    <span>19%</span>
-                    <div class="ios-battery">
-                        <div class="ios-battery-fill"></div>
-                    </div>
+                <span>Verizon</span>
+                <span>3G</span>
+            </div>
+            <div class="ios-status-center">10:51 AM</div>
+            <div class="ios-status-right">
+                <span>19%</span>
+                <div class="ios-battery">
+                    <div class="ios-battery-fill"></div>
                 </div>
             </div>
-            <div class="chat-header">
-                <button class="chat-nav-btn back" id="chat-btn-back" type="button">Go back</button>
-                <div class="chat-title"><span id="chat-contact-name">Raghav</span></div>
-                <button class="chat-nav-btn" id="chat-btn-clear" type="button">Restart</button>
-            </div>
+        </div>
+        <div class="chat-header">
+            <button class="chat-nav-btn back" id="chat-btn-back" type="button">Go back</button>
+            <div class="chat-title"><span id="chat-contact-name">Raghav</span></div>
+            <button class="chat-nav-btn" id="chat-btn-clear" type="button">Restart</button>
+        </div>
 
-            <div class="chat-messages-area" id="chat-messages-area">
-                <div class="chat-timestamp">Today 10:51 AM</div>
-            </div>
+        <div class="chat-messages-area" id="chat-messages-area">
+            <div class="chat-timestamp">Today 10:51 AM</div>
+        </div>
 
-            <div class="chat-input-area">
-                <div class="chat-input-wrapper"><textarea class="chat-input-text" id="chat-input-text"
-                        placeholder="Text Message" readonly rows="1"></textarea></div>
-                <button class="chat-btn-send" id="chat-btn-send" type="button">
-                    <span class="chat-btn-send-label">Send</span>
-                    <span class="chat-btn-send-icon" aria-hidden="true">&#9654;</span>
-                </button>
-            </div>
+        <div class="chat-input-area">
+            <div class="chat-input-wrapper"><textarea class="chat-input-text" id="chat-input-text"
+                    placeholder="Text Message" readonly rows="1"></textarea></div>
+            <button class="chat-btn-send" id="chat-btn-send" type="button">
+                <span class="chat-btn-send-label">Send</span>
+                <span class="chat-btn-send-icon" aria-hidden="true">&#9654;</span>
+            </button>
+        </div>
 
-            <div class="chat-keyboard" aria-hidden="true">
-                <div class="kb-row">
-                    <div class="kb-key">Q</div>
-                    <div class="kb-key">W</div>
-                    <div class="kb-key">E</div>
-                    <div class="kb-key">R</div>
-                    <div class="kb-key">T</div>
-                    <div class="kb-key">Y</div>
-                    <div class="kb-key">U</div>
-                    <div class="kb-key">I</div>
-                    <div class="kb-key">O</div>
-                    <div class="kb-key">P</div>
-                </div>
-                <div class="kb-row kb-row-offset">
-                    <div class="kb-key">A</div>
-                    <div class="kb-key">S</div>
-                    <div class="kb-key">D</div>
-                    <div class="kb-key">F</div>
-                    <div class="kb-key">G</div>
-                    <div class="kb-key">H</div>
-                    <div class="kb-key">J</div>
-                    <div class="kb-key">K</div>
-                    <div class="kb-key">L</div>
-                </div>
-                <div class="kb-row">
-                    <div class="kb-key kb-key-dark kb-key-wide">⇧</div>
-                    <div class="kb-key">Z</div>
-                    <div class="kb-key">X</div>
-                    <div class="kb-key">C</div>
-                    <div class="kb-key">V</div>
-                    <div class="kb-key">B</div>
-                    <div class="kb-key">N</div>
-                    <div class="kb-key">M</div>
-                    <div class="kb-key kb-key-dark kb-key-wide">⌫</div>
-                </div>
-                <div class="kb-row">
-                    <div class="kb-key kb-key-dark kb-key-wide">123</div>
-                    <div class="kb-key kb-key-dark kb-key-wide">mic</div>
-                    <div class="kb-key kb-key-space">space</div>
-                    <div class="kb-key kb-key-dark kb-key-return">return</div>
-                </div>
+        <div class="chat-keyboard" aria-hidden="true">
+            <div class="kb-row">
+                <div class="kb-key">Q</div>
+                <div class="kb-key">W</div>
+                <div class="kb-key">E</div>
+                <div class="kb-key">R</div>
+                <div class="kb-key">T</div>
+                <div class="kb-key">Y</div>
+                <div class="kb-key">U</div>
+                <div class="kb-key">I</div>
+                <div class="kb-key">O</div>
+                <div class="kb-key">P</div>
+            </div>
+            <div class="kb-row kb-row-offset">
+                <div class="kb-key">A</div>
+                <div class="kb-key">S</div>
+                <div class="kb-key">D</div>
+                <div class="kb-key">F</div>
+                <div class="kb-key">G</div>
+                <div class="kb-key">H</div>
+                <div class="kb-key">J</div>
+                <div class="kb-key">K</div>
+                <div class="kb-key">L</div>
+            </div>
+            <div class="kb-row">
+                <div class="kb-key kb-key-dark kb-key-wide">⇧</div>
+                <div class="kb-key">Z</div>
+                <div class="kb-key">X</div>
+                <div class="kb-key">C</div>
+                <div class="kb-key">V</div>
+                <div class="kb-key">B</div>
+                <div class="kb-key">N</div>
+                <div class="kb-key">M</div>
+                <div class="kb-key kb-key-dark kb-key-wide">⌫</div>
+            </div>
+            <div class="kb-row">
+                <div class="kb-key kb-key-dark kb-key-wide">123</div>
+                <div class="kb-key kb-key-dark kb-key-wide">mic</div>
+                <div class="kb-key kb-key-space">space</div>
+                <div class="kb-key kb-key-dark kb-key-return">return</div>
             </div>
         </div>
     </div>
@@ -930,10 +949,31 @@
         let targetRotX = 0, targetRotY = 0;
         let currentRotX = 0, currentRotY = 0;
         const flinchObj = { z: 0, rx: 0, ry: 0 };
-        const chatScreenEl = document.querySelector('.chat-phone-shell');
 
-        setupChatLogic(chatScreenEl);
-        init3D(chatScreenEl);
+        function startUp() {
+            const chatScreenEl = document.querySelector('.chat-phone-shell');
+            const uiSource = document.getElementById('ui-source');
+
+            setupChatLogic(chatScreenEl);
+            if (window.innerWidth > 600) {
+                init3D(chatScreenEl);
+            } else {
+                if (uiSource) uiSource.style.display = 'block';
+                window.triggerConversation();
+            }
+
+            // Fade in from white on load
+            const overlay = document.getElementById('page-overlay');
+            if (overlay) {
+                setTimeout(() => overlay.classList.remove('on-load'), 50);
+            }
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', startUp);
+        } else {
+            startUp();
+        }
 
         function init3D(uiSource) {
             const container = document.getElementById('container-3d');
@@ -1337,11 +1377,10 @@
             btnBack.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                
+
                 const overlay = document.getElementById('page-overlay');
                 if (overlay) {
                     overlay.classList.add('active');
-                    // Store that we want to return to expanded state
                     localStorage.setItem('forcePillExpanded', 'true');
                     setTimeout(() => {
                         window.location.href = 'prototype.html';
@@ -1351,12 +1390,6 @@
                     window.location.href = 'prototype.html';
                 }
             });
-
-            // Fade in from white on load
-            const overlay = document.getElementById('page-overlay');
-            if (overlay) {
-                setTimeout(() => overlay.classList.remove('on-load'), 100);
-            }
 
             btnClear.addEventListener('click', () => {
                 resetConversation(true);

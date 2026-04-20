@@ -2826,7 +2826,7 @@ html {
     z-index: 3;
     pointer-events: none;
     transform: translateX(-50%);
-    box-shadow: 0 0 12px 6px rgb(255 255 255);
+    box-shadow: 0 0 12px 6px rgb(229 227 224 / 46%)
 }
 
 .scrubber-hint {
@@ -2997,7 +2997,7 @@ html {
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 800px) {
     .footer-grid {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -3006,6 +3006,23 @@ html {
         flex-direction: column;
         gap: 1.5rem;
         text-align: center;
+    }
+
+    .nav-logo img,
+    .nav-logo svg {
+        height: 32px !important;
+    }
+
+    .hero-title-center {
+        font-size: 12vw !important;
+        /* Scaled down to fit the screen width */
+        width: 90vw;
+        text-align: center;
+    }
+
+    .hero-scroll-indicator {
+        bottom: 60px !important;
+        /* Moved up by 30px from original 30px */
     }
 }
 
