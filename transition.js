@@ -8,7 +8,7 @@ class AsciiSweepTransition {
         this.canvas = document.createElement('canvas');
         this.ctx = this.canvas.getContext('2d', { alpha: true });
         this.chars = "01/~>+*\\#%@".split("");
-        this.fontSize = 90;
+        this.fontSize = 10;
 
         // Setup canvas styles
         this.canvas.style.position = 'fixed';
