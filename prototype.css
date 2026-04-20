@@ -613,6 +613,8 @@ body:not(.device-expanded):not(.reader-mode) .pill-greeting .greeting-display {
     align-items: center;
     gap: 3px;
     padding-left: 3px;
+    flex-shrink: 1;
+    min-width: 0;
 }
 
 .pill-bar {
@@ -627,13 +629,15 @@ body:not(.device-expanded):not(.reader-mode) .pill-greeting .greeting-display {
 .pill-plain-circle,
 .pill-square,
 .pill-dark-block {
-    flex-shrink: 0;
+    flex-shrink: 1;
+    min-width: 0;
     transition: all 0.52s var(--ease-genie);
 }
 
 #pill-circle2,
 #pill-circle3 {
-    flex-shrink: 0;
+    flex-shrink: 1;
+    min-width: 0;
     transition: all 0.52s var(--ease-genie);
 }
 
@@ -1039,11 +1043,11 @@ body.device-expanded.case-open .left-controls {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 10px;
-    height: 40px;
-    border-radius: 50px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    background: #4f4f4f;
+    width: 6px;
+    height: 34px;
+    border-radius: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(60, 60, 60, 0.85);
     color: #fff;
     display: flex;
     flex-direction: column;
@@ -1051,19 +1055,41 @@ body.device-expanded.case-open .left-controls {
     justify-content: space-between;
     padding: 0;
     cursor: pointer;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     transform: translate(-50%, calc(-50% + var(--orb-thumb-offset-y, 0px))) scale(1);
     transform-origin: center center;
     transition:
-        width 0.28s cubic-bezier(0.22, 1, 0.36, 1),
-        height 0.28s cubic-bezier(0.22, 1, 0.36, 1),
-        transform 0.22s linear,
-        background 0.28s ease,
-        padding 0.28s ease,
-        border-radius 0.28s ease,
-        opacity 0.18s ease;
-    box-shadow: 0 10px 14px rgba(0, 0, 0, 0.2);
+        width 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+        height 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+        background 0.4s ease,
+        padding 0.4s ease,
+        border-radius 0.4s ease,
+        opacity 0.2s ease;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
     z-index: 3;
     overflow: hidden;
+}
+
+.orb-cursor-handle.is-sticky,
+.left-controls:hover .orb-cursor-handle,
+.left-controls:focus-within .orb-cursor-handle {
+    width: 46px;
+    height: 310px;
+    background: rgba(10, 10, 10, 0.88);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 24px;
+    padding: 4px;
+    cursor: default;
+    box-shadow:
+        0 24px 48px rgba(0, 0, 0, 0.5),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    transform: translate(-50%, calc(-50% + var(--orb-thumb-offset-y, 0px))) scale(1);
+    justify-content: flex-start;
+    overflow: visible;
 }
 
 .orb-track-line {
@@ -1079,22 +1105,16 @@ body.device-expanded.case-open .left-controls {
     pointer-events: none;
 }
 
-.left-controls:hover .orb-cursor-handle,
-.left-controls:focus-within .orb-cursor-handle {
-    width: 44px;
-    height: 320px;
-    background: #0a0a0a;
-    border-radius: 22px;
-    padding: 6px 4px 10px;
-    cursor: default;
-    box-shadow: 0 18px 34px rgba(0, 0, 0, 0.45);
-    /* Stay centered on the track while expanded */
-    transform: translate(-50%, calc(-50% + var(--orb-thumb-offset-y, 0px))) scale(1);
-    border: 1px solid rgba(255, 255, 255, 0.16);
-    justify-content: flex-start;
-    /* Switch to flex-start for grouping */
-    overflow: visible;
-    /* Allow tooltips to show outside the boundaries */
+.left-controls:not(:hover) .orb-cursor-handle.is-sticky .orb-rail-btn,
+.left-controls:not(:hover) .orb-cursor-handle.is-sticky .orb-rail-time {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.7);
+    transition: opacity 0.3s ease, transform 0.3s var(--ease-lux);
+}
+
+.left-controls:not(:hover) .orb-cursor-handle.is-sticky .orb-scroll-line {
+    opacity: 0.2;
 }
 
 .orb-scroll-line {

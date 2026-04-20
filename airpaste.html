@@ -20,19 +20,22 @@
     <script src="carousel.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.162.0/three.min.js"></script>
     <script src="transition.js" defer></script>
+    <script src="navbar-logic.js" defer></script>
 </head>
 
 <body>
 
 
     <canvas id="cubeCanvas"></canvas>
-    <nav class="top-nav">
-        <div class="nav-logo">
-            <a href="airpaste.html" style="display: block;">
-                <img src="images/logovar/browserlogo.gif" alt="AirPaste Logo">
-            </a>
-        </div>
+    <div class="nav-logo">
+        <a href="airpaste.html" style="display: block;">
+            <img src="images/logovar/browserlogo.gif" alt="AirPaste Logo">
+        </a>
+    </div>
 
+
+
+    <nav class="top-nav">
         <div class="nav-toggle-wrapper">
             <div class="nav-toggle-container">
                 <!-- Filtered Layer (for gooey morphing only) -->
@@ -43,8 +46,8 @@
                 <!-- Crisp Layer (for text visibility) -->
                 <div class="nav-toggle-buttons">
                     <button class="nav-toggle-btn active" id="toggleHome">AirPaste</button>
-                    <button class="nav-toggle-btn" id="toggleWhat">What!</button>
-                    <button class="nav-toggle-btn" id="toggleWhy">Why?</button>
+                    <button class="nav-toggle-btn" id="toggleDownload">Download</button>
+                    <button class="nav-toggle-btn" id="toggleShop">Shop</button>
                     <button class="nav-toggle-btn" id="toggleFree">For Free?</button>
                     <button class="nav-toggle-btn" id="toggleNext">What's Next*</button>
                 </div>
@@ -67,13 +70,13 @@
         <div class="hero-reveal-layer">
             <img src="images/bg10.jpg" class="hero-bg-img" alt="Background">
             <div class="reactive-container">
-                <div class="hero-top-left-text">
+                <!-- <div class="hero-top-left-text">
                     Local first -Free and Open-Source <br>
                     <br>
                     In our opinion... <br>
                     It should not cost 10£ monthly to save your bookmarks. <br>
                     | - Raghav
-                </div>
+                </div> -->
                 <div class="title-stack-wrapper">
                     <!-- Hero logo removed for cleaner aesthetic -->
                 </div>
@@ -171,6 +174,23 @@
         <p class="scrubber-hint">← Move cursor to reveal →</p>
     </section>
 
+    <section class="dot-matrix-section">
+        <div class="board-container">
+            <div class="rivets">
+                <div class="rivet"></div>
+                <div class="rivet"></div>
+                <div class="rivet"></div>
+                <div class="rivet"></div>
+            </div>
+            <div class="board">
+                <div class="board__content">
+                    <div class="text-track">
+                        <div class="text">Only for WINDOWS </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <section class="manifesto-section">
         <div class="manifesto-content">
@@ -190,35 +210,45 @@
                 by social approval systems, by newsfeeds and timelines, by advertisements and corporate agendas.
             </p>
 
-            <section class="carousel-section">
-                <div class="carousel-container" id="premiumCarousel">
-                    <div class="carousel-track" id="carouselTrack">
-                        <div class="carousel-item"><img src="images/f1.png" alt="Gallery Image 1" draggable="false">
-                        </div>
-                        <div class="carousel-item"><img src="images/f2.png" alt="Gallery Image 2" draggable="false">
-                        </div>
-                        <div class="carousel-item"><img src="images/f3.png" alt="Gallery Image 3" draggable="false">
-                        </div>
-                        <div class="carousel-item"><img src="images/f4.png" alt="Gallery Image 4" draggable="false">
-                        </div>
-                        <div class="carousel-item"><img src="images/f5.png" alt="Gallery Image 5" draggable="false">
-                        </div>
-                        <div class="carousel-item"><img src="images/f6.png" alt="Gallery Image 6" draggable="false">
-                        </div>
-                        <div class="carousel-item"><img src="images/f7.png" alt="Gallery Image 7" draggable="false">
-                        </div>
-                        <div class="carousel-item"><img src="images/f8.png" alt="Gallery Image 8" draggable="false">
-                        </div>
-                        <div class="carousel-item"><img src="images/f9.png" alt="Gallery Image 9" draggable="false">
-                        </div>
-                        <div class="carousel-item"><img src="images/f10.png" alt="Gallery Image 10" draggable="false">
-                        </div>
-                        <div class="carousel-item"><img src="images/f11.png" alt="Gallery Image 11" draggable="false">
-                        </div>
-                    </div>
-                </div>
-            </section>
+        </div>
+    </section>
 
+    <section class="premium-carousel-section">
+        <h2 class="manifesto-subtitle">
+            <span class="word-head">We made a decision</span>
+        </h2>
+
+        <p class="manifesto-text">
+            We have removed the 'features' that modern tech uses to colonize your mind—the 'social validation'. What
+            remains is a pure environment where you can exist without
+            being tracked, analyzed, or nudged. We are not a platform; we are a vault, a workshop, and a
+            safe for the digital self.
+        </p>
+
+        <p class="manifesto-text highlight">
+            Be the curator of your digital self.
+        </p>
+        <div class="carousel-header">
+            <h2 id="premiumCarouselTitle">Curate with Ease</h2>
+            <p id="premiumCarouselSub">A sanctuary for your digital discoveries</p>
+        </div>
+
+        <div class="carousel-controls">
+            <button class="carousel-arrow" id="prevCarousel">[ &lsaquo; ]</button>
+            <div class="carousel-pagination" id="carouselPagination">
+                <!-- Dots will be injected here -->
+            </div>
+            <button class="carousel-arrow" id="nextCarousel">[ &rsaquo; ]</button>
+        </div>
+
+        <p class="carousel-desc" id="premiumCarouselDesc">The tools you need to build your private digital
+            library.</p>
+
+        <div class="carousel-frame">
+            <div class="carousel-glow"></div>
+            <div class="carousel-image-container">
+                <img id="premiumCarouselImg" src="images/f1.png" alt="Feature Display">
+            </div>
         </div>
     </section>
 
@@ -228,7 +258,7 @@
         <!-- ==========================================
          ⬇️ DOWNLOAD SECTION
          ========================================== -->
-        <!-- <section class="dl-section">
+        <section class="dl-section" id="download">
             <div class="dl-inner">
                 <div class="dl-badge">Open Source · Windows Only</div>
 
@@ -278,7 +308,7 @@
                     </a>
                 </div>
             </div>
-        </section> -->
+        </section>
 
 
 
@@ -430,6 +460,8 @@
             </div>
         </div>
     </section> -->
+
+
 
 
 
@@ -847,247 +879,343 @@
             const card = document.getElementById('scrubberCard');
             const before = document.getElementById('scrubberBefore');
             const divider = document.getElementById('scrubberDivider');
-            if (!card) return;
+            if (!card || !before || !divider) return;
 
-            let targetPct = 50;  // % revealed (left = before)
-            let currentPct = 50;
-            let tiltX = 0, tiltY = 0;
-            let targetTiltX = 0, targetTiltY = 0;
-            let rafId;
-
-            const TILT_MAX = 8;   // max degrees
-            const TILT_EASE = 0.08;
-            const SCRUB_EASE = 0.08;
-
-            function lerp(a, b, t) { return a + (b - a) * t; }
-
-            function loop() {
-                currentPct = lerp(currentPct, targetPct, SCRUB_EASE);
-                tiltX = lerp(tiltX, targetTiltX, TILT_EASE);
-                tiltY = lerp(tiltY, targetTiltY, TILT_EASE);
-
-                before.style.width = currentPct + '%';
-                divider.style.left = currentPct + '%';
-                card.style.transform =
-                    `rotateY(${tiltX}deg) rotateX(${-tiltY}deg)`;
-
-                rafId = requestAnimationFrame(loop);
-            }
-
-            card.addEventListener('mouseenter', () => {
-                loop();
-            });
-
-            card.addEventListener('mouseleave', () => {
-                cancelAnimationFrame(rafId);
-                targetTiltX = 0; targetTiltY = 0;
-
-                let frames = 0;
-                function settle() {
-                    tiltX = lerp(tiltX, 0, 0.08);
-                    tiltY = lerp(tiltY, 0, 0.08);
-                    card.style.transform = `rotateY(${tiltX}deg) rotateX(${-tiltY}deg)`;
-                    if (++frames < 50) requestAnimationFrame(settle);
-                }
-                settle();
-            });
+            const TILT_MAX = 8;
 
             card.addEventListener('mousemove', (e) => {
                 const rect = card.getBoundingClientRect();
-                const x = (e.clientX - rect.left) / rect.width;    // 0 → 1
-                const y = (e.clientY - rect.top) / rect.height;   // 0 → 1
-                targetPct = x * 100;
-                targetTiltX = (x - 0.5) * 2 * TILT_MAX;
-                targetTiltY = (y - 0.5) * 2 * TILT_MAX;
+                const x = (e.clientX - rect.left) / rect.width;
+                const y = (e.clientY - rect.top) / rect.height;
+
+                const targetPct = x * 100;
+                const targetTiltX = (x - 0.5) * 2 * TILT_MAX;
+                const targetTiltY = (y - 0.5) * 2 * TILT_MAX;
+
+                gsap.to(before, { width: targetPct + '%', duration: 0.2, ease: "power2.out" });
+                gsap.to(divider, { left: targetPct + '%', duration: 0.2, ease: "power2.out" });
+                gsap.to(card, {
+                    rotateY: targetTiltX,
+                    rotateX: -targetTiltY,
+                    duration: 0.4,
+                    ease: "power2.out"
+                });
+            });
+
+            card.addEventListener('mouseleave', () => {
+                gsap.to(card, { rotateY: 0, rotateX: 0, duration: 0.8, ease: "elastic.out(1, 0.5)" });
             });
         })();
 
         // ==========================================
         // 🌀 INTERACTIVE ENDLESS MOTION (FOOTER VOID)
         // ==========================================
+        (function () {
+            const VOID_SETTINGS = {
+                lerp: 0.1,
+                text: "Download Airpaste Today",
+                lineGap: "12vh"
+            };
 
-        // --- 🎛️ ADJUST THESE CONTROLS TO TWEAK ---
-        const VOID_SETTINGS = {
-            lerp: 0.1,             // Scroll smoothness (lower = smoother)
-            wheelMultiplier: 1,    // Scroll speed multiplier
-            minScale: 0.5,         // Scale at the top
-            maxScale: 1.0,         // Scale at the bottom
-            text: "Download Airpaste", // Use any text you want
-            lineGap: "10vh"        // Gap between text lines
-        };
+            const voidEl = document.querySelector('.footer-void');
+            const lines = document.querySelector('.lines');
+            if (!voidEl || !lines) return;
 
-        const voidEl = document.querySelector('.footer-void');
-        const lines = document.querySelector('.lines');
+            voidEl.style.setProperty('--line-gap', VOID_SETTINGS.lineGap);
+            document.querySelectorAll('.line-text').forEach(t => t.textContent = VOID_SETTINGS.text);
 
-        // Apply the line gap dynamically
-        voidEl.style.setProperty('--line-gap', VOID_SETTINGS.lineGap);
+            const group = document.querySelector('.lines-group');
+            if (group) {
+                lines.appendChild(group.cloneNode(true));
+                lines.appendChild(group.cloneNode(true));
+            }
 
-        // Replace existing text with custom text from settings
-        document.querySelectorAll('.line-text').forEach(t => t.textContent = VOID_SETTINGS.text);
+            const lenis = new Lenis({
+                wrapper: voidEl,
+                content: lines,
+                smoothWheel: true,
+                infinite: true,
+                lerp: VOID_SETTINGS.lerp,
+            });
 
-        // Clone for seamless loop
-        const group = document.querySelector('.lines-group');
-        const clone = group.cloneNode(true);
-        lines.appendChild(clone);
+            function anim(time) {
+                lenis.raf(time);
+                requestAnimationFrame(anim);
+            }
+            requestAnimationFrame(anim);
 
-        // Local Lenis instance
-        const localLenis = new Lenis({
-            wrapper: voidEl,
-            content: lines,
-            smoothWheel: true,
-            syncTouch: true,
-            infinite: true,
-            lerp: VOID_SETTINGS.lerp,
-            wheelMultiplier: VOID_SETTINGS.wheelMultiplier
-        });
+            lenis.on('scroll', ScrollTrigger.update);
 
-        function voidRaf(time) {
-            localLenis.raf(time);
-            requestAnimationFrame(voidRaf);
-        }
-        requestAnimationFrame(voidRaf);
-
-        // Sync ScrollTrigger
-        localLenis.on('scroll', ScrollTrigger.update);
-
-        // Apply scaling logic using settings
-        gsap.utils.toArray('.line-text').forEach((line) => {
-            gsap.fromTo(
-                line,
-                { scale: VOID_SETTINGS.maxScale },
-                {
-                    scale: VOID_SETTINGS.minScale,
-                    ease: "none",
-                    scrollTrigger: {
-                        trigger: line,
-                        scroller: voidEl,
-                        start: "top bottom",
-                        end: "bottom top",
-                        scrub: true
+            gsap.utils.toArray('.line-text').forEach((line) => {
+                gsap.fromTo(line, 
+                    { scale: 1.1, opacity: 0.4 }, 
+                    { 
+                        scale: 0.5, 
+                        opacity: 1,
+                        ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: line,
+                            scroller: voidEl,
+                            start: "top bottom",
+                            end: "bottom top",
+                            scrub: true
+                        }
                     }
-                }
-            );
-        });
+                );
+            });
 
-        window.addEventListener('load', () => {
-            ScrollTrigger.refresh();
-        });
-
-        window.addEventListener('load', () => {
-            ScrollTrigger.refresh();
-        });
+            setTimeout(() => ScrollTrigger.refresh(), 500);
+        })();
 
 
         // ==========================================
         // 👾 ASCII / ARROW SWEEP EFFECT
         // ==========================================
-        (function () {
-            function initArrowSweep(selector) {
-                const elements = document.querySelectorAll(selector);
+        // (Now handled centrally by navbar-logic.js)
 
-                elements.forEach(el => {
-                    let sweepInterval = null;
 
-                    el.addEventListener('mouseenter', () => {
-                        // Skip if element has complex HTML inside (like icons) to avoid breaking them
-                        if (el.children.length > 0 && !el.classList.contains('nav-toggle-btn')) return;
 
-                        const originalText = el.dataset.text || el.textContent.trim();
-                        if (!el.dataset.text) el.dataset.text = originalText;
+            const carouselData = [
+                {
+                    title: "Curate with Ease",
+                    sub: "A sanctuary for your digital discoveries",
+                    desc: "Save articles, images, and notes without being tracked or nudge-baited.",
+                    img: "images/f1.png"
+                },
+                {
+                    title: "Local-First Logic",
+                    sub: "Your data stays where it belongs",
+                    desc: "Everything is stored on your device. We don't have accounts because we don't have your data.",
+                    img: "images/f2.png"
+                },
+                {
+                    title: "Pure Interaction",
+                    sub: "Zero streaks, zero badges",
+                    desc: "Focus on what matters. We stripped away the addictive loops and left the utility.",
+                    img: "images/f3.png"
+                },
+                {
+                    title: "Technical Freedom",
+                    sub: "Open-source and Extensible",
+                    desc: "Built for those who value digital sovereignty. Your library, your rules.",
+                    img: "images/f4.png"
+                }
+            ];
 
-                        // Lock width to prevent layout shift
-                        el.style.width = el.offsetWidth + 'px';
-                        el.style.display = 'inline-block';
-                        el.style.textAlign = 'center';
+            let currentIndex = 0;
+            const titleEl = document.getElementById('premiumCarouselTitle');
+            const subEl = document.getElementById('premiumCarouselSub');
+            const descEl = document.getElementById('premiumCarouselDesc');
+            const imgEl = document.getElementById('premiumCarouselImg');
+            const paginationEl = document.getElementById('carouselPagination');
+            const prevBtn = document.getElementById('prevCarousel');
+            const nextBtn = document.getElementById('nextCarousel');
 
-                        let iteration = 0;
-                        clearInterval(sweepInterval);
+            const AUTO_SKIP_TIME = 3000;
+            let autoSkipTimer;
+            let progressInterval;
+            let progressValue = 0;
 
-                        sweepInterval = setInterval(() => {
-                            const len = originalText.length;
-                            let displayArray = originalText.split("");
+            function startAutoSkip() {
+                clearInterval(autoSkipTimer);
+                clearInterval(progressInterval);
+                progressValue = 0;
 
-                            for (let i = 0; i < len; i++) {
-                                if (iteration < len) {
-                                    if (i <= iteration) displayArray[i] = ">";
-                                } else {
-                                    const restoreIndex = iteration - len;
-                                    displayArray[i] = (i <= restoreIndex) ? originalText[i] : ">";
-                                }
-                            }
+                // Ensure only the current active dot has a fill
+                document.querySelectorAll('.dot-fill').forEach(el => el.remove());
 
-                            el.textContent = displayArray.join("");
+                const activeDot = document.querySelectorAll('.dot')[currentIndex];
+                if (activeDot) {
+                    const fill = document.createElement('div');
+                    fill.className = 'dot-fill';
+                    activeDot.appendChild(fill);
+                }
 
-                            if (iteration >= len * 2) {
-                                clearInterval(sweepInterval);
-                                el.textContent = originalText;
-                            }
-                            iteration++;
-                        }, 40);
-                    });
-                });
-            }
-
-            // Apply to nav buttons, footer links, and showcase tabs
-            initArrowSweep('.nav-toggle-btn, .footer-link, .sw-tab, .dl-meta-link');
-        })();
-
-        (function () {
-            const container = document.querySelector('.nav-toggle-container');
-            const indicator = document.querySelector('.nav-toggle-indicator');
-            const btns = document.querySelectorAll('.nav-toggle-btn');
-
-            if (!container || !indicator) return;
-
-            function updateToggle(btn) {
-                if (!btn) return;
-
-                btns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-
-                const btnRect = btn.getBoundingClientRect();
-                const containerRect = container.getBoundingClientRect();
-                const leftOffset = btnRect.left - containerRect.left - 4;
-
-                indicator.style.width = btnRect.width + 'px';
-                indicator.style.transform = `translateX(${leftOffset}px)`;
-            }
-
-            const navMap = {
-                'toggleHome': 'airpaste.html',
-                'toggleWhat': 'what.html',
-                'toggleWhy': 'why.html',
-                'toggleFree': 'forfree.html',
-                'toggleNext': 'whatsnext.html'
-            };
-
-            btns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    updateToggle(btn);
-
-                    // Redirect after a tiny delay to allow the animation to start
-                    const targetUrl = navMap[btn.id];
-                    if (targetUrl) {
-                        setTimeout(() => {
-                            window.location.href = targetUrl;
-                        }, 150);
+                progressInterval = setInterval(() => {
+                    progressValue += (100 / (AUTO_SKIP_TIME / 100));
+                    const currentFill = document.querySelector('.dot.active .dot-fill');
+                    if (currentFill) {
+                        currentFill.style.width = Math.min(progressValue, 100) + '%';
                     }
+                }, 100);
+
+                autoSkipTimer = setInterval(() => {
+                    currentIndex = (currentIndex + 1) % carouselData.length;
+                    updateSlide();
+                }, AUTO_SKIP_TIME);
+            }
+
+            function initCarousel() {
+                carouselData.forEach((_, i) => {
+                    const dot = document.createElement('span');
+                    dot.classList.add('dot');
+                    if (i === 0) dot.classList.add('active');
+                    dot.addEventListener('click', () => {
+                        currentIndex = i;
+                        updateSlide();
+                    });
+                    paginationEl.appendChild(dot);
                 });
-            });
 
-            // Initial position sync - more delay to ensure layout is perfect
-            window.addEventListener('load', () => {
-                const activeBtn = document.querySelector('.nav-toggle-btn.active');
-                if (activeBtn) updateToggle(activeBtn);
-            });
+                prevBtn.addEventListener('click', () => {
+                    currentIndex = (currentIndex - 1 + carouselData.length) % carouselData.length;
+                    updateSlide();
+                });
 
-            // Also sync on resize
-            window.addEventListener('resize', () => {
-                const activeBtn = document.querySelector('.nav-toggle-btn.active');
-                if (activeBtn) updateToggle(activeBtn);
-            });
+                nextBtn.addEventListener('click', () => {
+                    currentIndex = (currentIndex + 1) % carouselData.length;
+                    updateSlide();
+                });
+
+                startAutoSkip();
+            }
+
+            function updateSlide() {
+                const data = carouselData[currentIndex];
+                imgEl.classList.add('fade-out');
+
+                setTimeout(() => {
+                    titleEl.textContent = data.title;
+                    subEl.textContent = data.sub;
+                    descEl.textContent = data.desc;
+                    imgEl.src = data.img;
+
+                    const dots = document.querySelectorAll('.dot');
+                    dots.forEach((dot, i) => {
+                        dot.classList.toggle('active', i === currentIndex);
+                    });
+
+                    imgEl.classList.remove('fade-out');
+
+                    // Restart auto-skip to sync progress bar with the new slide
+                    startAutoSkip();
+                }, 400);
+            }
+
+            if (titleEl) initCarousel();
         })();
 
+    </script>
+    <script type="module">
+        import gsap from 'https://esm.sh/gsap@3.13.0'
+        import Draggable from 'https://esm.sh/gsap@3.13.0/Draggable'
+        import { Pane } from 'https://esm.sh/tweakpane@4.0.4'
+        gsap.registerPlugin(Draggable)
+
+        const config = {
+            theme: 'dark',
+            hue: 33,
+            duration: 10,
+            bglight: 0.1,
+            scale: 1.1,
+            style: 'track',
+            text: 'Only for WINDOWS 10 and above',
+        }
+
+        const board = document.querySelector('.board')
+        const textTrack = board.querySelector('.text-track')
+
+        const ctrl = new Pane({
+            title: 'config',
+            expanded: true,
+        })
+        let textCtrl
+        const update = () => {
+            document.documentElement.dataset.theme = config.theme
+            document.documentElement.style.setProperty('--hue', config.hue)
+            document.documentElement.style.setProperty('--duration', config.duration)
+            document.documentElement.style.setProperty('--bg-lightness', config.bglight)
+            document.documentElement.style.setProperty('--scale', config.scale)
+            if (textCtrl) textCtrl.hidden = config.style !== 'track'
+        }
+
+        const sync = (event) => {
+            if (
+                !document.startViewTransition ||
+                event.target.controller.view.labelElement.innerText !== 'theme'
+            )
+                return update()
+            document.startViewTransition(() => update())
+        }
+
+        ctrl.addBinding(config, 'style', {
+            label: 'style',
+            options: {
+                countdown: 'countdown',
+                track: 'track',
+                video: 'video',
+            },
+        })
+
+        ctrl.addBinding(config, 'bglight', {
+            label: 'bg-light',
+            min: 0,
+            max: 1,
+            step: 0.01,
+        })
+
+        textCtrl = ctrl.addBinding(config, 'text', {
+            label: 'text',
+            hidden: config.style !== 'track',
+        }).on('change', () => {
+            textTrack.innerHTML = `<div class="text">${config.text}</div><div class="text text--clone">${config.text}</div>`
+        })
+
+        ctrl.addBinding(config, 'hue', {
+            label: 'hue',
+            min: 0,
+            max: 359,
+            step: 1,
+        })
+
+        ctrl.addBinding(config, 'scale', {
+            label: 'scale',
+            min: 0.5,
+            max: 1.5,
+            step: 0.1,
+        })
+
+        ctrl.addBinding(config, 'duration', {
+            label: 'duration(s)',
+            min: 0.2,
+            max: 10,
+            step: 0.01,
+        })
+
+        ctrl.addBinding(config, 'theme', {
+            label: 'theme',
+            options: {
+                system: 'system',
+                light: 'light',
+                dark: 'dark',
+            },
+        })
+
+        ctrl.on('change', sync)
+        textTrack.innerHTML = `<div class="text">${config.text}</div><div class="text text--clone">${config.text}</div>`
+        update()
+
+        // make tweakpane panel draggable
+        const tweakClass = 'div.tp-dfwv'
+        setTimeout(() => {
+            const d = Draggable.create(tweakClass, {
+                type: 'x,y',
+                allowEventDefault: true,
+                trigger: tweakClass + ' button.tp-rotv_b',
+            })
+            const el = document.querySelector(tweakClass);
+            if (el) {
+                el.addEventListener('dblclick', () => {
+                    gsap.to(tweakClass, {
+                        x: `+=${d[0].x * -1}`,
+                        y: `+=${d[0].y * -1}`,
+                        onComplete: () => {
+                            gsap.set(tweakClass, { clearProps: 'all' })
+                        },
+                    })
+                })
+            }
+        }, 100);
     </script>
 </body>
 

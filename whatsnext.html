@@ -10,43 +10,41 @@
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Mansalva&family=Playfair+Display:wght@700&display=swap">
     <link rel="stylesheet" href="airpaste.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    
     <style>
         body {
             background-color: var(--bg);
-            cursor: default !important;
-        }
-        * {
-            cursor: default !important;
-        }
-        .top-nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 1000;
+            cursor: none !important;
         }
     </style>
+    <!-- Scripts for Cube Trail & Transitions -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+    <script src="cube-trail.js" defer></script>
+    <script src="transition.js" defer></script>
+    <script src="navbar-logic.js" defer></script>
 </head>
 
 <body>
+    <canvas id="cubeCanvas"></canvas>
+
+    <div class="nav-logo">
+        <a href="airpaste.html" style="display: block;">
+            <img src="images/logovar/browserlogo.gif" alt="AirPaste Logo">
+        </a>
+    </div>
 
     <nav class="top-nav">
-        <div class="nav-logo">
-            <a href="airpaste.html" style="display: block;">
-                <img src="images/logovar/browserlogo.gif" alt="AirPaste Logo">
-            </a>
-        </div>
-
         <div class="nav-toggle-wrapper">
             <div class="nav-toggle-container">
                 <div class="nav-toggle-gooey-layer">
                     <div class="nav-toggle-indicator"></div>
                 </div>
                 <div class="nav-toggle-buttons">
-                    <button class="nav-toggle-btn" id="toggleHome">Home</button>
-                    <button class="nav-toggle-btn" id="toggleWhat">What!</button>
-                    <button class="nav-toggle-btn" id="toggleWhy">Why?</button>
+                    <button class="nav-toggle-btn" id="toggleHome">AirPaste</button>
+                    <button class="nav-toggle-btn" id="toggleDownload">Download</button>
+                    <button class="nav-toggle-btn" id="toggleShop">Shop</button>
                     <button class="nav-toggle-btn" id="toggleFree">For Free?</button>
                     <button class="nav-toggle-btn active" id="toggleNext">What's Next*</button>
                 </div>
@@ -54,7 +52,7 @@
         </div>
     </nav>
 
-    <section class="manifesto-section">
+    <section class="manifesto-section" style="margin-top: 15vh;">
         <div class="manifesto-content">
             <h2 class="manifesto-subtitle">
                 <span class="word-head">The Future of Spatial Organization</span>
@@ -68,123 +66,19 @@
         </div>
     </section>
 
-    <svg style="visibility: hidden; position: absolute;" width="0" height="0" xmlns="http://www.w3.org/2000/svg"
-        version="1.1">
-        <defs>
-            <filter id="goo">
-                <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
-                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
-                    result="goo" />
-            </filter>
-        </defs>
-    </svg>
+    <footer class="main-footer" style="background: transparent; border-radius: 0; padding-top: 10vh;">
+        <div class="footer-bottom">
+            <div class="footer-copyright">©2026 AirPaste Sanctuary</div>
+        </div>
+    </footer>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.162.0/three.min.js"></script>
-    <script src="transition.js" defer></script>
     <script>
-        // ==========================================
-        // 👾 ASCII / ARROW SWEEP EFFECT
-        // ==========================================
-        (function () {
-            function initArrowSweep(selector) {
-                const elements = document.querySelectorAll(selector);
-                
-                elements.forEach(el => {
-                    let sweepInterval = null;
-
-                    el.addEventListener('mouseenter', () => {
-                        if (el.children.length > 0 && !el.classList.contains('nav-toggle-btn')) return;
-
-                        const originalText = el.dataset.text || el.textContent.trim();
-                        if (!el.dataset.text) el.dataset.text = originalText;
-
-                        el.style.width = el.offsetWidth + 'px';
-                        el.style.display = 'inline-block';
-                        el.style.textAlign = 'center';
-
-                        let iteration = 0;
-                        clearInterval(sweepInterval);
-
-                        sweepInterval = setInterval(() => {
-                            const len = originalText.length;
-                            let displayArray = originalText.split("");
-
-                            for (let i = 0; i < len; i++) {
-                                if (iteration < len) {
-                                    if (i <= iteration) displayArray[i] = ">";
-                                } else {
-                                    const restoreIndex = iteration - len;
-                                    displayArray[i] = (i <= restoreIndex) ? originalText[i] : ">";
-                                }
-                            }
-
-                            el.textContent = displayArray.join("");
-
-                            if (iteration >= len * 2) {
-                                clearInterval(sweepInterval);
-                                el.textContent = originalText;
-                            }
-                            iteration++;
-                        }, 40);
-                    });
-                });
-            }
-
-            initArrowSweep('.nav-toggle-btn, .footer-link, .sw-tab, .dl-meta-link');
-        })();
-
-        (function () {
-            const container = document.querySelector('.nav-toggle-container');
-            const indicator = document.querySelector('.nav-toggle-indicator');
-            const btns = document.querySelectorAll('.nav-toggle-btn');
-
-            if (!container || !indicator) return;
-
-            function updateToggle(btn) {
-                if (!btn) return;
-
-                btns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-
-                const btnRect = btn.getBoundingClientRect();
-                const containerRect = container.getBoundingClientRect();
-                const leftOffset = btnRect.left - containerRect.left - 4;
-
-                indicator.style.width = btnRect.width + 'px';
-                indicator.style.transform = `translateX(${leftOffset}px)`;
-            }
-
-            const navMap = {
-                'toggleHome': 'airpaste.html',
-                'toggleWhat': 'what.html',
-                'toggleWhy': 'why.html',
-                'toggleFree': 'forfree.html',
-                'toggleNext': 'whatsnext.html'
-            };
-
-            btns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    updateToggle(btn);
-                    
-                    const targetUrl = navMap[btn.id];
-                    if (targetUrl && !window.location.href.includes(targetUrl)) {
-                        setTimeout(() => {
-                            window.location.href = targetUrl;
-                        }, 150);
-                    }
-                });
-            });
-
-            window.addEventListener('load', () => {
-                const activeBtn = document.querySelector('.nav-toggle-btn.active');
-                if (activeBtn) updateToggle(activeBtn);
-            });
-
-            window.addEventListener('resize', () => {
-                const activeBtn = document.querySelector('.nav-toggle-btn.active');
-                if (activeBtn) updateToggle(activeBtn);
-            });
-        })();
+        const lenis = new Lenis();
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
     </script>
 </body>
 

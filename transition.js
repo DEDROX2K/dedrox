@@ -1,285 +1,187 @@
 /**
- * AirPaste 3D ASCII Transition Engine
- * Uses Three.js and GLSL to create a topographic point-cloud transition.
+ * AirPaste 2D ASCII Sweep Transition Engine
+ * Uses a Canvas to create a left-to-right sweep of ASCII "water"
  */
 
-class AsciiTransition {
+class AsciiSweepTransition {
     constructor() {
-        this.container = document.createElement('div');
-        this.container.id = 'transition-container';
-        this.container.style.cssText = `
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: 10000;
-            pointer-events: none;
-            background: transparent;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-        `;
-        document.body.appendChild(this.container);
+        this.canvas = document.createElement('canvas');
+        this.ctx = this.canvas.getContext('2d', { alpha: true });
+        this.chars = "01/~>+*\\#%@".split("");
+        this.fontSize = 90;
 
-        this.scene = new THREE.Scene();
-        this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        this.camera.position.z = 5;
+        // Setup canvas styles
+        this.canvas.style.position = 'fixed';
+        this.canvas.style.top = '0';
+        this.canvas.style.left = '0';
+        this.canvas.style.width = '100vw';
+        this.canvas.style.height = '100vh';
+        this.canvas.style.zIndex = '10000'; // Make it very high
+        this.canvas.style.pointerEvents = 'none';
 
-        this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
-        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        this.container.appendChild(this.renderer.domElement);
+        document.body.appendChild(this.canvas);
 
-        this.clock = new THREE.Clock();
-        this.particles = null;
-        this.isTransitioning = false;
+        this.resize();
+        window.addEventListener('resize', () => this.resize());
 
-        this.init();
-        window.addEventListener('resize', () => this.onResize());
-    }
-
-    async init() {
-        const asciiTexture = this.createAsciiAtlas();
-        const geometry = this.createGridGeometry(160, 90); // Grid resolution
-
-        this.material = new THREE.ShaderMaterial({
-            transparent: true,
-            uniforms: {
-                uTime: { value: 0 },
-                uProgress: { value: 0 },
-                uAsciiTex: { value: asciiTexture },
-                uNextTex: { value: new THREE.Texture() },
-                uResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
-                uGridRes: { value: new THREE.Vector2(160, 90) }
-            },
-            vertexShader: `
-                uniform float uTime;
-                uniform float uProgress;
-                uniform sampler2D uNextTex;
-                uniform vec2 uGridRes;
-                
-                varying vec2 vUv;
-                varying float vLuminance;
-                varying vec3 vColor;
-                varying float vCharIndex;
-
-                float getLuminance(vec3 color) {
-                    return dot(color, vec3(0.299, 0.587, 0.114));
-                }
-
-                void main() {
-                    vUv = uv;
-                    
-                    // Sample next texture color and luminance
-                    vec4 texColor = texture2D(uNextTex, uv);
-                    vColor = texColor.rgb;
-                    vLuminance = getLuminance(vColor);
-                    
-                    // Random character index for this point
-                    vCharIndex = floor(mod(position.x * 13.0 + position.y * 7.0, 16.0));
-
-                    vec3 pos = position;
-                    
-                    // Initial movement: particles fall from top/rise from bottom
-                    float startY = (uv.x > 0.5) ? 10.0 : -10.0;
-                    pos.y = mix(startY, pos.y, clamp(uProgress * 1.5, 0.0, 1.0));
-                    
-                    // 3D Topographic Displacement based on luminance
-                    float displacement = vLuminance * 2.0 * uProgress;
-                    pos.z += displacement;
-                    
-                    // Add some noise/floatiness
-                    pos.x += sin(uTime * 0.5 + pos.y) * 0.1 * (1.0 - uProgress);
-                    pos.y += cos(uTime * 0.5 + pos.x) * 0.1 * (1.0 - uProgress);
-
-                    vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
-                    
-                    // Point size scales with progress
-                    gl_PointSize = (15.0 + 5.0 * vLuminance) * (1.0 / -mvPosition.z);
-                    gl_Position = projectionMatrix * mvPosition;
-                }
-            `,
-            fragmentShader: `
-                uniform sampler2D uAsciiTex;
-                uniform float uProgress;
-                varying vec2 vUv;
-                varying vec3 vColor;
-                varying float vCharIndex;
-
-                void main() {
-                    // Each point shows one character from the 4x4 atlas
-                    vec2 charUv = gl_PointCoord / 4.0;
-                    float tx = mod(vCharIndex, 4.0) * 0.25;
-                    float ty = floor(vCharIndex / 4.0) * 0.25;
-                    charUv += vec2(tx, ty);
-                    
-                    vec4 ascii = texture2D(uAsciiTex, charUv);
-                    
-                    if(ascii.r < 0.1) discard; // Transparency
-                    
-                    vec3 finalColor = vColor;
-                    float alpha = uProgress * ascii.r;
-                    
-                    gl_FragColor = vec4(finalColor, alpha);
-                }
-            `
-        });
-
-        this.particles = new THREE.Points(geometry, this.material);
-        this.scene.add(this.particles);
-
-        this.animate();
-    }
-
-    createAsciiAtlas() {
-        const canvas = document.createElement('canvas');
-        const size = 512;
-        canvas.width = size;
-        canvas.height = size;
-        const ctx = canvas.getContext('2d');
-        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&?".split("");
-        
-        ctx.fillStyle = "black";
-        ctx.fillRect(0, 0, size, size);
-        ctx.font = "bold 80px monospace";
-        ctx.fillStyle = "white";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-
-        const step = size / 4;
-        for (let i = 0; i < 16; i++) {
-            const x = (i % 4) * step + step / 2;
-            const y = Math.floor(i / 4) * step + step / 2;
-            ctx.fillText(chars[i % chars.length], x, y);
+        // Check if we are "arriving" from a sweep
+        if (sessionStorage.getItem('ascii_sweep') === 'true') {
+            sessionStorage.removeItem('ascii_sweep');
+            // Slight delay so the DOM has a moment to paint the initial state properly
+            setTimeout(() => {
+                this.playReveal();
+            }, 50);
         }
-
-        const texture = new THREE.CanvasTexture(canvas);
-        texture.minFilter = THREE.NearestFilter;
-        texture.magFilter = THREE.NearestFilter;
-        return texture;
     }
 
-    createGridGeometry(cols, rows) {
-        const geo = new THREE.BufferGeometry();
-        const positions = [];
-        const uvs = [];
-        
-        const aspect = window.innerWidth / window.innerHeight;
-        const width = 10 * aspect;
-        const height = 10;
+    resize() {
+        this.canvas.width = window.innerWidth * window.devicePixelRatio;
+        this.canvas.height = window.innerHeight * window.devicePixelRatio;
+        this.ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
 
-        for (let y = 0; y < rows; y++) {
-            for (let x = 0; x < cols; x++) {
-                const px = (x / cols - 0.5) * width;
-                const py = (y / rows - 0.5) * height;
-                positions.push(px, py, 0);
-                uvs.push(x / cols, y / rows);
+        this.cols = Math.ceil(window.innerWidth / (this.fontSize * 0.6));
+        this.rows = Math.ceil(window.innerHeight / this.fontSize);
+    }
+
+    start(nextUrl) {
+        // Prevent transition if we are already on the target URL (same page, different hash)
+        const currentPath = window.location.pathname.split('/').pop() || 'airpaste.html';
+        const [nextPath, nextHash] = nextUrl.split('#');
+
+        if (nextPath === currentPath || nextPath === '' || nextUrl.startsWith('#')) {
+            if (nextHash) {
+                const target = document.getElementById(nextHash) || document.getElementsByName(nextHash)[0];
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
             }
+            return;
         }
 
-        geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-        geo.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
-        return geo;
-    }
-
-    onResize() {
-        this.camera.aspect = window.innerWidth / window.innerHeight;
-        this.camera.updateProjectionMatrix();
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
-        this.material.uniforms.uResolution.value.set(window.innerWidth, window.innerHeight);
-    }
-
-    animate() {
-        requestAnimationFrame(() => this.animate());
-        this.material.uniforms.uTime.value = this.clock.getElapsedTime();
-        this.renderer.render(this.scene, this.camera);
-    }
-
-    async start(nextUrl) {
         if (this.isTransitioning) return;
         this.isTransitioning = true;
 
-        // 1. Capture/Load texture of the next page
-        // For this demo, we'll use a placeholder or try to fetch it
-        const texture = await this.loadPageTexture(nextUrl);
-        this.material.uniforms.uNextTex.value = texture;
+        this.canvas.style.pointerEvents = 'all'; // block interaction
+        this.canvas.style.visibility = 'visible';
+        let progress = -0.2; // Start a little offscreen
 
-        // 2. Show container
-        this.container.style.opacity = '1';
-        this.container.style.pointerEvents = 'all';
+        const animate = () => {
+            progress += 0.035; // Speed of sweep
+            this.drawSweep(progress, true); // true = filling the screen
 
-        // 3. Animate progress
-        gsap.to(this.material.uniforms.uProgress, {
-            value: 1,
-            duration: 1.5,
-            ease: "power2.inOut",
-            onComplete: () => {
+            if (progress >= 1.5) {
+                // Done filling. Set flag and navigate
+                sessionStorage.setItem('ascii_sweep', 'true');
                 window.location.href = nextUrl;
+            } else {
+                requestAnimationFrame(animate);
             }
-        });
+        };
+        requestAnimationFrame(animate);
     }
 
-    async loadPageTexture(url) {
-        // Since we can't easily screenshot a separate URL in vanilla JS without a proxy,
-        // we'll use a trick: pre-made screenshots of the pages or a blurred placeholder.
-        // Ideally, we'd have images like 'what_preview.jpg', etc.
-        // For now, let's use a generic elegant placeholder if the file doesn't exist.
-        const loader = new THREE.TextureLoader();
-        const screenshotMap = {
-            'what.html': 'images/previews/what.jpg',
-            'why.html': 'images/previews/why.jpg',
-            'forfree.html': 'images/previews/forfree.jpg',
-            'whatsnext.html': 'images/previews/whatsnext.jpg',
-            'airpaste.html': 'images/previews/home.jpg'
+    playReveal() {
+        this.isTransitioning = true;
+        this.canvas.style.pointerEvents = 'all';
+        this.canvas.style.visibility = 'visible';
+        // Fill canvas with complete block initially so we don't see the page underneath immediately
+        this.drawSweep(-0.2, false);
+
+        let progress = -0.2;
+        const animate = () => {
+            progress += 0.035;
+            this.drawSweep(progress, false); // false = clearing the screen
+
+            if (progress >= 1.5) {
+                this.canvas.style.pointerEvents = 'none';
+                this.canvas.style.visibility = 'hidden';
+                this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+                this.isTransitioning = false;
+            } else {
+                requestAnimationFrame(animate);
+            }
         };
-        
-        const path = screenshotMap[url] || 'images/bg10.jpg';
-        return new Promise((resolve) => {
-            loader.load(path, resolve, undefined, () => {
-                // Fallback to a simple gradient if image fails
-                const canvas = document.createElement('canvas');
-                canvas.width = 160; canvas.height = 90;
-                const ctx = canvas.getContext('2d');
-                const grad = ctx.createLinearGradient(0,0,160,90);
-                grad.addColorStop(0, '#BAB2FF');
-                grad.addColorStop(1, '#3b82f6');
-                ctx.fillStyle = grad;
-                ctx.fillRect(0,0,160,90);
-                resolve(new THREE.CanvasTexture(canvas));
-            });
-        });
+        requestAnimationFrame(animate);
+    }
+
+    drawSweep(progress, isFilling) {
+        this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+        this.ctx.font = `bold ${this.fontSize}px 'p2', monospace`;
+        this.ctx.textBaseline = "top";
+
+        const waveWidth = 0.4;
+
+        for (let col = 0; col < this.cols; col++) {
+            for (let row = 0; row < this.rows; row++) {
+
+                const colP = col / this.cols;
+                // Add organic wave distortion
+                const distortion = Math.sin(row * 0.3 + progress * 5) * 0.05 +
+                    Math.cos(row * 0.1 - col * 0.1) * 0.05;
+                const organicColP = colP + distortion;
+
+                const dist = organicColP - progress;
+                let fillFactor = 0;
+
+                if (isFilling) {
+                    if (dist > 0) fillFactor = 0; // hasn't reached
+                    else if (dist < -waveWidth) fillFactor = 1; // passed
+                    else fillFactor = -dist / waveWidth; // 0 to 1
+                } else {
+                    if (dist > 0) fillFactor = 1; // hasn't reached
+                    else if (dist < -waveWidth) fillFactor = 0; // passed
+                    else fillFactor = 1 - (-dist / waveWidth); // 1 to 0
+                }
+
+                // Noise element to break up the leading edge
+                fillFactor += (Math.random() * 0.2 - 0.1) * (1 - fillFactor);
+                fillFactor = Math.max(0, Math.min(1, fillFactor)); // Clamp
+
+                if (fillFactor > 0) {
+                    let isSolid = fillFactor > 0.8 || (fillFactor > Math.random());
+
+                    if (isSolid) {
+                        // Draw black background cell
+                        this.ctx.fillStyle = '#0a0a0a';
+                        this.ctx.fillRect(col * (this.fontSize * 0.6), row * this.fontSize, this.fontSize * 0.6, this.fontSize);
+
+                        // Occasionally draw a faint character inside the solid black block
+                        if (Math.random() > 0.9) {
+                            this.ctx.fillStyle = '#222';
+                            const char = this.chars[Math.floor(Math.random() * this.chars.length)];
+                            this.ctx.fillText(char, col * (this.fontSize * 0.6), row * this.fontSize);
+                        }
+                    } else {
+                        this.ctx.fillStyle = 'rgba(10, 10, 10, 0.8)';
+                        this.ctx.fillRect(col * (this.fontSize * 0.6), row * this.fontSize, this.fontSize * 0.6, this.fontSize);
+
+                        this.ctx.fillStyle = '#ffffff'; // White characters at the wave crest
+                        const char = this.chars[Math.floor(Math.random() * this.chars.length)];
+                        this.ctx.fillText(char, col * (this.fontSize * 0.6), row * this.fontSize);
+                    }
+                }
+            }
+        }
     }
 }
 
 // Global instance
-const transition = new AsciiTransition();
+window.transition = new AsciiSweepTransition();
 
 // Intercept links
 document.addEventListener('click', (e) => {
     const link = e.target.closest('a');
-    if (link && link.href && link.href.includes('.html') && !link.target) {
-        const url = link.getAttribute('href');
-        if (url !== '#' && !url.startsWith('http')) {
-            e.preventDefault();
-            transition.start(url);
-        }
-    }
-});
+    if (link && link.href && !link.target) {
+        const href = link.getAttribute('href');
+        if (href && href !== '#' && !href.startsWith('http') && !href.startsWith('mailto:')) {
+            // Only transition if it's a local .html page and NOT just a hash change
+            const currentPath = window.location.pathname.split('/').pop() || 'airpaste.html';
+            const [nextPath] = href.split('#');
 
-// Also intercept the button clicks from airpaste.html if they exist
-document.addEventListener('click', (e) => {
-    const btn = e.target.closest('.nav-toggle-btn');
-    if (btn && btn.id) {
-        const pageMap = {
-            'toggleWhat': 'what.html',
-            'toggleWhy': 'why.html',
-            'toggleFree': 'forfree.html',
-            'toggleNext': 'whatsnext.html'
-        };
-        const url = pageMap[btn.id];
-        if (url) {
-            e.preventDefault();
-            transition.start(url);
+            if (nextPath && nextPath !== currentPath && nextPath !== '') {
+                e.preventDefault();
+                window.transition.start(href);
+            }
         }
     }
 });

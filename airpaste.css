@@ -44,6 +44,17 @@
     --l7-y: 0vh;
 }
 
+::selection {
+    background-color: #ffe365;
+    /* Vibrant high-contrast pink */
+    color: #251d00;
+}
+
+::-moz-selection {
+    background-color: #ff2d85;
+    color: #000;
+}
+
 @keyframes cycleColors {
     0% {
         background-color: #ffffff;
@@ -162,8 +173,8 @@ html {
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 99999;
-    /* Above everything including nav */
+    z-index: 5;
+    /* Allow nav (999999) to stay on top */
     background: #e9e9e9;
     overflow: hidden;
 }
@@ -252,8 +263,8 @@ html {
     inset: 0;
     width: 100vw;
     height: 100vh;
-    z-index: 9000;
-    /* Above nav bar, but below hero section */
+    z-index: 2;
+    /* Below hero section (5) */
     pointer-events: none;
 }
 
@@ -1635,7 +1646,7 @@ html {
    ========================================== */
 .manifesto-section {
     position: relative;
-    z-index: 10;
+    z-index: 20;
     width: 100%;
     padding: 20vh 5vw 15vh 5vw;
     display: flex;
@@ -1827,16 +1838,47 @@ html {
     top: 0;
     left: 0;
     width: 100%;
-    padding: 2vw 32vw;
+    height: 6vw;
+    /* Defined height for vertical alignment */
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 999999;
+    /* Absolute top-most layer */
     box-sizing: border-box;
     pointer-events: none;
 }
 
 .nav-logo,
+.nav-shop {
+    position: fixed;
+    top: 0;
+    height: 6vw;
+    display: flex;
+    align-items: center;
+    z-index: 4;
+    /* Below hero section (5) */
+    pointer-events: auto;
+}
+
+.nav-logo {
+    left: 2vw;
+}
+
+.nav-shop {
+    right: 2vw;
+}
+
+.nav-logo svg,
+.nav-logo img,
+.nav-shop svg,
+.nav-shop img {
+    height: 52px;
+    /* Matches the nav toggle container height */
+    width: auto;
+    display: block;
+}
+
 .nav-links,
 .get-btn {
     pointer-events: auto;
@@ -1946,9 +1988,10 @@ html {
    🎨 LOGO COLOR ANIMATION
    ========================================== */
 
-.nav-logo svg {
-    height: 55px;
-    /* Your desired height */
+.nav-logo svg,
+.nav-logo img {
+    height: 52px;
+    /* Matches the nav toggle container height */
     width: auto;
     display: block;
 }
@@ -1973,10 +2016,10 @@ html {
 
 .nav-toggle-container {
     background: #222;
-    /* Darker bar */
     padding: 4px;
     display: flex;
     position: relative;
+
     /* Pixelated corner cutouts */
     clip-path: polygon(0 6px, 2px 6px, 2px 4px, 4px 4px, 4px 2px, 6px 2px, 6px 0,
             calc(100% - 6px) 0, calc(100% - 6px) 2px, calc(100% - 4px) 2px, calc(100% - 4px) 4px, calc(100% - 2px) 4px, calc(100% - 2px) 6px, 100% 6px,
@@ -2025,7 +2068,6 @@ html {
     background: transparent;
     padding: 10px 24px;
     font-family: 'p2', monospace;
-    /* Pixel font */
     font-weight: 700;
     font-size: 1.5rem;
     color: #ffffff;
@@ -2070,21 +2112,15 @@ html {
 
 .nav-toggle-btn:hover:not(.active) {}
 
-/* Logo Alignment fix */
-.nav-logo svg,
-.nav-logo img {
-    height: 58px;
-    width: auto;
-    display: block;
-    /* margin-top: -10px; */
-    /* Slight optical adjustment */
-}
+/* Logo height handled above */
 
 
 /* ==========================================
    🖊️ HIGHLIGHT / MARKER TEXT SECTION
    ========================================== */
 .mark-section {
+    position: relative;
+    z-index: 20;
     width: 100%;
     padding: 10vh 5vw 15vh;
     display: flex;
@@ -2538,6 +2574,9 @@ html {
    🖼️ BEFORE / AFTER SCRUBBER
    ========================================== */
 .scrubber-section {
+    position: relative;
+    z-index: 100;
+    /* Above hero (5) */
     width: 100%;
     padding: -1vh 5vw 10vh 5vw;
     box-sizing: border-box;
@@ -2553,7 +2592,7 @@ html {
    ========================================== */
 .dl-section {
     width: 100%;
-    background-color: var(--bg);
+    /* background-color: var(--bg); */
     padding: 16vh 5vw 14vh 5vw;
     box-sizing: border-box;
     display: flex;
@@ -2733,7 +2772,7 @@ html {
     width: 100%;
     border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.18);
+    box-shadow: 0 30px 80px rgb(225 215 202 / 50%);
     transform-style: preserve-3d;
     transition: box-shadow 0.4s ease;
     cursor: none;
@@ -2783,11 +2822,11 @@ html {
     left: 50%;
     width: 2px;
     height: 100%;
-    background: rgba(255, 255, 255, 0.85);
+    background: rgb(125 122 115 / 85%);
     z-index: 3;
     pointer-events: none;
     transform: translateX(-50%);
-    box-shadow: 0 0 12px rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 12px 6px rgb(255 255 255);
 }
 
 .scrubber-hint {
@@ -2805,6 +2844,9 @@ html {
 .footer-reveal-container {
     background-color: #000;
     width: 100%;
+    position: relative;
+    z-index: 100;
+    /* Above hero (5) */
 }
 
 .main-footer {
@@ -3022,58 +3064,304 @@ html {
 /* ==========================================
    📸 PREMIUM CAROUSEL (M3 EXPRESSIVE)
    ========================================== */
-.carousel-section {
+/* ==========================================
+   📸 PREMIUM DYNAMIC CAROUSEL
+   ========================================== */
+.premium-carousel-section {
     position: relative;
-    width: 100%;
-    padding: 10vh 0;
-    overflow: hidden;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 100px 20px;
     background: transparent;
-    z-index: 10;
-}
-
-.carousel-container {
+    text-align: center;
+    color: #1a1a1a;
     width: 100%;
-    height: 35vh;
-    position: relative;
-    cursor: grab;
-    touch-action: none;
-    -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
-    mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
 }
 
-.carousel-container:active {
-    cursor: grabbing;
+.carousel-header h2 {
+    font-family: 'p1', serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    /* font-weight: 700; */
+    margin-bottom: 8px;
+    color: #111;
 }
 
-.carousel-track {
+.carousel-header p {
+    font-family: 'p2', monospace;
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.carousel-controls {
     display: flex;
     align-items: center;
-    height: 100%;
-    gap: 3vw;
-    padding: 0 10vw;
-    width: max-content;
-    will-change: transform;
-    transform-style: preserve-3d;
+    gap: 15px;
+    margin-bottom: 30px;
+    font-family: 'p2', monospace;
 }
 
-.carousel-item {
-    height: 100%;
-    flex-shrink: 0;
+.carousel-arrow {
+    background: transparent;
+    border: none;
+    font-size: 1.2rem;
+    color: #111;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 5px 10px;
+    transition: opacity 0.2s;
+}
+
+.carousel-arrow:hover {
+    opacity: 0.7;
+}
+
+.carousel-pagination {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border: 1px solid #111;
+    cursor: pointer;
     position: relative;
-    /* Removed background, border-radius, overflow, and box-shadow to let transparent PNGs float */
-    transform-style: preserve-3d;
-    will-change: transform, opacity, filter;
+    overflow: hidden;
+    transition: width 0.3s steps(4);
 }
 
-.carousel-item img {
+.dot.active {
+    width: 60px;
+    background: transparent;
+}
+
+.dot-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
     height: 100%;
-    width: auto;
-    object-fit: contain;
-    /* Maintain PNG aspect ratio exactly without clipping */
-    pointer-events: none;
-    user-select: none;
-    -webkit-user-drag: none;
-    display: block;
-    filter: drop-shadow(0 25px 35px rgba(0, 0, 0, 0.15)) drop-shadow(0 5px 15px rgba(0, 0, 0, 0.05));
-    will-change: transform;
+    width: 0%;
+    background: #111;
+    transition: width 0.1s steps(10);
+}
+
+/* ASCII Brackets for pagination group */
+.carousel-pagination::before {
+    content: '[';
+    font-size: 1.2rem;
+}
+
+.carousel-pagination::after {
+    content: ']';
+    font-size: 1.2rem;
+}
+
+.carousel-desc {
+    font-family: 'p2', monospace;
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin-bottom: 60px;
+    color: #111;
+    font-weight: 500;
+}
+
+.carousel-frame {
+    position: relative;
+    width: 100%;
+    max-width: 1000px;
+    aspect-ratio: 12 / 9;
+    padding: 30px;
+    border-radius: 50px;
+    overflow: visible;
+    /* Allow glow to spill out */
+}
+
+.carousel-glow {
+    position: absolute;
+    inset: 10%;
+    background: linear-gradient(135deg, #d4e5ff 0%, #ffffff 50%, #ffe9d4 100%);
+    opacity: 0.8;
+    filter: blur(80px);
+    z-index: 1;
+    border-radius: 50%;
+}
+
+.carousel-image-container {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    border-radius: 32px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.carousel-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.4s ease, transform 0.6s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.carousel-image-container img.fade-out {
+    opacity: 0;
+    transform: scale(1.05);
+}
+
+/* ==========================================
+   📠 CSS DOT MATRIX DISPLAY
+   ========================================== */
+
+.dot-matrix-section {
+    position: relative;
+    z-index: 20;
+    width: 100%;
+    padding: 120px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    position: relative;
+    z-index: 10;
+    overflow: visible;
+}
+
+.board-container {
+    position: relative;
+    border: 2px solid hsl(0, 0%, 16%);
+    border-radius: 4px;
+}
+
+.board-container::after {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    background: linear-gradient(-68deg, #0000 63% 69.5%, #fff 70% 80%, #0000 80.5% 82.5%, #fff 82% 86.5%, #0000 87% 100%);
+    z-index: 3;
+    opacity: 0.12;
+    mix-blend-mode: plus-lighter;
+}
+
+.rivets {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+}
+
+.rivets div {
+    background: hsl(0, 0%, 10%);
+    position: absolute;
+    width: 10px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    box-shadow: 0.5px 0.5px 0px hsl(0, 0%, 100% / 0.2) inset;
+}
+
+.rivets div::after {
+    content: '';
+    height: 2px;
+    width: 80%;
+    border-radius: 10px;
+    background: hsl(0, 0%, 0%);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    box-shadow: 0 -1px hsl(0, 0%, 100% / 0.2) inset;
+    rotate: -30deg;
+}
+
+.rivets div:nth-of-type(1) {
+    left: calc(100% + 4px);
+    bottom: calc(100% + 4px);
+}
+
+.rivets div:nth-of-type(2) {
+    right: calc(100% + 4px);
+    bottom: calc(100% + 4px);
+}
+
+.rivets div:nth-of-type(3) {
+    right: calc(100% + 4px);
+    top: calc(100% + 4px);
+}
+
+.rivets div:nth-of-type(4) {
+    left: calc(100% + 4px);
+    top: calc(100% + 4px);
+}
+
+.board {
+    --size: 4px;
+    /* font-family: 'p2', sans-serif; */
+    font-size: 100px;
+    /* font-weight: 700; */
+    letter-spacing: 0.035em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    width: 920px;
+    padding-block: 1rem;
+    line-height: 1;
+    overflow: hidden;
+    container-type: inline-size;
+    background: hsl(0, 0%, 6%);
+    background: hsl(30, 90%, 8%);
+    background: oklch(0.42 0.09 104.98);
+    position: relative;
+    filter: contrast(2) brightness(1.5) saturate(2);
+    transform: translateZ(0);
+}
+
+.board::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    mix-blend-mode: plus-lighter;
+    filter: brightness(1.1);
+    background: radial-gradient(circle at center, hsl(0, 0%, 20%) 1px, transparent 4px) 50% 50% / var(--size) var(--size);
+    transform: translateZ(0);
+}
+
+.board__content {
+    filter: blur(calc(var(--blur, 1) * 1px)) contrast(1.2) brightness(1) saturate(1.6);
+    color: oklch(1 0.2393 var(--hue));
+    height: 100%;
+    width: 100%;
+    mask: radial-gradient(circle at center, #000 1px, #0000 1px) 50% 50% / var(--size) var(--size);
+    transform: translateZ(0);
+}
+
+.text-track {
+    position: relative;
+    display: flex;
+    width: fit-content;
+    animation: slide calc(var(--duration, 10) * 1s) infinite linear;
+    color: oklch(1 0.2883 var(--hue));
+    filter: blur(1px) contrast(1) saturate(1) hue-rotate(0deg) brightness(1);
+    transform: translateZ(0);
+}
+
+.text-track .text {
+    text-box-trim: trim-both;
+    text-box-edge: cap alphabetic;
+    padding-inline: -4rem;
+    width: fit-content;
+    filter: blur(2px) drop-shadow(0 0 2px oklch(0.1 0.4383 var(--hue) / 0.8)) contrast(3) brightness(1.4);
+    min-width: 100cqi;
+    text-align: center;
+    text-shadow: 0 0 2px white;
+    transform: translateZ(0);
+}
+
+@keyframes slide {
+    to {
+        translate: -50% 0;
+    }
 }

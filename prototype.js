@@ -46,44 +46,7 @@ const SITE_CONFIG = {
         pixelSize: 1,
         background: '#f3f3f3',
         resolution: 40,
-        initialArt: [
-            "                XXXXXX                  ",
-            "             XXXXXXXXXXXX               ",
-            "           XXXXXXXXXXXXXXXX             ",
-            "          XXXXXXXXXXXXXXXXXX            ",
-            "         XXXXXXXXXXXXXXXXXXXX           ",
-            "        XXXXXXXXXXXXXXXXXXXXXX          ",
-            "        XXXXXX          XXXXXX          ",
-            "       XXXXXX            XXXXXX         ",
-            "       XXXXXX            XXXXXX         ",
-            "       XXXXXX            XXXXXX         ",
-            "       XXXXXX            XXXXXX         ",
-            "       XXXXXX            XXXXXX         ",
-            "       XXXXXX            XXXXXX         ",
-            "       XXXXXX            XXXXXX         ",
-            "       XXXXXX            XXXXXX         ",
-            "       XXXXXX            XXXXXX         ",
-            "       XXXXXX            XXXXXX         ",
-            "       XXXXXX            XXXXXX         ",
-            "       XXXXXX            XXXXXX         ",
-            "       XXXXXX            XXXXXX         ",
-            "       XXXXXX            XXXXXX         ",
-            "       XXXXXX            XXXXXX         ",
-            "       XXXXXX            XXXXXX         ",
-            "       XXXXXX            XXXXXX         ",
-            "       XXXXXX            XXXXXX         ",
-            "       XXXXXX            XXXXXX         ",
-            "       XXXXXX            XXXXXX         ",
-            "       XXXXXX            XXXXXX         ",
-            "       XXXXXX            XXXXXX         ",
-            "        XXXXXX          XXXXXX          ",
-            "        XXXXXX          XXXXXX          ",
-            "         XXXXXXXXXXXXXXXXXXXX           ",
-            "          XXXXXXXXXXXXXXXXXX            ",
-            "           XXXXXXXXXXXXXXXX             ",
-            "             XXXXXXXXXXXX               ",
-            "                XXXXXX                  "
-        ]
+        initialArt: []
     },
     caseData: {
         case1: {
@@ -392,6 +355,7 @@ const stickyNoteEl = document.getElementById('sticky-note');
 const pillNotesBtn = document.getElementById('pill-notes-btn');
 const pillResumeBtn = document.getElementById('pill-resume-btn');
 const pillThirdBtn = document.getElementById('pill-third-btn');
+const pillFourthBtn = document.getElementById('pill-fourth-btn');
 const resumePopoutEl = document.getElementById('resume-popout');
 const readerInlineEl = document.getElementById('reader-inline');
 const showIdBtn = document.getElementById('show-id-btn');
@@ -2982,6 +2946,7 @@ document.addEventListener('DOMContentLoaded', () => {
         expandBtn.addEventListener('click', (e) => {
             device.classList.toggle('maximized');
             document.body.classList.toggle('device-maximized');
+            orbCursorHandle?.classList.add('is-sticky');
             e.stopPropagation();
             expandFabAnchor.schedule();
             scheduleFittyRefresh();
@@ -3011,6 +2976,8 @@ document.addEventListener('DOMContentLoaded', () => {
     orbCursorHandle?.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
+        // Toggling stickiness manually if the bar itself is clicked
+        orbCursorHandle.classList.toggle('is-sticky');
         if (e.target instanceof HTMLElement) e.target.blur();
     });
 
@@ -3018,11 +2985,13 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         e.stopPropagation();
         toggleMatrixPaused();
+        orbCursorHandle?.classList.add('is-sticky');
         if (e.target instanceof HTMLElement) e.target.blur();
     });
 
     orbResumeBtn?.addEventListener('click', (e) => {
         e.stopPropagation();
+        orbCursorHandle?.classList.add('is-sticky');
         if (e.target instanceof HTMLElement) e.target.blur();
     });
 
@@ -3071,6 +3040,24 @@ document.addEventListener('DOMContentLoaded', () => {
         readerMode.toggle();
     });
 
+    pillFourthBtn?.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const email = 'raghavprasanna2000@gmail.com';
+        navigator.clipboard.writeText(email).then(() => {
+            const tooltip = pillFourthBtn.querySelector('.pill-tooltip');
+            if (tooltip) {
+                const originalText = tooltip.textContent;
+                tooltip.textContent = 'copied email ID';
+                setTimeout(() => {
+                    tooltip.textContent = originalText;
+                }, 2000);
+            }
+        }).catch(err => {
+            console.error('Failed to copy email: ', err);
+        });
+    });
+
     showIdBtn?.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -3109,6 +3096,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (idWasOpen && !clickedInsideIdCard && !(showIdBtn && showIdBtn.contains(e.target))) {
             idCardSystem.closeToPeek();
             return;
+        }
+
+        // Clear orb stickiness on outside click
+        if (orbCursorHandle?.classList.contains('is-sticky')) {
+            const clickedInsideOrb = leftControlsEl && leftControlsEl.contains(e.target);
+            if (!clickedInsideOrb) {
+                orbCursorHandle.classList.remove('is-sticky');
+            }
         }
 
         // Priority close order:
@@ -3153,7 +3148,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initCompanyDock();
     buildPalette();
     clearPixelCanvas();
-    drawPremadeArt();
     SITE_CONFIG.setupCaseOverlays();
     initIndexGrid();
     initFeaturedCardHoverMotion();
@@ -3201,25 +3195,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Handle Email Pill Copy
+// DOM Ready initializers moved to main block
 document.addEventListener('DOMContentLoaded', () => {
-    const emailPillBtn = document.getElementById('email-pill-btn');
-    const emailPillTooltip = document.getElementById('email-pill-tooltip');
-
-    if (emailPillBtn && emailPillTooltip) {
-        emailPillBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            navigator.clipboard.writeText('raghavprasanna2000@gmail.com').then(() => {
-                const originalText = emailPillTooltip.textContent;
-                emailPillTooltip.textContent = 'Copied!';
-                setTimeout(() => {
-                    emailPillTooltip.textContent = originalText;
-                }, 2000);
-            }).catch(err => {
-                console.error('Failed to copy: ', err);
-            });
-        });
-    }
+    // Other specific page ready logic if needed
 });
 
 
