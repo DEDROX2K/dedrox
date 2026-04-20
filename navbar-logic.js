@@ -13,7 +13,7 @@ class NavBar {
 
         this.navMap = {
             'toggleHome': 'airpaste.html',
-            'toggleDownload': 'airpaste.html#download',
+            'toggleDownload': 'download.html',
             'toggleShop': 'shop.html',
             'toggleFree': 'forfree.html',
             'toggleNext': 'whatsnext.html'
@@ -37,7 +37,14 @@ class NavBar {
         }
 
         const activeBtn = document.getElementById(activeId);
-        if (activeBtn) this.updatePosition(activeBtn, true);
+        if (activeBtn) {
+            // Wait for fonts/layout to be stable for correct positioning
+            if (document.fonts) {
+                document.fonts.ready.then(() => this.updatePosition(activeBtn, true));
+            } else {
+                setTimeout(() => this.updatePosition(activeBtn, true), 100);
+            }
+        }
 
         // Click handlers
         this.btns.forEach(btn => {

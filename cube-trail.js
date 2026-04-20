@@ -9,7 +9,7 @@
     const CONFIG = {
         cellSize: 10,       // Size of each cube in pixels
         trailLength: 10,    // How many steps a cube lasts (higher = longer trail)
-        trailColor: '0,0,0',// RGB color (Black by default for visibility)
+        trailColor: '255,255,255',// White color for "difference" blending mode
         interval: 2,        // Update speed in ms (lower = smoother/faster)
     };
 
