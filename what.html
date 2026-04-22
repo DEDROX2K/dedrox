@@ -15,11 +15,14 @@
         /* Specific overrides for standalone pages to ensure visibility without heavy canvas */
         body {
             background-color: var(--bg);
-            cursor: default !important; /* Reverting cursor for sub-pages unless user wants trail */
+            cursor: default !important;
+            /* Reverting cursor for sub-pages unless user wants trail */
         }
+
         * {
             cursor: default !important;
         }
+
         .top-nav {
             position: fixed;
             top: 0;
@@ -32,11 +35,11 @@
 
 <body>
 
-    <div class="nav-logo">
+    <!-- <div class="nav-logo">
         <a href="airpaste.html" style="display: block;">
             <img src="images/logovar/browserlogo.gif" alt="AirPaste Logo">
         </a>
-    </div>
+    </div> -->
 
     <nav class="top-nav">
         <div class="nav-toggle-wrapper">
@@ -61,7 +64,9 @@
                 <span class="word-head">A Digital Canvas</span>
             </h2>
             <p class="manifesto-text">
-                AirPaste is a local-first desktop application designed for collectors, thinkers, and creators. It allows you to paste links, images, and notes onto an infinite canvas, keeping everything organized in a visual, spatial way.
+                AirPaste is a local-first desktop application designed for collectors, thinkers, and creators. It allows
+                you to paste links, images, and notes onto an infinite canvas, keeping everything organized in a visual,
+                spatial way.
             </p>
             <p class="manifesto-text highlight">
                 No cloud, no tracking, just your ideas.
@@ -82,7 +87,6 @@
     </svg>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.162.0/three.min.js"></script>
-    <script src="transition.js" defer></script>
     <script>
         // --- 💧 LIQUID NAV TOGGLE LOGIC ---
         // ==========================================
@@ -91,7 +95,7 @@
         (function () {
             function initArrowSweep(selector) {
                 const elements = document.querySelectorAll(selector);
-                
+
                 elements.forEach(el => {
                     let sweepInterval = null;
 
@@ -168,7 +172,7 @@
             btns.forEach(btn => {
                 btn.addEventListener('click', () => {
                     updateToggle(btn);
-                    
+
                     const targetUrl = navMap[btn.id];
                     if (targetUrl && !window.location.href.includes(targetUrl)) {
                         setTimeout(() => {

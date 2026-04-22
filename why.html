@@ -16,9 +16,11 @@
             background-color: var(--bg);
             cursor: default !important;
         }
+
         * {
             cursor: default !important;
         }
+
         .top-nav {
             position: fixed;
             top: 0;
@@ -31,11 +33,11 @@
 
 <body>
 
-    <div class="nav-logo">
+    <!-- <div class="nav-logo">
         <a href="airpaste.html" style="display: block;">
             <img src="images/logovar/browserlogo.gif" alt="AirPaste Logo">
         </a>
-    </div>
+    </div> -->
 
     <nav class="top-nav">
         <div class="nav-toggle-wrapper">
@@ -60,7 +62,8 @@
                 <span class="word-head">Privacy by Default</span>
             </h2>
             <p class="manifesto-text">
-                In an era of cloud subscriptions and data mining, AirPaste stands apart. We believe your data belongs to you. That's why everything is stored locally on your machine in open formats.
+                In an era of cloud subscriptions and data mining, AirPaste stands apart. We believe your data belongs to
+                you. That's why everything is stored locally on your machine in open formats.
             </p>
             <p class="manifesto-text highlight">
                 No account required. No internet needed. Just raw, unadulterated productivity.
@@ -80,7 +83,6 @@
     </svg>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.162.0/three.min.js"></script>
-    <script src="transition.js" defer></script>
     <script>
         // ==========================================
         // 👾 ASCII / ARROW SWEEP EFFECT
@@ -88,7 +90,7 @@
         (function () {
             function initArrowSweep(selector) {
                 const elements = document.querySelectorAll(selector);
-                
+
                 elements.forEach(el => {
                     let sweepInterval = null;
 
@@ -165,7 +167,7 @@
             btns.forEach(btn => {
                 btn.addEventListener('click', () => {
                     updateToggle(btn);
-                    
+
                     const targetUrl = navMap[btn.id];
                     if (targetUrl && !window.location.href.includes(targetUrl)) {
                         setTimeout(() => {

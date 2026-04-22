@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,33 +15,58 @@
     <script src="cube-trail.js" defer></script>
     <script src="navbar-logic.js" defer></script>
     <style>
+        html {
+            background: #000;
+        }
+
+        body {
+            background: transparent !important;
+            margin: 0;
+            padding: 0;
+        }
+
         .dl-hero {
-            min-height: 100vh;
+            /* min-height: 100vh; */
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
             padding-top: 15vh;
-            background: #e9e9e9;
+            background: transparent !important;
             text-align: center;
             position: relative;
             z-index: 5;
+        }
+
+        .dl-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('images/logobg.jpg');
+            background-size: cover;
+            background-position: center;
+            filter: blur(8px);
+            transform: scale(1.1);
+            z-index: -1; /* Behind everything */
         }
 
         .dl-logo-main {
             width: 120px;
             height: auto;
             margin-bottom: 2.5rem;
-            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));
+            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.1));
         }
 
         .dl-main-headline {
             font-family: 'p1', serif;
             font-size: clamp(2.5rem, 6vw, 4.5rem);
-            color: #111;
+            color: #fff;
             margin-bottom: 1.5rem;
             line-height: 1.1;
             max-width: 900px;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         .dl-main-btn-container {
@@ -64,33 +90,34 @@
             align-items: center;
             gap: 12px;
             transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
         }
 
         .dl-cta-btn:hover {
             transform: translateY(-4px) scale(1.02);
-            box-shadow: 0 20px 45px rgba(0,0,0,0.25);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.25);
         }
 
         .dl-os-note {
             font-family: 'fg', sans-serif;
             font-size: 0.85rem;
-            color: rgba(0,0,0,0.5);
+            color: rgba(255, 255, 255, 0.6);
             font-weight: 500;
         }
 
         .dl-secondary-link {
             font-family: 'fg', sans-serif;
             font-size: 0.95rem;
-            color: #4a4a4a;
+            color: rgba(255, 255, 255, 0.8);
             text-decoration: none;
             margin-top: 1.5rem;
             border-bottom: 1px solid transparent;
-            transition: border-color 0.2s;
+            transition: all 0.2s;
         }
 
         .dl-secondary-link:hover {
-            border-color: #4a4a4a;
+            color: #fff;
+            border-color: #fff;
         }
 
         .dl-gallery {
@@ -107,7 +134,7 @@
         .dl-gallery-item {
             border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
             background: #fff;
             transition: transform 0.5s ease;
         }
@@ -130,13 +157,17 @@
             .dl-gallery {
                 grid-template-columns: 1fr;
             }
+
             .dl-gallery-item:nth-child(2) {
                 transform: none;
             }
         }
     </style>
 </head>
-<body>
+
+<body style="overflow-x: hidden;">
+
+    <div class="dl-background"></div>
 
     <canvas id="cubeCanvas"></canvas>
 
@@ -165,14 +196,15 @@
 
     <main class="dl-hero">
         <img src="images/logovar/browserlogo.gif" alt="AirPaste" class="dl-logo-main">
-        
+
         <h1 class="dl-main-headline">
             The vault<br>built to be yours
         </h1>
 
         <div class="dl-main-btn-container">
             <a href="#" class="dl-cta-btn">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                    stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                     <polyline points="7 10 12 15 17 10"></polyline>
                     <line x1="12" y1="15" x2="12" y2="3"></line>
@@ -180,21 +212,9 @@
                 Download AirPaste
             </a>
             <p class="dl-os-note">For Windows 11/10 64-bit</p>
-            
+
             <a href="whatsnext.html" class="dl-secondary-link">I want to see what's next</a>
         </div>
-
-        <section class="dl-gallery">
-            <div class="dl-gallery-item">
-                <img src="images/airpaste-mockup.png" alt="Mockup 1">
-            </div>
-            <div class="dl-gallery-item">
-                <img src="images/displaytv.jpg" alt="Mockup 2">
-            </div>
-            <div class="dl-gallery-item">
-                <img src="images/allrevs.png" alt="Mockup 3">
-            </div>
-        </section>
     </main>
 
     <script>
@@ -210,14 +230,15 @@
         gsap.from('.dl-logo-main', { opacity: 0, y: 20, duration: 1, ease: 'power3.out' });
         gsap.from('.dl-main-headline', { opacity: 0, y: 30, duration: 1, delay: 0.2, ease: 'power3.out' });
         gsap.from('.dl-main-btn-container', { opacity: 0, y: 20, duration: 1, delay: 0.4, ease: 'power3.out' });
-        gsap.from('.dl-gallery-item', { 
-            opacity: 0, 
-            y: 50, 
-            duration: 1.2, 
-            delay: 0.6, 
-            stagger: 0.2, 
-            ease: 'power4.out' 
+        gsap.from('.dl-gallery-item', {
+            opacity: 0,
+            y: 50,
+            duration: 1.2,
+            delay: 0.6,
+            stagger: 0.2,
+            ease: 'power4.out'
         });
     </script>
 </body>
+
 </html>

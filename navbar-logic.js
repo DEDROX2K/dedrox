@@ -55,12 +55,8 @@ class NavBar {
                 // Update UI position
                 this.updatePosition(btn);
 
-                // Trigger navigation via transition engine
-                if (window.transition) {
-                    window.transition.start(targetUrl);
-                } else {
-                    window.location.href = targetUrl;
-                }
+                // Navigate directly
+                window.location.href = targetUrl;
             });
         });
 
