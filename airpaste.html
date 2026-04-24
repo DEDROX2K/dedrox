@@ -81,9 +81,9 @@
                 </div>
             </div>
         </div>
-        <!-- <div class="hero-logo-bottom">
-            <img src="images/Vector/namenlogo.png" alt="AirPaste">
-        </div> -->
+        <div class="hero-cta-group">
+            <a href="download.html" class="pixel-btn-v2">Download Now</a>
+        </div>
         <div class="hero-scroll-indicator">
             <div class="ascii-block-v">
                 <span class="filled"></span><span></span><span></span><span></span><span class="filled"></span>
@@ -173,7 +173,131 @@
         <p class="scrubber-hint">← Move cursor to reveal →</p>
     </section>
 
-    <section class="dot-matrix-section">
+    <section class="features-section">
+        <div class="features-content">
+            <h2 class="features-subtitle">
+                <span class="word-head">Features</span>
+            </h2>
+
+            <div class="features-accordion">
+                <!-- User Research -->
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <div class="accordion-icon-box">
+                            <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                        </div>
+                        <span class="accordion-title">User Research</span>
+                        <div class="accordion-arrow">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M6 9l6 6 6-6"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="accordion-body">
+                        <p>Understanding user needs, behaviors, and motivations through methods like interviews, surveys, and usability testing.</p>
+                    </div>
+                </div>
+
+                <!-- Information Architecture -->
+                <div class="accordion-item active">
+                    <div class="accordion-header">
+                        <div class="accordion-icon-box">
+                            <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="14" width="7" height="7"></rect>
+                                <rect x="3" y="14" width="7" height="7"></rect>
+                            </svg>
+                        </div>
+                        <span class="accordion-title">Information Architecture</span>
+                        <div class="accordion-arrow">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M6 9l6 6 6-6"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="accordion-body">
+                        <p>Organizing and structuring content to help users find information and complete tasks efficiently.</p>
+                    </div>
+                </div>
+
+                <!-- Interaction Design -->
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <div class="accordion-icon-box">
+                            <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5"></path>
+                            </svg>
+                        </div>
+                        <span class="accordion-title">Interaction Design</span>
+                        <div class="accordion-arrow">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M6 9l6 6 6-6"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="accordion-body">
+                        <p>Designing engaging interfaces with well-thought-out behaviors and smooth transitions.</p>
+                    </div>
+                </div>
+
+                <!-- UX Optimization -->
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <div class="accordion-icon-box">
+                            <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                            </svg>
+                        </div>
+                        <span class="accordion-title">UX Optimization</span>
+                        <div class="accordion-arrow">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M6 9l6 6 6-6"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="accordion-body">
+                        <p>Continuously improving the user experience through data analysis and iterative design refinements.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="views-demo-section">
+        <div class="views-demo-content">
+            <h2 class="views-demo-subtitle">
+                <span class="word-head">Triple Perspective</span>
+            </h2>
+            <p class="views-demo-text">
+                One file, three distinct ways to interact. Seamlessly switch between modes to match your workflow.
+            </p>
+            <div class="views-demo-carousel-wrapper">
+                <div class="views-demo-carousel" id="viewsCarousel">
+                    <div class="carousel-slide active" data-view="List">
+                        <img src="images/List view.png" alt="List View">
+                    </div>
+                    <div class="carousel-slide" data-view="Globe">
+                        <img src="images/Globe view.png" alt="Globe View">
+                    </div>
+                    <div class="carousel-slide" data-view="Canvas">
+                        <img src="images/Canvas view.png" alt="Canvas View">
+                    </div>
+                </div>
+                
+                <div class="carousel-controls">
+                    <button class="carousel-btn active" data-index="0">List View</button>
+                    <button class="carousel-btn" data-index="1">Globe View</button>
+                    <button class="carousel-btn" data-index="2">Canvas View</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- <section class="dot-matrix-section">
         <div class="board-container">
             <div class="rivets">
                 <div class="rivet"></div>
@@ -189,7 +313,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> -->
 
 
 
@@ -1017,6 +1141,54 @@
         }
 
         if (titleEl) initCarousel();
+        
+        // ==========================================
+        // ✨ FEATURES ACCORDION LOGIC
+        // ==========================================
+        (function() {
+            const accordionItems = document.querySelectorAll('.accordion-item');
+            
+            accordionItems.forEach(item => {
+                const header = item.querySelector('.accordion-header');
+                header.addEventListener('click', () => {
+                    const isActive = item.classList.contains('active');
+                    
+                    // Close all other items
+                    accordionItems.forEach(otherItem => {
+                        otherItem.classList.remove('active');
+                    });
+                    
+                    // Toggle current item
+                    if (!isActive) {
+                        item.classList.add('active');
+                    }
+                });
+            });
+        })();
+
+        // ==========================================
+        // 🖼️ VIEWS DEMO CAROUSEL LOGIC
+        // ==========================================
+        (function() {
+            const carousel = document.getElementById('viewsCarousel');
+            if (!carousel) return;
+            const slides = carousel.querySelectorAll('.carousel-slide');
+            const btns = document.querySelectorAll('.carousel-btn');
+            
+            btns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const index = parseInt(btn.dataset.index);
+                    
+                    // Update buttons
+                    btns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    // Update slides
+                    slides.forEach(s => s.classList.remove('active'));
+                    slides[index].classList.add('active');
+                });
+            });
+        })();
 
 
     </script>
