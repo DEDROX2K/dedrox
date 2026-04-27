@@ -81,6 +81,10 @@
                 </div>
             </div>
         </div>
+        <div class="hero-top-left-bar">
+            <img src="images/Vector/airpaste-logo.svg" alt="AirPaste Logo" style="height: 18px; width: auto; vertical-align: middle; margin-right: 8px; opacity: 0.85;">
+            You should not spend 10£ to save bookmarks.
+        </div>
         <div class="hero-cta-group">
             <a href="download.html" class="pixel-btn-v2">Download Now</a>
         </div>
@@ -184,7 +188,8 @@
                 <div class="accordion-item">
                     <div class="accordion-header">
                         <div class="accordion-icon-box">
-                            <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
                                 <circle cx="11" cy="11" r="8"></circle>
                                 <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                             </svg>
@@ -197,7 +202,8 @@
                         </div>
                     </div>
                     <div class="accordion-body">
-                        <p>Understanding user needs, behaviors, and motivations through methods like interviews, surveys, and usability testing.</p>
+                        <p>Understanding user needs, behaviors, and motivations through methods like interviews,
+                            surveys, and usability testing.</p>
                     </div>
                 </div>
 
@@ -205,7 +211,8 @@
                 <div class="accordion-item active">
                     <div class="accordion-header">
                         <div class="accordion-icon-box">
-                            <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
                                 <rect x="3" y="3" width="7" height="7"></rect>
                                 <rect x="14" y="3" width="7" height="7"></rect>
                                 <rect x="14" y="14" width="7" height="7"></rect>
@@ -220,7 +227,8 @@
                         </div>
                     </div>
                     <div class="accordion-body">
-                        <p>Organizing and structuring content to help users find information and complete tasks efficiently.</p>
+                        <p>Organizing and structuring content to help users find information and complete tasks
+                            efficiently.</p>
                     </div>
                 </div>
 
@@ -228,7 +236,8 @@
                 <div class="accordion-item">
                     <div class="accordion-header">
                         <div class="accordion-icon-box">
-                            <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
                                 <path d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5"></path>
                             </svg>
                         </div>
@@ -248,7 +257,8 @@
                 <div class="accordion-item">
                     <div class="accordion-header">
                         <div class="accordion-icon-box">
-                            <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
                                 <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
                             </svg>
                         </div>
@@ -260,7 +270,8 @@
                         </div>
                     </div>
                     <div class="accordion-body">
-                        <p>Continuously improving the user experience through data analysis and iterative design refinements.</p>
+                        <p>Continuously improving the user experience through data analysis and iterative design
+                            refinements.</p>
                     </div>
                 </div>
             </div>
@@ -268,30 +279,50 @@
     </section>
 
     <section class="views-demo-section">
+        <!-- New grid background overlay -->
+        <div class="views-grid-bg"></div>
+        
         <div class="views-demo-content">
-            <h2 class="views-demo-subtitle">
-                <span class="word-head">Triple Perspective</span>
-            </h2>
-            <p class="views-demo-text">
-                One file, three distinct ways to interact. Seamlessly switch between modes to match your workflow.
-            </p>
+            <!-- Top pill -->
+            <div class="views-top-pill">
+                <img src="images/logovar/browserlogo.gif" alt="Avatar" class="pill-avatar">
+                <span>AirPaste circle member</span>
+            </div>
+
+            <!-- Title with glowing effect behind it -->
+            <div class="views-title-wrapper">
+                <div class="views-title-glow"></div>
+                <h2 class="views-demo-subtitle">
+                    AirPaste views<br>
+                    that <span class="text-dim">promise style and</span><br>
+                    simplicity
+                </h2>
+            </div>
+            
             <div class="views-demo-carousel-wrapper">
                 <div class="views-demo-carousel" id="viewsCarousel">
-                    <div class="carousel-slide active" data-view="List">
+                    <!-- Glow behind cards -->
+                    <div class="carousel-glow"></div>
+                    
+                    <div class="carousel-slide" data-index="0">
                         <img src="images/List view.png" alt="List View">
                     </div>
-                    <div class="carousel-slide" data-view="Globe">
+                    <div class="carousel-slide active" data-index="1">
                         <img src="images/Globe view.png" alt="Globe View">
+                        <div class="play-button-overlay">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M8 5v14l11-7z" />
+                            </svg>
+                        </div>
                     </div>
-                    <div class="carousel-slide" data-view="Canvas">
+                    <div class="carousel-slide" data-index="2">
                         <img src="images/Canvas view.png" alt="Canvas View">
                     </div>
                 </div>
-                
-                <div class="carousel-controls">
-                    <button class="carousel-btn active" data-index="0">List View</button>
-                    <button class="carousel-btn" data-index="1">Globe View</button>
-                    <button class="carousel-btn" data-index="2">Canvas View</button>
+
+                <!-- Bottom pill -->
+                <div class="views-bottom-pill">
+                    <span id="viewsBottomLabel">01 Templates</span>
                 </div>
             </div>
         </div>
@@ -1141,23 +1172,23 @@
         }
 
         if (titleEl) initCarousel();
-        
+
         // ==========================================
         // ✨ FEATURES ACCORDION LOGIC
         // ==========================================
-        (function() {
+        (function () {
             const accordionItems = document.querySelectorAll('.accordion-item');
-            
+
             accordionItems.forEach(item => {
                 const header = item.querySelector('.accordion-header');
                 header.addEventListener('click', () => {
                     const isActive = item.classList.contains('active');
-                    
+
                     // Close all other items
                     accordionItems.forEach(otherItem => {
                         otherItem.classList.remove('active');
                     });
-                    
+
                     // Toggle current item
                     if (!isActive) {
                         item.classList.add('active');
@@ -1169,23 +1200,39 @@
         // ==========================================
         // 🖼️ VIEWS DEMO CAROUSEL LOGIC
         // ==========================================
-        (function() {
+        (function () {
             const carousel = document.getElementById('viewsCarousel');
             if (!carousel) return;
-            const slides = carousel.querySelectorAll('.carousel-slide');
-            const btns = document.querySelectorAll('.carousel-btn');
+            const slides = Array.from(carousel.querySelectorAll('.carousel-slide'));
             
-            btns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const index = parseInt(btn.dataset.index);
+            function updatePositions(activeIndex) {
+                slides.forEach((slide, idx) => {
+                    slide.classList.remove('active');
+                    // Calculate relative position (-1, 0, 1) assuming 3 slides
+                    let pos = idx - activeIndex;
+                    // Wrap around logic for 3 items
+                    if (pos === 2) pos = -1;
+                    if (pos === -2) pos = 1;
                     
-                    // Update buttons
-                    btns.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    
-                    // Update slides
-                    slides.forEach(s => s.classList.remove('active'));
-                    slides[index].classList.add('active');
+                    slide.dataset.pos = pos;
+                    if (pos === 0) {
+                        slide.classList.add('active');
+                    }
+                });
+            }
+
+            // Initialize positions
+            let currentIndex = slides.findIndex(s => s.classList.contains('active'));
+            if (currentIndex === -1) currentIndex = 0;
+            updatePositions(currentIndex);
+
+            // Add click listeners
+            slides.forEach((slide, idx) => {
+                slide.addEventListener('click', () => {
+                    if (currentIndex !== idx) {
+                        currentIndex = idx;
+                        updatePositions(currentIndex);
+                    }
                 });
             });
         })();
