@@ -452,7 +452,7 @@ body.cursor-system :where([data-cursor='default']) {
 
 .device-container.expanded .top-bar {
     transform: translateY(0);
-    border-radius: var(--site-radius) var(--site-radius) 0 0;
+    /* border-radius: var(--site-radius) var(--site-radius) 0 0; */
     background: var(--panel);
 }
 
@@ -1463,6 +1463,7 @@ body.device-transitioning .device-container.expanded #pill-fifth-btn {
     /* Adding border radius here to inherit from device container */
     border-bottom-left-radius: 30px;
     border-bottom-right-radius: 30px;
+    top: -3%;
 }
 
 .device-container.expanded .site-content {
@@ -1933,11 +1934,8 @@ body.device-transitioning .device-container.expanded #pill-fifth-btn {
 .node-system-section {
     position: relative;
     background-color: #fff;
-    width: calc(100% + 2 * var(--site-padding-x));
-    margin-left: calc(-1 * var(--site-padding-x));
-    /* margin-right: calc(-1 * var(--site-padding-x)); */
+    width: 100%;
     padding: 0px 20px;
-    /* margin-bottom: var(--section-gap-lg); */
 }
 
 .node-system-badge {
@@ -4312,6 +4310,239 @@ body.reader-mode .wip-swinging-img {
 }
 
 /* ============================================
+   GLOBAL TOP STATUS NOTCH
+   ============================================ */
+.global-top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 16px;
+    background: #000000;
+    z-index: 10000;
+}
+
+.status-notch-wrapper {
+    position: fixed;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 400px;
+    height: 96px; /* Keep height fixed so SVG viewBox doesn't squash */
+    z-index: 10000;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 12px;
+    pointer-events: none; /* Let events pass through to elements behind when collapsed */
+}
+
+.status-notch-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.status-notch-bg path {
+    pointer-events: auto; /* Catch hover/clicks only exactly on the black shape */
+    d: path("M 0 0 L 20 60 Q 25 96 45 96 L 355 96 Q 375 96 380 60 L 400 0 Z");
+    transition: d 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.status-notch-wrapper.notch-collapsed:not(.hover-expanded) .status-notch-bg path {
+    d: path("M 0 0 L 20 24 Q 25 32 35 32 L 365 32 Q 375 32 380 24 L 400 0 Z");
+}
+
+/* Collapsed Content */
+.notch-content-collapsed {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px; /* Scaled down gap */
+    color: #e0e0e0;
+    font-size: 11px; /* Scaled down font */
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    transition-delay: 0s;
+}
+
+.status-notch-wrapper.notch-collapsed:not(.hover-expanded) .notch-content-collapsed {
+    opacity: 1;
+    pointer-events: auto;
+    transition-delay: 0.2s;
+}
+
+.notch-content-collapsed .status-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.notch-content-collapsed .status-time {
+    color: #a0a0a0;
+}
+
+/* Expanded Content */
+.nn-widget {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    padding: 0 48px;
+    opacity: 1;
+    pointer-events: auto; /* allow interaction */
+    transition: opacity 0.2s;
+    transition-delay: 0.2s;
+}
+
+.status-notch-wrapper.notch-collapsed:not(.hover-expanded) .nn-widget {
+    opacity: 0;
+    pointer-events: none;
+    transition-delay: 0s;
+}
+
+.nn-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.nn-month {
+    color: #fff;
+    font-size: 26px;
+    font-weight: 800;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: -1px;
+    line-height: 1;
+    margin-bottom: 2px;
+}
+
+.nn-days {
+    display: flex;
+    gap: 14px;
+}
+
+.nn-day {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    width: 24px;
+}
+
+.nn-day-name {
+    color: #444;
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.nn-day.active .nn-day-name {
+    color: #fff;
+}
+
+.nn-day-num {
+    color: #555;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1;
+}
+.nn-day.active .nn-day-num {
+    color: #3f8cf2;
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.nn-day-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #222;
+}
+.nn-day.active .nn-day-dot {
+    background: #3f8cf2;
+    box-shadow: 0 0 6px rgba(63, 140, 242, 0.4);
+}
+
+.nn-bottom {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 14px;
+}
+
+.nn-left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+}
+
+.nn-status-text {
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.nn-status-sub {
+    color: #888;
+    font-size: 12px;
+    line-height: 1;
+}
+
+.nn-divider {
+    width: 2px;
+    height: 20px;
+    background: #222;
+    border-radius: 2px;
+}
+
+.nn-right {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 50px;
+}
+
+.nn-time-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.dot-blue {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #3f8cf2;
+    box-shadow: 0 0 6px rgba(63, 140, 242, 0.4);
+}
+
+.nn-time-text {
+    color: #888;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+}
+
+/* ============================================
+   PILL NAV MENU
+   ============================================ */
+
+/* ============================================
    🪪 IDENTITY STATUS CARD
    ============================================ */
 
@@ -4539,5 +4770,337 @@ body.reader-mode .wip-swinging-img {
 
     #left-orb-controls {
         display: none !important;
+    }
+}
+
+/* ============================================
+   INTERACTIVE PENDULUM (NEWTON'S CRADLE)
+   ============================================ */
+.pendulum-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 260px;
+    background-color: transparent;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    padding: 40px 0;
+}
+
+.cradle-shadows {
+    position: absolute;
+    bottom: 35px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    width: 240px;
+}
+
+.shadow-blob {
+    width: 60px;
+    height: 12px;
+    background: rgba(0, 0, 0, 0.06);
+    border-radius: 50%;
+    filter: blur(3px);
+}
+
+.cradle-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 0;
+    height: 180px;
+    position: relative;
+    z-index: 10;
+}
+
+.pendulum {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform-origin: top center;
+    position: relative;
+    width: 60px;
+}
+
+.pendulum .pivot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #f2f2f2;
+    z-index: 2;
+}
+
+.pendulum .string {
+    width: 3px;
+    height: 100px;
+    background: #f2f2f2;
+    margin-top: -4px;
+    z-index: 1;
+}
+
+.pendulum .ball {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-image: 
+        radial-gradient(
+            circle at var(--shine-x, 35%) var(--shine-y, 25%), 
+            rgba(255, 255, 255, 0.9) 0%, 
+            rgba(255, 255, 255, 0) 35%
+        ),
+        repeating-linear-gradient(
+            115deg,
+            transparent,
+            transparent 2px,
+            rgba(0, 0, 0, 0.04) 2px,
+            rgba(0, 0, 0, 0.04) 3px,
+            rgba(255, 255, 255, 0.2) 3px,
+            rgba(255, 255, 255, 0.2) 4px
+        ),
+        radial-gradient(
+            circle at var(--shine-x, 35%) var(--shine-y, 25%), 
+            #ffffff 0%, 
+            #e4e4e4 30%, 
+            #c0c0c0 65%, 
+            #9a9a9a 100%
+        );
+    box-shadow: inset -5px -5px 12px rgba(0,0,0,0.25), inset 2px 2px 8px rgba(255,255,255,0.8), 0 8px 16px rgba(0,0,0,0.12);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: -2px;
+    z-index: 3;
+    position: relative;
+}
+
+.pendulum .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #d4d4d4;
+    transition: background 0.3s, box-shadow 0.3s;
+}
+
+/* Animations */
+.cradle-container.lights-on .dot {
+    background: #ff5722;
+    box-shadow: 0 0 5px 1px #ff5722;
+    animation: glow-pulse 1.2s infinite;
+}
+
+.cradle-container.animating .p-1 {
+    animation: swing-left 1.2s infinite;
+}
+
+.animating-shadows .s-1 {
+    animation: shadow-left 1.2s infinite;
+}
+
+.cradle-container.animating .p-2 {
+    animation: jiggle-center 1.2s infinite;
+}
+
+.cradle-container.animating .p-3 {
+    animation: jiggle-center 1.2s infinite;
+}
+
+.cradle-container.animating .p-4 {
+    animation: swing-right 1.2s infinite;
+}
+
+.animating-shadows .s-4 {
+    animation: shadow-right 1.2s infinite;
+}
+
+@keyframes glow-pulse {
+    0% {
+        box-shadow: 0 0 5px 1px #ff5722;
+        background: #ff5722;
+    }
+
+    34% {
+        box-shadow: 0 0 5px 1px #ff5722;
+        background: #ff5722;
+    }
+
+    44% {
+        box-shadow: 0 0 15px 4px #ff5722;
+        background: #ff7a50;
+    }
+
+    54% {
+        box-shadow: 0 0 5px 1px #ff5722;
+        background: #ff5722;
+    }
+
+    84% {
+        box-shadow: 0 0 5px 1px #ff5722;
+        background: #ff5722;
+    }
+
+    94% {
+        box-shadow: 0 0 15px 4px #ff5722;
+        background: #ff7a50;
+    }
+
+    100% {
+        box-shadow: 0 0 5px 1px #ff5722;
+        background: #ff5722;
+    }
+}
+
+@keyframes swing-left {
+    0% {
+        transform: rotate(0deg);
+        animation-timing-function: ease-out;
+    }
+
+    22% {
+        transform: rotate(45deg);
+        animation-timing-function: ease-in;
+    }
+
+    44% {
+        transform: rotate(0deg);
+        animation-timing-function: ease-out;
+    }
+
+    47% {
+        transform: rotate(2deg);
+        animation-timing-function: ease-in-out;
+    }
+
+    50% {
+        transform: rotate(0deg);
+        animation-timing-function: linear;
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+@keyframes swing-right {
+    0% {
+        transform: rotate(0deg);
+        animation-timing-function: linear;
+    }
+
+    50% {
+        transform: rotate(0deg);
+        animation-timing-function: ease-out;
+    }
+
+    72% {
+        transform: rotate(-45deg);
+        animation-timing-function: ease-in;
+    }
+
+    94% {
+        transform: rotate(0deg);
+        animation-timing-function: ease-out;
+    }
+
+    97% {
+        transform: rotate(-2deg);
+        animation-timing-function: ease-in-out;
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+@keyframes jiggle-center {
+    0% {
+        transform: rotate(0deg);
+        animation-timing-function: linear;
+    }
+
+    44% {
+        transform: rotate(0deg);
+        animation-timing-function: ease-out;
+    }
+
+    47% {
+        transform: rotate(1.5deg);
+        animation-timing-function: ease-in-out;
+    }
+
+    50% {
+        transform: rotate(0deg);
+        animation-timing-function: linear;
+    }
+
+    94% {
+        transform: rotate(0deg);
+        animation-timing-function: ease-out;
+    }
+
+    97% {
+        transform: rotate(-1.5deg);
+        animation-timing-function: ease-in-out;
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+@keyframes shadow-left {
+    0% {
+        transform: translateX(0) scale(1);
+        animation-timing-function: ease-out;
+        opacity: 1;
+    }
+
+    22% {
+        transform: translateX(-40px) scale(0.7);
+        animation-timing-function: ease-in;
+        opacity: 0.4;
+    }
+
+    44% {
+        transform: translateX(0) scale(1);
+        animation-timing-function: linear;
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateX(0) scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes shadow-right {
+    0% {
+        transform: translateX(0) scale(1);
+        animation-timing-function: linear;
+        opacity: 1;
+    }
+
+    50% {
+        transform: translateX(0) scale(1);
+        animation-timing-function: ease-out;
+        opacity: 1;
+    }
+
+    72% {
+        transform: translateX(40px) scale(0.7);
+        animation-timing-function: ease-in;
+        opacity: 0.4;
+    }
+
+    94% {
+        transform: translateX(0) scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateX(0) scale(1);
+        opacity: 1;
     }
 }

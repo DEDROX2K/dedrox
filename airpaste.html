@@ -304,19 +304,14 @@
                     <!-- Glow behind cards -->
                     <div class="carousel-glow"></div>
                     
-                    <div class="carousel-slide" data-index="0">
-                        <img src="images/List view.png" alt="List View">
+                    <div class="carousel-slide active" data-index="0">
+                        <img src="images/List view.png" alt="List View" draggable="false">
                     </div>
-                    <div class="carousel-slide active" data-index="1">
-                        <img src="images/Globe view.png" alt="Globe View">
-                        <div class="play-button-overlay">
-                            <svg viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M8 5v14l11-7z" />
-                            </svg>
-                        </div>
+                    <div class="carousel-slide" data-index="1">
+                        <img src="images/Globe view.png" alt="Globe View" draggable="false">
                     </div>
                     <div class="carousel-slide" data-index="2">
-                        <img src="images/Canvas view.png" alt="Canvas View">
+                        <img src="images/Canvas view.png" alt="Canvas View" draggable="false">
                     </div>
                 </div>
 
@@ -1205,7 +1200,11 @@
             if (!carousel) return;
             const slides = Array.from(carousel.querySelectorAll('.carousel-slide'));
             
+            const labelEl = document.getElementById('viewsBottomLabel');
+            const labels = ["01 List View", "02 Globe View", "03 Canvas View"];
+            
             function updatePositions(activeIndex) {
+                if (labelEl) labelEl.textContent = labels[activeIndex];
                 slides.forEach((slide, idx) => {
                     slide.classList.remove('active');
                     // Calculate relative position (-1, 0, 1) assuming 3 slides
@@ -1227,14 +1226,78 @@
             updatePositions(currentIndex);
 
             // Add click listeners
-            slides.forEach((slide, idx) => {
-                slide.addEventListener('click', () => {
-                    if (currentIndex !== idx) {
-                        currentIndex = idx;
-                        updatePositions(currentIndex);
-                    }
-                });
+            updatePositions(currentIndex);
+
+            // SWIPE / DRAG LOGIC
+            let startX = 0;
+            let isDragging = false;
+
+            carousel.addEventListener('pointerdown', (e) => {
+                startX = e.clientX;
+                isDragging = true;
+                hasDragged = false;
+                carousel.setPointerCapture(e.pointerId);
+                carousel.style.cursor = 'grabbing';
             });
+
+            carousel.addEventListener('pointermove', (e) => {
+                if (!isDragging) return;
+                if (Math.abs(e.clientX - startX) > 10) {
+                    hasDragged = true;
+                }
+            });
+
+            carousel.addEventListener('pointerup', (e) => {
+                if (!isDragging) return;
+                isDragging = false;
+                carousel.releasePointerCapture(e.pointerId);
+                carousel.style.cursor = 'grab';
+
+                const diffX = e.clientX - startX;
+                const threshold = 30; // pixels to trigger a swipe
+
+                if (Math.abs(diffX) > threshold) {
+                    if (diffX > 0) {
+                        // Swipe Right -> Prev Slide
+                        currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+                    } else {
+                        // Swipe Left -> Next Slide
+                        currentIndex = (currentIndex + 1) % slides.length;
+                    }
+                    updatePositions(currentIndex);
+                } else if (!hasDragged) {
+                    // It's a tap - logic:
+                    // 1. If tap a side slide, bring it to front
+                    // 2. If tap the active slide, move to the next one
+                    
+                    // Since we use setPointerCapture, e.target is always the carousel.
+                    // We use elementFromPoint to find what's actually under the finger/cursor.
+                    const topEl = document.elementFromPoint(e.clientX, e.clientY);
+                    const tappedSlide = topEl ? topEl.closest('.carousel-slide') : null;
+                    
+                    if (tappedSlide) {
+                        const tappedIdx = slides.indexOf(tappedSlide);
+                        if (tappedIdx !== -1) {
+                            if (tappedIdx === currentIndex) {
+                                // Tap active -> Go Next
+                                currentIndex = (currentIndex + 1) % slides.length;
+                            } else {
+                                // Tap side -> Bring to front
+                                currentIndex = tappedIdx;
+                            }
+                            updatePositions(currentIndex);
+                        }
+                    }
+                }
+            });
+
+            // Prevent click if we dragged
+            carousel.addEventListener('click', (e) => {
+                if (hasDragged) {
+                    e.stopImmediatePropagation();
+                    e.preventDefault();
+                }
+            }, true);
         })();
 
 

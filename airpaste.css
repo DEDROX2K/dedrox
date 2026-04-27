@@ -1923,22 +1923,13 @@ html {
     padding: 10vh 5vw 20vh 5vw;
     display: flex;
     justify-content: center;
-    background: #fafafa;
+    background: transparent;
     box-sizing: border-box;
     overflow: hidden;
 }
 
 .views-grid-bg {
-    position: absolute;
-    inset: 0;
-    background-image: 
-        linear-gradient(to right, rgba(0,0,0,0.03) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(0,0,0,0.03) 1px, transparent 1px);
-    background-size: 40px 40px;
-    z-index: 1;
-    pointer-events: none;
-    mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
-    -webkit-mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
+    display: none;
 }
 
 .views-demo-content {
@@ -1956,12 +1947,12 @@ html {
     display: inline-flex;
     align-items: center;
     background: #fff;
-    border: 1px solid rgba(0,0,0,0.05);
+    border: 1px solid rgba(0, 0, 0, 0.05);
     padding: 6px 16px 6px 6px;
     border-radius: 100px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
     margin-bottom: 2rem;
-    font-family: 'GoogleSans', sans-serif;
+    font-family: 'p1', serif;
     font-size: 0.9rem;
     color: #333;
     font-weight: 500;
@@ -1984,21 +1975,11 @@ html {
 }
 
 .views-title-glow {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 300px;
-    height: 150px;
-    background: rgba(255, 235, 133, 0.6);
-    filter: blur(80px);
-    z-index: -1;
-    border-radius: 50%;
-    pointer-events: none;
+    display: none;
 }
 
 .views-demo-subtitle {
-    font-family: 'GoogleSans', sans-serif;
+    font-family: 'p1', serif;
     font-size: clamp(2.5rem, 6vw, 4.5rem);
     color: #1a1a1a;
     line-height: 1.1;
@@ -2021,70 +2002,79 @@ html {
     position: relative;
 }
 
+.views-demo-carousel-wrapper {
+    position: relative;
+    z-index: 50;
+    width: 100%;
+}
+
 .views-demo-carousel {
     width: 100%;
-    height: 400px;
+    height: 500px;
     position: relative;
-    perspective: 1200px;
+    perspective: 1500px;
     display: flex;
     justify-content: center;
     align-items: center;
     transform-style: preserve-3d;
+    touch-action: none;
+    /* Prevent scrolling while swiping */
+    cursor: grab;
 }
 
 .carousel-glow {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 50vw;
-    height: 300px;
-    background: rgba(255, 226, 122, 0.4);
-    filter: blur(100px);
-    z-index: 0;
-    pointer-events: none;
-    border-radius: 50%;
+    display: none;
 }
 
 .carousel-slide {
     position: absolute;
-    width: 280px;
-    height: 360px;
-    border-radius: 20px;
+    width: 560px;
+    /* Matches common app screenshot proportions */
+    border-radius: 6px;
     overflow: hidden;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-    background: #fff;
-    transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+    background: transparent;
+    transition: all 250ms ease-in-out;
     cursor: pointer;
-    transform: translateX(0) scale(1) rotateY(0deg);
+    transform: translateX(0) translateZ(0) rotateY(0deg);
     z-index: 2;
+    user-select: none;
+    -webkit-user-select: none;
+    backface-visibility: hidden;
 }
 
 /* 3D Transform States based on data-pos */
 .carousel-slide[data-pos="-1"] {
-    transform: translateX(-140px) scale(0.85) rotateY(15deg);
+    transform: translateX(-380px) translateZ(-250px) rotateY(40deg);
     z-index: 1;
-    opacity: 0.8;
+    opacity: 0.4;
+    filter: blur(2px);
 }
 
 .carousel-slide[data-pos="1"] {
-    transform: translateX(140px) scale(0.85) rotateY(-15deg);
+    transform: translateX(380px) translateZ(-250px) rotateY(-40deg);
     z-index: 1;
-    opacity: 0.8;
+    opacity: 0.4;
+    filter: blur(2px);
 }
 
-.carousel-slide[data-pos="0"], .carousel-slide.active {
-    transform: translateX(0) scale(1.1) rotateY(0deg);
+.carousel-slide[data-pos="0"],
+.carousel-slide.active {
+    transform: translateX(0) translateZ(150px) rotateY(0deg);
     z-index: 3;
     opacity: 1;
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+    filter: blur(0);
+    box-shadow: 0 50px 120px rgba(0, 0, 0, 0.3);
 }
 
 .carousel-slide img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     display: block;
+    user-select: none;
+    pointer-events: none;
+    /* Let clicks pass through to the slide */
 }
 
 /* PLAY BUTTON OVERLAY */
@@ -2103,7 +2093,7 @@ html {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: rgba(255,255,255,0.9);
+    color: rgba(255, 255, 255, 0.9);
     opacity: 0;
     transition: all 0.4s ease;
     pointer-events: none;
@@ -2123,11 +2113,11 @@ html {
 /* BOTTOM PILL */
 .views-bottom-pill {
     background: #fff;
-    border: 1px solid rgba(0,0,0,0.05);
+    border: 1px solid rgba(0, 0, 0, 0.05);
     padding: 8px 24px;
     border-radius: 100px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
-    font-family: 'GoogleSans', sans-serif;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    font-family: 'p1', serif;
     font-size: 0.95rem;
     color: #333;
     font-weight: 500;
