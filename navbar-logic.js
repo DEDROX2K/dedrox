@@ -61,7 +61,7 @@ class NavBar {
         });
 
         // Initialize Scramble / Arrow Sweep
-        this.initArrowSweep('.nav-toggle-btn, .footer-link, .nav-shop img, .pixel-btn-v2, .carousel-btn');
+        this.initArrowSweep('.nav-toggle-btn, .footer-link, .nav-shop img, .pixel-btn-v2, .carousel-btn, .accordion-title, .accordion-header');
 
         window.addEventListener('resize', () => {
             const currentActive = document.querySelector('.nav-toggle-btn.active');

@@ -1765,7 +1765,7 @@ html {
     position: relative;
     z-index: 20;
     width: 100%;
-    padding: 10vh 5vw 15vh 5vw;
+    padding: 15vh 5vw;
     display: flex;
     justify-content: center;
     background: transparent;
@@ -1773,16 +1773,18 @@ html {
 }
 
 .features-content {
-    max-width: 900px;
+    max-width: 1100px;
     width: 100%;
-    text-align: center;
+    text-align: left;
 }
 
 .features-subtitle {
-    font-size: clamp(3.5rem, 10vw, 7rem);
+    font-size: clamp(4rem, 12vw, 10rem);
     color: #1a1a1a;
-    margin-bottom: 5rem;
-    line-height: 1;
+    margin-bottom: 6rem;
+    line-height: 0.9;
+    text-transform: uppercase;
+    text-align: center;
 }
 
 .features-subtitle .word-head {
@@ -1793,122 +1795,122 @@ html {
 .features-accordion {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
-    text-align: left;
+    border-top: 2px solid #000;
 }
 
 .accordion-item {
-    background: #ffffff;
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    border-radius: 24px;
-    padding: 1.5rem;
-    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    background: transparent;
+    border-bottom: 2px solid #000;
+    border-radius: 0;
+    padding: 2.5rem 0;
+    transition: background-color 0.3s ease;
     cursor: pointer;
 }
 
 .accordion-item:hover {
-    border-color: rgba(0, 0, 0, 0.15);
-    transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    background: rgba(0, 0, 0, 0.03);
 }
 
 .accordion-item.active {
-    background: #ffffff;
-    border-color: rgba(0, 0, 0, 0.1);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+    background: #fff;
+    padding-bottom: 4rem;
 }
 
 .accordion-header {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    gap: 2.5rem;
+    padding: 0 1rem;
+    font-family: 'p2';
+    font-size: 2rem;
 }
 
 .accordion-icon-box {
-    width: 60px;
-    height: 60px;
-    background: #f0edff;
-    border-radius: 18px;
+    width: 80px;
+    height: 80px;
+    background: #000;
+    border-radius: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #6c5ce7;
+    color: #fff;
     flex-shrink: 0;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .accordion-item.active .accordion-icon-box {
-    background: #6c5ce7;
-    color: #ffffff;
+    background: #0047FF;
 }
 
 .accordion-icon {
-    width: 28px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
 }
 
 .accordion-title {
-    font-family: 'GoogleSans', sans-serif;
-    font-size: 2.2rem;
-    font-weight: 600;
-    color: #1a1a1a;
+    font-family: 'p2', monospace;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 700;
+    color: #000;
     flex: 1;
+    text-transform: uppercase;
+    line-height: 1;
 }
 
 .accordion-arrow {
-    width: 32px;
-    height: 32px;
+    width: 40px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: rgba(0, 0, 0, 0.3);
-    transition: transform 0.4s ease;
+    color: #000;
+    transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .accordion-item.active .accordion-arrow {
     transform: rotate(180deg);
-    color: #6c5ce7;
 }
 
 .accordion-body {
     max-height: 0;
     overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
     opacity: 0;
 }
 
 .accordion-item.active .accordion-body {
-    max-height: 200px;
-    margin-top: 1.5rem;
+    max-height: 300px;
+    margin-top: 2rem;
     opacity: 1;
 }
 
 .accordion-body p {
-    font-family: 'GoogleSans', sans-serif;
-    font-size: 1.4rem;
-    line-height: 1.6;
-    color: rgba(26, 26, 26, 0.65);
+    font-family: 'fg', sans-serif;
+    font-size: clamp(1.1rem, 1.8vw, 1.6rem);
+    line-height: 1.5;
+    color: rgba(0, 0, 0, 0.7);
     margin: 0;
-    padding-left: calc(60px + 1.5rem);
-    /* Align with title */
+    padding-left: calc(80px + 2.5rem + 1rem);
+    /* Icon box + gap + header padding */
+    max-width: 800px;
 }
 
 @media (max-width: 768px) {
     .accordion-header {
-        gap: 1rem;
+        gap: 1.5rem;
     }
 
     .accordion-icon-box {
-        width: 48px;
-        height: 48px;
+        width: 60px;
+        height: 60px;
     }
 
     .accordion-title {
-        font-size: 1.6rem;
+        font-size: 2.2rem;
     }
 
     .accordion-body p {
-        padding-left: 0;
+        padding-left: 1rem;
         font-size: 1.2rem;
     }
 }
@@ -2034,37 +2036,13 @@ html {
     overflow: hidden;
     box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
     background: transparent;
-    transition: all 250ms ease-in-out;
+    /* transition removed for GSAP live tracking */
     cursor: pointer;
     transform: translateX(0) translateZ(0) rotateY(0deg);
     z-index: 2;
     user-select: none;
     -webkit-user-select: none;
     backface-visibility: hidden;
-}
-
-/* 3D Transform States based on data-pos */
-.carousel-slide[data-pos="-1"] {
-    transform: translateX(-380px) translateZ(-250px) rotateY(40deg);
-    z-index: 1;
-    opacity: 0.4;
-    filter: blur(2px);
-}
-
-.carousel-slide[data-pos="1"] {
-    transform: translateX(380px) translateZ(-250px) rotateY(-40deg);
-    z-index: 1;
-    opacity: 0.4;
-    filter: blur(2px);
-}
-
-.carousel-slide[data-pos="0"],
-.carousel-slide.active {
-    transform: translateX(0) translateZ(150px) rotateY(0deg);
-    z-index: 3;
-    opacity: 1;
-    filter: blur(0);
-    box-shadow: 0 50px 120px rgba(0, 0, 0, 0.3);
 }
 
 .carousel-slide img {
