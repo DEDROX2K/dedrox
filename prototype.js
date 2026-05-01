@@ -33,6 +33,16 @@ const SITE_CONFIG = {
         density: 1.3,
         lengthMultiplier: 1,
     },
+    receiptAscii: `
+ /$$$$$$$  /$$$$$$$$ /$$$$$$$  /$$$$$$$   /$$$$$$  /$$   /$$
+| $$__  $$| $$_____/| $$__  $$| $$__  $$ /$$__  $$|  $$ /$$/
+| $$  \\ $$| $$      | $$  \\ $$| $$  \\ $$| $$  \\ $$ \\  $$$$/ 
+| $$  | $$| $$$$$   | $$  | $$| $$$$$$$/| $$  | $$  \\  $$/  
+| $$  | $$| $$__/   | $$  | $$| $$__  $$| $$  | $$   >  $$  
+| $$  | $$| $$      | $$  | $$| $$  \\ $$| $$  | $$  /$$/\\  $$
+| $$$$$$$/| $$$$$$$$| $$$$$$$/| $$  | $$|  $$$$$$/ | $$  \\ $$
+|_______/ |________/|_______/ |__/  |__/ \\______/  |__/   |__/
+    `,
     companies: [
         { name: 'AIR CARDS', logo: 'images/c5.png', url: 'images/c1.png' },
         { name: 'Studio Nefce', logo: 'images/c6.png', url: 'images/c2.png' },
@@ -51,6 +61,8 @@ const SITE_CONFIG = {
     caseData: {
         case1: {
             title: "Clear Breath CBT",
+            logo: "images/c6.png",
+            postedDate: "12/05/2024",
             images: [
                 'images/DEDROX.DSGN/CB1.jpg', 'images/DEDROX.DSGN/CB2.jpg', 'images/DEDROX.DSGN/CB3.jpg',
                 'images/DEDROX.DSGN/CB4.jpg', 'images/DEDROX.DSGN/CB5.jpg', 'images/DEDROX.DSGN/CB6.jpg',
@@ -60,6 +72,8 @@ const SITE_CONFIG = {
         },
         case2: {
             title: "Air Buddy Navigation",
+            logo: "images/c5.png",
+            postedDate: "08/11/2023",
             images: [
                 'images/DEDROX.DSGN/AN1.jpg', 'images/DEDROX.DSGN/AN2.jpg', 'images/DEDROX.DSGN/AN3.jpg',
                 'images/DEDROX.DSGN/AN4.jpg', 'images/DEDROX.DSGN/AN5.jpg', 'images/DEDROX.DSGN/AN6.jpg',
@@ -68,6 +82,8 @@ const SITE_CONFIG = {
         },
         case3: {
             title: "Research Phase",
+            logo: "images/c1.png",
+            postedDate: "21/01/2025",
             images: [
                 'images/DEDROX.DSGN/f1.png', 'images/DEDROX.DSGN/f2.png', 'images/DEDROX.DSGN/f3.png',
                 'images/DEDROX.DSGN/f4.png', 'images/DEDROX.DSGN/f5.png', 'images/DEDROX.DSGN/f6.png',
@@ -153,8 +169,51 @@ const SITE_CONFIG = {
 
         const showCase = (data, caseHref = '') => {
             caseWindow.classList.remove('is-external-content');
-            titleDisp.textContent = data.title;
-            contentArea.innerHTML = data.images.map(img => `<img src="${img}" alt="Case Image">`).join('');
+            if (titleDisp) titleDisp.textContent = data.title;
+
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            const timeStr = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: true }).toUpperCase();
+            const postedDate = data.postedDate || "04/21/2024";
+
+            const logoHtml = data.logo 
+                ? `<div class="receipt-logo-container"><img src="${data.logo}" class="receipt-logo" alt="Logo"></div>` 
+                : '';
+
+            contentArea.innerHTML = `
+                <div class="receipt-paper">
+                    <div class="receipt-header">
+                        ${logoHtml}
+                        <h2 class="receipt-title">${data.title}</h2>
+                        <div class="receipt-subtitle">
+                            A CATALOG OF EXPLORATORY<br>
+                            VISIONS & IDEAS<br>
+                            DEDROX DESIGN STUDIO<br>
+                            BASED IN LONDON
+                        </div>
+                        <div class="receipt-info-line">
+                            <span>POSTED: ${postedDate}</span>
+                            <span>${dateStr} ${timeStr}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="receipt-divider-text">PROJECT EXHIBIT</div>
+                    
+                    <div class="receipt-content">
+                        ${data.images.map(img => `<img src="${img}" alt="Case Image">`).join('')}
+                    </div>
+                    
+                    <div class="receipt-footer">
+                        <div class="receipt-asterisks">*********************************</div>
+                        <div class="receipt-ascii">${SITE_CONFIG.receiptAscii}</div>
+                        <div class="receipt-asterisks">*********************************</div>
+                        <div class="receipt-subtitle" style="text-align: center; margin-top: 20px;">
+                            THANK YOU FOR ANALYZING<br>
+                            COMMISSIONS: OPEN
+                        </div>
+                    </div>
+                </div>
+            `;
             activeCaseHref = caseHref;
             syncOpenButton();
 
@@ -172,7 +231,7 @@ const SITE_CONFIG = {
 
         const showCaseExternal = (title, embedHref, caseHref = '') => {
             caseWindow.classList.add('is-external-content');
-            titleDisp.textContent = title;
+            if (titleDisp) titleDisp.textContent = title;
             contentArea.innerHTML = `<iframe class="case-content-iframe" src="${escapeAttr(embedHref)}" title="${escapeAttr(title)}" loading="eager"></iframe>`;
             activeCaseHref = caseHref || embedHref;
             syncOpenButton();
@@ -1512,8 +1571,8 @@ function initFeaturedCardHoverMotion() {
     const coarsePointer = window.matchMedia('(pointer: coarse)').matches;
     if (prefersReducedMotion || coarsePointer) return;
 
-    const MAX_TILT_DEG = 20;
-    const MAX_SHIFT_PX = 20;
+    const MAX_TILT_DEG = 8;
+    const MAX_SHIFT_PX = 10;
 
     cards.forEach((card) => {
         const resetMotion = () => {

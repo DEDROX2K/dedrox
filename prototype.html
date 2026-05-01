@@ -42,14 +42,14 @@
     <!-- Global Top Bar & Notch -->
     <div class="global-top-bar"></div>
     <div class="status-notch-wrapper" id="status-notch">
-        <svg class="status-notch-bg" viewBox="0 0 400 96" preserveAspectRatio="none">
-            <path d="M 0 0 L 20 60 Q 25 96 45 96 L 355 96 Q 375 96 380 60 L 400 0 Z" fill="#000000" />
+        <svg class="status-notch-bg" viewBox="0 0 550 96" preserveAspectRatio="none">
+            <path d="M 0 0 L 20 60 Q 25 96 45 96 L 505 96 Q 525 96 530 60 L 550 0 Z" fill="#000000" />
         </svg>
 
         <div class="notch-content-collapsed">
             <span class="status-item">Open to work <span class="dot-green"></span></span>
-            <span class="status-time" id="global-status-time">17:39 - 27 04 2026</span>
-            <span class="status-item"><span class="dot-orange"></span> Aircards</span>
+            <span class="status-time" id="global-status-time">12:03 - London 14°C - 80%</span>
+            <span class="status-item"><span class="dot-orange"></span> Visits - 74</span>
         </div>
 
         <div class="nn-widget notch-content-expanded">
@@ -62,18 +62,13 @@
             <div class="nn-bottom">
                 <div class="nn-left">
                     <span class="nn-status-text">Open to work</span>
-                    <span class="nn-status-sub">Aircards</span>
+                    <span class="nn-status-sub">Currently at Aircards</span>
                 </div>
                 <div class="nn-divider"></div>
-                <div class="nn-right">
-                    <div class="nn-time-row">
-                        <span class="dot-blue"></span>
-                        <span class="nn-time-text" id="nn-time-1">17:48 -</span>
-                    </div>
-                    <div class="nn-time-row">
-                        <span class="nn-time-text" id="nn-time-2" style="margin-left: 12px;">UK Time</span>
-                    </div>
-                </div>
+                <a href="airpaste.html" target="_blank" rel="noopener noreferrer" class="nn-right" data-cursor="link">
+                    <span class="nn-status-text">Building</span>
+                    <span class="nn-status-sub" style="color: #3f8cf2;">Airpaste <span style="font-size: 10px;">↗</span></span>
+                </a>
             </div>
         </div>
     </div>
@@ -108,8 +103,8 @@
                         <span class="pill-tooltip">Notes</span>
                     </button>
                     <div class="pill-plain-circle" id="pill-circle2"></div>
-                    <button class="pill-square pill-icon-btn hidden-mobile" id="pill-resume-btn" type="button" aria-label="Copy Email"
-                        data-cursor="link">
+                    <button class="pill-square pill-icon-btn hidden-mobile" id="pill-resume-btn" type="button"
+                        aria-label="Copy Email" data-cursor="link">
                         <img src="iconset/conversation.png" alt="" style="mix-blend-mode: difference;">
                         <span class="pill-tooltip">Talk to me now!</span>
                     </button>
@@ -199,6 +194,7 @@
                         <button class="segment-btn active" data-target="content-about">About me*</button>
                         <button class="segment-btn" data-target="content-ai">Thoughts on AI</button>
                         <button class="segment-btn" data-target="content-app">My next app</button>
+                        <div class="segment-glider"></div>
                     </div>
 
                     <!-- <h3 class="mini-editorial-title">Raghav Prasanna &copy;</h3> -->
@@ -467,22 +463,30 @@
                             <div class="pendulum p-1">
                                 <div class="pivot"></div>
                                 <div class="string"></div>
-                                <div class="ball"><div class="dot"></div></div>
+                                <div class="ball">
+                                    <div class="dot"></div>
+                                </div>
                             </div>
                             <div class="pendulum p-2">
                                 <div class="pivot"></div>
                                 <div class="string"></div>
-                                <div class="ball"><div class="dot"></div></div>
+                                <div class="ball">
+                                    <div class="dot"></div>
+                                </div>
                             </div>
                             <div class="pendulum p-3">
                                 <div class="pivot"></div>
                                 <div class="string"></div>
-                                <div class="ball"><div class="dot"></div></div>
+                                <div class="ball">
+                                    <div class="dot"></div>
+                                </div>
                             </div>
                             <div class="pendulum p-4">
                                 <div class="pivot"></div>
                                 <div class="string"></div>
-                                <div class="ball"><div class="dot"></div></div>
+                                <div class="ball">
+                                    <div class="dot"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -560,47 +564,103 @@
                 <!-- Squares generated by JS -->
                 <!-- <div class="index-grid-wrap" id="index-grid">
                 </div> -->
+                <!-- Hyper Realistic Button Array -->
+                <div class="hyper-keypad-wrapper reveal delay-4">
+                    <div class="hyper-keypad">
+                        <!-- Button 1 -->
+                        <button class="h-btn" type="button" aria-label="Hyper Button 1">
+                            <div class="h-btn-cap">
+                                <div class="h-btn-cap-wall"></div>
+                                <div class="h-btn-cap-surface">
+                                    <div class="h-btn-dimple">
+                                        <div class="h-btn-dot"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </button>
+                        <!-- Button 2 -->
+                        <button class="h-btn" type="button" aria-label="Hyper Button 2">
+                            <div class="h-btn-cap">
+                                <div class="h-btn-cap-wall"></div>
+                                <div class="h-btn-cap-surface">
+                                    <div class="h-btn-dimple">
+                                        <div class="h-btn-dot"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </button>
+                        <!-- Button 3 -->
+                        <button class="h-btn" type="button" aria-label="Hyper Button 3">
+                            <div class="h-btn-cap">
+                                <div class="h-btn-cap-wall"></div>
+                                <div class="h-btn-cap-surface">
+                                    <div class="h-btn-dimple">
+                                        <div class="h-btn-dot"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </button>
+                        <!-- Button 4 -->
+                        <button class="h-btn" type="button" aria-label="Hyper Button 4">
+                            <div class="h-btn-cap">
+                                <div class="h-btn-cap-wall"></div>
+                                <div class="h-btn-cap-surface">
+                                    <div class="h-btn-dimple">
+                                        <div class="h-btn-dot"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </button>
+                        <!-- Button 5 -->
+                        <button class="h-btn" type="button" aria-label="Hyper Button 5">
+                            <div class="h-btn-cap">
+                                <div class="h-btn-cap-wall"></div>
+                                <div class="h-btn-cap-surface">
+                                    <div class="h-btn-dimple">
+                                        <div class="h-btn-dot"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
                 <section class="brand-section">
-                    <a href="https://www.behance.net/raghavprasanna" target="_blank" class="brand-block"
-                        style="background: #F3ABCD; color: #111;">
-                        <span class="brand-text">BEHANCE</span>
-                    </a>
-                    <a href="https://www.artstation.com/raghavprasanna" target="_blank" class="brand-block"
-                        style="background: #F792AB; color: #111;">
-                        <span class="brand-text">ARTSTATION</span>
-                    </a>
-                    <a href="https://www.instagram.com/dedrox__/?hl=en" target="_blank" class="brand-block"
-                        style="background: #FA7380; color: #111;">
-                        <span class="brand-text">INSTAGRAM</span>
-                    </a>
-                    <a href="https://medium.com/@RaghavPrasannaUX" target="_blank" class="brand-block"
-                        style="background: #FC625E; color: #111;">
-                        <span class="brand-text">MEDIUM</span>
-                    </a>
-                    <a href="https://www.youtube.com/@dedrox3d491/videos" target="_blank" class="brand-block"
-                        style="background: #FA7658; color: #111;">
-                        <span class="brand-text">YOUTUBE</span>
-                    </a>
-                    <a href="https://codepen.io/Raghav-Prasanna-Lakshminarayanan" target="_blank" class="brand-block"
-                        style="background: #F79250; color: #111;">
-                        <span class="brand-text">CODEPEN</span>
-                    </a>
-                    <a href="https://dribbble.com/DEDROX2K" target="_blank" class="brand-block"
-                        style="background: #F5A64A; color: #111;">
-                        <span class="brand-text">DRIBBBLE</span>
-                    </a>
-                    <a href="https://letterboxd.com/dedrox/films/reviews/" target="_blank" class="brand-block"
-                        style="background: #DBC36D; color: #111;">
-                        <span class="brand-text">LETTERBOXD</span>
-                    </a>
-                    <a href="https://www.instagram.com/raghavprasanna_photography/?hl=en" target="_blank"
-                        class="brand-block" style="background: #BDD39F; color: #111;">
-                        <span class="brand-text">PHOTOGRAPHY</span>
-                    </a>
-                    <a href="https://sketchfab.com/Raghavprasanna" target="_blank" class="brand-block"
-                        style="background: #9DDFBB; color: #111;">
-                        <span class="brand-text">SKETCHFAB</span>
-                    </a>
+                    <h3 class="brand-heading">Elsewhere</h3>
+                    <div class="brand-pills-container">
+                        <a href="https://www.behance.net/raghavprasanna" target="_blank" class="brand-pill">
+                            Behance <span class="arr">↗</span>
+                        </a>
+                        <a href="https://www.artstation.com/raghavprasanna" target="_blank" class="brand-pill">
+                            ArtStation <span class="arr">↗</span>
+                        </a>
+                        <a href="https://www.instagram.com/dedrox__/?hl=en" target="_blank" class="brand-pill">
+                            Instagram <span class="arr">↗</span>
+                        </a>
+                        <a href="https://medium.com/@RaghavPrasannaUX" target="_blank" class="brand-pill">
+                            Medium <span class="arr">↗</span>
+                        </a>
+                        <a href="https://www.youtube.com/@dedrox3d491/videos" target="_blank" class="brand-pill">
+                            YouTube <span class="arr">↗</span>
+                        </a>
+                        <a href="https://codepen.io/Raghav-Prasanna-Lakshminarayanan" target="_blank"
+                            class="brand-pill">
+                            CodePen <span class="arr">↗</span>
+                        </a>
+                        <a href="https://dribbble.com/DEDROX2K" target="_blank" class="brand-pill">
+                            Dribbble <span class="arr">↗</span>
+                        </a>
+                        <a href="https://letterboxd.com/dedrox/films/reviews/" target="_blank" class="brand-pill">
+                            Letterboxd <span class="arr">↗</span>
+                        </a>
+                        <a href="https://www.instagram.com/raghavprasanna_photography/?hl=en" target="_blank"
+                            class="brand-pill">
+                            Photography <span class="arr">↗</span>
+                        </a>
+                        <a href="https://sketchfab.com/Raghavprasanna" target="_blank" class="brand-pill">
+                            Sketchfab <span class="arr">↗</span>
+                        </a>
+                    </div>
                 </section>
 
 
@@ -646,16 +706,27 @@
     <!-- Case Study Window (Side Overlay) -->
     <div id="case-window" class="case-window">
         <div class="case-window-header">
-            <div class="case-window-dots">
-                <span class="dot close-dot" id="case-close" title="Close" data-cursor="link"></span>
-                <span class="dot minimize-dot" id="case-min" title="Minimize"></span>
-                <span class="dot zoom-dot"></span>
+            <div class="header-blur-bg"></div>
+            <div class="floating-controls">
+                <button class="f-ctrl f-close" id="case-close" title="Close" data-cursor="link">
+                    <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round">
+                        <path d="M2 2l8 8M10 2l-8 8" />
+                    </svg>
+                </button>
+                <button class="f-ctrl f-min" id="case-min" title="Minimize" data-cursor="link">
+                    <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round">
+                        <path d="M2 6h8" />
+                    </svg>
+                </button>
+                <button class="f-ctrl f-expand" id="case-expand" title="Expand" data-cursor="link">
+                    <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M1 7v4h4M11 5V1H7M1 11l4.5-4.5M11 1L6.5 5.5" />
+                    </svg>
+                </button>
             </div>
-            <div class="case-window-title" id="case-title">Case Study</div>
-            <button class="case-open-btn" id="case-open-link" title="Open full case" aria-label="Open full case"
-                data-cursor="link">
-                <span class="case-open-icon" aria-hidden="true">↗</span>
-            </button>
         </div>
         <div class="case-window-content" id="case-content-area">
             <!-- Dynamic Images Loaded Here -->
@@ -696,8 +767,8 @@
         </div>
     </div>
 
-    <!-- WIP Swinging Image -->
-    <img src="images/wip.png" alt="Work In Progress" class="wip-swinging-img hidden-mobile">
+
+
     <div class="global-controls" style="pointer-events: none;">
         <div class="left-controls hidden-mobile" id="left-orb-controls" aria-label="Quick actions">
             <div class="orb-cursor-handle" id="orb-cursor-handle" aria-label="Quick controls" data-cursor="link">
@@ -736,8 +807,10 @@
                 <img src="images/showid.png" alt="Traveler ID card">
             </button>
         </div>
-
     </div>
+
+
+
     <!-- Custom Device Bottom Blur Styles -->
     <style>
         /* Tweak these values to adjust the blur at the bottom of the mini site */
@@ -801,7 +874,7 @@
                     }
                 });
                 deviceObserver.observe(deviceEl, { attributes: true, attributeFilter: ['class'] });
-                
+
                 // Initial check
                 if (deviceEl.classList.contains('expanded')) {
                     notchWrapper.classList.add('notch-collapsed');
@@ -814,21 +887,21 @@
                 const now = new Date();
                 const monthStr = now.toLocaleDateString('en-GB', { month: 'short' });
                 nnMonth.textContent = monthStr;
-                
+
                 const daysHtml = [];
                 for (let i = -2; i <= 2; i++) {
                     const d = new Date(now);
                     d.setDate(now.getDate() + i);
-                    
+
                     const isToday = i === 0;
-                    
+
                     let dayName = d.toLocaleDateString('en-GB', { weekday: 'short' }).toUpperCase();
                     if (!isToday) {
                         dayName = dayName.charAt(0); // W, T, S, S
                     }
-                    
+
                     const dateNum = d.getDate();
-                    
+
                     daysHtml.push(`
                         <div class="nn-day ${isToday ? 'active' : ''}">
                             <span class="nn-day-name">${dayName}</span>
@@ -846,9 +919,9 @@
                 const now = new Date();
                 const opts = { timeZone: 'Europe/London', hour: '2-digit', minute: '2-digit', hour12: false };
                 const dayOpts = { timeZone: 'Europe/London', weekday: 'short' };
-                
+
                 const timeStr = now.toLocaleTimeString('en-GB', opts);
-                
+
                 if (timeBadge && dayBadge) {
                     timeBadge.textContent = timeStr;
                     dayBadge.textContent = now.toLocaleDateString('en-GB', dayOpts).toUpperCase();
@@ -859,55 +932,81 @@
                 }
 
                 if (globalTimeBadge) {
-                    const d = now.getDate().toString().padStart(2, '0');
-                    const m = (now.getMonth() + 1).toString().padStart(2, '0');
-                    const y = now.getFullYear();
-                    globalTimeBadge.textContent = `${timeStr} - ${d} ${m} ${y}`;
+                    globalTimeBadge.textContent = `${timeStr} - London 14°C - ${batteryStr}`;
                 }
             }
+
+            // Try to get actual battery
+            let batteryStr = "80%";
+            if ('getBattery' in navigator) {
+                navigator.getBattery().then(battery => {
+                    const updateBattery = () => {
+                        batteryStr = Math.round(battery.level * 100) + '%';
+                        tick(); // immediately update
+                    };
+                    updateBattery();
+                    battery.addEventListener('levelchange', updateBattery);
+                });
+            }
+
             tick();
             setInterval(tick, 10000); // refresh every 10s
         })();
 
         // ---- About Segment Control Logic ----
         document.addEventListener('DOMContentLoaded', () => {
+            const container = document.querySelector('.about-segment-control');
             const buttons = document.querySelectorAll('.about-segment-control .segment-btn');
             const sections = document.querySelectorAll('.about-content-section');
+            const glider = document.querySelector('.segment-glider');
+
+            function updateGlider(btn) {
+                if (!glider || !btn) return;
+                glider.style.width = `${btn.offsetWidth}px`;
+                glider.style.left = `${btn.offsetLeft}px`;
+            }
+
+            // Initial position
+            const initialActive = document.querySelector('.about-segment-control .segment-btn.active');
+            if (initialActive) {
+                updateGlider(initialActive);
+            }
 
             buttons.forEach(btn => {
                 btn.addEventListener('click', () => {
-                    // Ignore if already active
                     if (btn.classList.contains('active')) return;
 
-                    // Update button states
                     buttons.forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
+                    updateGlider(btn);
 
-                    // Find target content
                     const targetId = btn.getAttribute('data-target');
 
-                    // Fade out current active section
                     sections.forEach(sec => {
                         if (sec.classList.contains('active')) {
                             sec.classList.remove('fade-in');
                             setTimeout(() => {
                                 sec.classList.remove('active');
-                            }, 300); // match transition duration
+                            }, 300);
                         }
                     });
 
-                    // Fade in new target section properly synced
                     setTimeout(() => {
                         const targetSec = document.getElementById(targetId);
                         if (targetSec) {
                             targetSec.classList.add('active');
-                            // Delay adding fade-in slightly to allow display:block to render first
                             setTimeout(() => {
                                 targetSec.classList.add('fade-in');
                             }, 50);
                         }
                     }, 300);
                 });
+            });
+
+            // Handle window resize to keep glider aligned
+            window.addEventListener('resize', () => {
+                const active = document.querySelector('.about-segment-control .segment-btn.active');
+                if (active) updateGlider(active);
             });
         });
 
@@ -916,12 +1015,12 @@
             const pendulumTrigger = document.getElementById('pendulum-trigger');
             const cradle = document.getElementById('interactive-cradle');
             const cradleShadows = document.getElementById('cradle-shadows');
-            
+
             let isStopping = false;
 
             if (pendulumTrigger && cradle && cradleShadows) {
                 const p1 = cradle.querySelector('.p-1');
-                
+
                 pendulumTrigger.addEventListener('click', () => {
                     if (!cradle.classList.contains('animating') || isStopping) {
                         // Start animation
@@ -947,27 +1046,49 @@
                     });
                 }
 
-                // Mouse interaction for shiny reflection
-                pendulumTrigger.addEventListener('mousemove', (e) => {
-                    const rect = pendulumTrigger.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    const xPercent = (x / rect.width) * 100;
-                    const yPercent = (y / rect.height) * 100;
-                    
+                // Mouse interaction for shiny reflection (global tracking)
+                document.addEventListener('mousemove', (e) => {
+                    const xPercent = (e.clientX / window.innerWidth) * 100;
+                    const yPercent = (e.clientY / window.innerHeight) * 100;
+
                     const shineX = 15 + (xPercent * 0.7); // Ranges from 15% to 85%
                     const shineY = 10 + (yPercent * 0.7); // Ranges from 10% to 80%
-                    
+
                     pendulumTrigger.style.setProperty('--shine-x', `${shineX}%`);
                     pendulumTrigger.style.setProperty('--shine-y', `${shineY}%`);
                 });
+            }
 
-                pendulumTrigger.addEventListener('mouseleave', () => {
-                    // Reset to default lighting
-                    pendulumTrigger.style.setProperty('--shine-x', '35%');
-                    pendulumTrigger.style.setProperty('--shine-y', '25%');
+            // Expand Case Window Logic
+            const expandBtn = document.getElementById('case-expand');
+            if (expandBtn) {
+                expandBtn.addEventListener('click', () => {
+                    const caseWindow = document.getElementById('case-window');
+                    if (caseWindow) caseWindow.classList.toggle('expanded-height');
                 });
             }
+
+            // Minimize Case Window Logic
+            const minBtn = document.getElementById('case-min');
+            if (minBtn) {
+                minBtn.addEventListener('click', () => {
+                    if (window.CaseOverlayControl) {
+                        window.CaseOverlayControl.close();
+                    }
+                });
+            }
+
+            // Hyper Realistic Button Logic
+            const hBtns = document.querySelectorAll('.h-btn');
+            hBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (btn.classList.contains('is-animating')) return;
+                    btn.classList.add('is-animating');
+                    setTimeout(() => {
+                        btn.classList.remove('is-animating');
+                    }, 2000);
+                });
+            });
         });
 
     </script>
