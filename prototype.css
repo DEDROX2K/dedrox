@@ -3444,127 +3444,6 @@ body.case-open .case-window {
     border: none;
 }
 
-/* --- Receipt Aesthetic --- */
-.receipt-paper {
-    background: #fff;
-    color: #000;
-    font-family: 'IBM Plex Mono', 'Courier New', Courier, monospace;
-    padding: 60px 32px;
-    position: relative;
-    box-sizing: border-box;
-    width: 100%;
-    min-height: 100%;
-    box-shadow: inset 0 0 100px rgba(0,0,0,0.02);
-}
-
-/* Jagged top edge */
-.receipt-paper::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 12px;
-    background: linear-gradient(-45deg, #fff 6px, transparent 0),
-                linear-gradient(45deg, #fff 6px, transparent 0);
-    background-position: left top;
-    background-repeat: repeat-x;
-    background-size: 12px 12px;
-    filter: drop-shadow(0 -1px 1px rgba(0,0,0,0.05));
-    transform: translateY(-50%);
-    z-index: 10;
-}
-
-.receipt-header {
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-.receipt-logo-container {
-    height: 60px;
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.receipt-logo {
-    max-height: 100%;
-    max-width: 180px;
-    filter: grayscale(1) contrast(1.5) brightness(0.8);
-    mix-blend-mode: multiply;
-}
-
-.receipt-title {
-    font-size: 1.6rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: -0.03em;
-    margin-bottom: 8px;
-    line-height: 1.1;
-}
-
-.receipt-subtitle {
-    font-size: 0.7rem;
-    line-height: 1.5;
-    color: #333;
-    text-transform: uppercase;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-}
-
-.receipt-info-line {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.85rem;
-    font-weight: 700;
-    border-top: 1px dashed #000;
-    border-bottom: 1px dashed #000;
-    padding: 10px 0;
-    margin: 24px 0;
-}
-
-.receipt-divider-text {
-    text-align: center;
-    font-size: 0.8rem;
-    font-weight: 700;
-    margin: 16px 0;
-    border-top: 1px dashed #000;
-    border-bottom: 1px dashed #000;
-    padding: 6px 0;
-}
-
-.receipt-content img {
-    width: 100%;
-    height: auto;
-    display: block;
-    margin-bottom: 24px;
-    filter: contrast(1.1);
-}
-
-.receipt-footer {
-    margin-top: 50px;
-    padding-top: 30px;
-    border-top: 1px dashed #000;
-}
-
-.receipt-ascii {
-    font-family: monospace;
-    white-space: pre;
-    font-size: 8px;
-    line-height: 1.1;
-    text-align: center;
-    color: #000;
-    margin: 30px 0;
-    display: block;
-}
-
-.receipt-asterisks {
-    text-align: center;
-    letter-spacing: 2px;
-    font-size: 12px;
-    margin: 20px 0;
-}
 
 .case-window-header {
     position: absolute;
@@ -5637,4 +5516,46 @@ a.nn-right:hover {
         transform: translateX(0) scale(1);
         opacity: 1;
     }
+}
+
+
+/* ==========================================
+   🌐 360° PANORAMIC VIEWER
+   ========================================== */
+
+.pano-viewport {
+    position: relative;
+    width: 100%;
+    height: 240px;
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
+    border-radius: var(--isolated-card-radius);
+}
+
+/* Inward edge glow — sits inside the viewport so it can't be clipped */
+.pano-viewport::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 2;
+    box-shadow: inset 0 0 0 0 rgba(200, 140, 70, 0);
+    transition: box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pano-viewport:hover::after {
+    box-shadow:
+        inset 0 22px 20px -10px rgba(237, 255, 247, 0.201),
+        inset 0 -22px 20px -10px rgba(237, 255, 247, 0.242),
+        inset 22px 0 20px -10px rgba(237, 255, 247, 0.28),
+        inset -22px 0 20px -10px rgba(237, 255, 247, 0.28);
+}
+
+.pano-viewport canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
 }
