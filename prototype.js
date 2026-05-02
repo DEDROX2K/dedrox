@@ -176,43 +176,8 @@ const SITE_CONFIG = {
             const timeStr = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: true }).toUpperCase();
             const postedDate = data.postedDate || "04/21/2024";
 
-            const logoHtml = data.logo 
-                ? `<div class="receipt-logo-container"><img src="${data.logo}" class="receipt-logo" alt="Logo"></div>` 
-                : '';
-
             contentArea.innerHTML = `
-                <div class="receipt-paper">
-                    <div class="receipt-header">
-                        ${logoHtml}
-                        <h2 class="receipt-title">${data.title}</h2>
-                        <div class="receipt-subtitle">
-                            A CATALOG OF EXPLORATORY<br>
-                            VISIONS & IDEAS<br>
-                            DEDROX DESIGN STUDIO<br>
-                            BASED IN LONDON
-                        </div>
-                        <div class="receipt-info-line">
-                            <span>POSTED: ${postedDate}</span>
-                            <span>${dateStr} ${timeStr}</span>
-                        </div>
-                    </div>
-                    
-                    <div class="receipt-divider-text">PROJECT EXHIBIT</div>
-                    
-                    <div class="receipt-content">
-                        ${data.images.map(img => `<img src="${img}" alt="Case Image">`).join('')}
-                    </div>
-                    
-                    <div class="receipt-footer">
-                        <div class="receipt-asterisks">*********************************</div>
-                        <div class="receipt-ascii">${SITE_CONFIG.receiptAscii}</div>
-                        <div class="receipt-asterisks">*********************************</div>
-                        <div class="receipt-subtitle" style="text-align: center; margin-top: 20px;">
-                            THANK YOU FOR ANALYZING<br>
-                            COMMISSIONS: OPEN
-                        </div>
-                    </div>
-                </div>
+                ${data.images.map(img => `<img src="${img}" alt="Case Image">`).join('')}
             `;
             activeCaseHref = caseHref;
             syncOpenButton();
