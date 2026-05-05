@@ -67,7 +67,8 @@
                 <div class="nn-divider"></div>
                 <a href="airpaste.html" target="_blank" rel="noopener noreferrer" class="nn-right" data-cursor="link">
                     <span class="nn-status-text">Building</span>
-                    <span class="nn-status-sub" style="color: #3f8cf2;">Airpaste <span style="font-size: 10px;">↗</span></span>
+                    <span class="nn-status-sub" style="color: #3f8cf2;">Airpaste <span
+                            style="font-size: 10px;">↗</span></span>
                 </a>
             </div>
         </div>
@@ -372,78 +373,7 @@
                 </div>
             </section>
 
-            <!-- Isolated Timeline/Skills section breaks the block -->
-            <section class="isolated-section" aria-label="Isolated content block" style="padding: 12px 0px 2px 0px;">
-                <div class="isolated-card" style="background-color: #fff;">
 
-
-
-                    <section class="node-system-section reveal delay-2" aria-label="Data Grid System">
-                        <!-- <div class="node-system-badge">Introspective Section: "At my core"</div> -->
-                        <div class="node-graph-container" id="node-graph-container">
-                            <svg class="node-edges" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"></svg>
-
-                            <div class="node-item" id="node-pt" data-x="50" data-y="18" data-cursor="grab">
-                                <span>Builder</span>
-                            </div>
-                            <div class="node-item" id="node-pt" data-x="50" data-y="18" data-cursor="grab">
-                                <span>Curious</span>
-                            </div>
-
-
-
-                            <div class="node-item" id="node-sms" data-x="20" data-y="50" data-cursor="grab">
-                                <span>Tinkerer</span>
-                            </div>
-                            <div class="node-item" id="node-sms" data-x="20" data-y="50" data-cursor="grab">
-                                <span>Greggs!!!</span>
-                            </div>
-
-
-
-                            <div class="node-item" id="node-ig" data-x="50" data-y="50" data-cursor="grab">
-                                <span>Improvising</span>
-                            </div>
-                            <div class="node-item" id="node-ig" data-x="50" data-y="50" data-cursor="grab">
-                                <span>Refining</span>
-                            </div>
-
-
-
-                            <div class="node-item" id="node-email" data-x="80" data-y="50" data-cursor="grab">
-                                <span>Storyteller</span>
-                            </div>
-                            <div class="node-item" id="node-email" data-x="80" data-y="50" data-cursor="grab">
-                                <span>Freelancer</span>
-                            </div>
-
-
-
-                            <div class="node-item" id="node-user1" data-x="30" data-y="82" data-cursor="grab">
-                                <span>ME
-                                    <!-- <img src="iconset/nest_secure_alarm.png" alt=""> -->
-                                </span>
-                            </div>
-                            <div class="node-item" id="node-user1" data-x="30" data-y="82" data-cursor="grab">
-                                <span>Sharp</span>
-                            </div>
-
-
-
-                            <div class="node-item" id="node-user2" data-x="70" data-y="82" data-cursor="grab">
-                                <span>Hopeful</span>
-                            </div>
-                            <div class="node-item" id="node-user2" data-x="70" data-y="82" data-cursor="grab">
-                                <span>Obsessive</span>
-                            </div>
-
-
-                        </div>
-                    </section>
-
-
-                </div>
-            </section>
 
             <section class="isolated-section" aria-label="Isolated content block">
                 <div class="isolated-card" style="background-color: #fff;">
@@ -1049,163 +979,163 @@
     <!-- 360° Panoramic Viewer (Three.js) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
-    (function() {
-        const PANO_SRC = 'images/eque.jpg';
+        (function () {
+            const PANO_SRC = 'images/eque.jpg';
 
-        function initPanorama() {
-            const viewport = document.getElementById('pano-viewport');
-            const canvas = document.getElementById('pano-canvas');
-            const hint = document.getElementById('pano-hint');
-            if (!viewport || !canvas) return;
+            function initPanorama() {
+                const viewport = document.getElementById('pano-viewport');
+                const canvas = document.getElementById('pano-canvas');
+                const hint = document.getElementById('pano-hint');
+                if (!viewport || !canvas) return;
 
-            const W = viewport.clientWidth;
-            const H = viewport.clientHeight;
+                const W = viewport.clientWidth;
+                const H = viewport.clientHeight;
 
-            // Renderer
-            const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-            renderer.setSize(W, H);
+                // Renderer
+                const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+                renderer.setSize(W, H);
 
-            // Scene & Camera
-            const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(75, W / H, 0.1, 100);
-            camera.position.set(0, 0, 0.001);
+                // Scene & Camera
+                const scene = new THREE.Scene();
+                const camera = new THREE.PerspectiveCamera(75, W / H, 0.1, 100);
+                camera.position.set(0, 0, 0.001);
 
-            // Sphere geometry (inward-facing)
-            const geo = new THREE.SphereGeometry(50, 64, 32);
-            geo.scale(-1, 1, 1); // flip normals inward
+                // Sphere geometry (inward-facing)
+                const geo = new THREE.SphereGeometry(50, 64, 32);
+                geo.scale(-1, 1, 1); // flip normals inward
 
-            const texture = new THREE.TextureLoader().load(PANO_SRC, () => {
-                renderer.render(scene, camera);
-            });
+                const texture = new THREE.TextureLoader().load(PANO_SRC, () => {
+                    renderer.render(scene, camera);
+                });
 
 
-            const mat = new THREE.MeshBasicMaterial({ map: texture });
-            const sphere = new THREE.Mesh(geo, mat);
-            scene.add(sphere);
+                const mat = new THREE.MeshBasicMaterial({ map: texture });
+                const sphere = new THREE.Mesh(geo, mat);
+                scene.add(sphere);
 
-            // Drag state
-            let isDragging = false;
-            let dragMoved = false;
-            let prevX = 0, prevY = 0;
-            let lon = 0, lat = 0;
-            let targetLon = 0, targetLat = 0;
-            // Auto-rotate
-            let autoRotate = true;
-            let autoRotateTimer;
+                // Drag state
+                let isDragging = false;
+                let dragMoved = false;
+                let prevX = 0, prevY = 0;
+                let lon = 0, lat = 0;
+                let targetLon = 0, targetLat = 0;
+                // Auto-rotate
+                let autoRotate = true;
+                let autoRotateTimer;
 
-            function lockBodySelect() {
-                document.body.style.userSelect = 'none';
-                document.body.style.webkitUserSelect = 'none';
-            }
-
-            function unlockBodySelect() {
-                document.body.style.userSelect = '';
-                document.body.style.webkitUserSelect = '';
-            }
-
-            function startDrag(x, y, e) {
-                isDragging = true;
-                dragMoved = false;
-                prevX = x; prevY = y;
-                autoRotate = false;
-                clearTimeout(autoRotateTimer);
-                viewport.setAttribute('data-cursor', 'grabbing');
-                lockBodySelect();
-            }
-
-            function onDrag(x, y) {
-                if (!isDragging) return;
-                const dx = x - prevX;
-                const dy = y - prevY;
-                if (Math.abs(dx) > 1 || Math.abs(dy) > 1) dragMoved = true;
-                targetLon -= dx * 0.25;
-                targetLat += dy * 0.15;
-                targetLat = Math.max(-85, Math.min(85, targetLat));
-                prevX = x; prevY = y;
-            }
-
-            function endDrag(e) {
-                if (!isDragging) return;
-                isDragging = false;
-                viewport.setAttribute('data-cursor', 'grab');
-                unlockBodySelect();
-                // Resume auto-rotate after 3s idle
-                autoRotateTimer = setTimeout(() => { autoRotate = true; }, 3000);
-
-                // If the user dragged (not just clicked) and released outside the device,
-                // swallow the stray click so the body handler doesn't collapse the shell.
-                if (dragMoved) {
-                    document.addEventListener('click', swallowNextClick, { capture: true, once: true });
+                function lockBodySelect() {
+                    document.body.style.userSelect = 'none';
+                    document.body.style.webkitUserSelect = 'none';
                 }
+
+                function unlockBodySelect() {
+                    document.body.style.userSelect = '';
+                    document.body.style.webkitUserSelect = '';
+                }
+
+                function startDrag(x, y, e) {
+                    isDragging = true;
+                    dragMoved = false;
+                    prevX = x; prevY = y;
+                    autoRotate = false;
+                    clearTimeout(autoRotateTimer);
+                    viewport.setAttribute('data-cursor', 'grabbing');
+                    lockBodySelect();
+                }
+
+                function onDrag(x, y) {
+                    if (!isDragging) return;
+                    const dx = x - prevX;
+                    const dy = y - prevY;
+                    if (Math.abs(dx) > 1 || Math.abs(dy) > 1) dragMoved = true;
+                    targetLon -= dx * 0.25;
+                    targetLat += dy * 0.15;
+                    targetLat = Math.max(-85, Math.min(85, targetLat));
+                    prevX = x; prevY = y;
+                }
+
+                function endDrag(e) {
+                    if (!isDragging) return;
+                    isDragging = false;
+                    viewport.setAttribute('data-cursor', 'grab');
+                    unlockBodySelect();
+                    // Resume auto-rotate after 3s idle
+                    autoRotateTimer = setTimeout(() => { autoRotate = true; }, 3000);
+
+                    // If the user dragged (not just clicked) and released outside the device,
+                    // swallow the stray click so the body handler doesn't collapse the shell.
+                    if (dragMoved) {
+                        document.addEventListener('click', swallowNextClick, { capture: true, once: true });
+                    }
+                }
+
+                function swallowNextClick(e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                }
+
+                // Use Pointer Events + setPointerCapture so tracking continues
+                // even when the cursor moves outside the browser window or device container.
+                viewport.addEventListener('pointerdown', e => {
+                    e.preventDefault();
+                    e.stopPropagation();       // Don't let body's click handler see this
+                    viewport.setPointerCapture(e.pointerId);
+                    startDrag(e.clientX, e.clientY, e);
+                });
+
+                viewport.addEventListener('pointermove', e => {
+                    onDrag(e.clientX, e.clientY);
+                });
+
+                viewport.addEventListener('pointerup', e => {
+                    endDrag(e);
+                    viewport.releasePointerCapture(e.pointerId);
+                });
+
+                viewport.addEventListener('pointercancel', e => {
+                    isDragging = false;
+                    unlockBodySelect();
+                    viewport.releasePointerCapture(e.pointerId);
+                });
+
+                // Block text selection on the viewport itself
+                viewport.addEventListener('selectstart', e => e.preventDefault());
+
+
+                // Resize
+                const ro = new ResizeObserver(() => {
+                    const nw = viewport.clientWidth, nh = viewport.clientHeight;
+                    renderer.setSize(nw, nh);
+                    camera.aspect = nw / nh;
+                    camera.updateProjectionMatrix();
+                });
+                ro.observe(viewport);
+
+                // Render loop
+                function animate() {
+                    requestAnimationFrame(animate);
+                    if (autoRotate) targetLon += 0.04;
+                    lon += (targetLon - lon) * 0.08;
+                    lat += (targetLat - lat) * 0.08;
+                    const phi = THREE.MathUtils.degToRad(90 - lat);
+                    const theta = THREE.MathUtils.degToRad(lon);
+                    camera.lookAt(
+                        Math.sin(phi) * Math.cos(theta),
+                        Math.cos(phi),
+                        Math.sin(phi) * Math.sin(theta)
+                    );
+                    renderer.render(scene, camera);
+                }
+                animate();
             }
 
-            function swallowNextClick(e) {
-                e.stopPropagation();
-                e.preventDefault();
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initPanorama);
+            } else {
+                initPanorama();
             }
-
-            // Use Pointer Events + setPointerCapture so tracking continues
-            // even when the cursor moves outside the browser window or device container.
-            viewport.addEventListener('pointerdown', e => {
-                e.preventDefault();
-                e.stopPropagation();       // Don't let body's click handler see this
-                viewport.setPointerCapture(e.pointerId);
-                startDrag(e.clientX, e.clientY, e);
-            });
-
-            viewport.addEventListener('pointermove', e => {
-                onDrag(e.clientX, e.clientY);
-            });
-
-            viewport.addEventListener('pointerup', e => {
-                endDrag(e);
-                viewport.releasePointerCapture(e.pointerId);
-            });
-
-            viewport.addEventListener('pointercancel', e => {
-                isDragging = false;
-                unlockBodySelect();
-                viewport.releasePointerCapture(e.pointerId);
-            });
-
-            // Block text selection on the viewport itself
-            viewport.addEventListener('selectstart', e => e.preventDefault());
-
-
-            // Resize
-            const ro = new ResizeObserver(() => {
-                const nw = viewport.clientWidth, nh = viewport.clientHeight;
-                renderer.setSize(nw, nh);
-                camera.aspect = nw / nh;
-                camera.updateProjectionMatrix();
-            });
-            ro.observe(viewport);
-
-            // Render loop
-            function animate() {
-                requestAnimationFrame(animate);
-                if (autoRotate) targetLon += 0.04;
-                lon += (targetLon - lon) * 0.08;
-                lat += (targetLat - lat) * 0.08;
-                const phi = THREE.MathUtils.degToRad(90 - lat);
-                const theta = THREE.MathUtils.degToRad(lon);
-                camera.lookAt(
-                    Math.sin(phi) * Math.cos(theta),
-                    Math.cos(phi),
-                    Math.sin(phi) * Math.sin(theta)
-                );
-                renderer.render(scene, camera);
-            }
-            animate();
-        }
-
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initPanorama);
-        } else {
-            initPanorama();
-        }
-    })();
+        })();
     </script>
 </body>
 

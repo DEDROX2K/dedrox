@@ -82,11 +82,12 @@
             </div>
         </div>
         <div class="hero-top-left-bar">
-            <img src="images/Vector/airpaste-logo.svg" alt="AirPaste Logo" style="height: 18px; width: auto; vertical-align: middle; margin-right: 8px; opacity: 0.85;">
+            <img src="images/Vector/airpaste-logo.svg" alt="AirPaste Logo"
+                style="height: 18px; width: auto; vertical-align: middle; margin-right: 8px; opacity: 0.85;">
             You should not spend 10£ to save bookmarks.
         </div>
         <div class="hero-cta-group">
-            <a href="download.html" class="pixel-btn-v2">Download Now</a>
+            <a href="download.html" class="pixel-btn-v2">Download AirPaste</a>
         </div>
         <div class="hero-scroll-indicator">
             <div class="ascii-block-v">
@@ -202,7 +203,10 @@
                         </div>
                     </div>
                     <div class="accordion-body">
-                        <p>Instead of endlessly scrolling through a traditional, linear page full of links, you can freely pan and zoom around an open canvas. This spatial approach allows you to organize your thoughts, projects, and resources visually. It gives you a bird's-eye view of your work, letting you map out information exactly how your brain processes it.</p>
+                        <p>Instead of endlessly scrolling through a traditional, linear page full of links, you can
+                            freely pan and zoom around an open canvas. This spatial approach allows you to organize your
+                            thoughts, projects, and resources visually. It gives you a bird's-eye view of your work,
+                            letting you map out information exactly how your brain processes it.</p>
                     </div>
                 </div>
 
@@ -225,7 +229,11 @@
                         </div>
                     </div>
                     <div class="accordion-body">
-                        <p>Inspired by tools like Figma, we are introducing built-in widgets designed to make your planning process faster and more intuitive. By integrating useful tools directly into your workspace—like quick task lists, trackers, or calendars—you can streamline your workflow. This means less time spent managing the app and more time focused on actually completing your tasks.</p>
+                        <p>Inspired by tools like Figma, we are introducing built-in widgets designed to make your
+                            planning process faster and more intuitive. By integrating useful tools directly into your
+                            workspace—like quick task lists, trackers, or calendars—you can streamline your workflow.
+                            This means less time spent managing the app and more time focused on actually completing
+                            your tasks.</p>
                     </div>
                 </div>
 
@@ -247,7 +255,11 @@
                         </div>
                     </div>
                     <div class="accordion-body">
-                        <p>Soon, we will be rolling out Interactive Tiles. These versatile building blocks can act as anything you need them to be: a quick text note, a web link with a rich preview, a folder to organize other items, or a "rack" to group related content together. This modular system means you can build out your workspace piece by piece, customizing it to perfectly fit your unique workflow.</p>
+                        <p>Soon, we will be rolling out Interactive Tiles. These versatile building blocks can act as
+                            anything you need them to be: a quick text note, a web link with a rich preview, a folder to
+                            organize other items, or a "rack" to group related content together. This modular system
+                            means you can build out your workspace piece by piece, customizing it to perfectly fit your
+                            unique workflow.</p>
                     </div>
                 </div>
 
@@ -269,7 +281,11 @@
                         </div>
                     </div>
                     <div class="accordion-body">
-                        <p>Because this application is being built by a UX designer, user-friendliness and accessibility are at the core of everything we do. We aren't just making it look nice; we are actively applying established UX laws and design principles. This ensures the interface is highly intuitive, reduces cognitive load, and provides a seamless, frustration-free experience for everyone who uses it.</p>
+                        <p>Because this application is being built by a UX designer, user-friendliness and accessibility
+                            are at the core of everything we do. We aren't just making it look nice; we are actively
+                            applying established UX laws and design principles. This ensures the interface is highly
+                            intuitive, reduces cognitive load, and provides a seamless, frustration-free experience for
+                            everyone who uses it.</p>
                     </div>
                 </div>
             </div>
@@ -279,7 +295,7 @@
     <section class="views-demo-section">
         <!-- New grid background overlay -->
         <div class="views-grid-bg"></div>
-        
+
         <div class="views-demo-content">
             <!-- Top pill -->
             <div class="views-top-pill">
@@ -296,12 +312,12 @@
                     simplicity
                 </h2>
             </div>
-            
+
             <div class="views-demo-carousel-wrapper">
                 <div class="views-demo-carousel" id="viewsCarousel">
                     <!-- Glow behind cards -->
                     <div class="carousel-glow"></div>
-                    
+
                     <div class="carousel-slide active" data-index="0">
                         <img src="images/List view.png" alt="List View" draggable="false">
                     </div>
@@ -1198,7 +1214,7 @@
             const slides = Array.from(carousel.querySelectorAll('.carousel-slide'));
             const labelEl = document.getElementById('viewsBottomLabel');
             const labels = ["01 List View", "02 Globe View", "03 Canvas View"];
-            
+
             let currentIndex = 0;
             let startX = 0;
             let isDragging = false;
@@ -1208,9 +1224,9 @@
             const SLIDE_WIDTH = 400; // Pixels for one full slide transition
 
             const styles = {
-                '0':  { x: 0, z: 150, r: 0, o: 1, b: 0, zi: 3 },
+                '0': { x: 0, z: 150, r: 0, o: 1, b: 0, zi: 3 },
                 '-1': { x: -380, z: -250, r: 40, o: 0.4, b: 2, zi: 1 },
-                '1':  { x: 380, z: -250, r: -40, o: 0.4, b: 2, zi: 1 }
+                '1': { x: 380, z: -250, r: -40, o: 0.4, b: 2, zi: 1 }
             };
 
             function getInterpolatedStyle(pos, targetPos, progress) {
@@ -1255,11 +1271,11 @@
                     });
 
                     if (absProgress > 0.5) {
-                         if (pos === 0 && targetPos !== 0) slide.classList.remove('active');
-                         if (targetPos === 0) slide.classList.add('active');
+                        if (pos === 0 && targetPos !== 0) slide.classList.remove('active');
+                        if (targetPos === 0) slide.classList.add('active');
                     } else {
-                         if (pos === 0) slide.classList.add('active');
-                         else slide.classList.remove('active');
+                        if (pos === 0) slide.classList.add('active');
+                        else slide.classList.remove('active');
                     }
                 });
 
@@ -1289,7 +1305,7 @@
                 if (!isDragging) return;
                 dragDistance = e.clientX - startX;
                 if (Math.abs(dragDistance) > 10) hasDragged = true;
-                
+
                 updatePositions(currentIndex, dragDistance);
             });
 
@@ -1311,7 +1327,7 @@
 
                 // Snap to current index
                 dragDistance = 0;
-                
+
                 // Final animation to clean positions
                 slides.forEach((slide, idx) => {
                     let pos = idx - currentIndex;

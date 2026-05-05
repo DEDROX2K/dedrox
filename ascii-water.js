@@ -11,13 +11,13 @@
 
     // --- 🎛️ SETTINGS ---
     const SETTINGS = {
-        gridSize: 30,       // Smaller cells for more detail
+        gridSize: 40,       // Smaller cells for more detail
         viscosity: 0.93,    // How much velocity is kept (0.9-0.99)
-        diffusion: 0.98,    // How much 'residue' is kept (0.9-0.99)
+        diffusion: 0.99,    // How much 'residue' is kept (0.9-0.99)
         mouseForce: 0.4,    // Pushing strength
-        residueStrength: 89, // Added density per move
+        residueStrength: 99, // Added density per move
         fontSize: 28,
-        blue: '#4E706A',    // AirPaste Blue
+        blue: '#a7e5ffff',    // AirPaste Blue
         white: '#ffffffff',
         coverImgSrc: 'images/bg19.jpg'
     };
