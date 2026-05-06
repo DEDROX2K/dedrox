@@ -19,7 +19,7 @@
     --device-collapsed-height: 56px;
     --device-expanded-height: 88vh;
     --device-expanded-max-height: 980px;
-    --case-window-width: 50vw;
+    --case-window-width: 70vw;
     --case-window-gap: 30px;
     --case-pair-shift: calc((var(--case-window-width) + var(--case-window-gap)) / 2);
     --site-padding-x: 24px;
@@ -394,7 +394,7 @@ body.cursor-system :where([data-cursor='default']) {
     transition:
         width 0.82s var(--ease-genie),
         height 0.22s var(--ease-genie),
-        transform 0.22s var(--ease-genie),
+        transform 0.74s var(--ease-genie),
         top 0.82s var(--ease-genie),
         left 0.82s var(--ease-genie),
         border-radius 0s var(--ease-genie),
@@ -3396,11 +3396,12 @@ body.matrix-paused #canvas-bg {
 }
 
 body.case-open .device-container {
-    transform: translateX(calc(var(--case-pair-shift) * -1));
+    transform: translateX(calc(var(--case-pair-shift) * -1)) scale(0.5);
+    transform-origin: center center;
 }
 
 body.case-open .case-window {
-    left: calc(50% + (var(--device-width) / 2) + var(--case-window-gap) - var(--case-pair-shift));
+    left: calc(43% + (var(--device-width) / 2) + var(--case-window-gap) - var(--case-pair-shift));
 }
 
 .case-window *:focus {
@@ -3486,6 +3487,73 @@ body.case-open .case-window {
     transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     transform-origin: left center;
     pointer-events: auto;
+}
+
+/* ---- Right-side Behance pill ---- */
+.floating-controls-right {
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    left: auto;
+    transform-origin: right center;
+    text-decoration: none;
+    color: #111;
+    gap: 6px;
+    padding: 6px 10px 6px 10px;
+}
+
+.floating-controls-right:hover {
+    transform: scale(1.15);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), inset 0 1px 2px rgba(255, 255, 255, 1);
+    color: #111;
+    text-decoration: none;
+}
+
+.f-behance-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    line-height: 1;
+    opacity: 0.75;
+    transition: opacity 0.2s ease;
+    white-space: nowrap;
+}
+
+.floating-controls-right:hover .f-behance-label {
+    opacity: 1;
+}
+
+.f-behance-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.06);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+    transition: background 0.2s ease;
+}
+
+.floating-controls-right:hover .f-behance-icon {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.f-behance-icon svg {
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+}
+
+.floating-controls-right:hover .f-behance-icon svg {
+    opacity: 1;
+}
+
+/* Hide Behance button when no link is set */
+.floating-controls-right[href="#"],
+.floating-controls-right[href=""] {
+    opacity: 0;
+    pointer-events: none;
 }
 
 .floating-controls:hover {
@@ -3890,7 +3958,8 @@ body.case-open .case-window {
     }
 
     body.case-open .device-container {
-        transform: translateX(0);
+        transform: scale(0.5);
+        transform-origin: top center;
     }
 
     body.case-open .case-window {

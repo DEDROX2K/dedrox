@@ -63,6 +63,7 @@ const SITE_CONFIG = {
             title: "Clear Breath CBT",
             logo: "images/c6.png",
             postedDate: "12/05/2024",
+            behanceUrl: "https://www.behance.net/gallery/200529521/CLEAR-BREATH-case-study-No-smoking-app",
             images: [
                 'images/DEDROX.DSGN/CB1.jpg', 'images/DEDROX.DSGN/CB2.jpg', 'images/DEDROX.DSGN/CB3.jpg',
                 'images/DEDROX.DSGN/CB4.jpg', 'images/DEDROX.DSGN/CB5.jpg', 'images/DEDROX.DSGN/CB6.jpg',
@@ -74,6 +75,7 @@ const SITE_CONFIG = {
             title: "Air Buddy Navigation",
             logo: "images/c5.png",
             postedDate: "08/11/2023",
+            behanceUrl: "https://www.behance.net/gallery/209743653/AR-AIRPORT-NAVIGATION-Case-study",
             images: [
                 'images/DEDROX.DSGN/AN1.jpg', 'images/DEDROX.DSGN/AN2.jpg', 'images/DEDROX.DSGN/AN3.jpg',
                 'images/DEDROX.DSGN/AN4.jpg', 'images/DEDROX.DSGN/AN5.jpg', 'images/DEDROX.DSGN/AN6.jpg',
@@ -84,6 +86,7 @@ const SITE_CONFIG = {
             title: "Research Phase",
             logo: "images/c1.png",
             postedDate: "21/01/2025",
+            behanceUrl: "https://www.behance.net/gallery/215201231/Research-Phrase",
             images: [
                 'images/DEDROX.DSGN/f1.png', 'images/DEDROX.DSGN/f2.png', 'images/DEDROX.DSGN/f3.png',
                 'images/DEDROX.DSGN/f4.png', 'images/DEDROX.DSGN/f5.png', 'images/DEDROX.DSGN/f6.png',
@@ -96,8 +99,18 @@ const SITE_CONFIG = {
         const caseWindow = document.getElementById('case-window');
         const closeBtn = document.getElementById('case-close');
         const openBtn = document.getElementById('case-open-link');
+        const behanceBtn = document.getElementById('case-behance-link');
         const contentArea = document.getElementById('case-content-area');
         const titleDisp = document.getElementById('case-title');
+
+        const setBehanceUrl = (url) => {
+            if (!behanceBtn) return;
+            if (url) {
+                behanceBtn.href = url;
+            } else {
+                behanceBtn.href = '#';
+            }
+        };
 
         let isTransitioning = false;
         let caseMotionTimer = null;
@@ -147,6 +160,7 @@ const SITE_CONFIG = {
             clearCaseMotion();
             caseWindow.classList.remove('visible');
             caseWindow.classList.remove('minimized');
+            setBehanceUrl('');
             if (!keepLayout) {
                 setCaseLayout(false);
             }
@@ -181,6 +195,7 @@ const SITE_CONFIG = {
             `;
             activeCaseHref = caseHref;
             syncOpenButton();
+            setBehanceUrl(data.behanceUrl || '');
 
             setCaseLayout(true);
             clearCaseMotion();
