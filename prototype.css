@@ -3401,7 +3401,7 @@ body.case-open .device-container {
 }
 
 body.case-open .case-window {
-    left: calc(43% + (var(--device-width) / 2) + var(--case-window-gap) - var(--case-pair-shift));
+    left: calc(45% + (var(--device-width) / 2) + var(--case-window-gap) - var(--case-pair-shift));
 }
 
 .case-window *:focus {
@@ -5627,4 +5627,21 @@ a.nn-right:hover {
     display: block;
     width: 100% !important;
     height: 100% !important;
+}
+
+
+/* --------------------------------------------------------
+   LAPTOP / SMALL SCREEN ZOOM
+   Equivalent to Cmd– at 75% browser zoom.
+   Scales everything uniformly (layout, text, images, 3D,
+   animations) — no cropping, no layout breakage.
+   Targets viewport heights ≤ 860px, which covers:
+     • MacBook Air 13"  (~680px after browser chrome)
+     • MacBook Pro 14"  (~860px after browser chrome)
+   Adjust the zoom value or breakpoint as needed.
+   -------------------------------------------------------- */
+@media screen and (max-height: 860px) {
+    html {
+        zoom: 0.75;
+    }
 }
