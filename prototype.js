@@ -100,6 +100,7 @@ const SITE_CONFIG = {
         const closeBtn = document.getElementById('case-close');
         const openBtn = document.getElementById('case-open-link');
         const behanceBtn = document.getElementById('case-behance-link');
+        const externalBtn = document.getElementById('case-external-link');
         const contentArea = document.getElementById('case-content-area');
         const titleDisp = document.getElementById('case-title');
 
@@ -214,6 +215,7 @@ const SITE_CONFIG = {
             if (titleDisp) titleDisp.textContent = title;
             contentArea.innerHTML = `<iframe class="case-content-iframe" src="${escapeAttr(embedHref)}" title="${escapeAttr(title)}" loading="eager"></iframe>`;
             activeCaseHref = caseHref || embedHref;
+            if (externalBtn) externalBtn.href = activeCaseHref;
             syncOpenButton();
 
             setCaseLayout(true);
@@ -293,6 +295,17 @@ const SITE_CONFIG = {
             isVisible: () => caseWindow.classList.contains('visible') || caseWindow.classList.contains('is-closing'),
             openExternal: ({ title = 'Article', href = '' } = {}) => openExternalCase(title, href)
         };
+
+        // Listen for all side-panel-trigger links
+        document.addEventListener('click', (e) => {
+            const trigger = e.target.closest('.side-panel-trigger');
+            if (trigger) {
+                e.preventDefault();
+                const href = trigger.getAttribute('href');
+                const title = trigger.getAttribute('data-title') || trigger.textContent.trim() || 'Website';
+                window.CaseOverlayControl.openExternal({ title, href });
+            }
+        });
     },
     pillSizes: {
         collapsed: {
@@ -3451,7 +3464,311 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    function initCustomization() {
+        // Calm Navigation Transition
+        const deviceContainer = document.getElementById('portfolio-device');
+        document.addEventListener('click', (e) => {
+            const link = e.target.closest('a[target="_blank"]');
+            if (link && !link.classList.contains('side-panel-trigger') && deviceContainer) {
+                e.preventDefault();
+                const href = link.href;
+
+                // Trigger effect
+                deviceContainer.classList.add('is-navigating');
+
+                // Open link after delay
+                setTimeout(() => {
+                    window.open(href, '_blank', 'noopener,noreferrer');
+
+                    // Cleanup after a while (allows the user to see the site again if they come back)
+                    setTimeout(() => {
+                        deviceContainer.classList.remove('is-navigating');
+                    }, 1000);
+                }, 600);
+            }
+        });
+
+        // Back to Top functionality
+        const backToTopBtn = document.getElementById('footer-back-to-top');
+        if (backToTopBtn) {
+            backToTopBtn.addEventListener('click', () => {
+                const scrollableContent = document.getElementById('scrollable-content');
+                if (scrollableContent) {
+                    scrollableContent.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+        }
+
+        // ---- Customization Section Logic ----
+        const colorWheel = document.getElementById('colorWheel');
+        const colorHandle = document.getElementById('colorPickerHandle');
+        const resetBgBtn = document.getElementById('resetBgBtn');
+        const miniCarousel = document.getElementById('miniCarousel');
+
+        if (colorWheel && colorHandle) {
+            let isDragging = false;
+
+            const updateColor = (e) => {
+                const rect = colorWheel.getBoundingClientRect();
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+                const x = clientX - rect.left - rect.width / 2;
+                const y = clientY - rect.top - rect.height / 2;
+
+                // Calculate angle and distance
+                let angle = Math.atan2(y, x) * (180 / Math.PI);
+                if (angle < 0) angle += 360;
+
+                const distance = Math.sqrt(x * x + y * y);
+                const radius = rect.width / 2;
+                const distPercent = Math.min(1, distance / radius);
+
+                // Move handle
+                const handleX = 50 + distPercent * 50 * Math.cos(angle * Math.PI / 180);
+                const handleY = 50 + distPercent * 50 * Math.sin(angle * Math.PI / 180);
+
+                colorHandle.style.left = `${handleX}%`;
+                colorHandle.style.top = `${handleY}%`;
+
+                // Calculate HSL to match the visual wheel (outer is lighter/whiter)
+                // Hue aligned with conic gradient (red at top)
+                const hue = (angle + 90) % 360;
+
+                // Saturation: Saturated in center, fades out at edge
+                const s = 25 - (distPercent * 15); // 25% to 10%
+
+                // Lightness: Base lightness that goes even higher (lighter) at the edge
+                const l = 92 + (distPercent * 6); // 92% (center) to 98% (edge)
+
+                const colorBg = `hsl(${hue}, ${s}%, ${l}%)`;
+                const colorPanel = `hsl(${hue}, ${s}%, ${Math.min(99, l + 2)}%)`;
+
+                document.documentElement.style.setProperty('--bg', colorBg);
+                document.documentElement.style.setProperty('--panel', colorPanel);
+
+                // Force update on the white blocks if they aren't reactive
+                document.querySelectorAll('.content-block-white').forEach(block => {
+                    block.style.backgroundColor = colorPanel;
+                });
+            };
+
+            colorWheel.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                updateColor(e);
+            });
+
+            colorWheel.addEventListener('touchstart', (e) => {
+                isDragging = true;
+                updateColor(e);
+            }, { passive: false });
+
+            window.addEventListener('mousemove', (e) => {
+                if (isDragging) updateColor(e);
+            });
+
+            window.addEventListener('touchmove', (e) => {
+                if (isDragging) {
+                    e.preventDefault();
+                    updateColor(e);
+                }
+            }, { passive: false });
+
+            window.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+
+            window.addEventListener('touchend', () => {
+                isDragging = false;
+            });
+        }
+
+        if (resetBgBtn) {
+            resetBgBtn.addEventListener('click', () => {
+                document.documentElement.style.setProperty('--bg', '#EBEAE6');
+                document.documentElement.style.setProperty('--panel', '#ffffff');
+                document.querySelectorAll('.content-block-white').forEach(block => {
+                    block.style.backgroundColor = '#ffffff';
+                });
+                if (colorHandle) {
+                    colorHandle.style.left = '50%';
+                    colorHandle.style.top = '50%';
+                }
+            });
+        }
+
+        // Mini Carousel Timer
+        if (miniCarousel) {
+            const track = miniCarousel.querySelector('.carousel-track');
+            const images = miniCarousel.querySelectorAll('.carousel-track img');
+            const indicators = miniCarousel.querySelectorAll('.indicator');
+            let currentIndex = 0;
+
+            setInterval(() => {
+                // Update Indicators
+                indicators[currentIndex].classList.remove('active');
+                images[currentIndex].classList.remove('active');
+
+                currentIndex = (currentIndex + 1) % images.length;
+
+                indicators[currentIndex].classList.add('active');
+                images[currentIndex].classList.add('active');
+
+                // Slide the track
+                const offset = currentIndex * 100;
+                track.style.transform = `translateX(-${offset}%)`;
+            }, 2000);
+        }
+    }
+
     if (document.readyState === 'complete') init();
     else window.addEventListener('load', init);
 
+})();
+
+// --------------------------------------------------------
+// GLOBAL SITE CUSTOMIZATION & NAVIGATION
+// --------------------------------------------------------
+(function initGlobalSystems() {
+    function initCustomization() {
+        // Calm Navigation Transition
+        const deviceContainer = document.getElementById('portfolio-device');
+        if (deviceContainer) {
+            document.addEventListener('click', (e) => {
+                const link = e.target.closest('a[target="_blank"]');
+                if (link && !link.classList.contains('side-panel-trigger')) {
+                    e.preventDefault();
+                    const href = link.href;
+
+                    // Trigger effect
+                    deviceContainer.classList.add('is-navigating');
+
+                    // Open link after delay
+                    setTimeout(() => {
+                        window.open(href, '_blank', 'noopener,noreferrer');
+
+                        // Cleanup after a while
+                        setTimeout(() => {
+                            deviceContainer.classList.remove('is-navigating');
+                        }, 1000);
+                    }, 600);
+                }
+            });
+        }
+
+        // Back to Top functionality
+        const backToTopBtn = document.getElementById('footer-back-to-top');
+        if (backToTopBtn) {
+            backToTopBtn.addEventListener('click', () => {
+                const scrollableContent = document.getElementById('scrollable-content');
+                if (scrollableContent) {
+                    scrollableContent.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+        }
+
+        // ---- Customization Section Logic (Discrete Circular Palette) ----
+        const colorPalette = document.getElementById('colorPalette');
+        const colorPreview = document.getElementById('activeColorPreview');
+        const resetBgBtn = document.getElementById('resetBgBtn');
+        const miniCarousel = document.getElementById('miniCarousel');
+
+        const paletteColors = [
+            '#ffec59ff', // Yellow
+            '#ffc72b', // Yellow-Orange
+            '#ffa334', // Orange
+            '#ff6024', // Red-Orange
+            '#ff2f00', // Red
+            '#dc30e7', // Red-Purple
+            '#aa28ed', // Purple
+            '#437dff', // Blue-Purple
+            '#44b1ff', // Blue
+            '#2ec6cf', // Blue-Green
+            '#00a651', // Green
+            '#8dc63f'  // Yellow-Green
+        ];
+
+        if (colorPalette) {
+            const radius = 75; // Distance from center
+
+            paletteColors.forEach((hex, i) => {
+                const swatch = document.createElement('div');
+                swatch.className = 'color-swatch';
+
+                // Position in circle
+                const angle = (i * (360 / paletteColors.length)) - 90;
+                const rad = angle * (Math.PI / 180);
+                const x = 50 + (radius / 100) * 50 * Math.cos(rad);
+                const y = 50 + (radius / 100) * 50 * Math.sin(rad);
+
+                swatch.style.left = `${x}%`;
+                swatch.style.top = `${y}%`;
+                swatch.style.backgroundColor = hex;
+
+                swatch.addEventListener('click', () => {
+                    // Update Active State
+                    document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
+                    swatch.classList.add('active');
+
+                    // Update Preview
+                    if (colorPreview) colorPreview.style.backgroundColor = hex;
+
+                    // Apply EXACT color to Site Background
+                    document.documentElement.style.setProperty('--bg', hex);
+
+                    // Keep panels clean (white with very subtle transparency to let color bleed through)
+                    const panelColor = 'rgba(255, 255, 255, 0.98)';
+                    document.documentElement.style.setProperty('--panel', panelColor);
+
+                    document.querySelectorAll('.content-block-white').forEach(block => {
+                        block.style.backgroundColor = panelColor;
+                    });
+                });
+
+                colorPalette.appendChild(swatch);
+            });
+        }
+
+        if (resetBgBtn) {
+            resetBgBtn.addEventListener('click', () => {
+                document.documentElement.style.setProperty('--bg', '#EBEAE6');
+                document.documentElement.style.setProperty('--panel', '#ffffff');
+                document.querySelectorAll('.content-block-white').forEach(block => {
+                    block.style.backgroundColor = '#ffffff';
+                });
+                document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
+                if (colorPreview) colorPreview.style.backgroundColor = '#EBEAE6';
+            });
+        }
+
+        // Mini Carousel Timer
+        if (miniCarousel) {
+            const track = miniCarousel.querySelector('.carousel-track');
+            const images = miniCarousel.querySelectorAll('.carousel-track img');
+            const indicators = miniCarousel.querySelectorAll('.indicator');
+            let currentIndex = 0;
+
+            if (track && images.length > 0) {
+                setInterval(() => {
+                    indicators[currentIndex].classList.remove('active');
+                    images[currentIndex].classList.remove('active');
+
+                    currentIndex = (currentIndex + 1) % images.length;
+
+                    indicators[currentIndex].classList.add('active');
+                    images[currentIndex].classList.add('active');
+
+                    const offset = currentIndex * 100;
+                    track.style.transform = `translateX(-${offset}%)`;
+                }, 2000);
+            }
+        }
+    }
+
+    if (document.readyState === 'complete') initCustomization();
+    else window.addEventListener('load', initCustomization);
 })();
