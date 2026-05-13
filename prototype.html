@@ -99,8 +99,7 @@
                         <span>SITE</span>
                     </h2>
                 </div> -->
-                <div class="pill-left">
-                    <!-- <div class="pill-bar"></div> -->
+                <div class="pill-buttons-unified">
                     <button class="pill-plain-circle pill-icon-btn" id="pill-notes-btn" type="button"
                         aria-label="Open notes" data-cursor="link">
                         <img src="iconset/sticky_note_2.png" alt="" style="mix-blend-mode: difference;">
@@ -123,14 +122,15 @@
                         <img src="iconset/attach_email.png" alt="" style="mix-blend-mode: difference;">
                         <span class="pill-tooltip">Copy Email</span>
                     </button>
-                </div>
-                <div class="pill-right">
-                    <span class="pill-text">PORTFOLIO</span>
                     <button class="pill-dark-block pill-icon-btn" id="pill-fifth-btn" type="button"
                         aria-label="Action 5" data-cursor="link">
                         <img src="iconset/interactions.png" alt="" style="mix-blend-mode: difference;">
                         <span class="pill-tooltip">Interactions</span>
                     </button>
+                </div>
+
+                <div class="pill-portfolio-text">
+                    <span class="pill-text">PORTFOLIO</span>
                 </div>
             </div>
         </div>
@@ -186,15 +186,10 @@
                 </section>
             </div>
 
-            <!-- ==========================================
-                 🪪 IDENTITY STATUS CARD
-                 ========================================== -->
-
             <div class="about-links-wrapper">
                 <!-- About Me Section -->
                 <section class="isolated-section about-section-part" aria-label="Identity Status Card">
                     <div class="isolated-card">
-
                         <!-- Segmented Control -->
                         <div class="about-segment-control">
                             <button class="segment-btn active" data-target="content-about">About me*</button>
@@ -203,54 +198,28 @@
                             <div class="segment-glider"></div>
                         </div>
 
-                        <!-- <h3 class="mini-editorial-title">Raghav Prasanna &copy;</h3> -->
-
                         <!-- About Me Tab -->
                         <div id="content-about" class="about-content-section active fade-in" style="padding: 0px 17px;">
                             <p class="mini-editorial-copy">
                                 Systems thinker based in Newcastle/London, working on XR, Python, AI fusing with UX.
-                                Working
-                                as a
-                                product development assistant in AIRCARDS.
-                                <br>
-                                <br>
-                                Background includes AR-Depth experiences, interactive installations, large-scale touch
-                                interfaces, and data platforms, with a strong focus on research, Analytics, Research and
-                                development, and
-                                iterative design.
-                                Comfortable operating in remote and fast-moving environments, bridging the gap between
-                                design, technology, and product development.
+                                Working as a product development assistant in AIRCARDS.
                             </p>
                         </div>
 
                         <!-- AI Tab -->
                         <div id="content-ai" class="about-content-section" style="padding: 0px 17px;">
                             <p class="mini-editorial-copy">
-                                I believe that AI is the real Robin Hood, IMO. AI is good for capitalism (the real
-                                capitalism). <br><br>It takes the monopoly from the greedy big corpos and gives full
-                                power
-                                and access
-                                to the general public. I will be even happier when we all get to have more RAM and have
-                                our
-                                own local AI, which we can easily train on our own. This is what Emmet wanted in The
-                                Lego
-                                Movie—watch it so you can understand what I really mean.
+                                I believe that AI is the real Robin Hood, IMO. AI is good for capitalism (the real capitalism).
                             </p>
                         </div>
 
                         <!-- My Next App Tab -->
                         <div id="content-app" class="about-content-section" style="padding: 0px 17px;">
                             <p class="mini-editorial-copy">
-                                I'm currently building a true open source bookmark manager called
-                                <strong>Airpaste</strong>
-                                for designers and developers who work as a one-person team.
-                                <br><br> I'm done with boring apps that takes the soul out of the user. I want to build
-                                apps that are fun to use and that makes you feel alive while using their machine.
+                                I'm currently building a true open source bookmark manager called <strong>Airpaste</strong>.
                             </p>
                         </div>
-
                         <br>
-
                     </div>
                 </section>
 
@@ -261,7 +230,6 @@
                             <div class="color-picker-container">
                                 <div class="color-wheel-outer">
                                     <div class="color-palette-circular" id="colorPalette" data-cursor="crosshair">
-                                        <!-- Swatches injected by JS -->
                                         <div class="color-palette-center">
                                             <div class="active-color-preview" id="activeColorPreview"></div>
                                         </div>
@@ -292,9 +260,6 @@
                     </div>
                 </section>
             </div>
-
-
-
 
             <div class="content-block-white mid-block">
 
@@ -738,24 +703,56 @@
             const deviceEl = document.getElementById('portfolio-device');
 
             if (notchWrapper && deviceEl) {
+                let notchTimer = null;
+
+                const resetNotchTimer = () => {
+                    // Always show the notch first
+                    notchWrapper.classList.remove('notch-offscreen');
+                    
+                    // Clear existing timer
+                    if (notchTimer) clearTimeout(notchTimer);
+                    
+                    // Set new timer to hide after 10s
+                    notchTimer = setTimeout(() => {
+                        // Don't hide if hovered
+                        if (!notchWrapper.classList.contains('hover-expanded')) {
+                            notchWrapper.classList.add('notch-offscreen');
+                        } else {
+                            // If hovered, check again in 2s
+                            resetNotchTimer();
+                        }
+                    }, 3000);
+                };
+
                 // Hover interaction
-                notchWrapper.addEventListener('mouseenter', () => notchWrapper.classList.add('hover-expanded'));
-                notchWrapper.addEventListener('mouseleave', () => notchWrapper.classList.remove('hover-expanded'));
+                notchWrapper.addEventListener('mouseenter', () => {
+                    notchWrapper.classList.add('hover-expanded');
+                    notchWrapper.classList.remove('notch-offscreen');
+                    if (notchTimer) clearTimeout(notchTimer);
+                });
+                
+                notchWrapper.addEventListener('mouseleave', () => {
+                    notchWrapper.classList.remove('hover-expanded');
+                    resetNotchTimer();
+                });
 
                 // Device state observer
                 const deviceObserver = new MutationObserver(() => {
-                    if (deviceEl.classList.contains('expanded')) {
+                    const isExpanded = deviceEl.classList.contains('expanded');
+                    if (isExpanded) {
                         notchWrapper.classList.add('notch-collapsed');
                     } else {
                         notchWrapper.classList.remove('notch-collapsed');
                     }
+                    resetNotchTimer(); // Show and restart 10s timer on any state change
                 });
                 deviceObserver.observe(deviceEl, { attributes: true, attributeFilter: ['class'] });
 
-                // Initial check
+                // Initial run
                 if (deviceEl.classList.contains('expanded')) {
                     notchWrapper.classList.add('notch-collapsed');
                 }
+                resetNotchTimer();
             }
 
             // Generate 5 days centered on today

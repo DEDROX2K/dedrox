@@ -17,8 +17,9 @@
     /* Layout */
     --device-width: 450px;
     --device-collapsed-height: 56px;
-    --device-expanded-height: 88vh;
+    --device-expanded-height: 80vh;
     --device-expanded-max-height: 980px;
+    --device-expand-ease: cubic-bezier(0.16, 1, 0.3, 1);
     --case-window-width: 70vw;
     --case-window-gap: 30px;
     --case-pair-shift: calc((var(--case-window-width) + var(--case-window-gap)) / 2);
@@ -78,7 +79,7 @@
     --marquee-bg: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCA0MCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cG9seWdvbiBwb2ludHM9IjAsMTIgMTUsMCAyOCwwIDEzLDEyIDI4LDI0IDE1LDI0IiBmaWxsPSIjZDJkMmQyZmYiLz48L3N2Zz4=);
 
     --pill-1-w: 74px;
-    --pill-1-h: 44px;
+    --pill-1-h: 60px;
     --pill-1-c: #e7e7e7;
     --pill-1-br: 99px;
 
@@ -88,12 +89,12 @@
     --pill-2-br: 14px;
 
     --pill-3-w: 49px;
-    --pill-3-h: 44px;
+    --pill-3-h: 60px;
     --pill-3-c: #ff0000;
     --pill-3-br: 99px;
 
     --pill-4-w: 74px;
-    --pill-4-h: 44px;
+    --pill-4-h: 60px;
     --pill-4-c: #e7e7e7;
     --pill-4-br: 99px;
 
@@ -103,12 +104,12 @@
     --pill-5-br: 22px;
 
     --pill-6-w: 50px;
-    --pill-6-h: 44px;
+    --pill-6-h: 60px;
     --pill-6-c: #e7e7e7;
     --pill-6-br: 99px;
 
     --pill-7-w: 74px;
-    --pill-7-h: 44px;
+    --pill-7-h: 60px;
     --pill-7-c: #e7e7e7;
     --pill-7-br: 99px;
 
@@ -384,39 +385,34 @@ body.cursor-system :where([data-cursor='default']) {
 }
 
 .device-container {
-    position: relative;
-    width: min(96vw, var(--pill-container-w));
-    margin: 0 auto;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: var(--pill-container-w);
     height: var(--pill-container-h);
     display: flex;
     flex-direction: column;
     z-index: 1000;
     transition:
-        width 0.82s var(--ease-genie),
-        height 0.22s var(--ease-genie),
-        transform 0.74s var(--ease-genie),
-        top 0.82s var(--ease-genie),
-        left 0.82s var(--ease-genie),
-        border-radius 0s var(--ease-genie),
-        box-shadow 0.22s var(--ease-genie);
-    z-index: 10;
+        width 1.2s var(--device-expand-ease),
+        height 1.2s var(--device-expand-ease),
+        transform 1.2s var(--device-expand-ease),
+        top 1.2s var(--device-expand-ease),
+        left 1.2s var(--device-expand-ease),
+        border-radius 0.6s var(--device-expand-ease),
+        box-shadow 0.8s var(--device-expand-ease);
+    will-change: width, height, transform;
 }
 
-.device-container:not(.expanded) {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
+/* Removed duplicate positioning */
 
 .device-container.expanded {
     width: min(96vw, var(--device-width));
     height: min(var(--device-expanded-height), var(--device-expanded-max-height));
-    background: transparent;
-    /* box-shadow: 14px 17px 20px 0px rgba(0, 0, 0, 0.1); */
+    background: transparent; /* Changed to transparent to allow isolated sections to stand out */
     border-radius: var(--site-radius);
     overflow: visible;
-    /* Changed from hidden to allow tooltips to pop out of the top */
 }
 
 
@@ -453,7 +449,6 @@ body.cursor-system :where([data-cursor='default']) {
 
 .device-container.expanded .top-bar {
     transform: translateY(0);
-    /* border-radius: var(--site-radius) var(--site-radius) 0 0; */
     background: transparent;
 }
 
@@ -466,8 +461,8 @@ body.cursor-system :where([data-cursor='default']) {
     width: 100%;
     height: 100%;
     border-radius: 999px;
-    padding: 4px;
-    gap: 2px;
+    padding: 3px;
+    gap: 3px;
     position: relative;
     border: 1px solid rgba(255, 255, 255, 0.55);
     box-shadow:
@@ -478,6 +473,8 @@ body.cursor-system :where([data-cursor='default']) {
         box-shadow 0.45s var(--ease-lux),
         transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
     transform-origin: center center;
+    justify-content: center;
+    overflow: visible; /* Restore for tooltips */
 }
 
 .top-bar-pill:hover {
@@ -636,13 +633,22 @@ body:not(.device-expanded):not(.reader-mode) .pill-greeting .greeting-display {
 
 /* -------------------------------- */
 
-.pill-left {
+.pill-buttons-unified {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 3px;
-    padding-left: 3px;
-    flex-shrink: 1;
+    height: 100%;
+    flex: 1;
     min-width: 0;
+    padding: 0;
+    clip-path: inset(-100px -60px -100px -60px);
+    transition: padding 0.52s var(--ease-genie), gap 0.52s var(--ease-genie);
+}
+
+.device-container.reader-mode .pill-buttons-unified {
+    justify-content: space-around;
+    padding: 0 30px;
 }
 
 .pill-bar {
@@ -742,6 +748,11 @@ body.reader-mode .pill-dark-block {
     border-radius: 12px;
 }
 
+/* Specifically highlight the Blogs button when in Reader Mode */
+body.reader-mode #pill-third-btn {
+    background-color: #333334 !important;
+}
+
 body.reader-mode .pill-dark-block img {
     filter: invert(1);
     opacity: 0.8;
@@ -769,16 +780,16 @@ body.reader-mode .pill-dark-block .pill-icon-slot {
     /* width: 58%; */
     /* height: 58%; */
     object-fit: contain;
-    transform: translateY(6px) scale(0.88);
-    filter: blur(2px);
+    transform: translateY(12px) scale(0.6) rotate(-15deg);
+    filter: blur(4px);
     opacity: 0;
-    transition: opacity 0.28s var(--ease-lux), transform 0.42s var(--ease-lux), filter 0.42s var(--ease-lux);
+    transition: opacity 0.8s var(--ease-lux), transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.8s var(--ease-lux);
     will-change: opacity, transform, filter;
 }
 
 .device-container.expanded .pill-icon-btn img {
-    opacity: 0.7;
-    transform: translateY(0) scale(1);
+    opacity: 0.9;
+    transform: translateY(0) scale(1) rotate(0deg);
     filter: blur(0);
 }
 
@@ -808,9 +819,10 @@ body.reader-mode .pill-dark-block .pill-icon-slot {
     inset: 0;
     border-radius: inherit;
     opacity: 0;
-    transform: scale(0.55);
-    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.52) 0%, rgba(255, 255, 255, 0) 70%);
-    transition: transform 0.26s ease, opacity 0.26s ease;
+    background: 
+        radial-gradient(circle at 0% 50%, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 70%),
+        radial-gradient(circle at 100% 50%, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 70%);
+    transition: transform 0.4s var(--device-expand-ease), opacity 0.4s var(--device-expand-ease);
     pointer-events: none;
     z-index: 0;
 }
@@ -987,48 +999,52 @@ body.reader-mode .pill-dark-block .pill-icon-slot {
     }
 }
 
-.pill-right {
+.pill-portfolio-text {
     flex: 1;
-    height: calc(100% - 2px);
+    height: 100%;
     background: #080808;
     border-radius: 999px;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding-left: 0;
-    margin-right: 2px;
+    padding: 0 12px;
+    margin-left: 3px;
+    transition: all 0.52s var(--device-expand-ease);
+    overflow: hidden;
 }
 
-.pill-text {
-    color: #404040;
-    font-size: 14px;
-    font-weight: 600;
-    text-transform: uppercase;
-    line-height: 1;
-    letter-spacing: 0.05em;
-    user-select: none;
+.device-container.expanded .pill-portfolio-text {
+    flex: 0;
+    width: 0;
+    padding: 0;
+    margin: 0;
+    opacity: 0;
     pointer-events: none;
 }
 
-/* Toggle 5th button and hide pill-right background when expanded */
-#pill-fifth-btn {
-    display: none;
+.pill-text {
+    color: #ededed; /* Light text for dark pill */
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    line-height: 1;
+    letter-spacing: 0.1em;
+    user-select: none;
+    pointer-events: none;
+    white-space: nowrap;
+    opacity: 1;
+    transition: opacity 0.3s var(--ease-lux);
 }
 
 .device-container.expanded .pill-text {
-    display: none;
+    opacity: 0;
 }
 
-.device-container.expanded .pill-right {
-    background: transparent;
-    padding: 0;
-    margin-right: 0;
-    justify-content: flex-end;
-    padding-right: 3px;
-}
-
-.device-container.expanded #pill-fifth-btn {
+/* Unified pill state handles all buttons together */
+.pill-icon-btn {
     display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Legacy header pieces hidden */
@@ -1499,7 +1515,7 @@ body.device-transitioning .device-container.expanded #pill-fifth-btn {
 .device-container.expanded .site-content {
     opacity: 1;
     visibility: visible;
-    transition-delay: 0.22s;
+    transition-delay: 0s;
 }
 
 .site-content::-webkit-scrollbar {
@@ -1756,10 +1772,73 @@ body.device-transitioning .device-container.expanded #pill-fifth-btn {
 }
 
 @keyframes reveal-up {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.98);
+        filter: blur(10px);
+    }
+
     to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
+        filter: blur(0);
     }
+}
+
+/* Staggered entrance for main content blocks */
+.site-content>* {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s var(--device-expand-ease), transform 0.8s var(--device-expand-ease), filter 0.8s var(--device-expand-ease);
+    filter: blur(8px);
+    will-change: transform, opacity, filter;
+}
+
+.device-container.expanded .site-content>* {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+}
+
+/* Delay for each child - CSS Fallback if GSAP is missing */
+.device-container.expanded .site-content>*:nth-child(1) {
+    transition-delay: 0.1s;
+}
+
+.device-container.expanded .site-content>*:nth-child(2) {
+    transition-delay: 0.14s;
+}
+
+.device-container.expanded .site-content>*:nth-child(3) {
+    transition-delay: 0.18s;
+}
+
+.device-container.expanded .site-content>*:nth-child(4) {
+    transition-delay: 0.22s;
+}
+
+.device-container.expanded .site-content>*:nth-child(5) {
+    transition-delay: 0.26s;
+}
+
+.device-container.expanded .site-content>*:nth-child(6) {
+    transition-delay: 0.30s;
+}
+
+.device-container.expanded .site-content>*:nth-child(7) {
+    transition-delay: 0.34s;
+}
+
+.device-container.expanded .site-content>*:nth-child(8) {
+    transition-delay: 0.38s;
+}
+
+.device-container.expanded .site-content>*:nth-child(9) {
+    transition-delay: 0.42s;
+}
+
+.device-container.expanded .site-content>*:nth-child(10) {
+    transition-delay: 0.46s;
 }
 
 .hero-grid {
@@ -4854,6 +4933,12 @@ body.reader-mode .wip-swinging-img {
     padding-top: 12px;
     pointer-events: none;
     /* Let events pass through to elements behind when collapsed */
+    transition: top 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: top;
+}
+
+.status-notch-wrapper.notch-offscreen {
+    top: -100px;
 }
 
 .status-notch-bg {
@@ -5115,13 +5200,13 @@ a.nn-right:hover {
    ============================================ */
 
 .isolated-section {
-    width: calc(100% + 2 * var(--site-padding-x));
-    margin-left: calc(-1 * var(--site-padding-x));
-    margin-right: calc(-1 * var(--site-padding-x));
+    width: 100%;
     padding: 12px 0px;
     background: transparent;
     opacity: 1;
     transform: none;
+    position: relative;
+    z-index: 10;
 }
 
 .isolated-card {
@@ -5132,6 +5217,7 @@ a.nn-right:hover {
     flex-direction: column;
     gap: 0;
     overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
 }
 
 /* Stacked About & Links Wrapper */

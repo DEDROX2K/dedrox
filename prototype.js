@@ -1142,7 +1142,7 @@ function initBackgrounds() {
     miniMatrixInstance = null;
 }
 
-function withTemporaryDeviceTransition(loadFn, duration = 620) {
+function withTemporaryDeviceTransition(loadFn, duration = 1220) {
     document.body.classList.add('device-transitioning');
     const shouldTemporarilyPauseMatrix = backgroundMatrixInstance && !matrixPaused;
     if (shouldTemporarilyPauseMatrix) {
@@ -2955,11 +2955,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const expandDeviceShell = (autoOpenNotes = true) => {
         if (!device || device.classList.contains('expanded')) return;
+
         withTemporaryDeviceTransition(() => {
             device.classList.add('expanded');
             document.body.classList.add('device-expanded');
             applyPillSizes('expanded');
         });
+
+        // GSAP Staggered Entrance (Apple-like)
+        const contentBlocks = document.querySelectorAll('.site-content > *:not(.content-mask)');
+        if (contentBlocks.length > 0 && typeof gsap !== 'undefined') {
+            gsap.fromTo(contentBlocks,
+                {
+                    opacity: 0,
+                    y: 80,
+                    scale: 0.9,
+                    filter: 'blur(10px)'
+                },
+                {
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    filter: 'blur(0px)',
+                    duration: 0.8,
+                    stagger: 0.05,
+                    ease: "power4.out",
+                    delay: 0,
+                    clearProps: "all" // Important so CSS can take over after
+                }
+            );
+        }
 
         // Start Matrix Effect only on first open
         if (!window.hasMatrixStarted) {
@@ -2971,8 +2996,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (miniMatrixInstance) miniMatrixInstance.resize();
             idCardSystem.updateAnchor();
             leftOrbControls.updateScrollPosition();
-            // Removed autoOpenNotes to prevent automatic spawning
-        }, 520);
+            if (typeof fitty !== 'undefined') fitty.fitAll();
+        }, 1220);
     };
 
     // Config based UI updates
