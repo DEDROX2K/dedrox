@@ -138,14 +138,14 @@
 
 
         <div class="site-content" id="scrollable-content">
+            <div id="reader-inline" class="reader-inline" aria-hidden="true">
+                <section class="reader-blog-section">
+                    <div id="reader-blog-list" class="reader-blog-list" aria-live="polite">
+                        <p class="reader-blog-status">Loading blog posts...</p>
+                    </div>
+                </section>
+            </div>
             <div class="content-block-white top-block">
-                <div id="reader-inline" class="reader-inline" aria-hidden="true">
-                    <section class="reader-blog-section">
-                        <div id="reader-blog-list" class="reader-blog-list" aria-live="polite">
-                            <p class="reader-blog-status">Loading blog posts...</p>
-                        </div>
-                    </section>
-                </div>
 
                 <section class="hero-clean reveal delay-1">
                     <h1 class="hero-clean-title">
@@ -189,37 +189,21 @@
             <div class="about-links-wrapper">
                 <!-- About Me Section -->
                 <section class="isolated-section about-section-part" aria-label="Identity Status Card">
-                    <div class="isolated-card">
-                        <!-- Segmented Control -->
-                        <div class="about-segment-control">
-                            <button class="segment-btn active" data-target="content-about">About me*</button>
-                            <button class="segment-btn" data-target="content-ai">Thoughts on AI</button>
-                            <button class="segment-btn" data-target="content-app">My next app</button>
-                            <div class="segment-glider"></div>
+                    <div class="isolated-card about-pills-card">
+                        <div class="about-pills-container">
+                            <button class="about-pill-btn" data-case="about_me" data-cursor="link">
+                                <span>About me</span>
+                                <span class="pill-arrow">→</span>
+                            </button>
+                            <button class="about-pill-btn" data-case="thoughts_ai" data-cursor="link">
+                                <span>Thoughts on AI</span>
+                                <span class="pill-arrow">→</span>
+                            </button>
+                            <button class="about-pill-btn" data-case="beta_project" data-cursor="link">
+                                <span>My current beta project</span>
+                                <span class="pill-arrow">→</span>
+                            </button>
                         </div>
-
-                        <!-- About Me Tab -->
-                        <div id="content-about" class="about-content-section active fade-in" style="padding: 0px 17px;">
-                            <p class="mini-editorial-copy">
-                                Systems thinker based in Newcastle/London, working on XR, Python, AI fusing with UX.
-                                Working as a product development assistant in AIRCARDS.
-                            </p>
-                        </div>
-
-                        <!-- AI Tab -->
-                        <div id="content-ai" class="about-content-section" style="padding: 0px 17px;">
-                            <p class="mini-editorial-copy">
-                                I believe that AI is the real Robin Hood, IMO. AI is good for capitalism (the real capitalism).
-                            </p>
-                        </div>
-
-                        <!-- My Next App Tab -->
-                        <div id="content-app" class="about-content-section" style="padding: 0px 17px;">
-                            <p class="mini-editorial-copy">
-                                I'm currently building a true open source bookmark manager called <strong>Airpaste</strong>.
-                            </p>
-                        </div>
-                        <br>
                     </div>
                 </section>
 
@@ -827,72 +811,7 @@
             setInterval(tick, 10000); // refresh every 10s
         })();
 
-        // ---- About Segment Control Logic ----
-        document.addEventListener('DOMContentLoaded', () => {
-            const container = document.querySelector('.about-segment-control');
-            const buttons = document.querySelectorAll('.about-segment-control .segment-btn');
-            const sections = document.querySelectorAll('.about-content-section');
-            const glider = document.querySelector('.segment-glider');
-
-            function updateGlider(btn) {
-                if (!glider || !btn) return;
-                glider.style.width = `${btn.offsetWidth}px`;
-                glider.style.left = `${btn.offsetLeft}px`;
-            }
-
-            // Initial position with multiple attempts to handle font/layout shifts
-            const syncGlider = () => {
-                const initialActive = document.querySelector('.about-segment-control .segment-btn.active');
-                if (initialActive) updateGlider(initialActive);
-            };
-
-            syncGlider();
-            // Retries for late-loading fonts or layout transitions
-            setTimeout(syncGlider, 100);
-            setTimeout(syncGlider, 500);
-            window.addEventListener('load', syncGlider);
-
-            buttons.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    if (btn.classList.contains('active')) return;
-
-                    buttons.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    updateGlider(btn);
-
-                    const targetId = btn.getAttribute('data-target');
-
-                    sections.forEach(sec => {
-                        if (sec.classList.contains('active')) {
-                            sec.classList.remove('fade-in');
-                            setTimeout(() => {
-                                sec.classList.remove('active');
-                            }, 300);
-                        }
-                    });
-
-                    setTimeout(() => {
-                        const targetSec = document.getElementById(targetId);
-                        if (targetSec) {
-                            targetSec.classList.add('active');
-                            setTimeout(() => {
-                                targetSec.classList.add('fade-in');
-                            }, 50);
-                        }
-                    }, 300);
-                });
-            });
-
-            // Handle window resize and layout shifts to keep glider aligned
-            window.addEventListener('resize', syncGlider);
-
-            // Use ResizeObserver for even more reliability
-            if (window.ResizeObserver) {
-                const ro = new ResizeObserver(syncGlider);
-                buttons.forEach(btn => ro.observe(btn));
-                if (container) ro.observe(container);
-            }
-        });
+        // ---- About Segment Control Logic Removed (Replaced by Case Panel buttons) ----
 
         // ---- Pendulum Animation Logic ----
         document.addEventListener('DOMContentLoaded', () => {

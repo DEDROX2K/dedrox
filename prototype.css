@@ -3484,7 +3484,7 @@ body.matrix-paused #canvas-bg {
 }
 
 body.case-open .device-container {
-    transform: translateX(calc(var(--case-pair-shift) * -1)) scale(0.5);
+    transform: translate(-50%, -50%) translateX(calc(var(--case-pair-shift) * -1)) scale(0.5);
     transform-origin: center center;
 }
 
@@ -4055,8 +4055,8 @@ body.case-open .case-window {
     }
 
     body.case-open .device-container {
-        transform: scale(0.5);
-        transform-origin: top center;
+        transform: translate(-50%, -50%) scale(0.5);
+        transform-origin: center center;
     }
 
     body.case-open .case-window {
@@ -5272,67 +5272,51 @@ a.nn-right:hover {
 }
 
 
-/* ---- About Segment Control ---- */
-.about-segment-control {
-    display: inline-flex;
-    background: #f0f0f0;
-    border-radius: 24px;
-    padding: 4px;
-    margin-bottom: 9px;
-    margin-top: 6px;
-    align-self: center;
-    position: relative;
-    z-index: 1;
-    overflow: visible;
+/* ---- About Pills Control (New) ---- */
+.about-pills-card {
+    padding: 24px !important;
 }
 
-.segment-btn {
-    position: relative;
-    z-index: 2;
-    background: transparent;
+.about-pills-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+}
+
+.about-pill-btn {
+    background: #000000;
+    color: #ffffff;
     border: none;
-    border-radius: 20px;
-    padding: 8px 22px;
-    font-size: 15px;
-    font-family: inherit;
-    color: #484848;
-    cursor: pointer;
-    transition: color 0.35s var(--ease-lux);
-    outline: none;
+    border-radius: 28px;
+    padding: 18px 24px;
+    font-size: 17px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    transition: all 0.3s var(--ease-lux);
+    text-align: left;
 }
 
-.segment-btn.active {
-    color: #111;
-    font-weight: 500;
+.about-pill-btn:hover {
+    transform: scale(1.02);
+    background: #1a1a1a;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
 }
 
-.segment-glider {
-    position: absolute;
-    top: 4px;
-    height: calc(100% - 8px);
-    background: linear-gradient(to bottom, #F4F4F4, #FFFFFF);
-    border-radius: 20px;
-    border: 1px solid #FFFFFF;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.05), 0px 0px 0px 1px #e0e0e0;
-    z-index: 1;
-    transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+.about-pill-btn:active {
+    transform: scale(0.98);
+}
+
+.about-pill-btn span {
     pointer-events: none;
 }
 
-.about-content-section {
-    display: none;
-    opacity: 0;
-    transition: opacity 0.4s var(--ease-lux), transform 0.4s var(--ease-lux);
-    transform: translateY(4px);
-}
-
-.about-content-section.active {
-    display: block;
-}
-
-.about-content-section.fade-in {
-    opacity: 1;
-    transform: translateY(0);
+.pill-arrow {
+    font-size: 20px;
+    margin-left: 10px;
 }
 
 /* ---- Identity Status Bar ---- */

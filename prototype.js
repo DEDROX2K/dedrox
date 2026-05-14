@@ -92,6 +92,27 @@ const SITE_CONFIG = {
                 'images/DEDROX.DSGN/f4.png', 'images/DEDROX.DSGN/f5.png', 'images/DEDROX.DSGN/f6.png',
                 'images/DEDROX.DSGN/f7.png'
             ]
+        },
+        about_me: {
+            title: "About Me",
+            logo: "images/c6.png",
+            postedDate: "14/05/2026",
+            behanceUrl: "#",
+            images: ['images/airpasteinfo.png']
+        },
+        thoughts_ai: {
+            title: "Thoughts on AI",
+            logo: "images/c5.png",
+            postedDate: "14/05/2026",
+            behanceUrl: "#",
+            images: ['images/airpasteinfo.png']
+        },
+        beta_project: {
+            title: "My Current Beta Project",
+            logo: "images/c1.png",
+            postedDate: "14/05/2026",
+            behanceUrl: "#",
+            images: ['images/airpasteinfo.png']
         }
     },
     setupCaseOverlays() {
@@ -2357,6 +2378,8 @@ function initReaderBlogs() {
     };
 
     loadBlogs();
+
+    return { loadBlogs };
 }
 
 function initSmoothWheelScrolling() {
@@ -3115,7 +3138,23 @@ document.addEventListener('DOMContentLoaded', () => {
         expandDeviceShell(false);
         if (resumePopout.isVisible()) resumePopout.closeToPill(pillResumeBtn);
         readerMode.toggle();
+        if (readerMode.isActive() && typeof blogSystem !== 'undefined') {
+            blogSystem.loadBlogs();
+        }
     });
+
+    // Footer Blog Link
+    const footerBlogLink = document.querySelector('.footer-nav-list a[href="#"]:nth-child(4)');
+    if (footerBlogLink && footerBlogLink.textContent.includes('Blog')) {
+        footerBlogLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            expandDeviceShell(false);
+            readerMode.open();
+            if (typeof blogSystem !== 'undefined') {
+                blogSystem.loadBlogs();
+            }
+        });
+    }
 
     pillFourthBtn?.addEventListener('click', (e) => {
         e.preventDefault();
@@ -3229,7 +3268,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initIndexGrid();
     initFeaturedCardHoverMotion();
     initHeroLanguageLoop();
-    initReaderBlogs();
+    const blogSystem = initReaderBlogs();
 
     // Initialize Scramble Animations
     const pillTextEl = document.querySelector('.pill-text');
