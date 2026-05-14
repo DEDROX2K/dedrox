@@ -135,6 +135,16 @@
 
 
 @font-face {
+    font-family: 'vcr';
+    src: url('Fonts/VCR.ttf');
+}
+
+@font-face {
+    font-family: 'atw';
+    src: url('Fonts/atwriter.ttf');
+}
+
+@font-face {
     font-family: 'ztnb';
     src: url('Fonts/ZTNature-Bold.otf');
 }
@@ -164,144 +174,45 @@ html {
 
 
 
-/* --- HERO SECTION --- */
-/* --- HERO SECTION --- */
-.hero-section {
+/* --- ASCII ART HERO (Section 1) --- */
+.ascii-art-hero {
     position: relative;
     height: 100vh;
     width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999998;
-    background: #e9e9e9;
+    background-color: #fff;
     overflow: hidden;
+    cursor: none;
+    /* Custom cursor trail used here */
 }
 
-.hero-top-left-bar {
+#asciiCanvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.ascii-scroll-hint {
     position: absolute;
-    top: 5%;
-    left: 5%;
-    z-index: 100;
-    display: inline-flex;
-    align-items: center;
-    padding: 16px 28px;
-    background: #000;
-    color: #fff;
-    font-family: 'p2', monospace;
-    font-size: 1.8rem;
-    font-weight: 700;
-    letter-spacing: 0.01em;
-    pointer-events: none;
-    white-space: nowrap;
-}
-
-.hero-top-left-bar strong {
-    font-family: 'p2', monospace;
-    font-weight: 700;
-    color: #fff;
-}
-
-.hero-cta-group {
-    position: absolute;
-    top: 5%;
-    right: 5%;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    gap: 40px;
-    pointer-events: auto;
-}
-
-.pixel-btn-v2 {
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    padding: 16px 36px !important;
-    background: #000 !important;
-    color: #fff !important;
-    font-family: 'p2', monospace !important;
-    font-weight: 700 !important;
-    font-size: 1.5rem !important;
-    text-transform: uppercase !important;
-    text-decoration: none !important;
-    border: none !important;
-    border-radius: 0 !important;
-    position: relative !important;
-    z-index: 1000 !important;
-    pointer-events: auto !important;
-    cursor: pointer !important;
-}
-
-/* Scramble ghost is a flex sibling inside .pixel-btn-v2 (grid-area trick doesn't
-   work in flex context). Pull it out of flow so it can't create a left-side gap. */
-.pixel-btn-v2 .scramble-ghost {
-    position: absolute !important;
-    width: 0 !important;
-    overflow: hidden !important;
-    pointer-events: none !important;
-}
-
-.hero-scroll-indicator {
-    position: absolute;
-    bottom: 30px;
+    bottom: 40px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 100;
-    /* Above the canvas mask */
+    font-family: 'vcr', monospace;
+    font-size: 1.2rem;
+    color: #000;
+    opacity: 0.5;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
     pointer-events: none;
-    animation: scrollBounce 0.8s infinite steps(2);
 }
 
-.ascii-block-v {
-    display: grid;
-    grid-template-columns: repeat(5, 10px);
-    grid-template-rows: repeat(3, 7px);
-    gap: 0px;
-}
-
-.ascii-block-v span {
-    width: 10px;
-    height: 10px;
-}
-
-.ascii-block-v span.filled {
-    background: #ffffffd0;
-    /* box-shadow: 0 0 8px rgba(78, 112, 106, 0.4); */
-}
-
-@keyframes scrollBounce {
-
-    0%,
-    100% {
-        transform: translate(-50%, 0);
-    }
-
-    50% {
-        transform: translate(-50%, 10px);
-    }
-}
-
-.reactive-container {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    /* MAGIC FILTER: Everything inside this div will merge based on proximity */
-    /* Removed heavy blur/contrast to make ASCII characters crisp */
-    background: transparent;
-}
-
+/* Subtle Water Effect on Canvas */
 #pixelCanvas {
-    position: absolute;
+    position: fixed;
     inset: 0;
     width: 100%;
     height: 100%;
-    z-index: 6;
-    /* On top of cubes */
+    z-index: 2;
+    opacity: 0.1;
     pointer-events: none;
     background: transparent;
 }
@@ -311,8 +222,7 @@ html {
     inset: 0;
     width: 100vw;
     height: 100vh;
-    z-index: 9999997;
-    /* Above all content, but below hero (9999998) and nav (9999999) */
+    z-index: 9999999;
     pointer-events: none;
     mix-blend-mode: difference;
 }
@@ -323,7 +233,7 @@ html {
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 10;
-    font-family: 'p1', serif;
+    font-family: 'vcr', monospace;
     font-size: 15vw;
     color: #0047FF;
     /* Solid Bright Blue */
@@ -369,7 +279,7 @@ html {
     position: absolute;
     top: 3vh;
     left: 2vw;
-    font-family: 'p1', serif;
+    font-family: 'vcr', monospace;
     font-size: 3rem;
     color: #23413e;
     z-index: 10;

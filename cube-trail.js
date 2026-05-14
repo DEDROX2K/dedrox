@@ -14,7 +14,8 @@
     };
 
     const canvas = document.getElementById('cubeCanvas');
-    if (!canvas) return;
+    const isHeroPage = !!document.querySelector('.ascii-art-hero');
+    if (!canvas || !isHeroPage) return;
     const ctx = canvas.getContext('2d');
 
     let w, h;
@@ -64,6 +65,13 @@
 
     let lastUpdate = 0;
     function animate(now) {
+        // Only run if we are on the hero section
+        if (window.scrollY > window.innerHeight) {
+            ctx.clearRect(0, 0, w, h);
+            requestAnimationFrame(animate);
+            return;
+        }
+
         if (now - lastUpdate > CONFIG.interval) {
             paintAt(mouseX, mouseY); // Always refresh the cube under the cursor
             update();

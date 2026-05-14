@@ -11,15 +11,15 @@
 
     // --- 🎛️ SETTINGS ---
     const SETTINGS = {
-        gridSize: 40,       // Smaller cells for more detail
-        viscosity: 0.93,    // How much velocity is kept (0.9-0.99)
-        diffusion: 0.99,    // How much 'residue' is kept (0.9-0.99)
-        mouseForce: 0.4,    // Pushing strength
-        residueStrength: 99, // Added density per move
-        fontSize: 28,
-        blue: '#a7e5ffff',    // AirPaste Blue
-        white: '#ffffffff',
-        coverImgSrc: 'images/bg19.jpg'
+        gridSize: 45,       // Slightly larger for cleaner look
+        viscosity: 0.94,
+        diffusion: 0.98,
+        mouseForce: 0.3,
+        residueStrength: 80,
+        fontSize: 24,
+        blue: '#00000022',    // Subtle black for arrows
+        white: 'transparent', // Transparent background
+        coverImgSrc: ''      // No background image
     };
 
     let w, h, cols, rows;
@@ -189,50 +189,10 @@
     function draw() {
         const isMobile = window.innerWidth <= 800;
 
-        // 1. Fill/Draw the cover image as the mask
+        // 1. Clear previous frame
         ctx.globalCompositeOperation = 'source-over';
-        ctx.clearRect(0, 0, w, h); // Clear previous frame
+        ctx.clearRect(0, 0, w, h); 
 
-        if (!isMobile) {
-            if (coverImg.complete) {
-                // "Cover" scaling logic for drawing image on canvas
-                const imgAspect = coverImg.width / coverImg.height;
-                const canvasAspect = w / h;
-                let renderW, renderH, offsetX, offsetY;
-
-                if (canvasAspect > imgAspect) {
-                    renderW = w;
-                    renderH = w / imgAspect;
-                    offsetX = 0;
-                    offsetY = -(renderH - h) / 2;
-                } else {
-                    renderW = h * imgAspect;
-                    renderH = h;
-                    offsetX = -(renderW - w) / 2;
-                    offsetY = 0;
-                }
-                ctx.drawImage(coverImg, offsetX, offsetY, renderW, renderH);
-            } else {
-                // Fallback while loading
-                ctx.fillStyle = SETTINGS.white;
-                ctx.fillRect(0, 0, w, h);
-            }
-        }
-
-        // 2. Punch holes where the density is high
-        if (!isMobile) {
-            ctx.globalCompositeOperation = 'destination-out';
-            for (let y = 0; y < rows; y++) {
-                for (let x = 0; x < cols; x++) {
-                    const cell = grid[y * cols + x];
-                    if (cell.density > 2) {
-                        const sx = x * SETTINGS.gridSize;
-                        const sy = y * SETTINGS.gridSize;
-                        ctx.fillRect(sx, sy, SETTINGS.gridSize, SETTINGS.gridSize);
-                    }
-                }
-            }
-        }
 
         // 3. Draw the arrows on top
         ctx.globalCompositeOperation = 'source-over';
@@ -258,6 +218,11 @@
     }
 
     function loop() {
+        if (window.scrollY > window.innerHeight) {
+            ctx.clearRect(0, 0, w, h);
+            requestAnimationFrame(loop);
+            return;
+        }
         update();
         draw();
         requestAnimationFrame(loop);
