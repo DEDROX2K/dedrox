@@ -429,8 +429,10 @@ const pillNotesBtn = document.getElementById('pill-notes-btn');
 const pillResumeBtn = document.getElementById('pill-resume-btn');
 const pillThirdBtn = document.getElementById('pill-third-btn');
 const pillFourthBtn = document.getElementById('pill-fourth-btn');
+const pillFifthBtn = document.getElementById('pill-fifth-btn');
 const resumePopoutEl = document.getElementById('resume-popout');
 const readerInlineEl = document.getElementById('reader-inline');
+const recruiterInlineEl = document.getElementById('recruiter-inline');
 const showIdBtn = document.getElementById('show-id-btn');
 const idCardDock = document.getElementById('id-card-dock');
 const scrollableContentEl = document.getElementById('scrollable-content');
@@ -2300,6 +2302,49 @@ function initReaderMode(onboardingFlow = null) {
     };
 }
 
+function initRecruiterMode() {
+    if (!device) {
+        return {
+            open: () => { },
+            close: () => { },
+            toggle: () => { },
+            isActive: () => false
+        };
+    }
+
+    const scrollableContent = document.getElementById('scrollable-content');
+
+    const open = () => {
+        device.classList.add('recruiter-mode');
+        document.body.classList.add('recruiter-mode');
+        recruiterInlineEl?.setAttribute('aria-hidden', 'false');
+        if (scrollableContent) {
+            scrollableContent.scrollTop = 0;
+        }
+    };
+
+    const close = () => {
+        device.classList.remove('recruiter-mode');
+        document.body.classList.remove('recruiter-mode');
+        recruiterInlineEl?.setAttribute('aria-hidden', 'true');
+    };
+
+    const toggle = () => {
+        if (device.classList.contains('recruiter-mode')) {
+            close();
+            return;
+        }
+        open();
+    };
+
+    return {
+        open,
+        close,
+        toggle,
+        isActive: () => device.classList.contains('recruiter-mode')
+    };
+}
+
 function initReaderBlogs() {
     const blogListEl = document.getElementById('reader-blog-list');
     if (!blogListEl) return;
@@ -2957,6 +3002,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const stickyNote = initStickyNote();
     const resumePopout = initResumePopout();
     const readerMode = initReaderMode(onboardingFlow);
+    const recruiterMode = initRecruiterMode();
     const chatMode = init3DChatMode();
     const idCardSystem = initIdCardSystem();
     let fittyRefreshTimer = null;
@@ -3137,6 +3183,7 @@ document.addEventListener('DOMContentLoaded', () => {
         e.stopPropagation();
         expandDeviceShell(false);
         if (resumePopout.isVisible()) resumePopout.closeToPill(pillResumeBtn);
+        if (recruiterMode.isActive()) recruiterMode.close();
         readerMode.toggle();
         if (readerMode.isActive() && typeof blogSystem !== 'undefined') {
             blogSystem.loadBlogs();
@@ -3172,6 +3219,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }).catch(err => {
             console.error('Failed to copy email: ', err);
         });
+    });
+
+    pillFifthBtn?.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        expandDeviceShell(false);
+        if (resumePopout.isVisible()) resumePopout.closeToPill(pillResumeBtn);
+        if (readerMode.isActive()) readerMode.close();
+        recruiterMode.toggle();
     });
 
     showIdBtn?.addEventListener('click', (e) => {
@@ -3251,6 +3307,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.body.classList.remove('device-maximized');
                 applyPillSizes('collapsed');
                 readerMode.close();
+                recruiterMode.close();
                 stickyNote.close();
                 resumePopout.close();
                 idCardSystem.hide();

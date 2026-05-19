@@ -65,8 +65,8 @@
 
     let lastUpdate = 0;
     function animate(now) {
-        // Only run if we are on the hero section
-        if (window.scrollY > window.innerHeight) {
+        // Do not render on the home hero screen; begin once we've scrolled past it.
+        if (window.scrollY < window.innerHeight) {
             ctx.clearRect(0, 0, w, h);
             requestAnimationFrame(animate);
             return;

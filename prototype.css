@@ -252,6 +252,16 @@ body.reader-mode .ascii-bg {
     visibility: hidden;
 }
 
+body.recruiter-mode {
+    background: #2a66ff;
+    background-image: none;
+}
+
+body.recruiter-mode .ascii-bg {
+    opacity: 0;
+    visibility: hidden;
+}
+
 /* :where(.site-content > section, #reader-inline > section) {
     border-top: 1px solid rgba(0, 0, 0, 0.08);
     border-bottom: 1px solid rgba(0, 0, 0, 0.08);
@@ -485,12 +495,12 @@ body.cursor-system :where([data-cursor='default']) {
 }
 
 /* Collapsed landing state: dark mode */
-body:not(.device-expanded):not(.reader-mode) {
+body:not(.device-expanded):not(.reader-mode):not(.recruiter-mode) {
     background: #0e0e0f;
     color: #ededed;
 }
 
-body:not(.device-expanded):not(.reader-mode) .top-bar-pill {
+body:not(.device-expanded):not(.reader-mode):not(.recruiter-mode) .top-bar-pill {
     background: linear-gradient(
         110deg, 
         rgba(22, 22, 24, 0.82) 45%, 
@@ -509,7 +519,7 @@ body:not(.device-expanded):not(.reader-mode) .top-bar-pill {
     overflow: hidden;
 }
 
-body:not(.device-expanded):not(.reader-mode) .top-bar-pill::before {
+body:not(.device-expanded):not(.reader-mode):not(.recruiter-mode) .top-bar-pill::before {
     content: '';
     position: absolute;
     inset: 0;
@@ -525,33 +535,33 @@ body:not(.device-expanded):not(.reader-mode) .top-bar-pill::before {
     100% { background-position: -150% 0; }
 }
 
-body:not(.device-expanded):not(.reader-mode) .top-bar-pill:hover {
+body:not(.device-expanded):not(.reader-mode):not(.recruiter-mode) .top-bar-pill:hover {
     transform: scale(1.025);
     box-shadow:
         inset 0px 1px 2px rgba(255, 255, 255, 0.18),
         0 14px 36px rgba(0, 0, 0, 0.6);
 }
 
-body:not(.device-expanded):not(.reader-mode) .pill-plain-circle,
-body:not(.device-expanded):not(.reader-mode) .pill-square,
-body:not(.device-expanded):not(.reader-mode) .pill-dark-block,
-body:not(.device-expanded):not(.reader-mode) #pill-circle2,
-body:not(.device-expanded):not(.reader-mode) #pill-circle3,
-body:not(.device-expanded):not(.reader-mode) #pill-notes-btn,
-body:not(.device-expanded):not(.reader-mode) #pill-resume-btn,
-body:not(.device-expanded):not(.reader-mode) #pill-third-btn,
-body:not(.device-expanded):not(.reader-mode) #pill-fourth-btn,
-body:not(.device-expanded):not(.reader-mode) #pill-fifth-btn {
+body:not(.device-expanded):not(.reader-mode):not(.recruiter-mode) .pill-plain-circle,
+body:not(.device-expanded):not(.reader-mode):not(.recruiter-mode) .pill-square,
+body:not(.device-expanded):not(.reader-mode):not(.recruiter-mode) .pill-dark-block,
+body:not(.device-expanded):not(.reader-mode):not(.recruiter-mode) #pill-circle2,
+body:not(.device-expanded):not(.reader-mode):not(.recruiter-mode) #pill-circle3,
+body:not(.device-expanded):not(.reader-mode):not(.recruiter-mode) #pill-notes-btn,
+body:not(.device-expanded):not(.reader-mode):not(.recruiter-mode) #pill-resume-btn,
+body:not(.device-expanded):not(.reader-mode):not(.recruiter-mode) #pill-third-btn,
+body:not(.device-expanded):not(.reader-mode):not(.recruiter-mode) #pill-fourth-btn,
+body:not(.device-expanded):not(.reader-mode):not(.recruiter-mode) #pill-fifth-btn {
     background: #2a2a2d !important;
 }
 
-body:not(.device-expanded):not(.reader-mode) .pill-greeting .greeting-overline,
-body:not(.device-expanded):not(.reader-mode) .pill-greeting .greeting-subline,
-body:not(.device-expanded):not(.reader-mode) .pill-greeting .greeting-side {
+body:not(.device-expanded):not(.reader-mode):not(.recruiter-mode) .pill-greeting .greeting-overline,
+body:not(.device-expanded):not(.reader-mode):not(.recruiter-mode) .pill-greeting .greeting-subline,
+body:not(.device-expanded):not(.reader-mode):not(.recruiter-mode) .pill-greeting .greeting-side {
     color: rgba(238, 238, 240, 0.9);
 }
 
-body:not(.device-expanded):not(.reader-mode) .pill-greeting .greeting-display {
+body:not(.device-expanded):not(.reader-mode):not(.recruiter-mode) .pill-greeting .greeting-display {
     color: #f6f6f7;
 }
 
@@ -785,6 +795,25 @@ body.reader-mode .pill-dark-block img {
 
 body.reader-mode .pill-dark-block .pill-icon-slot {
     border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* Recruiter mode: green glowing active pill */
+body.recruiter-mode #pill-fifth-btn {
+    position: relative;
+    isolation: isolate;
+    overflow: visible;
+    background: #2a66ff !important;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    box-shadow:
+        0 0 0 1px rgba(42, 102, 255, 0.35),
+        0 0 18px rgba(42, 102, 255, 0.22),
+        0 10px 22px rgba(0, 0, 0, 0.14);
+}
+
+body.recruiter-mode #pill-fifth-btn img {
+    filter: none;
+    opacity: 0.95;
+    mix-blend-mode: normal !important;
 }
 
 .pill-icon-btn {
@@ -1583,6 +1612,11 @@ body.device-transitioning .device-container.expanded #pill-fifth-btn {
     background: #ececec;
 }
 
+.device-container.recruiter-mode {
+    width: min(98vw, 25%);
+    background: #eef4ff;
+}
+
 .device-container.reader-mode .site-content {
     padding: 18px 24px 0;
 }
@@ -1597,6 +1631,263 @@ body.device-transitioning .device-container.expanded #pill-fifth-btn {
     color: #111;
     font-family: 'Google Sans', sans-serif;
     padding-bottom: 24px;
+}
+
+.recruiter-inline {
+    display: none;
+    min-height: calc(100% - 8px);
+    color: #0b1020;
+    font-family: 'Google Sans', sans-serif;
+    padding: 18px 24px 24px;
+}
+
+.recruiter-blank {
+    min-height: calc(100vh - 220px);
+    display: grid;
+    place-items: center;
+}
+
+.recruiter-blank-card {
+    width: min(980px, 100%);
+    border-radius: 0;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+.recruiter-header {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 18px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid rgba(20, 30, 55, 0.12);
+}
+
+.recruiter-name {
+    margin: 0;
+    font-size: clamp(1.65rem, 2.6vw, 2.4rem);
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+}
+
+.recruiter-role {
+    margin: 8px 0 0;
+    color: rgba(11, 16, 32, 0.72);
+    font-size: 0.98rem;
+    line-height: 1.25;
+}
+
+.recruiter-meta {
+    display: grid;
+    gap: 10px;
+}
+
+.recruiter-meta-row {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 12px;
+    align-items: baseline;
+}
+
+.recruiter-meta-label {
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(11, 16, 32, 0.55);
+}
+
+.recruiter-meta-value {
+    color: rgba(11, 16, 32, 0.9);
+    text-decoration: none;
+    overflow-wrap: anywhere;
+}
+
+.recruiter-meta-value:hover {
+    text-decoration: underline;
+}
+
+.recruiter-section {
+    margin-top: 18px;
+}
+
+.recruiter-cases {
+    margin-top: 22px;
+}
+
+body.recruiter-mode .recruiter-cases .case-studies {
+    margin-top: 12px;
+}
+
+body.recruiter-mode .recruiter-cases .featured-card {
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.14);
+    backdrop-filter: blur(12px) saturate(145%);
+    -webkit-backdrop-filter: blur(12px) saturate(145%);
+}
+
+body.recruiter-mode .recruiter-cases .folder-body {
+    color: rgba(255, 255, 255, 0.88);
+}
+
+body.recruiter-mode .recruiter-cases .folder-foot {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.recruiter-section-title {
+    margin: 0 0 10px;
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
+}
+
+body.recruiter-mode .recruiter-section-title,
+body.recruiter-mode .recruiter-item-role,
+body.recruiter-mode .recruiter-mini-title,
+body.recruiter-mode .recruiter-name {
+    color: rgba(11, 16, 32, 0.96);
+}
+
+body.recruiter-mode .recruiter-role,
+body.recruiter-mode .recruiter-meta-label,
+body.recruiter-mode .recruiter-item-date,
+body.recruiter-mode .recruiter-mini-sub {
+    color: rgba(11, 16, 32, 0.62);
+}
+
+body.recruiter-mode .recruiter-meta-value,
+body.recruiter-mode .recruiter-paragraph,
+body.recruiter-mode .recruiter-item-company,
+body.recruiter-mode .recruiter-bullets {
+    color: rgba(11, 16, 32, 0.86);
+}
+
+body.recruiter-mode .recruiter-meta-value:hover {
+    color: rgba(11, 16, 32, 1);
+}
+
+.recruiter-paragraph {
+    margin: 0 0 10px;
+    color: rgba(11, 16, 32, 0.82);
+    font-size: 0.98rem;
+    line-height: 1.45;
+}
+
+.recruiter-timeline {
+    display: grid;
+    gap: 14px;
+}
+
+.recruiter-item {
+    padding: 14px 14px 12px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(20, 30, 55, 0.12);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.12);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+}
+
+.recruiter-item-head {
+    display: flex;
+    gap: 12px;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.recruiter-item-role {
+    margin: 0;
+    font-size: 1rem;
+    letter-spacing: -0.01em;
+}
+
+.recruiter-item-date {
+    font-size: 0.9rem;
+    color: rgba(11, 16, 32, 0.58);
+}
+
+.recruiter-item-company {
+    margin: 6px 0 0;
+    color: rgba(11, 16, 32, 0.78);
+    font-size: 0.95rem;
+}
+
+.recruiter-bullets {
+    margin: 10px 0 0;
+    padding-left: 18px;
+    color: rgba(11, 16, 32, 0.82);
+    line-height: 1.35;
+    font-size: 0.95rem;
+}
+
+.recruiter-bullets li+li {
+    margin-top: 6px;
+}
+
+.recruiter-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+}
+
+.recruiter-mini-list {
+    display: grid;
+    gap: 10px;
+}
+
+.recruiter-mini-item {
+    padding: 12px 12px 10px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(20, 30, 55, 0.12);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.12);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+}
+
+.recruiter-mini-title {
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+
+.recruiter-mini-sub {
+    margin-top: 4px;
+    color: rgba(11, 16, 32, 0.62);
+    font-size: 0.92rem;
+    line-height: 1.25;
+}
+
+.recruiter-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.recruiter-tag {
+    padding: 8px 10px;
+    border-radius: 999px;
+    font-size: 0.92rem;
+    line-height: 1;
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(20, 30, 55, 0.12);
+    color: rgba(11, 16, 32, 0.82);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+}
+
+@media (min-width: 880px) {
+    .recruiter-header {
+        grid-template-columns: 1.1fr 0.9fr;
+        align-items: start;
+    }
+
+    .recruiter-grid-2 {
+        grid-template-columns: 1fr 1fr;
+        align-items: start;
+    }
 }
 
 .reader-inline.onboarding-locked .reader-about-grid,
@@ -1635,6 +1926,14 @@ body.device-transitioning .device-container.expanded #pill-fifth-btn {
 }
 
 .device-container.reader-mode #reader-inline {
+    display: block;
+}
+
+.device-container.recruiter-mode .site-content> :not(#recruiter-inline) {
+    display: none !important;
+}
+
+.device-container.recruiter-mode #recruiter-inline {
     display: block;
 }
 

@@ -164,15 +164,7 @@ html {
     font-family: 'GoogleSans', sans-serif;
     overflow-x: hidden;
     color: #1a1a1a;
-    cursor: none !important;
 }
-
-* {
-    cursor: none !important;
-}
-
-
-
 
 /* --- ASCII ART HERO (Section 1) --- */
 .ascii-art-hero {
@@ -181,8 +173,8 @@ html {
     width: 100%;
     background-color: #fff;
     overflow: hidden;
-    cursor: none;
-    /* Custom cursor trail used here */
+    cursor: auto;
+    z-index: 300;
 }
 
 #asciiCanvas {
@@ -196,13 +188,13 @@ html {
     bottom: 40px;
     left: 50%;
     transform: translateX(-50%);
-    font-family: 'vcr', monospace;
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     font-size: 1.2rem;
     color: #000;
     opacity: 0.5;
     text-transform: uppercase;
     letter-spacing: 0.2em;
-    pointer-events: none;
+    pointer-events: auto;
 }
 
 /* Subtle Water Effect on Canvas */
@@ -222,9 +214,10 @@ html {
     inset: 0;
     width: 100vw;
     height: 100vh;
-    z-index: 9999999;
+    z-index: 200;
     pointer-events: none;
     mix-blend-mode: difference;
+    display: none;
 }
 
 .hero-title-center {
@@ -233,7 +226,7 @@ html {
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 10;
-    font-family: 'vcr', monospace;
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     font-size: 15vw;
     color: #0047FF;
     /* Solid Bright Blue */
@@ -279,7 +272,7 @@ html {
     position: absolute;
     top: 3vh;
     left: 2vw;
-    font-family: 'vcr', monospace;
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     font-size: 3rem;
     color: #23413e;
     z-index: 10;
@@ -3077,7 +3070,7 @@ html {
     box-shadow: 0 30px 80px rgb(225 215 202 / 50%);
     transform-style: preserve-3d;
     transition: box-shadow 0.4s ease;
-    cursor: none;
+    cursor: auto;
     user-select: none;
 }
 
@@ -3147,7 +3140,7 @@ html {
     background-color: #000;
     width: 100%;
     position: relative;
-    z-index: 100;
+    z-index: 150;
     /* Above hero (5) */
 }
 
@@ -3331,9 +3324,7 @@ html {
 /* ==========================================
    🕹️ PIXEL GRID CURSOR
    ========================================== */
-* {
-    cursor: none !important;
-}
+/* Cursor hidden only while over the hero/matrix section (see .ascii-art-hero rule above) */
 
 /* The cursor square — all sizing/color driven by JS CURSOR_CONFIG */
 .custom-cursor {
@@ -3683,4 +3674,15 @@ html {
     to {
         translate: -50% 0;
     }
+}
+
+/* =========================================
+   MINIMAL LANDING (hide legacy sections)
+   ========================================= */
+.manifesto-section,
+.fan-section,
+.scrubber-section,
+.features-section,
+.views-demo-section {
+    display: none !important;
 }

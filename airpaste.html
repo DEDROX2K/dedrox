@@ -8,7 +8,7 @@
     <link rel="icon" type="image/gif" href="images/logovar/browserlogo.gif">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Mansalva&family=Playfair+Display:wght@700&display=swap">
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&family=Mansalva&family=Playfair+Display:wght@700&display=swap">
     <link rel="stylesheet" href="airpaste-design-system.css">
     <link rel="stylesheet" href="airpaste.css">
     <!-- Scripts for Endless Motion -->
@@ -16,10 +16,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
     <!-- 🧊 Locked Core Engines -->
-    <script src="cube-trail.js" defer></script>
+    <!-- cube-trail cursor effect disabled (basic cursor mode) -->
     <script src="ascii-water.js" defer></script>
     <script src="carousel.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.162.0/three.min.js"></script>
+    <script src="navbar-logic.js" defer></script>
 </head>
 
 <body class="site-wrapper">
@@ -27,117 +28,31 @@
     <canvas id="cubeCanvas"></canvas>
     <canvas id="pixelCanvas"></canvas>
 
+    <!-- 🧭 Top Navigation -->
+    <nav class="top-nav">
+        <div class="nav-toggle-wrapper">
+            <div class="nav-toggle-container">
+                <!-- Filtered Layer (for gooey morphing only) -->
+                <div class="nav-toggle-gooey-layer">
+                    <div class="nav-toggle-indicator"></div>
+                </div>
+
+                <!-- Crisp Layer (for text visibility) -->
+                <div class="nav-toggle-buttons">
+                    <button class="nav-toggle-btn active" id="toggleHome">AirPaste</button>
+                    <button class="nav-toggle-btn" id="toggleDownload">Download</button>
+                    <button class="nav-toggle-btn" id="toggleShop">Shop</button>
+                    <button class="nav-toggle-btn" id="toggleFree">For Free?</button>
+                    <button class="nav-toggle-btn" id="toggleNext">What's Next*</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
     <!-- ⚡ Section 1: Dynamic ASCII Word Wall -->
     <section class="ascii-art-hero" id="hero">
         <canvas id="asciiCanvas"></canvas>
         <div class="ascii-scroll-hint">SCROLL TO BOOT SYSTEM_</div>
-    </section>
-
-    <!-- ⚡ Section 2: Macintosh OS Desktop -->
-    <section class="os-section">
-        <div class="os-desktop">
-            <!-- 🍎 Top Menu Bar -->
-            <div class="os-menu-bar">
-                <div class="os-menu-item apple-logo"></div>
-                <div class="os-menu-item">File</div>
-                <div class="os-menu-item">Edit</div>
-                <div class="os-menu-item">View</div>
-                <div class="os-menu-item">Special</div>
-                <div class="os-menu-item" style="margin-left: auto;" id="systemTime">2:25 PM</div>
-            </div>
-
-            <!-- 🪟 About AirPaste Window -->
-            <div class="os-window" id="aboutWindow" style="top: 100px; left: 50px; width: 480px; z-index: 900;">
-                <div class="os-title-bar">
-                    <div class="os-close-box" onclick="closeWindow('aboutWindow')"></div>
-                    <div class="os-title-text">About AirPaste</div>
-                    <div class="os-zoom-box"></div>
-                </div>
-                <div class="os-window-content" style="font-size: 1.5rem;">
-                    <p>We have removed the 'features' that modern tech uses to colonize your mind—the 'social
-                        validation'. What remains is a pure environment where you can exist without being tracked,
-                        analyzed, or nudged.</p>
-                    <p style="margin-top: 12px;">We are not a platform; we are a vault, a workshop, and a sanctuary for
-                        the digital self.</p>
-                    <p style="margin-top: 15px; font-weight: 900; text-transform: uppercase;">Be the curator of your
-                        digital self.</p>
-                </div>
-            </div>
-
-            <!-- 🪟 Features (SCSIProbe Style) Window -->
-            <div class="os-window" id="featuresWindow" style="top: 250px; left: 400px; width: 680px; z-index: 800;">
-                <div class="os-title-bar">
-                    <div class="os-close-box" onclick="closeWindow('featuresWindow')"></div>
-                    <div class="os-title-text">AirPaste v1.0 Features</div>
-                    <div class="os-zoom-box"></div>
-                </div>
-                <div class="os-window-content">
-                    <table class="os-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Feature Component</th>
-                                <th>Status</th>
-                                <th>Vers.</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="selected">
-                                <td>0</td>
-                                <td>CANVAS SPATIAL VIEW</td>
-                                <td>ACTIVE</td>
-                                <td>1.0.4</td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>PLANNING WIDGETS</td>
-                                <td>ACTIVE</td>
-                                <td>1.0.2</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>INTERACTIVE TILES</td>
-                                <td>PENDING</td>
-                                <td>1.1.0</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>UX-DRIVEN ARCHITECTURE</td>
-                                <td>ACTIVE</td>
-                                <td>1.0.0</td>
-                            </tr>
-                            <tr>
-                                <td>4</td>
-                                <td>LOCAL-FIRST STORAGE</td>
-                                <td>ACTIVE</td>
-                                <td>1.0.1</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div class="os-button-group">
-                        <button class="os-button">Update</button>
-                        <button class="os-button">Mount</button>
-                        <button class="os-button">Options...</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 🗄️ Desktop Icons -->
-            <div class="os-icon" style="top: 60px; right: 30px;" onclick="location.href='download.html'">
-                <div class="os-icon-img"></div>
-                <div class="os-icon-label">Download</div>
-            </div>
-
-            <div class="os-icon" style="top: 170px; right: 30px;" onclick="location.href='shop.html'">
-                <div class="os-icon-img"></div>
-                <div class="os-icon-label">AirStore</div>
-            </div>
-
-            <div class="os-icon" style="bottom: 40px; right: 30px;">
-                <div class="os-icon-img"></div>
-                <div class="os-icon-label">Trash</div>
-            </div>
-        </div>
     </section>
 
     <!-- Drag ghost pill — preserved from original for interactions -->
@@ -149,7 +64,333 @@
         <span id="dragGhostLabel">www.spotify.com/...</span>
     </div>
 
+    <!-- ⚡ Original Sections Restored -->
+    <section class="manifesto-section">
+        <div class="manifesto-content">
+            <h2 class="manifesto-subtitle">
+                <span class="word-head">We made a decision</span>
+            </h2>
+
+            <p class="manifesto-text">
+                We have removed the 'features' that modern tech uses to colonize your mind—the 'social validation'. What
+                remains is a pure environment where you can exist without
+                being tracked, analyzed, or nudged. We are not a platform; we are a vault, a workshop, and a
+                safe for the digital self.
+            </p>
+
+            <p class="manifesto-text highlight">
+                Be the curator of your digital self.
+            </p>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         🖼️ FAN CARD GALLERY
+         ========================================== -->
+    <section class="fan-section">
+        <div class="wrapper">
+            <div><img src="images/DEDROX.DSGN/pi1.png" alt=""></div>
+            <div><img src="images/DEDROX.DSGN/pic2.png" alt=""></div>
+            <div><img src="images/DEDROX.DSGN/pic3.png" alt=""></div>
+            <div><img src="images/DEDROX.DSGN/pic4.png" alt=""></div>
+            <div><img src="images/DEDROX.DSGN/pic5.png" alt=""></div>
+            <div><img src="images/DEDROX.DSGN/pic6.png" alt=""></div>
+            <div><img src="images/DEDROX.DSGN/pic7.png" alt=""></div>
+        </div>
+    </section>
+
+    <section class="manifesto-section" style="padding: 6vh 5vw 0vh 5vw;">
+        <div class="manifesto-content">
+            <h2 class="manifesto-subtitle">
+                <span class="word-head">Turn boring links into Interactive Tiles</span>
+            </h2>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         ↔️ BEFORE / AFTER SCRUBBER
+         ========================================== -->
+    <section class="scrubber-section">
+        <div class="scrubber-label-row">
+            <span class="scrubber-label">Before</span>
+            <span class="scrubber-label">After</span>
+        </div>
+        <div class="scrubber-stage" id="scrubberStage">
+            <div class="scrubber-card" id="scrubberCard">
+                <!-- AFTER: shown underneath, full width -->
+                <img src="images/afterzip.png" class="scrubber-img scrubber-after" alt="AirPaste After"
+                    draggable="false">
+                <!-- BEFORE: clipped on the left by cursor position -->
+                <div class="scrubber-before-wrap" id="scrubberBefore">
+                    <img src="images/beforezip.png" class="scrubber-img scrubber-before-img" alt="AirPaste Before"
+                        draggable="false">
+                </div>
+                <!-- Divider line -->
+                <div class="scrubber-divider" id="scrubberDivider"></div>
+            </div>
+        </div>
+        <p class="scrubber-hint">← Move cursor to reveal →</p>
+    </section>
+
+    <section class="features-section">
+        <div class="features-content">
+            <h2 class="features-subtitle">
+                <span class="word-head">Features</span>
+            </h2>
+
+            <div class="features-accordion">
+                <!-- Canvas View -->
+                <div class="accordion-item active">
+                    <div class="accordion-header">
+                        <div class="accordion-icon-box">
+                            <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M3 3v18h18"></path>
+                                <path d="M7 17l5-5 3 3 6-6"></path>
+                            </svg>
+                        </div>
+                        <span class="accordion-title">Canvas View</span>
+                        <div class="accordion-arrow">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M6 9l6 6 6-6"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="accordion-body">
+                        <p>Instead of endlessly scrolling through a traditional, linear page full of links, you can
+                            freely pan and zoom around an open canvas. This spatial approach allows you to organize your
+                            thoughts, projects, and resources visually. It gives you a bird's-eye view of your work,
+                            letting you map out information exactly how your brain processes it.</p>
+                    </div>
+                </div>
+
+                <!-- Planning Widgets -->
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <div class="accordion-icon-box">
+                            <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="3" y1="9" x2="21" y2="9"></line>
+                                <line x1="9" y1="21" x2="9" y2="9"></line>
+                            </svg>
+                        </div>
+                        <span class="accordion-title">Planning Widgets</span>
+                        <div class="accordion-arrow">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M6 9l6 6 6-6"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="accordion-body">
+                        <p>Inspired by tools like Figma, we are introducing built-in widgets designed to make your
+                            planning process faster and more intuitive. By integrating useful tools directly into your
+                            workspace—like quick task lists, trackers, or calendars—you can streamline your workflow.
+                            This means less time spent managing the app and more time focused on actually completing
+                            your tasks.</p>
+                    </div>
+                </div>
+
+                <!-- Interactive Tiles -->
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <div class="accordion-icon-box">
+                            <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect x="2" y="2" width="20" height="20" rx="2" ry="2"></rect>
+                                <rect x="7" y="7" width="10" height="10" rx="1" ry="1"></rect>
+                            </svg>
+                        </div>
+                        <span class="accordion-title">Interactive Tiles</span>
+                        <div class="accordion-arrow">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M6 9l6 6 6-6"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="accordion-body">
+                        <p>Soon, we will be rolling out Interactive Tiles. These versatile building blocks can act as
+                            anything you need them to be: a quick text note, a web link with a rich preview, a folder to
+                            organize other items, or a "rack" to group related content together. This modular system
+                            means you can build out your workspace piece by piece, customizing it to perfectly fit your
+                            unique workflow.</p>
+                    </div>
+                </div>
+
+                <!-- UX-Driven Application -->
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <div class="accordion-icon-box">
+                            <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </div>
+                        <span class="accordion-title">UX-Driven Application</span>
+                        <div class="accordion-arrow">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M6 9l6 6 6-6"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="accordion-body">
+                        <p>Because this application is being built by a UX designer, user-friendliness and accessibility
+                            are at the core of everything we do. We aren't just making it look nice; we are actively
+                            applying established UX laws and design principles. This ensures the interface is highly
+                            intuitive, reduces cognitive load, and provides a seamless, frustration-free experience for
+                            everyone who uses it.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="views-demo-section">
+        <!-- New grid background overlay -->
+        <div class="views-grid-bg"></div>
+
+        <div class="views-demo-content">
+            <!-- Top pill -->
+            <div class="views-top-pill">
+                <img src="images/logovar/browserlogo.gif" alt="Avatar" class="pill-avatar">
+                <span>AirPaste circle member</span>
+            </div>
+
+            <!-- Title with glowing effect behind it -->
+            <div class="views-title-wrapper">
+                <div class="views-title-glow"></div>
+                <h2 class="views-demo-subtitle">
+                    AirPaste views<br>
+                    that <span class="text-dim">promise style and</span><br>
+                    simplicity
+                </h2>
+            </div>
+
+            <div class="views-demo-carousel-wrapper">
+                <div class="views-demo-carousel" id="viewsCarousel">
+                    <!-- Glow behind cards -->
+                    <div class="carousel-glow"></div>
+
+                    <div class="carousel-slide active" data-index="0">
+                        <img src="images/List view.png" alt="List View" draggable="false">
+                    </div>
+                    <div class="carousel-slide" data-index="1">
+                        <img src="images/Globe view.png" alt="Globe View" draggable="false">
+                    </div>
+                    <div class="carousel-slide" data-index="2">
+                        <img src="images/Canvas view.png" alt="Canvas View" draggable="false">
+                    </div>
+                </div>
+
+                <!-- Bottom pill -->
+                <div class="views-bottom-pill">
+                    <span id="viewsBottomLabel">01 templates</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="footer-reveal-container">
+        <footer class="main-footer">
+            <div class="footer-grid">
+                <!-- Column 1-2: Connect -->
+                <div class="footer-col span-2">
+                    <h4>Connect</h4>
+                    <div class="footer-content">
+                        <p>Distributed Globally<br>
+                            Built for the Sovereign User<br>
+                            hello@airpaste.io</p>
+                    </div>
+                </div>
+
+                <!-- Column 3: Socials -->
+                <div class="footer-col">
+                    <h4>Socials</h4>
+                    <ul class="footer-list">
+                        <li><a href="#">X / Twitter</a></li>
+                        <li><a href="#">GitHub</a></li>
+                        <li><a href="#">Discord</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 4-5: Ecosystem -->
+                <div class="footer-col span-2">
+                    <h4>Ecosystem</h4>
+                    <ul class="footer-list">
+                        <li><a href="airpaste.html">Home</a></li>
+                        <li><a href="download.html">Download</a></li>
+                        <li><a href="shop.html">AirStore</a></li>
+                        <li><a href="whatsnext.html">Roadmap</a></li>
+                        <li><a href="forfree.html">For Free?</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 6-7: Values -->
+                <div class="footer-col span-2">
+                    <h4>Core Values</h4>
+                    <ul class="footer-list">
+                        <li><a href="why.html">Privacy Manifesto</a></li>
+                        <li><a href="what.html">Local-First Code</a></li>
+                        <li><a href="ethos.html">Our Ethos</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 8: Empty / Alignment -->
+                <div class="footer-col">
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div class="footer-legal-links">
+                    <a href="#">Security</a>
+                    <a href="#">Terms</a>
+                    <a href="#">Privacy</a>
+                </div>
+                <div class="footer-copyright">
+                    ©2026 AIRPASTE®
+                </div>
+            </div>
+        </footer>
+
+        <div class="footer-void">
+            <div class="lines" aria-hidden="true">
+                <div class="lines-group">
+                    <section class="line-block"><span class="line-text">Download Airpaste Today</span></section>
+                    <section class="line-block"><span class="line-text">Download Airpaste Today</span></section>
+                    <section class="line-block"><span class="line-text">Download Airpaste Today</span></section>
+                    <section class="line-block"><span class="line-text">Download Airpaste Today</span></section>
+                    <section class="line-block"><span class="line-text">Download Airpaste Today</span></section>
+                </div>
+
+                <div class="lines-group">
+                    <section class="line-block"><span class="line-text">Download Airpaste Today</span></section>
+                    <section class="line-block"><span class="line-text">Download Airpaste Today</span></section>
+                    <section class="line-block"><span class="line-text">Download Airpaste Today</span></section>
+                    <section class="line-block"><span class="line-text">Download Airpaste Today</span></section>
+                    <section class="line-block"><span class="line-text">Download Airpaste Today</span></section>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gooey Filter for Liquid Nav -->
+    <svg style="visibility: hidden; position: absolute;" width="0" height="0" xmlns="http://www.w3.org/2000/svg"
+        version="1.1">
+        <defs>
+            <filter id="goo">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
+                    result="goo" />
+            </filter>
+        </defs>
+    </svg>
+
     <script>
+        // Force scroll to top on every page load (prevents ScrollTrigger.refresh drift)
+        history.scrollRestoration = 'manual';
+        window.scrollTo(0, 0);
+
         // --- 🔳 ASCII Art Hero Engine ---
         (function () {
             const canvas = document.getElementById('asciiCanvas');
@@ -174,8 +415,8 @@
                 { text: "— LINKS, NOTES, IMAGES, AND IDEAS, ALL IN ONE PLACE.", row: 21, col: 12 },
 
                 { text: "LOCAL FIRST", row: 28, col: 40 },
-                { text: "PRIVATE", row: 30, col: 40 },
-                { text: "SECURE", row: 32, col: 40 },
+                { text: "PRIVATE", row: 29, col: 40 },
+                { text: "SECURE", row: 30, col: 40 },
                 { text: "BE THE CURATOR", row: 38, col: 15 }
             ];
 
@@ -196,6 +437,12 @@
                             isLogo: false
                         };
                     }
+                }
+
+                // Top row: fixed "=+" pattern in black
+                for (let c = 0; c < cols; c++) {
+                    grid[0][c].char = (c % 2 === 0) ? '=' : '+';
+                    grid[0][c].isSignal = true;
                 }
 
                 // Inject Signals
@@ -229,8 +476,15 @@
                 }
 
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.font = `normal ${charH}px "vcr", monospace`;
+                // Opaque background so effects beneath (cube trail) don't show through on the hero
+                ctx.fillStyle = '#fff';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                const baseFont = `normal ${charH}px "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace`;
+                const greyFont = `800 ${charH}px "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace`;
+                const highlightFont = `800 ${charH}px "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace`;
+                ctx.font = baseFont;
                 ctx.textBaseline = 'top';
+                let currentFont = baseFont;
 
                 for (let r = 0; r < rows; r++) {
                     for (let c = 0; c < cols; c++) {
@@ -244,9 +498,18 @@
                         if (isHighlighted) {
                             ctx.fillStyle = '#000';
                             ctx.fillRect(x, y, charW, charH);
-                            ctx.fillStyle = '#fff';
+                            ctx.fillStyle = '#000';
+                            if (currentFont !== highlightFont) {
+                                ctx.font = highlightFont;
+                                currentFont = highlightFont;
+                            }
                         } else {
-                            ctx.fillStyle = cell.isSignal ? '#000' : '#ccc';
+                            ctx.fillStyle = cell.isSignal ? '#000' : '#f1f1f1';
+                            const desiredFont = cell.isSignal ? baseFont : greyFont;
+                            if (currentFont !== desiredFont) {
+                                ctx.font = desiredFont;
+                                currentFont = desiredFont;
+                            }
                         }
 
                         if (cell.isLogo && logoImg.complete) {
@@ -262,8 +525,9 @@
             }
 
             window.addEventListener('mousemove', e => {
-                mouse.x = e.clientX;
-                mouse.y = e.clientY;
+                const rect = canvas.getBoundingClientRect();
+                mouse.x = e.clientX - rect.left;
+                mouse.y = e.clientY - rect.top;
                 mouse.col = Math.floor(mouse.x / charW);
                 mouse.row = Math.floor(mouse.y / charH);
             });
@@ -379,81 +643,563 @@
 
         // Initialize on Load
         window.addEventListener('DOMContentLoaded', () => {
-            // Target OS Elements
-            document.querySelectorAll('.os-menu-item, .os-icon-label, .os-title-text').forEach(el => {
+            // Target hero elements only (avoid OS/desktop section)
+            document.querySelectorAll('#hero .ascii-scroll-hint').forEach(el => {
                 createASCIIShift(el, { dur: 800, spread: 0.5 });
             });
         });
 
-        // --- 🍎 System Management ---
-        function closeWindow(id) {
-            document.getElementById(id).style.display = 'none';
-        }
-
-        // Live Clock
-        function updateClock() {
-            const now = new Date();
-            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            const clockEl = document.getElementById('systemTime');
-            if (clockEl) clockEl.textContent = timeStr;
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
-
-        // Window Z-Index Management & Dragging
-        (function () {
-            let activeWindow = null;
-            let offset = { x: 0, y: 0 };
-            let topZ = 1000;
-
-            function bringToFront(win) {
-                topZ++;
-                win.style.zIndex = topZ;
-            }
-
-            document.querySelectorAll('.os-window').forEach(win => {
-                win.addEventListener('mousedown', () => bringToFront(win));
-            });
-
-            document.querySelectorAll('.os-title-bar').forEach(bar => {
-                bar.addEventListener('mousedown', e => {
-                    if (e.target.classList.contains('os-close-box')) return;
-                    activeWindow = bar.parentElement;
-
-                    const rect = activeWindow.getBoundingClientRect();
-                    offset.x = e.clientX - rect.left;
-                    offset.y = e.clientY - rect.top;
-
-                    bringToFront(activeWindow);
-                });
-            });
-
-            window.addEventListener('mousemove', e => {
-                if (activeWindow) {
-                    const osSection = document.querySelector('.os-section');
-                    const sectionRect = osSection.getBoundingClientRect();
-
-                    // Mouse position relative to the OS section
-                    const relativeX = e.clientX - sectionRect.left;
-                    const relativeY = e.clientY - sectionRect.top;
-
-                    activeWindow.style.left = (relativeX - offset.x) + 'px';
-                    activeWindow.style.top = (relativeY - offset.y) + 'px';
-                }
-            });
-
-            window.addEventListener('mouseup', () => {
-                activeWindow = null;
-            });
-        })();
-
-        // Smooth Scroll Initializer (Optional)
+        // Initialize Global Smooth Scroll (Lenis)
         const lenis = new Lenis();
         function raf(time) {
             lenis.raf(time);
             requestAnimationFrame(raf);
         }
         requestAnimationFrame(raf);
+        lenis.on('scroll', ScrollTrigger.update);
+
+        // ==========================================
+        // 🎫 SHOWCASE WINDOW TILT
+        // ==========================================
+        (function () {
+            const TILT = 6;    // max degrees
+            const EASE = 0.07;
+            const windows = [
+                document.getElementById('showcaseAirpaste'),
+                document.getElementById('bwSpotify'),
+                document.getElementById('bwYoutube'),
+                document.getElementById('bwPinterest'),
+            ];
+
+            windows.forEach(el => {
+                if (!el) return;
+                let tx = 0, ty = 0, cx = 0, cy = 0, raf;
+
+                el.addEventListener('mouseenter', () => {
+                    function loop() {
+                        cx += (tx - cx) * EASE;
+                        cy += (ty - cy) * EASE;
+                        el.style.transform = `${el.dataset.baseTransform || ''} perspective(600px) rotateY(${cx}deg) rotateX(${-cy}deg) scale(1.015)`;
+                        el.style.boxShadow = `0 30px 80px rgba(0,0,0,0.22), 0 6px 18px rgba(0,0,0,0.1)`;
+                        raf = requestAnimationFrame(loop);
+                    }
+                    loop();
+                });
+
+                el.addEventListener('mousemove', e => {
+                    const r = el.getBoundingClientRect();
+                    tx = ((e.clientX - r.left) / r.width - 0.5) * 2 * TILT;
+                    ty = ((e.clientY - r.top) / r.height - 0.5) * 2 * TILT;
+                });
+
+                el.addEventListener('mouseleave', () => {
+                    cancelAnimationFrame(raf);
+                    tx = 0; ty = 0;
+                    let f = 0;
+                    function settle() {
+                        cx += (0 - cx) * 0.07;
+                        cy += (0 - cy) * 0.07;
+                        el.style.transform = `${el.dataset.baseTransform || ''} perspective(600px) rotateY(${cx}deg) rotateX(${-cy}deg) scale(1)`;
+                        if (++f < 50) requestAnimationFrame(settle);
+                        else { el.style.transform = el.dataset.baseTransform || ''; el.style.boxShadow = ''; }
+                    }
+                    settle();
+                });
+            });
+        })();
+
+        // ==========================================
+        // 📥 DRAG-TO-AIRPASTE INTERACTION
+        // ==========================================
+        (function () {
+            const ghost = document.getElementById('dragGhost');
+            const ghostLabel = document.getElementById('dragGhostLabel');
+            const apWin = document.getElementById('showcaseAirpaste');
+            const canvas = apWin ? apWin.querySelector('.sw-canvas') : null;
+            const browsers = document.querySelectorAll('.browser-window');
+
+            if (!ghost || !canvas) return;
+
+            let dragging = null;   // the browser-window el being dragged
+            let isDragging = false;
+
+            // Colours / thumb configs per source
+            const TILE_CONFIGS = {
+                spotify: { label: 'Spotify playlist', bg: 'linear-gradient(135deg,#1db954,#191414)' },
+                youtube: { label: 'YouTube video', bg: 'linear-gradient(135deg,#cc0000,#282828)' },
+                twitter: { label: 'x.com/ui8/...', bg: 'linear-gradient(135deg,#000000,#1d9bf0)' },
+            };
+
+            // ---- Move ghost with mouse ----
+            function onMouseMove(e) {
+                if (!isDragging) return;
+                ghost.style.left = e.clientX + 'px';
+                ghost.style.top = e.clientY + 'px';
+
+                // Highlight AirPaste window when cursor is over it
+                const apRect = apWin.getBoundingClientRect();
+                const over = e.clientX >= apRect.left && e.clientX <= apRect.right &&
+                    e.clientY >= apRect.top && e.clientY <= apRect.bottom;
+                apWin.classList.toggle('drop-active', over);
+            }
+
+            // ---- Drop ----
+            function onMouseUp(e) {
+                if (!isDragging || !dragging) return;
+                isDragging = false;
+
+                ghost.classList.remove('visible');
+                dragging.classList.remove('is-dragging');
+
+                const apRect = apWin.getBoundingClientRect();
+                const dropped = e.clientX >= apRect.left && e.clientX <= apRect.right &&
+                    e.clientY >= apRect.top && e.clientY <= apRect.bottom;
+
+                apWin.classList.remove('drop-active');
+
+                if (dropped) {
+                    const id = dragging.dataset.dragId;
+                    const cfg = TILE_CONFIGS[id] || { label: dragging.dataset.dragLabel, bg: '#ccc' };
+
+                    // Calculate drop position relative to canvas
+                    const canvasRect = canvas.getBoundingClientRect();
+                    const relX = Math.max(4, Math.min(e.clientX - canvasRect.left - 40, canvasRect.width - 140));
+                    const relY = Math.max(4, Math.min(e.clientY - canvasRect.top - 20, canvasRect.height - 60));
+
+                    const tile = document.createElement('div');
+                    tile.className = 'sw-tile sw-dropped';
+                    tile.style.cssText = `left:${relX}px; top:${relY}px; animation-delay:0s;`;
+                    tile.innerHTML = `
+                        <div class="sw-tile-thumb" style="background:${cfg.bg}"></div>
+                        <span>${cfg.label}</span>`;
+                    canvas.appendChild(tile);
+                }
+
+                dragging = null;
+                window.removeEventListener('mousemove', onMouseMove);
+                window.removeEventListener('mouseup', onMouseUp);
+            }
+
+            // ---- Attach mousedown to each overlay ----
+            browsers.forEach(bw => {
+                const overlay = bw.querySelector('.bw-drag-overlay');
+                if (!overlay) return;
+
+                overlay.addEventListener('mousedown', e => {
+                    e.preventDefault();
+                    dragging = bw;
+                    isDragging = true;
+
+                    bw.classList.add('is-dragging');
+
+                    // Set ghost label
+                    ghostLabel.textContent = bw.dataset.dragLabel || 'link';
+                    ghost.style.left = e.clientX + 'px';
+                    ghost.style.top = e.clientY + 'px';
+                    ghost.classList.add('visible');
+
+                    window.addEventListener('mousemove', onMouseMove);
+                    window.addEventListener('mouseup', onMouseUp);
+                });
+            });
+        })();
+
+        // ==========================================
+        // 📷 BEFORE / AFTER SCRUBBER
+        // ==========================================
+        (function () {
+            const card = document.getElementById('scrubberCard');
+            const before = document.getElementById('scrubberBefore');
+            const divider = document.getElementById('scrubberDivider');
+            if (!card || !before || !divider) return;
+
+            const TILT_MAX = 8;
+
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width;
+                const y = (e.clientY - rect.top) / rect.height;
+
+                const targetPct = x * 100;
+                const targetTiltX = (x - 0.5) * 2 * TILT_MAX;
+                const targetTiltY = (y - 0.5) * 2 * TILT_MAX;
+
+                gsap.to(before, { width: targetPct + '%', duration: 0.2, ease: "power2.out" });
+                gsap.to(divider, { left: targetPct + '%', duration: 0.2, ease: "power2.out" });
+                gsap.to(card, {
+                    rotateY: targetTiltX,
+                    rotateX: -targetTiltY,
+                    duration: 0.4,
+                    ease: "power2.out"
+                });
+            });
+
+            card.addEventListener('mouseleave', () => {
+                gsap.to(card, { rotateY: 0, rotateX: 0, duration: 0.8, ease: "elastic.out(1, 0.5)" });
+            });
+        })();
+
+        // ==========================================
+        // 🌀 INTERACTIVE ENDLESS MOTION (FOOTER VOID)
+        // ==========================================
+        (function () {
+            const VOID_SETTINGS = {
+                lerp: 0.1,
+                text: "Download Airpaste Today",
+                lineGap: "12vh"
+            };
+
+            const voidEl = document.querySelector('.footer-void');
+            const lines = document.querySelector('.lines');
+            if (!voidEl || !lines) return;
+
+            voidEl.style.setProperty('--line-gap', VOID_SETTINGS.lineGap);
+            document.querySelectorAll('.line-text').forEach(t => t.textContent = VOID_SETTINGS.text);
+
+            const group = document.querySelector('.lines-group');
+            if (group) {
+                lines.appendChild(group.cloneNode(true));
+                lines.appendChild(group.cloneNode(true));
+            }
+
+            const lenis = new Lenis({
+                wrapper: voidEl,
+                content: lines,
+                smoothWheel: true,
+                infinite: true,
+                lerp: VOID_SETTINGS.lerp,
+            });
+
+            function anim(time) {
+                lenis.raf(time);
+                requestAnimationFrame(anim);
+            }
+            requestAnimationFrame(anim);
+
+            lenis.on('scroll', ScrollTrigger.update);
+
+            gsap.utils.toArray('.line-text').forEach((line) => {
+                gsap.fromTo(line,
+                    { scale: 1.1, opacity: 0.4 },
+                    {
+                        scale: 0.5,
+                        opacity: 1,
+                        ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: line,
+                            scroller: voidEl,
+                            start: "top bottom",
+                            end: "bottom top",
+                            scrub: true
+                        }
+                    }
+                );
+            });
+
+            setTimeout(() => ScrollTrigger.refresh(), 500);
+        })();
+
+        // ==========================================
+        // 🎯 FEATURES ACCORDION LOGIC
+        // ==========================================
+        (function () {
+            const accordionItems = document.querySelectorAll('.accordion-item');
+
+            accordionItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const isActive = item.classList.contains('active');
+
+                    // Close all other items
+                    accordionItems.forEach(otherItem => {
+                        otherItem.classList.remove('active');
+                    });
+
+                    // Toggle current item
+                    if (!isActive) {
+                        item.classList.add('active');
+                    }
+                });
+            });
+        })();
+
+        // ==========================================
+        // 🖼️ VIEWS DEMO CAROUSEL LOGIC
+        // ==========================================
+        (function () {
+            const carousel = document.getElementById('viewsCarousel');
+            if (!carousel) return;
+            const slides = Array.from(carousel.querySelectorAll('.carousel-slide'));
+            const labelEl = document.getElementById('viewsBottomLabel');
+            const labels = ["01 List View", "02 Globe View", "03 Canvas View"];
+
+            let currentIndex = 0;
+            let startX = 0;
+            let isDragging = false;
+            let dragDistance = 0;
+            let hasDragged = false;
+
+            const SLIDE_WIDTH = 400; // Pixels for one full slide transition
+
+            const styles = {
+                '0': { x: 0, z: 150, r: 0, o: 1, b: 0, zi: 3 },
+                '-1': { x: -380, z: -250, r: 40, o: 0.4, b: 2, zi: 1 },
+                '1': { x: 380, z: -250, r: -40, o: 0.4, b: 2, zi: 1 }
+            };
+
+            function getInterpolatedStyle(pos, targetPos, progress) {
+                const s1 = styles[pos];
+                const s2 = styles[targetPos];
+                return {
+                    x: s1.x + (s2.x - s1.x) * progress,
+                    z: s1.z + (s2.z - s1.z) * progress,
+                    r: s1.r + (s2.r - s1.r) * progress,
+                    o: s1.o + (s2.o - s1.o) * progress,
+                    b: s1.b + (s2.b - s1.b) * progress,
+                    zi: progress > 0.5 ? s2.zi : s1.zi
+                };
+            }
+
+            function updatePositions(activeIndex, offset = 0) {
+                // offset is pixels dragged, converted to -1 to 1 range
+                let progress = offset / SLIDE_WIDTH;
+                const sign = progress > 0 ? 1 : -1;
+                const absProgress = Math.abs(progress);
+
+                slides.forEach((slide, idx) => {
+                    let pos = idx - activeIndex;
+                    while (pos > 1) pos -= slides.length;
+                    while (pos < -1) pos += slides.length;
+
+                    // Calculate target position based on drag direction
+                    let targetPos = pos + sign;
+                    while (targetPos > 1) targetPos -= slides.length;
+                    while (targetPos < -1) targetPos += slides.length;
+
+                    const s = getInterpolatedStyle(pos, targetPos, absProgress);
+
+                    gsap.set(slide, {
+                        x: s.x,
+                        z: s.z,
+                        rotateY: s.r,
+                        opacity: s.o,
+                        filter: `blur(${s.b}px)`,
+                        zIndex: s.zi,
+                        immediateRender: true
+                    });
+
+                    if (absProgress > 0.5) {
+                        if (pos === 0 && targetPos !== 0) slide.classList.remove('active');
+                        if (targetPos === 0) slide.classList.add('active');
+                    } else {
+                        if (pos === 0) slide.classList.add('active');
+                        else slide.classList.remove('active');
+                    }
+                });
+
+                if (labelEl) {
+                    let labelIndex = activeIndex;
+                    if (absProgress > 0.5) {
+                        labelIndex = (activeIndex - sign + slides.length) % slides.length;
+                    }
+                    labelEl.textContent = labels[labelIndex];
+                }
+            }
+
+            // Initialize
+            updatePositions(0);
+
+            carousel.addEventListener('pointerdown', (e) => {
+                startX = e.clientX;
+                isDragging = true;
+                hasDragged = false;
+                carousel.setPointerCapture(e.pointerId);
+                carousel.style.cursor = 'grabbing';
+                // Stop any ongoing animations
+                gsap.killTweensOf(slides);
+            });
+
+            carousel.addEventListener('pointermove', (e) => {
+                if (!isDragging) return;
+                dragDistance = e.clientX - startX;
+                if (Math.abs(dragDistance) > 10) hasDragged = true;
+
+                updatePositions(currentIndex, dragDistance);
+            });
+
+            carousel.addEventListener('pointerup', (e) => {
+                if (!isDragging) return;
+                isDragging = false;
+                carousel.releasePointerCapture(e.pointerId);
+                carousel.style.cursor = 'grab';
+
+                const threshold = SLIDE_WIDTH * 0.2;
+
+                if (Math.abs(dragDistance) > threshold) {
+                    if (dragDistance > 0) {
+                        currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+                    } else {
+                        currentIndex = (currentIndex + 1) % slides.length;
+                    }
+                }
+
+                // Snap to current index
+                dragDistance = 0;
+
+                // Final animation to clean positions
+                slides.forEach((slide, idx) => {
+                    let pos = idx - currentIndex;
+                    while (pos > 1) pos -= slides.length;
+                    while (pos < -1) pos += slides.length;
+
+                    const s = styles[pos];
+                    gsap.to(slide, {
+                        x: s.x,
+                        z: s.z,
+                        rotateY: s.r,
+                        opacity: s.o,
+                        filter: `blur(${s.b}px)`,
+                        zIndex: s.zi,
+                        duration: 0.6,
+                        ease: "power3.out"
+                    });
+                });
+
+                if (labelEl) labelEl.textContent = labels[currentIndex];
+            });
+
+            // Prevent click if we dragged
+            carousel.addEventListener('click', (e) => {
+                if (hasDragged) {
+                    e.stopImmediatePropagation();
+                    e.preventDefault();
+                }
+            }, true);
+        })();
+    </script>
+    <script type="module">
+        import gsap from 'https://esm.sh/gsap@3.13.0'
+        import Draggable from 'https://esm.sh/gsap@3.13.0/Draggable'
+        import { Pane } from 'https://esm.sh/tweakpane@4.0.4'
+        gsap.registerPlugin(Draggable)
+
+        const config = {
+            theme: 'dark',
+            hue: 33,
+            duration: 10,
+            bglight: 0.1,
+            scale: 1.1,
+            style: 'track',
+            text: 'Only for WINDOWS 10 and above',
+        }
+
+        const board = document.querySelector('.board')
+        const textTrack = board ? board.querySelector('.text-track') : null
+
+        const ctrl = new Pane({
+            title: 'config',
+            expanded: true,
+        })
+        let textCtrl
+        const update = () => {
+            document.documentElement.dataset.theme = config.theme
+            document.documentElement.style.setProperty('--hue', config.hue)
+            document.documentElement.style.setProperty('--duration', config.duration)
+            document.documentElement.style.setProperty('--bg-lightness', config.bglight)
+            document.documentElement.style.setProperty('--scale', config.scale)
+            if (textCtrl) textCtrl.hidden = config.style !== 'track'
+        }
+
+        const sync = (event) => {
+            if (
+                !document.startViewTransition ||
+                event.target.controller.view.labelElement.innerText !== 'theme'
+            )
+                return update()
+            document.startViewTransition(() => update())
+        }
+
+        ctrl.addBinding(config, 'style', {
+            label: 'style',
+            options: {
+                countdown: 'countdown',
+                track: 'track',
+                video: 'video',
+            },
+        })
+
+        ctrl.addBinding(config, 'bglight', {
+            label: 'bg-light',
+            min: 0,
+            max: 1,
+            step: 0.01,
+        })
+
+        textCtrl = ctrl.addBinding(config, 'text', {
+            label: 'text',
+            hidden: config.style !== 'track',
+        }).on('change', () => {
+            if (textTrack) {
+                textTrack.innerHTML = `<div class="text">${config.text}</div><div class="text text--clone">${config.text}</div>`
+            }
+        })
+
+        ctrl.addBinding(config, 'hue', {
+            label: 'hue',
+            min: 0,
+            max: 359,
+            step: 1,
+        })
+
+        ctrl.addBinding(config, 'scale', {
+            label: 'scale',
+            min: 0.5,
+            max: 1.5,
+            step: 0.1,
+        })
+
+        ctrl.addBinding(config, 'duration', {
+            label: 'duration(s)',
+            min: 0.2,
+            max: 10,
+            step: 0.01,
+        })
+
+        ctrl.addBinding(config, 'theme', {
+            label: 'theme',
+            options: {
+                system: 'system',
+                light: 'light',
+                dark: 'dark',
+            },
+        })
+
+        ctrl.on('change', sync)
+        if (textTrack) {
+            textTrack.innerHTML = `<div class="text">${config.text}</div><div class="text text--clone">${config.text}</div>`
+        }
+        update()
+
+        // make tweakpane panel draggable
+        const tweakClass = 'div.tp-dfwv'
+        setTimeout(() => {
+            const d = Draggable.create(tweakClass, {
+                type: 'x,y',
+                allowEventDefault: true,
+                trigger: tweakClass + ' button.tp-rotv_b',
+            })
+            const el = document.querySelector(tweakClass);
+            if (el) {
+                el.addEventListener('dblclick', () => {
+                    gsap.to(tweakClass, {
+                        x: `+=${d[0].x * -1}`,
+                        y: `+=${d[0].y * -1}`,
+                        onComplete: () => {
+                            gsap.set(tweakClass, { clearProps: 'all' })
+                        },
+                    })
+                })
+            }
+        }, 100);
     </script>
 </body>
 
