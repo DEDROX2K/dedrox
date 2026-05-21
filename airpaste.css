@@ -166,12 +166,17 @@ html {
     color: #1a1a1a;
 }
 
+/* Override global pixelated body style for smooth, premium rendering on standard images and canvases */
+img, canvas {
+    image-rendering: auto;
+}
+
 /* --- ASCII ART HERO (Section 1) --- */
 .ascii-art-hero {
     position: relative;
     height: 100vh;
     width: 100%;
-    background-color: #fff;
+    background-color: #FAF8F5;
     overflow: hidden;
     cursor: auto;
     z-index: 300;

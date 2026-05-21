@@ -259,12 +259,8 @@
 
             <!-- Title with glowing effect behind it -->
             <div class="views-title-wrapper">
-                <div class="views-title-glow"></div>
-                <h2 class="views-demo-subtitle">
-                    AirPaste views<br>
-                    that <span class="text-dim">promise style and</span><br>
-                    simplicity
-                </h2>
+
+                <h2 class="views-demo-subtitle">AirPaste views – that promise style and simplicity</h2>
             </div>
 
             <div class="views-demo-carousel-wrapper">
@@ -397,7 +393,7 @@
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
             let cols, rows;
-            const charW = 20, charH = 20;
+            const charW = 12, charH = 24;
             let grid = [];
             let mouse = { x: -100, y: -100, col: -1, row: -1 };
 
@@ -406,25 +402,36 @@
             logoImg.src = 'images/Vector/logo.svg';
 
             const wordsToInject = [
-                { text: "AIRPASTE", row: 8, col: 8, hasLogo: true },
-                { text: "THE VISUAL BOOKMARK TASK MANAGEMENT TOOL;", row: 10, col: 8 },
+                { text: "AIRPASTE", 
+                row: 8, col: 8, hasLogo: true },
+                { text: "THE VISUAL BOOKMARK TASK MANAGEMENT TOOL;", 
+                row: 10, col: 8 },
                 { text: "A LOCAL-FIRST WORKSPACE FOR LINKS, NOTES, AND IDEAS —", row: 12, col: 8 },
                 { text: "DESIGNED TO FEEL REAL, FAST, AND YOURS.", row: 13, col: 8 },
 
-                { text: "AIRPASTE IS A LOCAL-FIRST WORKSPACE FOR EVERYTHING YOU SAVE:", row: 20, col: 12 },
-                { text: "— LINKS, NOTES, IMAGES, AND IDEAS, ALL IN ONE PLACE.", row: 21, col: 12 },
+                { text: "AIRPASTE IS A LOCAL-FIRST WORKSPACE FOR EVERYTHING YOU SAVE:", row: 20, col: 8 },
+                { text: "— LINKS,", row: 21, col: 8 },
+                { text: "— NOTES", row: 22, col: 8 },
+                { text: "— IMAGES", row: 23, col: 8 },
+                                { text: "— AND IDEAS", row: 24, col: 8 },
+                { text: "— ALL IN ONE PLACE.", row: 25, col: 8 },
 
-                { text: "LOCAL FIRST", row: 28, col: 40 },
-                { text: "PRIVATE", row: 29, col: 40 },
-                { text: "SECURE", row: 30, col: 40 },
+
+                { text: "LOCAL FIRST", row: 38, col: 8 },
+                { text: "PRIVATE", row: 39, col: 8 },
+                { text: "SECURE", row: 40, col: 8 },
                 { text: "BE THE CURATOR", row: 38, col: 15 }
             ];
 
             function initGrid() {
+                const dpr = window.devicePixelRatio || 1;
                 cols = Math.ceil(window.innerWidth / charW);
                 rows = Math.ceil(window.innerHeight / charH);
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
+                
+                canvas.width = window.innerWidth * dpr;
+                canvas.height = window.innerHeight * dpr;
+                canvas.style.width = window.innerWidth + 'px';
+                canvas.style.height = window.innerHeight + 'px';
 
                 grid = [];
                 const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*";
@@ -475,16 +482,25 @@
                     return;
                 }
 
+                const dpr = window.devicePixelRatio || 1;
+                // Reset transform for clearing/background fill
+                ctx.setTransform(1, 0, 0, 1, 0, 0);
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                // Opaque background so effects beneath (cube trail) don't show through on the hero
-                ctx.fillStyle = '#fff';
+
+                // Opaque premium cream background
+                ctx.fillStyle = '#FAF8F5';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // Apply high-DPI scaling
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
                 const baseFont = `normal ${charH}px "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace`;
                 const greyFont = `800 ${charH}px "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace`;
                 const highlightFont = `800 ${charH}px "JetBrains Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace`;
-                ctx.font = baseFont;
+                
                 ctx.textBaseline = 'top';
                 let currentFont = baseFont;
+                ctx.font = baseFont;
 
                 for (let r = 0; r < rows; r++) {
                     for (let c = 0; c < cols; c++) {
@@ -498,17 +514,26 @@
                         if (isHighlighted) {
                             ctx.fillStyle = '#000';
                             ctx.fillRect(x, y, charW, charH);
-                            ctx.fillStyle = '#000';
+                            ctx.fillStyle = '#FAF8F5'; // Contrast font color on black hovered block
                             if (currentFont !== highlightFont) {
                                 ctx.font = highlightFont;
                                 currentFont = highlightFont;
                             }
                         } else {
-                            ctx.fillStyle = cell.isSignal ? '#000' : '#f1f1f1';
-                            const desiredFont = cell.isSignal ? baseFont : greyFont;
-                            if (currentFont !== desiredFont) {
-                                ctx.font = desiredFont;
-                                currentFont = desiredFont;
+                            if (cell.isSignal) {
+                                ctx.fillStyle = '#000';
+                                if (currentFont !== baseFont) {
+                                    ctx.font = baseFont;
+                                    currentFont = baseFont;
+                                }
+                            } else {
+                                // Background noise: uniform low opacity
+                                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+
+                                if (currentFont !== greyFont) {
+                                    ctx.font = greyFont;
+                                    currentFont = greyFont;
+                                }
                             }
                         }
 
