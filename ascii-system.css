@@ -1,0 +1,91 @@
+:root {
+  --ascii-bg: #f7f5ef;
+  --ascii-ink: #141414;
+  --ascii-noise: rgba(20, 20, 20, 0.22);
+  --ascii-focus: #000;
+  --cell-w: 10px;
+  --cell-h: 18px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: var(--ascii-bg);
+}
+
+body.ascii-page {
+  font-family: "Cascadia Mono", "JetBrains Mono", "Fira Code", "Consolas", monospace;
+  color: var(--ascii-ink);
+  cursor: default;
+}
+
+.ascii-root {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+.ascii-matrix {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  line-height: var(--cell-h);
+  font-size: calc(var(--cell-h) - 2px);
+  letter-spacing: 0;
+  user-select: none;
+  color: #1c1c1c;
+  overflow: hidden;
+  text-rendering: geometricPrecision;
+}
+
+.ascii-noise {
+  color: rgba(28, 28, 28, 0.34);
+}
+
+.ascii-signal {
+  color: #111;
+}
+
+.ascii-interactive {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.ascii-link {
+  position: absolute;
+  display: inline-block;
+  pointer-events: auto;
+  font: inherit;
+  font-size: 0;
+  line-height: 0;
+  text-decoration: none;
+  color: var(--ascii-ink);
+  background: transparent;
+  border: 0;
+  padding: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  color: transparent;
+}
+
+.ascii-link:focus-visible {
+  outline: none;
+  color: var(--ascii-focus);
+  filter: contrast(1.3);
+}
+
+@media (max-width: 1100px) {
+  :root { --cell-w: 9px; --cell-h: 16px; }
+}
+
+@media (max-width: 760px) {
+  :root { --cell-w: 7.6px; --cell-h: 14px; }
+}

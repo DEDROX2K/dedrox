@@ -11,13 +11,13 @@
 
     // --- 🎛️ SETTINGS ---
     const SETTINGS = {
-        gridSize: 45,       // Slightly larger for cleaner look
+        gridSize: 40,
         viscosity: 0.94,
         diffusion: 0.98,
         mouseForce: 0.3,
         residueStrength: 80,
-        fontSize: 24,
-        blue: '#00000022',    // Subtle black for arrows
+        fontSize: 22,
+        blue: '#1a1a1a',
         white: 'transparent', // Transparent background
         coverImgSrc: ''      // No background image
     };
@@ -51,14 +51,14 @@
         }
     }
 
-    function getArrow(vx, vy) {
-        const mag = Math.hypot(vx, vy);
-        if (mag < 0.05) return '·';
+    const glyphs = ['.', ',', ':', ';', '!', '/', '\\', '#', '%', '&', '$', 'X', '0', '*'];
 
-        const angle = Math.atan2(vy, vx) * (180 / Math.PI);
-        const norm = (angle + 360 + 22.5) % 360;
-        const arrows = ['→', '↘', '↓', '↙', '←', '↖', '↑', '↗'];
-        return arrows[Math.floor(norm / 45) % 8];
+    function getGlyph(vx, vy, density) {
+        const mag = Math.hypot(vx, vy);
+        if (density < 0.5 && mag < 0.06) return '.';
+        const energy = Math.min(1, (density / 10) * 0.7 + mag * 0.6);
+        const idx = Math.floor(energy * (glyphs.length - 1));
+        return glyphs[Math.max(0, Math.min(glyphs.length - 1, idx))];
     }
 
     let mx = 0, my = 0, pmx = 0, pmy = 0;
@@ -205,12 +205,12 @@
                 const cell = grid[y * cols + x];
                 const d = Math.min(cell.density, 10) / 10;
 
-                const char = getArrow(cell.vx, cell.vy);
+                const char = getGlyph(cell.vx, cell.vy, cell.density);
                 const sx = x * SETTINGS.gridSize + SETTINGS.gridSize / 2;
                 const sy = y * SETTINGS.gridSize + SETTINGS.gridSize / 2;
 
                 ctx.fillStyle = SETTINGS.blue;
-                ctx.globalAlpha = cell.density > 2 ? 1.0 : (0.1 + d * 0.9);
+                ctx.globalAlpha = cell.density > 2 ? 0.32 : (0.04 + d * 0.22);
                 ctx.fillText(char, sx, sy);
                 ctx.globalAlpha = 1.0;
             }

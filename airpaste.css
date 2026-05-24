@@ -202,18 +202,6 @@ img, canvas {
     pointer-events: auto;
 }
 
-/* Subtle Water Effect on Canvas */
-#pixelCanvas {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 2;
-    opacity: 0.1;
-    pointer-events: none;
-    background: transparent;
-}
-
 #cubeCanvas {
     position: fixed;
     inset: 0;
@@ -2135,18 +2123,21 @@ img, canvas {
    ========================================== */
 .top-nav {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 6vw;
-    /* Defined height for vertical alignment */
+    top: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+    height: auto;
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 999999;
-    /* Absolute top-most layer */
     box-sizing: border-box;
-    pointer-events: none;
+    pointer-events: auto;
+    border: 1px solid rgba(0, 0, 0, 0.45);
+    background: linear-gradient(180deg, rgba(250, 248, 245, 0.8), rgba(250, 248, 245, 0.7));
+    backdrop-filter: blur(1px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
 }
 
 .nav-logo,
@@ -2315,16 +2306,11 @@ img, canvas {
 }
 
 .nav-toggle-container {
-    background: #222;
-    padding: 4px;
+    background: transparent;
+    padding: 10px 12px;
     display: flex;
     position: relative;
-
-    /* Pixelated corner cutouts */
-    clip-path: polygon(0 6px, 2px 6px, 2px 4px, 4px 4px, 4px 2px, 6px 2px, 6px 0,
-            calc(100% - 6px) 0, calc(100% - 6px) 2px, calc(100% - 4px) 2px, calc(100% - 4px) 4px, calc(100% - 2px) 4px, calc(100% - 2px) 6px, 100% 6px,
-            100% calc(100% - 6px), calc(100% - 2px) calc(100% - 6px), calc(100% - 2px) calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) calc(100% - 2px), calc(100% - 6px) calc(100% - 2px), calc(100% - 6px) 100%,
-            6px 100%, 6px calc(100% - 2px), 4px calc(100% - 2px), 4px calc(100% - 4px), 2px calc(100% - 4px), 2px calc(100% - 6px), 0 calc(100% - 6px));
+    border: 1px dashed rgba(0, 0, 0, 0.28);
 }
 
 /* Morphing indicator background */
@@ -2333,8 +2319,7 @@ img, canvas {
     inset: 4px;
     pointer-events: none;
     z-index: 1;
-    filter: none !important;
-    /* Remove gooey effect */
+    display: none;
 }
 
 .nav-toggle-indicator {
@@ -2366,11 +2351,12 @@ img, canvas {
 .nav-toggle-btn {
     border: none;
     background: transparent;
-    padding: 10px 24px;
+    padding: 12px 18px;
     font-family: 'p2', monospace;
-    font-weight: 700;
-    font-size: 1.5rem;
-    color: #ffffff;
+    font-weight: 400;
+    font-size: 1.35rem;
+    color: rgba(0, 0, 0, 0.58);
+    letter-spacing: 0.03em;
     cursor: pointer;
     transition: color 0.3s ease;
     white-space: nowrap;
@@ -2379,7 +2365,7 @@ img, canvas {
 
 .nav-toggle-btn.active {
     color: #000;
-    /* Black text on grey background */
+    background: rgba(0, 0, 0, 0.08);
 }
 
 @keyframes asciiJitter {
@@ -3146,10 +3132,10 @@ img, canvas {
     width: 100%;
     position: relative;
     z-index: 150;
-    /* Above hero (5) */
 }
 
 .main-footer {
+    display: none !important;
     width: 100%;
     padding: 10vh 5vw 6vh 5vw;
     background-color: #ffffff;
