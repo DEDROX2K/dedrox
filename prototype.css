@@ -88,7 +88,7 @@
     --pill-2-c: #e7e7e7;
     --pill-2-br: 14px;
 
-    --pill-3-w: 49px;
+    --pill-3-w: 50px;
     --pill-3-h: 60px;
     --pill-3-c: #ff0000;
     --pill-3-br: 99px;
@@ -112,6 +112,7 @@
     --pill-7-h: 60px;
     --pill-7-c: #e7e7e7;
     --pill-7-br: 99px;
+    --pill-hover-grow: 12px;
 
     --pill-bar-w: 10px;
     --pill-bar-h: 34px;
@@ -472,7 +473,7 @@ body.cursor-system :where([data-cursor='default']) {
     height: 100%;
     border-radius: 999px;
     padding: 3px;
-    gap: 3px;
+    /* gap: 3px; */
     position: relative;
     border: 1px solid rgba(255, 255, 255, 0.55);
     box-shadow:
@@ -682,8 +683,16 @@ body:not(.device-expanded):not(.reader-mode):not(.recruiter-mode) .pill-greeting
 }
 
 .device-container.reader-mode .pill-buttons-unified {
-    justify-content: space-around;
-    padding: 0 30px;
+    justify-content: center;
+    padding: 0;
+}
+
+.device-container.reader-mode .pill-plain-circle,
+.device-container.reader-mode .pill-square,
+.device-container.reader-mode .pill-dark-block,
+.device-container.reader-mode #pill-circle2,
+.device-container.reader-mode #pill-circle3 {
+    flex-shrink: 1;
 }
 
 .pill-bar {
@@ -698,14 +707,14 @@ body:not(.device-expanded):not(.reader-mode):not(.recruiter-mode) .pill-greeting
 .pill-plain-circle,
 .pill-square,
 .pill-dark-block {
-    flex-shrink: 1;
+    flex-shrink: 0;
     min-width: 0;
     transition: width 0.62s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.45s var(--ease-lux), box-shadow 0.45s var(--ease-lux), transform 0.62s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 #pill-circle2,
 #pill-circle3 {
-    flex-shrink: 1;
+    flex-shrink: 0;
     min-width: 0;
     transition: width 0.62s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.45s var(--ease-lux);
 }
@@ -982,7 +991,7 @@ body.recruiter-mode #pill-fifth-btn img {
 
 @media (hover: hover) {
     .device-container.expanded .pill-icon-btn:hover {
-        width: calc(var(--base-w) + 24px) !important;
+        width: calc(var(--base-w) + var(--pill-hover-grow)) !important;
     }
 
     .device-container.expanded .pill-icon-btn:hover::before {
@@ -1950,7 +1959,7 @@ body.recruiter-mode .recruiter-meta-value:hover {
 
 @media (max-height: 720px) {
     .recruiter-inline {
-        padding-top: 14px;
+        padding-top: calc(var(--pill-container-h) + 6px);
         padding-bottom: 18px;
     }
 
