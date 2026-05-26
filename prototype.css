@@ -254,7 +254,7 @@ body.reader-mode .ascii-bg {
 }
 
 body.recruiter-mode {
-    background: #2a66ff;
+    background: #050505;
     background-image: none;
 }
 
@@ -1622,9 +1622,14 @@ body.device-transitioning .device-container.expanded #pill-fifth-btn {
 }
 
 .device-container.recruiter-mode {
-    width: min(96vw, 980px);
-    background:
-        linear-gradient(180deg, #f4f2eb 0 145px, #2c6dff 145px 100%);
+    width: min(96vw, 50vw);
+    background: #f8f5ee;
+    border: 1px solid rgba(255, 255, 255, 0.42);
+    box-shadow:
+        0 32px 90px rgba(0, 0, 0, 0.42),
+        0 8px 30px rgba(0, 0, 0, 0.18);
+    overflow: visible;
+    border-radius: 34px;
 }
 
 .device-container.reader-mode .site-content {
@@ -1633,6 +1638,79 @@ body.device-transitioning .device-container.expanded #pill-fifth-btn {
 
 .device-container.recruiter-mode .site-content {
     padding: 0 !important;
+    overflow: hidden;
+    border-radius: 0 0 34px 34px;
+}
+
+body.recruiter-mode .top-bar {
+    padding: 10px 12px 0;
+    height: 76px;
+}
+
+body.recruiter-mode .top-bar-pill {
+    background: rgba(226, 223, 218, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.78);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.75),
+        0 10px 24px rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(16px) saturate(120%);
+    -webkit-backdrop-filter: blur(16px) saturate(120%);
+}
+
+body.recruiter-mode .top-bar-pill:hover {
+    transform: none;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.82),
+        0 12px 26px rgba(0, 0, 0, 0.1);
+}
+
+body.recruiter-mode .pill-dark-block,
+body.recruiter-mode .pill-square,
+body.recruiter-mode #pill-notes-btn,
+body.recruiter-mode #pill-circle2,
+body.recruiter-mode #pill-circle3,
+body.recruiter-mode #pill-fourth-btn {
+    background: rgba(248, 246, 241, 0.94) !important;
+}
+
+body.recruiter-mode .pill-portfolio-text {
+    background: rgba(246, 242, 236, 0.96);
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.04);
+}
+
+body.recruiter-mode .pill-text {
+    color: rgba(16, 16, 20, 0.82);
+    text-shadow: none;
+}
+
+body.recruiter-mode #pill-resume-btn img,
+body.recruiter-mode #pill-third-btn img,
+body.recruiter-mode #pill-fourth-btn img,
+body.recruiter-mode #pill-notes-btn img {
+    filter: brightness(0) saturate(0%);
+    mix-blend-mode: normal !important;
+    opacity: 0.78;
+}
+
+body.recruiter-mode .pill-icon-btn:hover img {
+    opacity: 0.96;
+}
+
+body.recruiter-mode #pill-fifth-btn:hover img {
+    opacity: 1;
+}
+
+body.recruiter-mode .pill-tooltip {
+    top: calc(100% + 10px);
+    bottom: auto;
+    transform: translateX(-50%) translateY(-5px);
+}
+
+@media (hover: hover) {
+    body.recruiter-mode.device-expanded .pill-icon-btn:hover .pill-tooltip,
+    body.recruiter-mode .device-container.expanded .pill-icon-btn:hover .pill-tooltip {
+        transform: translateX(-50%) translateY(0);
+    }
 }
 
 .device-container.reader-mode .mini-matrix-bg {
@@ -1652,7 +1730,7 @@ body.device-transitioning .device-container.expanded #pill-fifth-btn {
     min-height: 100%;
     color: #0b1020;
     font-family: 'Google Sans', sans-serif;
-    padding: calc(var(--pill-container-h) + 10px) 0 24px;
+    /* padding: 78px 0 24px; */
 }
 
 .recruiter-blank {
@@ -1675,67 +1753,231 @@ body.device-transitioning .device-container.expanded #pill-fifth-btn {
 .recruiter-header {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: 14px;
     margin-bottom: 0;
-    padding: 24px clamp(14px, 2vw, 20px) 20px;
+    padding: 14px clamp(14px, 2vw, 18px) 12px;
     border-radius: 0;
     border: 0;
-    background: #f4f2eb;
-    box-shadow: none;
-    backdrop-filter: blur(15px) saturate(140%);
-    -webkit-backdrop-filter: blur(15px) saturate(140%);
+    background: transparent;
+    box-shadow: inset 0 -1px 0 rgba(20, 20, 20, 0.1);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
     position: relative;
     z-index: 1;
 }
 
+.recruiter-hero-card {
+    position: relative;
+    display: grid;
+    grid-template-columns: 218px minmax(0, 1fr);
+    grid-template-areas:
+        "gutter image"
+        "intro intro"
+        ". subcopy"
+        ". details";
+    row-gap: 8px;
+    column-gap: 0;
+    padding: 16px 18px 28px;
+    min-height: min(100vh - 130px, 980px);
+}
+
+.recruiter-hero-gutter {
+    grid-area: gutter;
+    min-height: 100%;
+    border-right: 1px solid rgba(18, 18, 18, 0.06);
+}
+
+.recruiter-hero-image-wrap {
+    grid-area: image;
+    display: block;
+    align-self: start;
+}
+
+.recruiter-hero-image {
+    width: 100%;
+    aspect-ratio: 0.82 / 1;
+    overflow: hidden;
+    background: #d8d2cf;
+    border-radius: 0 24px 0 0;
+}
+
+.recruiter-hero-image img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    filter: grayscale(1) contrast(1.02);
+}
+
+.recruiter-hero-copy {
+    grid-area: intro;
+    display: block;
+    width: min(100%, 490px);
+    padding: 12px 0 0;
+}
+
+.recruiter-hero-intro {
+    margin: 0;
+    max-width: 25ch;
+    font-size: clamp(2rem, 1.7vw, 1.86rem);
+    line-height: 0.99;
+    letter-spacing: -0.055em;
+    font-weight: 700;
+    color: #101218f5;
+    text-align: left;
+    text-wrap: balance;
+}
+
+.recruiter-hero-subcopy {
+    grid-area: subcopy;
+    margin: 0;
+    width: min(100%, 318px);    max-width: 25ch;
+    font-size: clamp(2rem, 1.7vw, 1.86rem);
+    line-height: 0.96;
+    letter-spacing: -0.045em;
+    font-weight: 700;
+    color: #101218eb;
+    text-align: left;
+    text-wrap: balance;
+}
+
+.recruiter-hero-details {
+    grid-area: details;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    align-items: start;
+    padding: 24px 0 0;
+    width: min(100%, 318px);
+}
+
+.recruiter-hero-studio-name {
+    font-size: 0.8rem;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: rgba(16, 18, 24, 0.95);
+}
+
+.recruiter-hero-studio-line {
+    font-size: 0.8rem;
+    font-weight: 600;
+    line-height: 1.16;
+    color: rgba(16, 18, 24, 0.86);
+}
+
+.recruiter-hero-contact {
+    display: grid;
+    gap: 5px;
+    justify-self: start;
+    width: 100%;
+}
+
+.recruiter-hero-contact-row {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    gap: 12px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    line-height: 1.14;
+    color: rgba(16, 18, 24, 0.92);
+}
+
+.recruiter-hero-contact-row a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.recruiter-hero-contact-row a:hover {
+    text-decoration: underline;
+}
+
+.recruiter-header.is-empty {
+    display: none;
+}
+
 .recruiter-titleblock {
     display: grid;
-    gap: 6px;
+    gap: 4px;
+}
+
+.recruiter-header-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.08fr) minmax(180px, 0.92fr);
+    gap: 14px;
+    align-items: stretch;
+}
+
+.recruiter-kicker {
+    margin: 0 0 10px;
+    font-size: 0.56rem;
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: rgba(16, 18, 24, 0.72);
+}
+
+.recruiter-hero-visual {
+    min-height: 262px;
+    overflow: hidden;
+    border-radius: 4px 22px 4px 4px;
+    background: #e6e1d8;
+}
+
+.recruiter-hero-visual img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    filter: grayscale(1) contrast(1.04);
 }
 
 .recruiter-name {
     margin: 0;
     font-family: 'fg', 'Google Sans', sans-serif;
     font-weight: 700;
-    font-size: clamp(2.2rem, 4vw, 3.9rem);
-    letter-spacing: -0.03em;
-    line-height: 0.95;
+    font-size: clamp(3.1rem, 5vw, 5rem);
+    letter-spacing: -0.06em;
+    line-height: 0.86;
 }
 
 .recruiter-role {
-    margin: 12px 0 0;
+    margin: 4px 0 0;
     color: rgba(12, 18, 36, 0.88);
-    font-size: clamp(1.24rem, 2vw, 2rem);
-    line-height: 1.15;
-    letter-spacing: -0.015em;
+    font-size: clamp(1.08rem, 1.3vw, 1.28rem);
+    line-height: 1.06;
+    letter-spacing: -0.03em;
+    max-width: 16ch;
 }
 
 .recruiter-meta {
     display: grid;
-    gap: 6px;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 14px;
 }
 
 .recruiter-meta-row {
     display: grid;
-    grid-template-columns: 92px 1fr;
-    gap: 10px;
-    align-items: baseline;
+    grid-template-columns: 1fr;
+    gap: 1px;
+    align-items: start;
 }
 
 .recruiter-meta-label {
-    font-size: 0.74rem;
+    font-size: 0.58rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: rgba(11, 16, 32, 0.55);
+    color: rgba(11, 16, 32, 0.58);
 }
 
 .recruiter-meta-value {
     color: rgba(11, 16, 32, 0.9);
     text-decoration: none;
     overflow-wrap: anywhere;
-    font-size: clamp(1.16rem, 1.75vw, 1.85rem);
-    font-weight: 600;
-    letter-spacing: -0.015em;
+    font-size: clamp(0.86rem, 0.92vw, 0.96rem);
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
 }
 
 .recruiter-meta-value:hover {
@@ -1744,73 +1986,118 @@ body.device-transitioning .device-container.expanded #pill-fifth-btn {
 
 .recruiter-section {
     margin-top: 0;
-    padding: 20px clamp(14px, 2vw, 20px);
-    border-top: 1px solid rgba(9, 20, 46, 0.28);
-    background: rgba(44, 109, 255, 0.86);
+    padding: 14px clamp(14px, 2vw, 18px) 16px;
+    border-top: 0;
+    background: transparent;
 }
 
 .recruiter-cases {
-    margin-top: 22px;
+    margin-top: 0;
 }
 
 body.recruiter-mode .recruiter-cases .case-studies {
     margin-top: 12px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
 }
 
 body.recruiter-mode .recruiter-cases .featured-card {
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.14);
-    backdrop-filter: blur(12px) saturate(145%);
-    -webkit-backdrop-filter: blur(12px) saturate(145%);
+    width: 100%;
+    border: 0;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-radius: 0;
 }
 
 body.recruiter-mode .recruiter-cases .folder-body {
-    color: rgba(255, 255, 255, 0.88);
+    color: rgba(10, 18, 36, 0.94);
+    background: transparent;
+    padding: 12px 0 0;
 }
 
 body.recruiter-mode .recruiter-cases .folder-foot {
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(10, 18, 36, 0.68);
+    border-top: 0;
+    padding-top: 6px;
 }
 
 .recruiter-section-title {
     margin: 0 0 12px;
-    font-size: clamp(0.92rem, 1vw, 1rem);
+    font-size: clamp(0.62rem, 0.76vw, 0.72rem);
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.12em;
     font-weight: 700;
 }
 
 body.recruiter-mode .recruiter-section-title,
 body.recruiter-mode .recruiter-item-role,
 body.recruiter-mode .recruiter-mini-title,
-body.recruiter-mode .recruiter-name {
-    color: rgba(10, 18, 36, 0.96);
+body.recruiter-mode .recruiter-tag {
+    color: rgba(14, 16, 22, 0.96);
 }
 
 body.recruiter-mode .recruiter-role,
 body.recruiter-mode .recruiter-meta-label,
 body.recruiter-mode .recruiter-item-date,
 body.recruiter-mode .recruiter-mini-sub {
-    color: rgba(12, 20, 40, 0.75);
+    color: rgba(16, 18, 24, 0.58);
 }
 
 body.recruiter-mode .recruiter-meta-value,
 body.recruiter-mode .recruiter-paragraph,
 body.recruiter-mode .recruiter-item-company,
 body.recruiter-mode .recruiter-bullets {
-    color: rgba(4, 12, 26, 0.96);
+    color: rgba(16, 18, 24, 0.9);
 }
 
 body.recruiter-mode .recruiter-meta-value:hover {
-    color: rgba(11, 16, 32, 1);
+    color: rgba(0, 0, 0, 1);
+}
+
+body.recruiter-mode .recruiter-header .recruiter-name,
+body.recruiter-mode .recruiter-header .recruiter-role,
+body.recruiter-mode .recruiter-header .recruiter-meta-label,
+body.recruiter-mode .recruiter-header .recruiter-meta-value {
+    color: rgba(12, 18, 36, 0.92);
 }
 
 .recruiter-paragraph {
     margin: 0 0 12px;
-    color: rgba(4, 12, 26, 0.96);
-    font-size: clamp(1.06rem, 1.35vw, 1.25rem);
-    line-height: 1.45;
-    max-width: 78ch;
+    color: rgba(16, 18, 24, 0.92);
+    font-size: clamp(1.3rem, 1.7vw, 1.6rem);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    max-width: 23ch;
+}
+
+.recruiter-summary-section {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(160px, 0.95fr);
+    gap: 18px;
+    align-items: end;
+    padding-top: 20px;
+}
+
+.recruiter-summary-section .recruiter-section-title {
+    grid-column: 1 / -1;
+    margin-bottom: 2px;
+}
+
+.recruiter-summary-section .recruiter-paragraph:last-child {
+    align-self: end;
+    margin: 0;
+    padding-top: 48px;
+    font-size: clamp(0.86rem, 0.95vw, 0.94rem);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    max-width: 18ch;
+}
+
+.recruiter-experience-section,
+.recruiter-education-section,
+.recruiter-cases {
+    padding: 0;
 }
 
 .recruiter-timeline {
@@ -1819,107 +2106,179 @@ body.recruiter-mode .recruiter-meta-value:hover {
 }
 
 .recruiter-item {
-    padding: clamp(14px, 1.5vw, 20px);
-    border-radius: 14px;
-    background: rgba(242, 247, 255, 0.33);
-    border: 1px solid rgba(240, 247, 255, 0.6);
-    box-shadow: 0 8px 26px rgba(5, 30, 89, 0.2);
-    backdrop-filter: blur(16px) saturate(145%);
-    -webkit-backdrop-filter: blur(16px) saturate(145%);
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+.recruiter-screen + .recruiter-screen {
+    border-top: 1px solid rgba(18, 18, 18, 0.12);
+}
+
+.recruiter-screen-intro {
+    min-height: min(100vh, 1060px);
+}
+
+.recruiter-screen-experience {
+    padding: 18px clamp(14px, 2vw, 18px) 20px;
+}
+
+.recruiter-screen-index {
+    padding: 18px clamp(14px, 2vw, 18px) 24px;
+}
+
+.recruiter-screen-intro .recruiter-header,
+.recruiter-screen-intro .recruiter-summary-section {
+    display: none;
+}
+
+.recruiter-item:first-child {
+    padding: 0;
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+.recruiter-item:first-child .recruiter-item-role {
+    font-size: clamp(1.72rem, 1.95vw, 2rem);
+}
+
+.recruiter-item:first-child .recruiter-item-company {
+    font-size: clamp(1rem, 1.12vw, 1.08rem);
+}
+
+.recruiter-item:first-child .recruiter-bullets {
+    font-size: clamp(1rem, 1.1vw, 1.08rem);
 }
 
 .recruiter-item-head {
     display: flex;
-    gap: 12px;
-    align-items: baseline;
+    gap: 10px;
+    align-items: start;
     justify-content: space-between;
     flex-wrap: wrap;
 }
 
 .recruiter-item-role {
     margin: 0;
-    font-size: clamp(1.1rem, 1.3vw, 1.35rem);
-    letter-spacing: -0.01em;
+    font-size: clamp(1.34rem, 1.5vw, 1.54rem);
+    letter-spacing: -0.04em;
+    line-height: 1.02;
+    max-width: 18ch;
 }
 
 .recruiter-item-date {
-    font-size: clamp(0.9rem, 1vw, 1rem);
-    color: rgba(11, 16, 32, 0.58);
+    font-size: clamp(0.9rem, 0.95vw, 0.96rem);
+    color: rgba(16, 18, 24, 0.56);
 }
 
 .recruiter-item-company {
     margin: 6px 0 0;
-    color: rgba(11, 16, 32, 0.78);
-    font-size: clamp(0.95rem, 1.04vw, 1.02rem);
+    color: rgba(16, 18, 24, 0.76);
+    font-size: clamp(0.94rem, 0.98vw, 1rem);
 }
 
 .recruiter-bullets {
-    margin: 10px 0 0;
+    margin: 8px 0 0;
     padding-left: 20px;
-    color: rgba(11, 16, 32, 0.82);
-    line-height: 1.45;
-    font-size: clamp(0.98rem, 1.08vw, 1.06rem);
+    color: rgba(16, 18, 24, 0.86);
+    line-height: 1.22;
+    font-size: clamp(0.98rem, 1.04vw, 1.02rem);
 }
 
 .recruiter-bullets li+li {
-    margin-top: 6px;
+    margin-top: 10px;
 }
 
 .recruiter-grid-2 {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 16px;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    gap: 24px;
 }
 
 .recruiter-mini-list {
     display: grid;
-    gap: 10px;
+    gap: 16px;
 }
 
 .recruiter-mini-item {
-    padding: 14px 14px 12px;
-    border-radius: 12px;
-    background: rgba(242, 247, 255, 0.35);
-    border: 1px solid rgba(240, 247, 255, 0.58);
-    box-shadow: 0 8px 24px rgba(5, 30, 89, 0.18);
-    backdrop-filter: blur(14px) saturate(140%);
-    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
 }
 
 .recruiter-mini-title {
     font-weight: 600;
-    letter-spacing: -0.01em;
-    font-size: clamp(1rem, 1.07vw, 1.08rem);
+    letter-spacing: -0.03em;
+    font-size: clamp(1.18rem, 1.28vw, 1.32rem);
+    line-height: 1.04;
 }
 
 .recruiter-mini-sub {
-    margin-top: 4px;
-    color: rgba(11, 16, 32, 0.62);
-    font-size: clamp(0.92rem, 0.98vw, 0.98rem);
-    line-height: 1.35;
+    margin-top: 5px;
+    color: rgba(215, 221, 232, 0.72);
+    font-size: clamp(0.9rem, 0.96vw, 0.96rem);
+    line-height: 1.2;
 }
 
 .recruiter-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 12px 18px;
 }
 
 .recruiter-tag {
-    padding: 10px 12px;
-    border-radius: 8px;
-    font-size: clamp(0.92rem, 0.96vw, 0.98rem);
+    padding: 0;
+    border-radius: 0;
+    font-size: clamp(0.9rem, 0.92vw, 0.94rem);
     line-height: 1;
-    background: rgba(242, 247, 255, 0.35);
-    border: 1px solid rgba(240, 247, 255, 0.58);
-    color: rgba(7, 18, 34, 0.95);
-    backdrop-filter: blur(14px) saturate(140%);
-    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    background: transparent;
+    border: 0;
+    color: rgba(16, 18, 24, 0.9);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    letter-spacing: -0.02em;
+}
+
+body.recruiter-mode .recruiter-cases .case-studies {
+    gap: 18px;
+}
+
+body.recruiter-mode .recruiter-cases .folder-top {
+    aspect-ratio: 1 / 1.18;
+}
+
+body.recruiter-mode .recruiter-cases .folder-body {
+    background: transparent;
+    padding: 12px 0 0;
+}
+
+body.recruiter-mode .recruiter-cases .folder-foot {
+    border-top: 0;
+    padding-top: 6px;
+}
+
+body.recruiter-mode .recruiter-cases .folder-head h3,
+body.recruiter-mode .recruiter-cases .folder-head p {
+    color: rgba(18, 18, 22, 0.92);
+}
+
+body.recruiter-mode .recruiter-cases .folder-menu {
+    color: rgba(18, 18, 22, 0.54);
 }
 
 @media (min-width: 880px) {
     .recruiter-header {
-        grid-template-columns: 1.1fr 0.9fr;
         align-items: start;
     }
 
@@ -1941,9 +2300,46 @@ body.recruiter-mode .recruiter-meta-value:hover {
         gap: 14px;
     }
 
+    .recruiter-header-grid,
+    .recruiter-summary-section {
+        grid-template-columns: 1fr;
+    }
+
+    .recruiter-grid-2 {
+        grid-template-columns: 1fr;
+        gap: 26px;
+    }
+
+    .recruiter-screen-intro {
+        min-height: auto;
+    }
+
+    .recruiter-hero-card {
+        grid-template-columns: 82px minmax(0, 1fr);
+        grid-template-areas:
+            "gutter image"
+            "intro intro"
+            ". subcopy"
+            ". details";
+        min-height: auto;
+    }
+
+    .recruiter-hero-copy {
+        width: min(100%, 350px);
+    }
+
+    .recruiter-hero-details,
+    .recruiter-hero-subcopy {
+        width: min(100%, 260px);
+    }
+
     .recruiter-meta-row {
         grid-template-columns: 1fr;
-        gap: 4px;
+        gap: 2px;
+    }
+
+    .recruiter-meta {
+        grid-template-columns: 1fr;
     }
 }
 
@@ -1954,6 +2350,29 @@ body.recruiter-mode .recruiter-meta-value:hover {
 
     .recruiter-inline {
         padding: calc(var(--pill-container-h) + 6px) 0 18px;
+    }
+
+    body.recruiter-mode .recruiter-cases .case-studies {
+        grid-template-columns: 1fr;
+    }
+
+    .recruiter-hero-card {
+        grid-template-columns: 58px minmax(0, 1fr);
+        padding: 14px 14px 24px;
+    }
+
+    .recruiter-hero-intro {
+        font-size: clamp(1.08rem, 4.7vw, 1.42rem);
+    }
+
+    .recruiter-hero-subcopy {
+        font-size: clamp(0.94rem, 3.9vw, 1.08rem);
+    }
+
+    .recruiter-hero-contact-row,
+    .recruiter-hero-studio-name,
+    .recruiter-hero-studio-line {
+        font-size: 0.74rem;
     }
 }
 
@@ -2201,7 +2620,7 @@ body.recruiter-mode .recruiter-meta-value:hover {
 
 /* Staggered entrance for main content blocks */
 .site-content>* {
-    padding-top: 80px;
+    /* padding-top: 80px; */
     opacity: 0;
     transform: translateY(40px);
     transition: opacity 0.8s var(--device-expand-ease), transform 0.8s var(--device-expand-ease), filter 0.8s var(--device-expand-ease);
@@ -4740,7 +5159,7 @@ body.case-open .case-window {
     width: calc(100% + 2 * var(--site-padding-x));
     margin-left: calc(-1 * var(--site-padding-x));
     margin-right: calc(-1 * var(--site-padding-x));
-    /* border-radius: 10px 10px 0 0; */
+    border-radius: 10px 10px 0 0;
     font-family: 'Google Sans', sans-serif;
 }
 

@@ -433,6 +433,7 @@ const pillFifthBtn = document.getElementById('pill-fifth-btn');
 const resumePopoutEl = document.getElementById('resume-popout');
 const readerInlineEl = document.getElementById('reader-inline');
 const recruiterInlineEl = document.getElementById('recruiter-inline');
+const recruiterHeaderEl = recruiterInlineEl?.querySelector('.recruiter-header');
 const showIdBtn = document.getElementById('show-id-btn');
 const idCardDock = document.getElementById('id-card-dock');
 const scrollableContentEl = document.getElementById('scrollable-content');
@@ -2313,11 +2314,54 @@ function initRecruiterMode() {
     }
 
     const scrollableContent = document.getElementById('scrollable-content');
+    const hasVisibleTextContent = (element) => {
+        if (!(element instanceof Element)) return false;
+
+        const candidates = element.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, a, li, div');
+        for (const node of candidates) {
+            if (!(node instanceof HTMLElement)) continue;
+            if (!node.textContent || !node.textContent.trim()) continue;
+
+            const style = window.getComputedStyle(node);
+            if (style.display === 'none' || style.visibility === 'hidden' || Number.parseFloat(style.opacity || '1') === 0) {
+                continue;
+            }
+
+            const rects = node.getClientRects();
+            if (rects.length > 0) {
+                return true;
+            }
+        }
+
+        return false;
+    };
+
+    const syncRecruiterHeaderState = () => {
+        if (!recruiterHeaderEl) return;
+        const isEmpty = !hasVisibleTextContent(recruiterHeaderEl);
+        recruiterHeaderEl.classList.toggle('is-empty', isEmpty);
+        device?.classList.toggle('recruiter-header-empty', isEmpty);
+    };
+
+    if (recruiterHeaderEl && typeof MutationObserver !== 'undefined') {
+        const recruiterHeaderObserver = new MutationObserver(() => {
+            syncRecruiterHeaderState();
+        });
+
+        recruiterHeaderObserver.observe(recruiterHeaderEl, {
+            attributes: true,
+            attributeFilter: ['class', 'style', 'hidden'],
+            characterData: true,
+            childList: true,
+            subtree: true
+        });
+    }
 
     const open = () => {
         device.classList.add('recruiter-mode');
         document.body.classList.add('recruiter-mode');
         recruiterInlineEl?.setAttribute('aria-hidden', 'false');
+        syncRecruiterHeaderState();
         if (scrollableContent) {
             scrollableContent.scrollTop = 0;
         }
@@ -2325,6 +2369,7 @@ function initRecruiterMode() {
 
     const close = () => {
         device.classList.remove('recruiter-mode');
+        device.classList.remove('recruiter-header-empty');
         document.body.classList.remove('recruiter-mode');
         recruiterInlineEl?.setAttribute('aria-hidden', 'true');
     };
