@@ -2421,7 +2421,22 @@ function initReaderBlogs() {
             return;
         }
 
-        const sortedPosts = [...posts].sort((a, b) => new Date(b.date) - new Date(a.date));
+        const visiblePosts = posts.filter((post) => {
+            const title = typeof post?.title === 'string' ? post.title.trim() : '';
+            const file = typeof post?.file === 'string' ? post.file.trim() : '';
+            const normalizedTitle = title.toLowerCase();
+            const normalizedFile = file.toLowerCase();
+
+            return normalizedTitle !== '[your catchy title here]'
+                && normalizedFile !== 'template-post.md';
+        });
+
+        if (visiblePosts.length === 0) {
+            renderStatus('No blog posts yet.');
+            return;
+        }
+
+        const sortedPosts = [...visiblePosts].sort((a, b) => new Date(b.date) - new Date(a.date));
         blogListEl.innerHTML = sortedPosts.map((post) => {
             const title = typeof post.title === 'string' ? post.title : 'Untitled Post';
             const date = formatDate(post.date);
@@ -3236,8 +3251,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Footer Blog Link
-    const footerBlogLink = document.querySelector('.footer-nav-list a[href="#"]:nth-child(4)');
-    if (footerBlogLink && footerBlogLink.textContent.includes('Blog')) {
+    const footerBlogLink = document.querySelector('[data-footer-link="blog"]');
+    if (footerBlogLink) {
         footerBlogLink.addEventListener('click', (e) => {
             e.preventDefault();
             expandDeviceShell(false);
@@ -3842,6 +3857,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const colorPreview = document.getElementById('activeColorPreview');
         const resetBgBtn = document.getElementById('resetBgBtn');
         const miniCarousel = document.getElementById('miniCarousel');
+        const defaultPaletteBg = '#EBEAE6';
 
         const paletteColors = [
             '#ffec59ff', // Yellow
@@ -3860,6 +3876,101 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (colorPalette) {
             const radius = 75; // Distance from center
+            const swatches = [];
+            let magneticHoverIndex = -1;
+            const setResetButtonState = (isDefault) => {
+                if (!resetBgBtn) return;
+                resetBgBtn.disabled = isDefault;
+                resetBgBtn.setAttribute('aria-disabled', isDefault ? 'true' : 'false');
+            };
+
+            const wrapIndex = (index, length) => ((index % length) + length) % length;
+            const getSignedCircularDistance = (fromIndex, toIndex, length) => {
+                const forward = wrapIndex(toIndex - fromIndex, length);
+                const backward = forward - length;
+                return Math.abs(forward) <= Math.abs(backward) ? forward : backward;
+            };
+
+            const clearMagneticState = () => {
+                colorPalette.classList.remove('is-magnetic');
+                colorPalette.style.setProperty('--palette-tilt', '0deg');
+                magneticHoverIndex = -1;
+                swatches.forEach((swatch) => {
+                    swatch.dataset.proximity = '';
+                    swatch.style.setProperty('--swatch-translate-x', '0px');
+                    swatch.style.setProperty('--swatch-translate-y', '0px');
+                    swatch.style.setProperty('--swatch-rotate', '0deg');
+                    if (!swatch.classList.contains('active')) {
+                        swatch.style.setProperty('--swatch-scale', '1');
+                    }
+                });
+            };
+
+            const applyMagneticState = (hoverIndex, pointerAngle = null) => {
+                if (hoverIndex < 0 || hoverIndex >= swatches.length) {
+                    clearMagneticState();
+                    return;
+                }
+
+                magneticHoverIndex = hoverIndex;
+                colorPalette.classList.add('is-magnetic');
+
+                if (pointerAngle !== null) {
+                    const tilt = Math.max(-8, Math.min(8, pointerAngle * 0.14));
+                    colorPalette.style.setProperty('--palette-tilt', `${tilt.toFixed(2)}deg`);
+                }
+
+                swatches.forEach((swatch, index) => {
+                    const signedDistance = getSignedCircularDistance(hoverIndex, index, swatches.length);
+                    const distance = Math.abs(signedDistance);
+                    const direction = signedDistance === 0 ? 0 : Math.sign(signedDistance);
+                    const baseAngle = Number(swatch.dataset.angle || 0);
+                    const rad = baseAngle * (Math.PI / 180);
+                    const tangentRad = rad + (Math.PI / 2);
+
+                    let radialOffset = 0;
+                    let tangentialOffset = 0;
+                    let rotate = 0;
+                    let scale = swatch.classList.contains('active') ? 1.5 : 1;
+
+                    if (distance === 0) {
+                        radialOffset = 8;
+                        rotate = pointerAngle !== null ? pointerAngle * 0.16 : 0;
+                        scale = Math.max(scale, 1.58);
+                    } else if (distance === 1) {
+                        radialOffset = -4;
+                        tangentialOffset = direction * 8;
+                        rotate = direction * 10;
+                        scale = Math.max(scale, 1.18);
+                    } else if (distance === 2) {
+                        radialOffset = -2;
+                        tangentialOffset = direction * 4;
+                        rotate = direction * 5;
+                        scale = Math.max(scale, 1.08);
+                    }
+
+                    const tx = (Math.cos(rad) * radialOffset) + (Math.cos(tangentRad) * tangentialOffset);
+                    const ty = (Math.sin(rad) * radialOffset) + (Math.sin(tangentRad) * tangentialOffset);
+
+                    swatch.dataset.proximity = String(distance);
+                    swatch.style.setProperty('--swatch-translate-x', `${tx.toFixed(2)}px`);
+                    swatch.style.setProperty('--swatch-translate-y', `${ty.toFixed(2)}px`);
+                    swatch.style.setProperty('--swatch-rotate', `${rotate.toFixed(2)}deg`);
+                    swatch.style.setProperty('--swatch-scale', scale.toFixed(2));
+                });
+            };
+
+            const getNearestSwatchIndex = (event) => {
+                const rect = colorPalette.getBoundingClientRect();
+                const centerX = rect.left + (rect.width / 2);
+                const centerY = rect.top + (rect.height / 2);
+                const dx = event.clientX - centerX;
+                const dy = event.clientY - centerY;
+                const pointerAngle = Math.atan2(dy, dx) * (180 / Math.PI);
+                const normalized = (pointerAngle + 450) % 360;
+                const hoverIndex = Math.round(normalized / (360 / paletteColors.length)) % paletteColors.length;
+                return { hoverIndex, pointerAngle };
+            };
 
             paletteColors.forEach((hex, i) => {
                 const swatch = document.createElement('div');
@@ -3874,6 +3985,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 swatch.style.left = `${x}%`;
                 swatch.style.top = `${y}%`;
                 swatch.style.backgroundColor = hex;
+                swatch.dataset.angle = String(angle);
+                swatches.push(swatch);
+
+                swatch.addEventListener('mouseenter', () => {
+                    applyMagneticState(i, angle + 90);
+                });
 
                 swatch.addEventListener('click', () => {
                     // Update Active State
@@ -3885,6 +4002,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     // Apply EXACT color to Site Background
                     document.documentElement.style.setProperty('--bg', hex);
+                    setResetButtonState(hex.toLowerCase() === defaultPaletteBg.toLowerCase());
 
                     // Keep panels clean (white with very subtle transparency to let color bleed through)
                     const panelColor = 'rgba(255, 255, 255, 0.98)';
@@ -3897,17 +4015,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 colorPalette.appendChild(swatch);
             });
+
+            setResetButtonState(true);
+
+            colorPalette.addEventListener('mouseenter', (event) => {
+                const { hoverIndex, pointerAngle } = getNearestSwatchIndex(event);
+                applyMagneticState(hoverIndex, pointerAngle);
+            });
+
+            colorPalette.addEventListener('mousemove', (event) => {
+                const { hoverIndex, pointerAngle } = getNearestSwatchIndex(event);
+                if (hoverIndex !== magneticHoverIndex || colorPalette.style.getPropertyValue('--palette-tilt') === '0deg') {
+                    applyMagneticState(hoverIndex, pointerAngle);
+                    return;
+                }
+
+                const tilt = Math.max(-8, Math.min(8, pointerAngle * 0.14));
+                colorPalette.style.setProperty('--palette-tilt', `${tilt.toFixed(2)}deg`);
+            });
+
+            colorPalette.addEventListener('mouseleave', () => {
+                clearMagneticState();
+            });
         }
 
         if (resetBgBtn) {
             resetBgBtn.addEventListener('click', () => {
-                document.documentElement.style.setProperty('--bg', '#EBEAE6');
+                document.documentElement.style.setProperty('--bg', defaultPaletteBg);
                 document.documentElement.style.setProperty('--panel', '#ffffff');
                 document.querySelectorAll('.content-block-white').forEach(block => {
                     block.style.backgroundColor = '#ffffff';
                 });
                 document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
-                if (colorPreview) colorPreview.style.backgroundColor = '#EBEAE6';
+                if (colorPreview) colorPreview.style.backgroundColor = defaultPaletteBg;
+                resetBgBtn.disabled = true;
+                resetBgBtn.setAttribute('aria-disabled', 'true');
             });
         }
 

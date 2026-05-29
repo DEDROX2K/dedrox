@@ -5,22 +5,358 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Blog Article</title>
-  <link rel="stylesheet" href="./styles.css" />
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #ffffff;
+      --paper-strong: #f6f6f3;
+      --ink: rgba(12, 12, 16, 0.98);
+      --ink-soft: rgba(16, 18, 24, 0.76);
+      --ink-faint: rgba(16, 18, 24, 0.58);
+      --line: rgba(16, 18, 24, 0.08);
+      --radius: 40px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Google Sans", "Helvetica Neue", Arial, sans-serif;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(16, 18, 24, 0.18) transparent;
+    }
+
+    body {
+      padding: 0;
+    }
+
+    html::-webkit-scrollbar,
+    body::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    html::-webkit-scrollbar-track,
+    body::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    html::-webkit-scrollbar-thumb,
+    body::-webkit-scrollbar-thumb {
+      background: rgba(16, 18, 24, 0.14);
+      border-radius: 999px;
+      border: 2px solid transparent;
+      background-clip: padding-box;
+    }
+
+    html::-webkit-scrollbar-thumb:hover,
+    body::-webkit-scrollbar-thumb:hover {
+      background: rgba(16, 18, 24, 0.22);
+      border: 2px solid transparent;
+      background-clip: padding-box;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .article-shell {
+      width: min(100%, 980px);
+      margin: 0 auto;
+      padding: 32px 36px 56px;
+    }
+
+    .article-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 0 0 18px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .article-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.95rem;
+      line-height: 1.1;
+      text-decoration: none;
+      color: var(--ink-soft);
+    }
+
+    .article-back:hover {
+      text-decoration: underline;
+    }
+
+    .article-kicker {
+      font-size: 0.86rem;
+      line-height: 1;
+      letter-spacing: 0.02em;
+      color: var(--ink-faint);
+      text-transform: uppercase;
+    }
+
+    .article-grid {
+      display: grid;
+      grid-template-columns: 120px minmax(0, 1fr);
+      gap: 20px 26px;
+      padding-top: 22px;
+    }
+
+    .article-label {
+      font-size: 0.95rem;
+      font-weight: 500;
+      line-height: 1.2;
+      color: rgba(16, 18, 24, 0.88);
+      padding-top: 4px;
+    }
+
+    .article-main {
+      min-width: 0;
+    }
+
+    .article-hero {
+      display: grid;
+      gap: 16px;
+      padding-bottom: 22px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .article-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 12px;
+      align-items: center;
+      color: var(--ink-faint);
+      font-size: 0.94rem;
+      line-height: 1.2;
+    }
+
+    .article-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 10px;
+    }
+
+    .article-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 9px 14px;
+      border: 1px solid rgba(16, 18, 24, 0.2);
+      border-radius: var(--radius);
+      font-size: 0.82rem;
+      line-height: 1;
+      text-transform: uppercase;
+      color: rgba(12, 12, 16, 0.84);
+      background: #f5f5f5;
+    }
+
+    .article-tag.tag-yellow {
+      background: #f6ef7a;
+    }
+
+    .article-tag.tag-lime {
+      background: #bff28d;
+    }
+
+    .article-tag.tag-sky {
+      background: #c4ecff;
+    }
+
+    .article-tag.tag-coral {
+      background: #ffd0bf;
+    }
+
+    .article-tag.tag-lilac {
+      background: #ddd3ff;
+    }
+
+    .article-title {
+      margin: 0;
+      max-width: 11ch;
+      font-size: clamp(2.2rem, 4.4vw, 4.2rem);
+      line-height: 0.9;
+      letter-spacing: -0.065em;
+      font-weight: 500;
+      text-wrap: balance;
+    }
+
+    .article-intro {
+      margin: 0;
+      max-width: 42ch;
+      font-size: clamp(1.06rem, 1.22vw, 1.18rem);
+      line-height: 1.38;
+      letter-spacing: -0.02em;
+      color: var(--ink-soft);
+    }
+
+    .article-body {
+      display: grid;
+      gap: 24px;
+      padding-top: 22px;
+    }
+
+    .article-body > * {
+      margin: 0;
+      min-width: 0;
+    }
+
+    .article-body p,
+    .article-body li,
+    .article-body blockquote {
+      max-width: 46ch;
+      font-size: 1.04rem;
+      line-height: 1.42;
+      color: rgba(16, 18, 24, 0.9);
+    }
+
+    .article-body h2,
+    .article-body h3,
+    .article-body h4 {
+      margin: 8px 0 0;
+      max-width: 18ch;
+      font-size: clamp(1.24rem, 1.7vw, 1.7rem);
+      line-height: 1.02;
+      letter-spacing: -0.045em;
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    .article-body ul,
+    .article-body ol {
+      display: grid;
+      gap: 10px;
+      padding-left: 22px;
+      margin: 0;
+    }
+
+    .article-body strong {
+      font-weight: 600;
+    }
+
+    .article-body blockquote {
+      padding: 18px 20px;
+      border-left: 1px solid rgba(16, 18, 24, 0.22);
+      background: var(--paper-strong);
+      color: var(--ink-soft);
+      border-radius: var(--radius);
+    }
+
+    .article-body img {
+      width: 100%;
+      max-width: 600px;
+      height: auto;
+      display: block;
+      border-radius: var(--radius);
+      filter: grayscale(1) contrast(1.02);
+    }
+
+    html.is-embedded .article-header {
+      display: none;
+    }
+
+    html.is-embedded .article-shell {
+      padding-top: 42px;
+    }
+
+    html.is-embedded .article-grid {
+      padding-top: 10px;
+    }
+
+    .article-body hr {
+      width: 100%;
+      border: 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .article-status {
+      margin: 0;
+      font-size: 1rem;
+      line-height: 1.4;
+      color: var(--ink-soft);
+    }
+
+    @media (max-width: 760px) {
+      .article-shell {
+        padding: 22px 14px 28px;
+      }
+
+      .article-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .article-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .article-label {
+        padding-top: 0;
+        font-size: 0.88rem;
+      }
+
+      .article-title {
+        max-width: 12ch;
+        font-size: clamp(1.7rem, 9vw, 2.7rem);
+      }
+
+      .article-intro,
+      .article-body p,
+      .article-body li,
+      .article-body blockquote {
+        font-size: 1rem;
+      }
+    }
+  </style>
 </head>
 
 <body>
-  <header class="site-shell site-shell--header article-header">
-    <a class="back-link" href="./index.html">← Back to all posts</a>
-  </header>
+  <div class="article-shell">
+    <header class="article-header">
+      <a class="article-back" href="./index.html">← Back to all posts</a>
+      <div class="article-kicker">Journal</div>
+    </header>
 
-  <main class="blog-content" id="blog-content" aria-live="polite"></main>
+    <main class="article-grid" aria-live="polite">
+      <div class="article-label">Article</div>
+      <article class="article-main">
+        <section class="article-hero">
+          <div class="article-meta" id="article-meta"></div>
+          <h1 class="article-title" id="article-title">Loading article...</h1>
+          <p class="article-intro" id="article-intro"></p>
+        </section>
+        <section class="article-body" id="blog-content"></section>
+      </article>
+    </main>
+  </div>
 
   <script>
+    document.documentElement.classList.toggle('is-embedded', window.self !== window.top);
+
     const contentEl = document.getElementById('blog-content');
+    const titleEl = document.getElementById('article-title');
+    const introEl = document.getElementById('article-intro');
+    const metaEl = document.getElementById('article-meta');
+
+    marked.setOptions({
+      headerIds: false,
+      mangle: false
+    });
 
     const renderError = (message) => {
-      contentEl.innerHTML = `<p class="status-message">${message}</p>`;
+      titleEl.textContent = 'Article unavailable';
+      introEl.textContent = '';
+      metaEl.innerHTML = '';
+      contentEl.innerHTML = `<p class="article-status">${message}</p>`;
     };
 
     const getPostFilename = () => {
@@ -35,6 +371,45 @@
       return post;
     };
 
+    const formatDate = (rawDate) => {
+      const date = new Date(rawDate);
+      if (Number.isNaN(date.getTime())) return '';
+
+      return new Intl.DateTimeFormat('en-GB', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+      }).format(date);
+    };
+
+    const toTitleCase = (value) => String(value || '')
+      .split('-')
+      .map((part) => part ? part.charAt(0).toUpperCase() + part.slice(1) : '')
+      .join(' ');
+
+    const extractIntro = (root) => {
+      const firstParagraph = root.querySelector('p');
+      return firstParagraph ? firstParagraph.textContent.trim() : '';
+    };
+
+    const renderMeta = (postMeta) => {
+      const bits = [];
+      const formattedDate = formatDate(postMeta?.date);
+      const tags = Array.isArray(postMeta?.tags) ? postMeta.tags : [];
+      const tagPalette = ['tag-yellow', 'tag-lime', 'tag-sky', 'tag-coral', 'tag-lilac'];
+
+      if (formattedDate) {
+        bits.push(`<span>${formattedDate}</span>`);
+      }
+
+      if (tags.length) {
+        const tagsMarkup = tags.map((tag, index) => `<span class="article-tag ${tagPalette[index % tagPalette.length]}">${toTitleCase(tag)}</span>`).join('');
+        bits.push(`<div class="article-tags">${tagsMarkup}</div>`);
+      }
+
+      metaEl.innerHTML = bits.join('');
+    };
+
     const loadPost = async () => {
       const fileName = getPostFilename();
 
@@ -44,22 +419,45 @@
       }
 
       try {
-        const response = await fetch(`./posts/${fileName}`, { cache: 'no-store' });
-        if (response.status === 404) {
+        const [postsResponse, markdownResponse] = await Promise.all([
+          fetch('./posts.json', { cache: 'no-store' }),
+          fetch(`./posts/${fileName}`, { cache: 'no-store' })
+        ]);
+
+        if (markdownResponse.status === 404) {
           renderError('Post not found.');
           return;
         }
-        if (!response.ok) {
-          throw new Error(`Failed to load post (${response.status})`);
+
+        if (!markdownResponse.ok) {
+          throw new Error(`Failed to load post (${markdownResponse.status})`);
         }
 
-        const markdown = await response.text();
+        const markdown = await markdownResponse.text();
         const parsedHtml = marked.parse(markdown);
         contentEl.innerHTML = parsedHtml;
 
-        const heading = contentEl.querySelector('h1, h2');
+        const matchedPost = postsResponse.ok
+          ? (await postsResponse.json()).find((post) => post && post.file === fileName)
+          : null;
+
+        const heading = contentEl.querySelector('h1');
+        const fallbackTitle = matchedPost?.title || 'Untitled Post';
+        const title = heading ? heading.textContent.trim() : fallbackTitle;
+
+        titleEl.textContent = title;
+        document.title = `${title} | Blog`;
+        renderMeta(matchedPost);
+
         if (heading) {
-          document.title = `${heading.textContent} | Blog`;
+          heading.remove();
+        }
+
+        introEl.textContent = extractIntro(contentEl);
+
+        const firstParagraph = contentEl.querySelector('p');
+        if (firstParagraph) {
+          firstParagraph.remove();
         }
       } catch (error) {
         console.error(error);
