@@ -138,6 +138,9 @@ const SITE_CONFIG = {
         let caseMotionTimer = null;
         let activeCaseHref = '';
         const CASE_ANIM_MS = 560;
+        const CASE_MORPH_MS = 620;
+        let activeMorphCleanup = null;
+        let morphRevealTimer = null;
         const fallbackCaseLinks = {
             case1: 'Case1.html',
             case2: 'Case2.html',
@@ -169,11 +172,137 @@ const SITE_CONFIG = {
             document.body.classList.toggle('case-open', isOpen);
         };
 
+        const nextFrame = () => new Promise((resolve) => {
+            window.requestAnimationFrame(() => resolve());
+        });
+
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        const cleanupActiveMorph = () => {
+            if (typeof activeMorphCleanup === 'function') {
+                activeMorphCleanup();
+                activeMorphCleanup = null;
+            }
+            if (morphRevealTimer) {
+                window.clearTimeout(morphRevealTimer);
+                morphRevealTimer = null;
+            }
+        };
+
+        const createCardMorphClone = (cardEl, fromRect) => {
+            const clone = cardEl.cloneNode(true);
+            clone.classList.add('case-morph-clone');
+            clone.setAttribute('aria-hidden', 'true');
+            clone.removeAttribute('href');
+            clone.style.left = `${fromRect.left}px`;
+            clone.style.top = `${fromRect.top}px`;
+            clone.style.width = `${fromRect.width}px`;
+            clone.style.height = `${fromRect.height}px`;
+            document.body.appendChild(clone);
+            return clone;
+        };
+
+        const prepCaseWindowForMorph = () => {
+            setCaseLayout(true);
+            clearCaseMotion();
+            caseWindow.classList.remove('minimized');
+            caseWindow.classList.remove('is-closing');
+            caseWindow.classList.add('visible', 'is-opening', 'morph-prep');
+        };
+
+        const finishCaseWindowOpen = (revealWindow = true) => {
+            if (revealWindow) {
+                caseWindow.classList.remove('morph-prep');
+            }
+            caseMotionTimer = window.setTimeout(() => {
+                clearCaseMotion();
+            }, CASE_ANIM_MS);
+        };
+
+        const morphCardToCaseWindow = async (cardEl) => {
+            if (!cardEl || prefersReducedMotion) return false;
+
+            cleanupActiveMorph();
+
+            const fromRect = cardEl.getBoundingClientRect();
+            if (!fromRect.width || !fromRect.height) return false;
+
+            const clone = createCardMorphClone(cardEl, fromRect);
+            const sourceVisibility = cardEl.style.visibility;
+            cardEl.style.visibility = 'hidden';
+
+            let cleaned = false;
+            const cleanup = () => {
+                if (cleaned) return;
+                cleaned = true;
+                clone.remove();
+                cardEl.style.visibility = sourceVisibility;
+                caseWindow.classList.remove('morph-prep');
+                activeMorphCleanup = null;
+            };
+            prepCaseWindowForMorph();
+            activeMorphCleanup = cleanup;
+            await nextFrame();
+            await nextFrame();
+
+            const toRect = caseWindow.getBoundingClientRect();
+            morphRevealTimer = window.setTimeout(() => {
+                caseWindow.classList.remove('morph-prep');
+                morphRevealTimer = null;
+            }, Math.round(CASE_MORPH_MS * 0.62));
+
+            const animation = clone.animate([
+                {
+                    opacity: 1,
+                    left: `${fromRect.left}px`,
+                    top: `${fromRect.top}px`,
+                    width: `${fromRect.width}px`,
+                    height: `${fromRect.height}px`,
+                    borderRadius: `${Math.min(fromRect.width, fromRect.height) * 0.08}px`,
+                    boxShadow: '1px 5px 0px rgba(0, 0, 0, 0.06)'
+                },
+                {
+                    offset: 0.78,
+                    opacity: 1,
+                    left: `${toRect.left}px`,
+                    top: `${toRect.top}px`,
+                    width: `${toRect.width}px`,
+                    height: `${toRect.height}px`,
+                    borderRadius: '28px',
+                    boxShadow: '0 20px 64px rgba(0, 0, 0, 0.16)'
+                },
+                {
+                    opacity: 0,
+                    left: `${toRect.left}px`,
+                    top: `${toRect.top}px`,
+                    width: `${toRect.width}px`,
+                    height: `${toRect.height}px`,
+                    borderRadius: '28px',
+                    boxShadow: '0 20px 64px rgba(0, 0, 0, 0.16)'
+                }
+            ], {
+                duration: CASE_MORPH_MS,
+                easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+                fill: 'forwards'
+            });
+
+            try {
+                await animation.finished;
+            } catch (error) {
+                cleanup();
+                return false;
+            }
+
+            cleanup();
+            return true;
+        };
+
         const clearCaseMotion = () => {
             if (caseMotionTimer) {
                 window.clearTimeout(caseMotionTimer);
                 caseMotionTimer = null;
             }
+            cleanupActiveMorph();
             caseWindow.classList.remove('is-opening');
             caseWindow.classList.remove('is-closing');
         };
@@ -203,21 +332,28 @@ const SITE_CONFIG = {
             }, CASE_ANIM_MS);
         };
 
-        const showCase = (data, caseHref = '') => {
+        const hydrateCaseContent = (data) => {
             caseWindow.classList.remove('is-external-content');
             if (titleDisp) titleDisp.textContent = data.title;
-
-            const now = new Date();
-            const dateStr = now.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
-            const timeStr = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: true }).toUpperCase();
-            const postedDate = data.postedDate || "04/21/2024";
-
             contentArea.innerHTML = `
                 ${data.images.map(img => `<img src="${img}" alt="Case Image">`).join('')}
             `;
+            contentArea.scrollTop = 0;
+        };
+
+        const showCase = async (data, caseHref = '', sourceCard = null) => {
+            hydrateCaseContent(data);
             activeCaseHref = caseHref;
             syncOpenButton();
             setBehanceUrl(data.behanceUrl || '');
+
+            if (sourceCard && !caseWindow.classList.contains('visible')) {
+                const morphed = await morphCardToCaseWindow(sourceCard);
+                if (morphed) {
+                    finishCaseWindowOpen(false);
+                    return;
+                }
+            }
 
             setCaseLayout(true);
             clearCaseMotion();
@@ -225,10 +361,7 @@ const SITE_CONFIG = {
             caseWindow.classList.add('visible');
             caseWindow.classList.add('is-opening');
             contentArea.scrollTop = 0;
-
-            caseMotionTimer = window.setTimeout(() => {
-                clearCaseMotion();
-            }, CASE_ANIM_MS);
+            finishCaseWindowOpen();
         };
 
         const showCaseExternal = (title, embedHref, caseHref = '') => {
@@ -251,7 +384,7 @@ const SITE_CONFIG = {
             }, CASE_ANIM_MS);
         };
 
-        const openCase = (caseId, caseHref = '') => {
+        const openCase = async (caseId, caseHref = '', sourceCard = null) => {
             if (isTransitioning) return;
             const data = SITE_CONFIG.caseData[caseId];
             if (!data) return;
@@ -260,12 +393,12 @@ const SITE_CONFIG = {
             if (caseWindow.classList.contains('visible')) {
                 isTransitioning = true;
                 closeCase({ keepLayout: true });
-                window.setTimeout(() => {
-                    showCase(data, resolvedHref);
+                window.setTimeout(async () => {
+                    await showCase(data, resolvedHref, sourceCard);
                     isTransitioning = false;
                 }, CASE_ANIM_MS + 20);
             } else {
-                showCase(data, resolvedHref);
+                await showCase(data, resolvedHref, sourceCard);
             }
         };
 
@@ -292,7 +425,7 @@ const SITE_CONFIG = {
                 e.preventDefault();
                 const caseId = card.getAttribute('data-case');
                 const caseHref = card.getAttribute('href');
-                openCase(caseId, caseHref);
+                openCase(caseId, caseHref, card);
             });
         });
 
@@ -413,6 +546,8 @@ function applyPillSizes(state) {
 
 const device = document.getElementById('portfolio-device');
 const topBar = document.getElementById('top-bar');
+const topBarPill = document.querySelector('.top-bar-pill');
+const pillButtonsUnified = document.querySelector('.pill-buttons-unified');
 const topBarArt = document.getElementById('top-bar-art');
 const githubChartImg = document.getElementById('github-chart-img');
 const secondsDot = document.getElementById('seconds-dot');
@@ -2314,6 +2449,29 @@ function initRecruiterMode() {
     }
 
     const scrollableContent = document.getElementById('scrollable-content');
+    const syncRecruiterPillWidth = () => {
+        if (!topBarPill || !pillButtonsUnified) return;
+        if (!device.classList.contains('recruiter-mode')) return;
+        if (window.matchMedia('(max-width: 640px)').matches) {
+            topBarPill.style.removeProperty('--recruiter-pill-target-width');
+            return;
+        }
+
+        const computed = window.getComputedStyle(topBarPill);
+        const paddingLeft = Number.parseFloat(computed.paddingLeft) || 0;
+        const paddingRight = Number.parseFloat(computed.paddingRight) || 0;
+        const borderLeft = Number.parseFloat(computed.borderLeftWidth) || 0;
+        const borderRight = Number.parseFloat(computed.borderRightWidth) || 0;
+        const targetWidth = Math.ceil(
+            pillButtonsUnified.scrollWidth +
+            paddingLeft +
+            paddingRight +
+            borderLeft +
+            borderRight
+        );
+
+        topBarPill.style.setProperty('--recruiter-pill-target-width', `${targetWidth}px`);
+    };
     const hasVisibleTextContent = (element) => {
         if (!(element instanceof Element)) return false;
 
@@ -2362,6 +2520,9 @@ function initRecruiterMode() {
         document.body.classList.add('recruiter-mode');
         recruiterInlineEl?.setAttribute('aria-hidden', 'false');
         syncRecruiterHeaderState();
+        window.requestAnimationFrame(() => {
+            syncRecruiterPillWidth();
+        });
         if (scrollableContent) {
             scrollableContent.scrollTop = 0;
         }
@@ -2372,6 +2533,7 @@ function initRecruiterMode() {
         device.classList.remove('recruiter-header-empty');
         document.body.classList.remove('recruiter-mode');
         recruiterInlineEl?.setAttribute('aria-hidden', 'true');
+        topBarPill?.style.removeProperty('--recruiter-pill-target-width');
     };
 
     const toggle = () => {
@@ -2381,6 +2543,9 @@ function initRecruiterMode() {
         }
         open();
     };
+
+    window.addEventListener('resize', syncRecruiterPillWidth);
+    window.addEventListener('orientationchange', syncRecruiterPillWidth);
 
     return {
         open,
