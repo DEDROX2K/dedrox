@@ -323,9 +323,8 @@
                         Building a bookmark management tool called Airpaste.
                     </p>
                     <div class="hero-clean-actions">
-                        <a href="https://www.linkedin.com/in/raghav-prasanna-b530621b0/" target="_blank"
-                            class="btn-primary" data-cursor="link">
-                            Linked-in <img src="images/Vector/linkedin-svgrepo-com.svg" alt="" class="linkedin-icon"
+                        <a href="#" class="btn-primary" id="show-resume-btn" data-cursor="link">
+                            Show Resume <img src="iconset/summarize.png" alt="" class="resume-icon"
                                 aria-hidden="true">
                         </a>
                         <a href="#" class="btn-secondary" id="show-id-btn" data-cursor="link">
@@ -557,7 +556,6 @@
             <section class="isolated-section toy-model-section" aria-label="3D Interactive character model"
                 style="padding: 0px 0px;">
                 <div class="toy-model-container">
-                    <span class="toy-model-kicker">Final stop</span>
                     <p class="toy-model-caption">
                         Im still constructing and desgning this site with miniscule details. Come back later! Thanks for
                         visiting
@@ -716,6 +714,14 @@
     <div class="device-bottom-blur"></div>
     </div> <!-- End device-container -->
 
+    <!-- Resume Peek Dock -->
+    <div class="resume-card-wrap" aria-hidden="true">
+        <button class="resume-card-dock" id="resume-card-dock" type="button" aria-expanded="false"
+            aria-label="Open resume preview" data-cursor="link">
+            <img src="images/Resumeimagepeek.png" alt="Resume preview for Raghav Prasanna" loading="eager">
+        </button>
+    </div>
+
 
 
     <!-- Case Study Window (Side Overlay) -->
@@ -742,6 +748,16 @@
                     </svg>
                 </button>
             </div>
+            <a class="floating-controls floating-controls-left" id="case-download-link" href="#" target="_blank"
+                rel="noopener noreferrer" aria-label="Download resume" data-cursor="link">
+                <span class="f-download-label">Download</span>
+                <span class="f-download-icon" aria-hidden="true">
+                    <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 1v6M3.5 5.5L6 8l2.5-2.5M2 10h8" />
+                    </svg>
+                </span>
+            </a>
             <a class="floating-controls floating-controls-right" id="case-behance-link" href="#" target="_blank"
                 rel="noopener noreferrer" aria-label="View on Behance" data-cursor="link">
                 <span class="f-behance-label">Behance</span>

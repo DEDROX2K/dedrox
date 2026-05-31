@@ -120,6 +120,7 @@ const SITE_CONFIG = {
         const caseWindow = document.getElementById('case-window');
         const closeBtn = document.getElementById('case-close');
         const openBtn = document.getElementById('case-open-link');
+        const downloadBtn = document.getElementById('case-download-link');
         const behanceBtn = document.getElementById('case-behance-link');
         const externalBtn = document.getElementById('case-external-link');
         const contentArea = document.getElementById('case-content-area');
@@ -134,11 +135,33 @@ const SITE_CONFIG = {
             }
         };
 
+        const setExternalLink = (label, href, ariaLabel) => {
+            if (!externalBtn) return;
+            externalBtn.href = href || '#';
+            const labelEl = externalBtn.querySelector('.f-external-label');
+            if (labelEl) labelEl.textContent = label || 'Visit';
+            if (ariaLabel) {
+                externalBtn.setAttribute('aria-label', ariaLabel);
+            }
+        };
+
+        const setDownloadLink = (label, href, ariaLabel) => {
+            if (!downloadBtn) return;
+            downloadBtn.href = href || '#';
+            const labelEl = downloadBtn.querySelector('.f-download-label');
+            if (labelEl) labelEl.textContent = label || 'Download';
+            if (ariaLabel) {
+                downloadBtn.setAttribute('aria-label', ariaLabel);
+            }
+        };
+
         let isTransitioning = false;
         let caseMotionTimer = null;
         let activeCaseHref = '';
         const CASE_ANIM_MS = 560;
         const CASE_MORPH_MS = 620;
+        const resumePdfHref = 'threeD/CV_RESUME-RAGHAV.pdf';
+        const resumePageImages = Array.from({ length: 4 }, (_, index) => `images/resume-pages/page-${String(index + 1).padStart(2, '0')}.png`);
         let activeMorphCleanup = null;
         let morphRevealTimer = null;
         const fallbackCaseLinks = {
@@ -311,7 +334,10 @@ const SITE_CONFIG = {
             clearCaseMotion();
             caseWindow.classList.remove('visible');
             caseWindow.classList.remove('minimized');
+            caseWindow.classList.remove('is-resume-content');
             setBehanceUrl('');
+            setDownloadLink('Download', '#', 'Download resume');
+            setExternalLink('Visit', '#', 'Visit Site');
             if (!keepLayout) {
                 setCaseLayout(false);
             }
@@ -366,10 +392,12 @@ const SITE_CONFIG = {
 
         const showCaseExternal = (title, embedHref, caseHref = '') => {
             caseWindow.classList.add('is-external-content');
+            caseWindow.classList.remove('is-resume-content');
             if (titleDisp) titleDisp.textContent = title;
             contentArea.innerHTML = `<iframe class="case-content-iframe" src="${escapeAttr(embedHref)}" title="${escapeAttr(title)}" loading="eager"></iframe>`;
             activeCaseHref = caseHref || embedHref;
             if (externalBtn) externalBtn.href = activeCaseHref;
+            setExternalLink('Visit', activeCaseHref, 'Open external content in a new tab');
             syncOpenButton();
 
             setCaseLayout(true);
@@ -377,6 +405,47 @@ const SITE_CONFIG = {
             caseWindow.classList.remove('minimized');
             caseWindow.classList.add('visible');
             caseWindow.classList.add('is-opening');
+            contentArea.scrollTop = 0;
+
+            caseMotionTimer = window.setTimeout(() => {
+                clearCaseMotion();
+            }, CASE_ANIM_MS);
+        };
+
+        const showResumePanel = () => {
+            caseWindow.classList.add('is-external-content', 'is-resume-content');
+            if (titleDisp) titleDisp.textContent = 'Resume';
+            setDownloadLink('Download', resumePdfHref, 'Download resume PDF');
+
+            contentArea.innerHTML = `
+                <section class="resume-panel">
+                    <div class="resume-panel-intro">
+                        <div class="resume-panel-copy">
+                            <p class="resume-panel-kicker">Resume</p>
+                            <h2 class="resume-panel-title">Raghav Prasanna</h2>
+                            <p class="resume-panel-summary">
+                                Product designer engineer based in London. The full resume is shown below as a complete page stack.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="resume-panel-pages" aria-label="Resume pages">
+                        ${resumePageImages.map((src, index) => `
+                            <figure class="resume-page">
+                                <img src="${escapeAttr(src)}" alt="Resume page ${index + 1} for Raghav Prasanna" loading="${index === 0 ? 'eager' : 'lazy'}" decoding="async">
+                            </figure>
+                        `).join('')}
+                    </div>
+                </section>
+            `;
+
+            activeCaseHref = resumePdfHref;
+            setExternalLink('PDF', resumePdfHref, 'Open resume PDF in a new tab');
+            syncOpenButton();
+
+            setCaseLayout(true);
+            clearCaseMotion();
+            caseWindow.classList.remove('minimized');
+            caseWindow.classList.add('visible', 'is-opening');
             contentArea.scrollTop = 0;
 
             caseMotionTimer = window.setTimeout(() => {
@@ -407,6 +476,20 @@ const SITE_CONFIG = {
             const resolvedHref = normalizeHref(href);
             if (!resolvedHref) return;
             const resolvedTitle = (typeof title === 'string' && title.trim()) ? title.trim() : 'Article';
+
+            if (resolvedHref === resumePdfHref || resolvedTitle.toLowerCase() === 'resume') {
+                if (caseWindow.classList.contains('visible')) {
+                    isTransitioning = true;
+                    closeCase({ keepLayout: true });
+                    window.setTimeout(() => {
+                        showResumePanel();
+                        isTransitioning = false;
+                    }, CASE_ANIM_MS + 20);
+                } else {
+                    showResumePanel();
+                }
+                return;
+            }
 
             if (caseWindow.classList.contains('visible')) {
                 isTransitioning = true;
@@ -447,7 +530,9 @@ const SITE_CONFIG = {
             close: () => closeCase(),
             closeImmediate: () => closeCase({ immediate: true }),
             isVisible: () => caseWindow.classList.contains('visible') || caseWindow.classList.contains('is-closing'),
-            openExternal: ({ title = 'Article', href = '' } = {}) => openExternalCase(title, href)
+            openExternal: ({ title = 'Article', href = '' } = {}) => openExternalCase(title, href),
+            getActiveHref: () => activeCaseHref,
+            getActiveTitle: () => (titleDisp ? titleDisp.textContent || '' : '')
         };
 
         // Listen for all side-panel-trigger links
@@ -569,7 +654,9 @@ const resumePopoutEl = document.getElementById('resume-popout');
 const readerInlineEl = document.getElementById('reader-inline');
 const recruiterInlineEl = document.getElementById('recruiter-inline');
 const recruiterHeaderEl = recruiterInlineEl?.querySelector('.recruiter-header');
+const showResumeBtn = document.getElementById('show-resume-btn');
 const showIdBtn = document.getElementById('show-id-btn');
+const resumeCardDock = document.getElementById('resume-card-dock');
 const idCardDock = document.getElementById('id-card-dock');
 const scrollableContentEl = document.getElementById('scrollable-content');
 
@@ -727,6 +814,184 @@ function initLeftOrbControls() {
             window.removeEventListener('resize', onScroll);
             window.removeEventListener('orientationchange', onScroll);
         }
+    };
+}
+
+function initResumeDockSystem() {
+    if (!device || !resumeCardDock) {
+        return {
+            showPeek: () => { },
+            closeToPeek: () => { },
+            hide: () => { },
+            togglePanel: () => { },
+            isVisible: () => false,
+            isPanelOpen: () => false,
+            isInside: () => false,
+            updateAnchor: () => { }
+        };
+    }
+
+    const resumeCardWrap = resumeCardDock.closest('.resume-card-wrap');
+    const resumePdfHref = 'threeD/CV_RESUME-RAGHAV.pdf';
+
+    if (resumeCardWrap && resumeCardWrap.parentElement !== document.body) {
+        document.body.appendChild(resumeCardWrap);
+    }
+
+    const readCssNumberVar = (name, fallback) => {
+        const raw = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+        const parsed = Number.parseFloat(raw);
+        return Number.isFinite(parsed) ? parsed : fallback;
+    };
+
+    const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+    const getPeekAutoHideMs = () => Math.max(0, readCssNumberVar('--resume-peek-autohide-ms', 3000));
+
+    const getDockBounds = () => {
+        const rect = resumeCardDock.getBoundingClientRect();
+        return {
+            width: rect.width || resumeCardDock.offsetWidth || 0,
+            height: rect.height || resumeCardDock.offsetHeight || 0
+        };
+    };
+
+    const setDockPosition = (left, top) => {
+        const { width, height } = getDockBounds();
+        const padding = 8;
+        const maxLeft = Math.max(padding, window.innerWidth - width - padding);
+        const maxTop = Math.max(padding, window.innerHeight - height - padding);
+        resumeCardDock.style.left = `${clamp(left, padding, maxLeft)}px`;
+        resumeCardDock.style.top = `${clamp(top, padding, maxTop)}px`;
+    };
+
+    let visible = false;
+    let peekHideTimer = 0;
+
+    const clearPeekHideTimer = () => {
+        if (!peekHideTimer) return;
+        window.clearTimeout(peekHideTimer);
+        peekHideTimer = 0;
+    };
+
+    const isPanelOpen = () => {
+        const overlay = window.CaseOverlayControl;
+        return Boolean(
+            overlay?.isVisible?.() &&
+            (overlay?.getActiveHref?.() || '') === resumePdfHref
+        );
+    };
+
+    const openPanel = () => {
+        const overlay = window.CaseOverlayControl;
+        if (overlay?.openExternal) {
+            overlay.openExternal({ title: 'Resume', href: resumePdfHref });
+        } else {
+            window.open(resumePdfHref, '_blank', 'noopener,noreferrer');
+        }
+    };
+
+    const closePanel = () => {
+        const overlay = window.CaseOverlayControl;
+        if (isPanelOpen()) {
+            overlay?.close?.();
+        }
+    };
+
+    const updateAnchor = () => {
+        const rect = device.getBoundingClientRect();
+        const offsetX = readCssNumberVar('--resume-anchor-offset-x', 6);
+        const anchorYRatio = readCssNumberVar('--resume-anchor-y-ratio', 0.52);
+        const offsetY = readCssNumberVar('--resume-anchor-offset-y', 14);
+        const { width } = getDockBounds();
+
+        const left = rect.left - width - offsetX;
+        const top = rect.top + (rect.height * anchorYRatio) + offsetY;
+        setDockPosition(left, top);
+    };
+
+    const schedulePeekAutoHide = () => {
+        clearPeekHideTimer();
+        if (!visible || isPanelOpen()) return;
+        const hideDelay = getPeekAutoHideMs();
+        if (hideDelay <= 0) return;
+
+        peekHideTimer = window.setTimeout(() => {
+            if (!visible || isPanelOpen()) return;
+            hide();
+        }, hideDelay);
+    };
+
+    const showPeek = () => {
+        visible = true;
+        resumeCardWrap?.setAttribute('aria-hidden', 'false');
+        resumeCardDock.classList.add('visible');
+        resumeCardDock.setAttribute('aria-expanded', isPanelOpen() ? 'true' : 'false');
+        updateAnchor();
+        schedulePeekAutoHide();
+    };
+
+    const hide = () => {
+        visible = false;
+        clearPeekHideTimer();
+        resumeCardWrap?.setAttribute('aria-hidden', 'true');
+        resumeCardDock.classList.remove('visible');
+        resumeCardDock.setAttribute('aria-expanded', 'false');
+    };
+
+    const closeToPeek = () => {
+        if (!visible) return;
+        closePanel();
+        showPeek();
+    };
+
+    const togglePanel = () => {
+        if (isPanelOpen()) {
+            closeToPeek();
+            return;
+        }
+        openPanel();
+    };
+
+    resumeCardDock.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        togglePanel();
+    });
+
+    window.addEventListener('resize', () => {
+        if (!visible) return;
+        updateAnchor();
+    });
+    window.addEventListener('orientationchange', () => {
+        if (!visible) return;
+        updateAnchor();
+    });
+    window.addEventListener('scroll', () => {
+        if (!visible) return;
+        if (isPanelOpen()) closePanel();
+        updateAnchor();
+    }, { passive: true });
+
+    const observer = new MutationObserver(() => {
+        if (!device.classList.contains('expanded')) {
+            hide();
+        } else if (visible) {
+            updateAnchor();
+        }
+    });
+    observer.observe(device, { attributes: true, attributeFilter: ['class'] });
+
+    updateAnchor();
+
+    return {
+        showPeek,
+        closeToPeek,
+        hide,
+        togglePanel,
+        isVisible: () => visible,
+        isPanelOpen,
+        isInside: (target) => Boolean(target instanceof Node && resumeCardDock.contains(target)),
+        updateAnchor
     };
 }
 
@@ -3229,6 +3494,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const readerMode = initReaderMode(onboardingFlow);
     const recruiterMode = initRecruiterMode();
     const chatMode = init3DChatMode();
+    const resumeDockSystem = initResumeDockSystem();
     const idCardSystem = initIdCardSystem();
     let fittyRefreshTimer = null;
 
@@ -3455,6 +3721,24 @@ document.addEventListener('DOMContentLoaded', () => {
         recruiterMode.toggle();
     });
 
+    showResumeBtn?.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        expandDeviceShell(false);
+
+        if (!resumeDockSystem.isVisible()) {
+            resumeDockSystem.showPeek();
+            return;
+        }
+
+        if (resumeDockSystem.isPanelOpen()) {
+            resumeDockSystem.closeToPeek();
+            return;
+        }
+
+        resumeDockSystem.hide();
+    });
+
     showIdBtn?.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -3477,6 +3761,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (idCardSystem.isOpen()) {
             idCardSystem.closeToPeek();
         }
+        if (resumeDockSystem.isPanelOpen()) {
+            resumeDockSystem.closeToPeek();
+        }
     }, { passive: true });
     document.body.addEventListener('click', (e) => {
         const caseOverlayControl = window.CaseOverlayControl;
@@ -3487,11 +3774,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const clickedInsideDevice = device && device.contains(e.target);
         const clickedInsideSticky = stickyNoteEl && stickyNoteEl.contains(e.target);
         const clickedInsideResume = resumePopoutEl && resumePopoutEl.contains(e.target);
+        const clickedInsideResumeDock = resumeDockSystem.isInside(e.target);
         const clickedInsideIdCard = idCardSystem.isInside(e.target);
 
         const idWasOpen = idCardSystem.isOpen();
         if (idWasOpen && !clickedInsideIdCard && !(showIdBtn && showIdBtn.contains(e.target))) {
             idCardSystem.closeToPeek();
+            return;
+        }
+
+        if (resumeDockSystem.isPanelOpen() && !clickedInsideCase && !clickedInsideResumeDock && !(showResumeBtn && showResumeBtn.contains(e.target))) {
+            resumeDockSystem.closeToPeek();
             return;
         }
 
@@ -3506,7 +3799,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Priority close order:
         // 1) Close the side case window first.
         // 2) Only after that, allow closing the mini portfolio on a later outside click.
-        if (caseIsOpen && !clickedInsideCase && !clickedInsideDevice && !clickedInsideSticky && !clickedInsideResume && !clickedInsideIdCard) {
+        if (caseIsOpen && !clickedInsideCase && !clickedInsideDevice && !clickedInsideSticky && !clickedInsideResume && !clickedInsideResumeDock && !clickedInsideIdCard) {
             if (caseOverlayControl) {
                 caseOverlayControl.close();
             } else if (caseWindowEl) {
@@ -3523,6 +3816,7 @@ document.addEventListener('DOMContentLoaded', () => {
             !clickedInsideCase &&
             !clickedInsideSticky &&
             !clickedInsideResume &&
+            !clickedInsideResumeDock &&
             !clickedInsideIdCard
         ) {
             withTemporaryDeviceTransition(() => {
@@ -3535,6 +3829,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 recruiterMode.close();
                 stickyNote.close();
                 resumePopout.close();
+                if (resumeDockSystem.isPanelOpen()) resumeDockSystem.closeToPeek();
+                resumeDockSystem.hide();
                 idCardSystem.hide();
             });
             setTimeout(() => { if (miniMatrixInstance) miniMatrixInstance.resize(); }, 520);
