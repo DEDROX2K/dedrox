@@ -880,44 +880,28 @@
         };
 
         // Premade chat controls:
-        // - draft: text shown in the input before the visitor taps Send
-        // - sent: optional sent bubble override; defaults to `draft`
-        // - reply: your response
-        // - draftRevealDuration: optional override for the typed-in prompt speed
-        // - typingDelay / nextDraftDelay: optional per-message timing overrides
-        const CHAT_THREAD = [
-            {
-                draft: "Are you currently working?",
-                reply: [
-                    "Yep, working at AIRCARDS -- based in Newcastle, UK. Working as a product development assistant",
-                    "After finishing my UX masters in birmingham I aligned myself more towards product development and project management. Working on interactive displays and XR/AR experiences"
-                ]
-            },
-            {
-                draft: "Hmm... can you talk a bit about your work?",
-                reply: "I design and develop products, interfaces, softwares that do not suck. In the current market. and lots of tools and plugins to increase productivity and I mentor juniors and conduct semminars"
-            },
-            {
-                draft: "Okay but like… what can you do for *me*?",
-                reply: "Well this is a pre made chat, but I would really want to know what you are working on!"
-            },
-            {
-                draft: "Do you have experience in development side of things?",
-                reply: "Yea I recently collaborated with 3 partners to create a free and open source bookmark tool made by loving designers. This journey taught me everything about react, tauri, and dev ops"
-            },
-            {
-                draft: "What do you think of me?",
-                reply: "Bold of you to ask. You seem like someone with a cool idea and just enough chaos to make it interesting. I like that."
-            },
-            {
-                draft: "Would we get along working together?",
-                reply: "If you like honest feedback, fast iterations, and the occasional unhinged idea — yeah, we’ll be fine."
-            },
-            {
-                draft: "Alright… I might have something for you 👀",
-                reply: "Perfect. Send it over before you overthink it."
-            }
-        ];
+// - draft: text shown in the input before the visitor taps Send
+// - sent: optional sent bubble override; defaults to `draft`
+// - reply: your response
+// - draftRevealDuration: optional override for the typed-in prompt speed
+// - typingDelay / nextDraftDelay: optional per-message timing overrides
+const CHAT_THREAD = [
+    {
+        draft: "Where are you based and what's your current situation?",
+        reply: [
+            "I'm a Product Development Assistant at Aircards in Newcastle, UK, holding a UX Master’s from Birmingham.",
+            "Right now, I’m looking for my next long-term home. I'm specifically targeting roles that offer visa sponsorship so I can plant roots and grow with the team."
+        ]
+    },
+    {
+        draft: "What's your actual skillset / day-to-day?",
+        reply: "I design and develop products, interfaces, and software that just work. Lately, I've been focused on XR/AR experiences and interactive displays. I also recently co-built an open-source bookmarking tool for designers using React, Tauri, and DevOps."
+    },
+    {
+        draft: "Are you a good fit for my team? (How do I contact you?)",
+        reply: "If you value direct feedback, fast iterations, and zero boring workflows—yes. Drop your details in the contact form below and let’s build something cool."
+    }
+];
 
         let currentExchangeIndex = 0;
         let isTyping = false;
