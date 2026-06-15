@@ -954,9 +954,14 @@ function initResumeDockSystem() {
         const parsed = Number.parseFloat(raw);
         return Number.isFinite(parsed) ? parsed : fallback;
     };
+    const getLayoutZoom = () => {
+        const rawZoom = Number.parseFloat(getComputedStyle(document.documentElement).zoom);
+        return Number.isFinite(rawZoom) && rawZoom > 0 ? rawZoom : 1;
+    };
 
     const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
     const getPeekAutoHideMs = () => Math.max(0, readCssNumberVar('--resume-peek-autohide-ms', 3000));
+    const getPeekExposed = () => Math.max(24, readCssNumberVar('--resume-peek-exposed', 60));
 
     const getDockBounds = () => {
         const rect = resumeCardDock.getBoundingClientRect();
@@ -975,7 +980,8 @@ function initResumeDockSystem() {
         resumeCardDock.style.top = `${clamp(top, padding, maxTop)}px`;
     };
 
-    let visible = false;
+    let active = false;
+    let peekVisible = false;
     let peekHideTimer = 0;
 
     const clearPeekHideTimer = () => {
@@ -1008,32 +1014,48 @@ function initResumeDockSystem() {
         }
     };
 
+    const hidePeekOnly = () => {
+        peekVisible = false;
+        clearPeekHideTimer();
+        resumeCardWrap?.setAttribute('aria-hidden', 'true');
+        resumeCardDock.classList.remove('visible');
+        resumeCardDock.setAttribute('aria-expanded', 'false');
+    };
+
     const updateAnchor = () => {
+        const zoom = getLayoutZoom();
         const rect = device.getBoundingClientRect();
-        const offsetX = readCssNumberVar('--resume-anchor-offset-x', 6);
+        const deviceLeft = rect.left / zoom;
+        const deviceTop = rect.top / zoom;
+        const deviceHeight = rect.height / zoom;
+        const padding = 8;
         const anchorYRatio = readCssNumberVar('--resume-anchor-y-ratio', 0.52);
         const offsetY = readCssNumberVar('--resume-anchor-offset-y', 14);
         const { width } = getDockBounds();
-
-        const left = rect.left - width - offsetX;
-        const top = rect.top + (rect.height * anchorYRatio) + offsetY;
+        const buttonRect = showResumeBtn?.getBoundingClientRect();
+        const anchorY = buttonRect?.height
+            ? (buttonRect.top / zoom) + ((buttonRect.height / zoom) / 2) + offsetY
+            : deviceTop + (deviceHeight * anchorYRatio) + offsetY;
+        const left = deviceLeft - getPeekExposed();
+        const top = clamp(anchorY, padding, (window.innerHeight / zoom) - padding);
         setDockPosition(left, top);
     };
 
     const schedulePeekAutoHide = () => {
         clearPeekHideTimer();
-        if (!visible || isPanelOpen()) return;
+        if (!peekVisible || isPanelOpen()) return;
         const hideDelay = getPeekAutoHideMs();
         if (hideDelay <= 0) return;
 
         peekHideTimer = window.setTimeout(() => {
-            if (!visible || isPanelOpen()) return;
+            if (!peekVisible || isPanelOpen()) return;
             hide();
         }, hideDelay);
     };
 
     const showPeek = () => {
-        visible = true;
+        active = true;
+        peekVisible = true;
         resumeCardWrap?.setAttribute('aria-hidden', 'false');
         resumeCardDock.classList.add('visible');
         resumeCardDock.setAttribute('aria-expanded', isPanelOpen() ? 'true' : 'false');
@@ -1042,15 +1064,13 @@ function initResumeDockSystem() {
     };
 
     const hide = () => {
-        visible = false;
-        clearPeekHideTimer();
-        resumeCardWrap?.setAttribute('aria-hidden', 'true');
-        resumeCardDock.classList.remove('visible');
-        resumeCardDock.setAttribute('aria-expanded', 'false');
+        active = false;
+        hidePeekOnly();
+        closePanel();
     };
 
     const closeToPeek = () => {
-        if (!visible) return;
+        if (!active) return;
         closePanel();
         showPeek();
     };
@@ -1060,6 +1080,8 @@ function initResumeDockSystem() {
             closeToPeek();
             return;
         }
+        active = true;
+        hidePeekOnly();
         openPanel();
     };
 
@@ -1070,23 +1092,26 @@ function initResumeDockSystem() {
     });
 
     window.addEventListener('resize', () => {
-        if (!visible) return;
+        if (!active || !peekVisible) return;
         updateAnchor();
     });
     window.addEventListener('orientationchange', () => {
-        if (!visible) return;
+        if (!active || !peekVisible) return;
         updateAnchor();
     });
     window.addEventListener('scroll', () => {
-        if (!visible) return;
-        if (isPanelOpen()) closePanel();
-        updateAnchor();
+        if (!active) return;
+        if (isPanelOpen()) {
+            closeToPeek();
+            return;
+        }
+        if (peekVisible) updateAnchor();
     }, { passive: true });
 
     const observer = new MutationObserver(() => {
         if (!device.classList.contains('expanded')) {
             hide();
-        } else if (visible) {
+        } else if (active && peekVisible) {
             updateAnchor();
         }
     });
@@ -1099,9 +1124,9 @@ function initResumeDockSystem() {
         closeToPeek,
         hide,
         togglePanel,
-        isVisible: () => visible,
+        isVisible: () => active,
         isPanelOpen,
-        isInside: (target) => Boolean(target instanceof Node && resumeCardDock.contains(target)),
+        isInside: (target) => Boolean(peekVisible && target instanceof Node && resumeCardDock.contains(target)),
         updateAnchor
     };
 }
@@ -1130,12 +1155,35 @@ function initIdCardSystem() {
         const parsed = Number.parseFloat(raw);
         return Number.isFinite(parsed) ? parsed : fallback;
     };
+    const getLayoutZoom = () => {
+        const rawZoom = Number.parseFloat(getComputedStyle(document.documentElement).zoom);
+        return Number.isFinite(rawZoom) && rawZoom > 0 ? rawZoom : 1;
+    };
 
+    const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
     const getPeekAutoHideMs = () => Math.max(0, readCssNumberVar('--id-peek-autohide-ms', 6000));
+    const getPeekExposed = () => Math.max(28, readCssNumberVar('--id-peek-exposed', 72));
     const getOpenHoverTiltDeg = () => Math.max(0, readCssNumberVar('--id-open-hover-tilt-deg', 7));
     const getOpenHoverDriftPx = () => Math.max(0, readCssNumberVar('--id-open-hover-drift-px', 14));
     const getOpenHoverCenterX = () => readCssNumberVar('--id-open-hover-center-x', 0.5);
     const getOpenHoverCenterY = () => readCssNumberVar('--id-open-hover-center-y', 0.5);
+
+    const getDockBounds = () => {
+        const rect = idCardDock.getBoundingClientRect();
+        return {
+            width: rect.width || idCardDock.offsetWidth || 0,
+            height: rect.height || idCardDock.offsetHeight || 0
+        };
+    };
+
+    const setDockPosition = (left, top) => {
+        const { width, height } = getDockBounds();
+        const padding = 8;
+        const maxLeft = Math.max(padding, window.innerWidth - width - padding);
+        const maxTop = Math.max(padding, window.innerHeight - height - padding);
+        idCardDock.style.left = `${clamp(left, padding, maxLeft)}px`;
+        idCardDock.style.top = `${clamp(top, padding, maxTop)}px`;
+    };
 
     const state = {
         visible: false,
@@ -1146,6 +1194,16 @@ function initIdCardSystem() {
     const supportsHoverMotion = !window.matchMedia('(pointer: coarse)').matches && !prefersReducedMotion;
 
     let peekHideTimer = 0;
+
+    const scheduleClosedPeekReanchor = () => {
+        window.requestAnimationFrame(() => updateAnchor());
+        window.setTimeout(() => {
+            if (state.visible && !state.open) updateAnchor();
+        }, 220);
+        window.setTimeout(() => {
+            if (state.visible && !state.open) updateAnchor();
+        }, 460);
+    };
 
     const clearPeekHideTimer = () => {
         if (!peekHideTimer) return;
@@ -1197,20 +1255,33 @@ function initIdCardSystem() {
     };
 
     const updateAnchor = () => {
+        const zoom = getLayoutZoom();
         const rect = device.getBoundingClientRect();
+        const deviceLeft = rect.left / zoom;
+        const deviceRight = rect.right / zoom;
+        const deviceTop = rect.top / zoom;
+        const deviceWidth = rect.width / zoom;
+        const deviceHeight = rect.height / zoom;
         const anchorOffsetX = readCssNumberVar('--id-anchor-offset-x', 6);
         const anchorYRatio = readCssNumberVar('--id-anchor-y-ratio', 0.52);
         const openAnchorXRatio = readCssNumberVar('--id-open-anchor-x-ratio', 0.5);
         const openAnchorYRatio = readCssNumberVar('--id-open-anchor-y-ratio', 0.5);
+        const buttonRect = showIdBtn?.getBoundingClientRect();
+        const padding = 8;
 
         if (state.open) {
-            idCardDock.style.left = `${rect.left + (rect.width * openAnchorXRatio)}px`;
-            idCardDock.style.top = `${rect.top + (rect.height * openAnchorYRatio)}px`;
+            idCardDock.style.left = `${deviceLeft + (deviceWidth * openAnchorXRatio)}px`;
+            idCardDock.style.top = `${deviceTop + (deviceHeight * openAnchorYRatio)}px`;
             return;
         }
 
-        idCardDock.style.left = `${rect.right + anchorOffsetX}px`;
-        idCardDock.style.top = `${rect.top + (rect.height * anchorYRatio)}px`;
+        const { width } = getDockBounds();
+        const anchorY = buttonRect?.height
+            ? (buttonRect.top / zoom) + ((buttonRect.height / zoom) / 2)
+            : deviceTop + (deviceHeight * anchorYRatio);
+        const left = deviceRight - width + getPeekExposed() + anchorOffsetX;
+        const top = clamp(anchorY, padding, (window.innerHeight / zoom) - padding);
+        setDockPosition(left, top);
     };
 
     const hide = () => {
@@ -1219,6 +1290,7 @@ function initIdCardSystem() {
         clearPeekHideTimer();
         resetOpenHoverMotion();
         idCardWrap?.classList.remove('is-open-layer');
+        idCardWrap?.setAttribute('aria-hidden', 'true');
         idCardDock.classList.remove('visible', 'is-open');
         idCardDock.setAttribute('aria-expanded', 'false');
     };
@@ -1240,10 +1312,12 @@ function initIdCardSystem() {
         state.open = false;
         resetOpenHoverMotion();
         idCardWrap?.classList.remove('is-open-layer');
+        idCardWrap?.setAttribute('aria-hidden', 'false');
         idCardDock.classList.add('visible');
         idCardDock.classList.remove('is-open');
         idCardDock.setAttribute('aria-expanded', 'false');
         updateAnchor();
+        scheduleClosedPeekReanchor();
         schedulePeekAutoHide();
     };
 
@@ -1253,6 +1327,7 @@ function initIdCardSystem() {
         clearPeekHideTimer();
         resetOpenHoverMotion();
         idCardWrap?.classList.add('is-open-layer');
+        idCardWrap?.setAttribute('aria-hidden', 'false');
         idCardDock.classList.add('is-open');
         idCardDock.setAttribute('aria-expanded', 'true');
         updateAnchor();
@@ -1263,9 +1338,11 @@ function initIdCardSystem() {
         state.open = false;
         resetOpenHoverMotion();
         idCardWrap?.classList.remove('is-open-layer');
+        idCardWrap?.setAttribute('aria-hidden', 'false');
         idCardDock.classList.remove('is-open');
         idCardDock.setAttribute('aria-expanded', 'false');
         updateAnchor();
+        scheduleClosedPeekReanchor();
         schedulePeekAutoHide();
     };
 
@@ -1990,7 +2067,7 @@ function initIndexGrid() {
 
 function initFeaturedCardHoverMotion() {
     const cards = document.querySelectorAll('.featured-card');
-    const portfolioSection = document.querySelector('.portfolio-section');
+    const portfolioSection = document.querySelector('.projects-section');
     if (!cards.length || !portfolioSection) return;
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -2122,6 +2199,263 @@ function initFeaturedCardHoverMotion() {
         });
         caseWindowObserver.observe(caseWindowEl, { attributes: true, attributeFilter: ['class'] });
     }
+}
+
+function initDeviceWindowNudge() {
+    const device = document.getElementById('portfolio-device');
+    const caseWindowEl = document.getElementById('case-study-window');
+    const edgeHandles = Array.from(device?.querySelectorAll('[data-resize-handle]') || []);
+    if (!device || !edgeHandles.length) return;
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
+
+    const MIN_WIDTH = 360;
+    const MIN_HEIGHT = 560;
+    const DEFAULT_WIDTH = 450;
+    const RECRUITER_DEFAULT_WIDTH = 1180;
+    const PREVIEW_THRESHOLD = 0.72;
+    const DRAG_THRESHOLD = 3;
+    const HANDLE_REVEAL_THRESHOLD = 34;
+    const CLICK_SUPPRESS_MS = 420;
+
+    let pointerId = null;
+    let startX = 0;
+    let startY = 0;
+    let originWidth = DEFAULT_WIDTH;
+    let originHeight = Math.min(window.innerHeight * 0.8, 980);
+    let committedWidth = DEFAULT_WIDTH;
+    let committedHeight = Math.min(window.innerHeight * 0.8, 980);
+    let resizing = false;
+    let activeHandle = null;
+
+    const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+    const defaultHeight = () => Math.min(window.innerHeight * 0.8, 980);
+    const maxWidth = () => {
+        const modeLimit = device.classList.contains('recruiter-mode') ? RECRUITER_DEFAULT_WIDTH : 760;
+        return Math.max(MIN_WIDTH, Math.min(window.innerWidth - 52, modeLimit));
+    };
+    const maxHeight = () => Math.max(MIN_HEIGHT, Math.min(window.innerHeight - 24, 980));
+
+    const readCurrentSize = () => ({
+        width: Number.parseFloat(getComputedStyle(device).width) || committedWidth || DEFAULT_WIDTH,
+        height: Number.parseFloat(getComputedStyle(device).height) || committedHeight || defaultHeight()
+    });
+
+    const applySize = (width, height, scale = 1) => {
+        document.documentElement.style.setProperty('--recruiter-resize-width', `${width.toFixed(2)}px`);
+        document.documentElement.style.setProperty('--recruiter-resize-height', `${height.toFixed(2)}px`);
+        document.documentElement.style.setProperty('--device-shell-scale', scale.toFixed(3));
+    };
+
+    const commitSize = (width, height, scale = 1) => {
+        committedWidth = clamp(width, MIN_WIDTH, maxWidth());
+        committedHeight = clamp(height, MIN_HEIGHT, maxHeight());
+        applySize(committedWidth, committedHeight, scale);
+        updateResizeState(committedWidth, committedHeight);
+    };
+
+    const updateResizeState = (width, height) => {
+        device.classList.toggle('is-resize-squeezed', width <= 430);
+        device.classList.toggle('is-resize-wide', width >= 560);
+        device.classList.toggle('is-resize-tall', height >= 840);
+    };
+
+    const clearResizeState = () => {
+        device.classList.remove('is-resize-squeezed', 'is-resize-wide', 'is-resize-tall', 'is-window-resizing', 'is-resize-preview');
+        document.documentElement.style.setProperty('--device-shell-scale', '1');
+    };
+
+    const clearVisibleHandles = () => {
+        edgeHandles.forEach((handle) => {
+            handle.classList.remove('is-visible');
+            handle.classList.remove('is-dragging');
+        });
+    };
+
+    const showAllHandles = () => {
+        edgeHandles.forEach((handle) => {
+            handle.classList.add('is-visible');
+        });
+    };
+
+    const clearPreview = () => {
+        device.classList.remove('is-resize-preview');
+        device.classList.remove('is-window-resizing');
+        document.documentElement.style.setProperty('--device-shell-scale', '1');
+    };
+
+    const canResize = () => (
+        device.classList.contains('expanded') &&
+        device.classList.contains('recruiter-mode') &&
+        !device.classList.contains('maximized') &&
+        !document.body.classList.contains('case-open')
+    );
+
+    const isNearDeviceEdge = (event) => {
+        if (!canResize()) return false;
+
+        const rect = device.getBoundingClientRect();
+        const withinExtendedX = event.clientX >= rect.left - HANDLE_REVEAL_THRESHOLD && event.clientX <= rect.right + HANDLE_REVEAL_THRESHOLD;
+        const withinExtendedY = event.clientY >= rect.top - HANDLE_REVEAL_THRESHOLD && event.clientY <= rect.bottom + HANDLE_REVEAL_THRESHOLD;
+        if (!withinExtendedX || !withinExtendedY) return false;
+
+        const nearLeft = Math.abs(event.clientX - rect.left) <= HANDLE_REVEAL_THRESHOLD;
+        const nearRight = Math.abs(event.clientX - rect.right) <= HANDLE_REVEAL_THRESHOLD;
+        const nearTop = Math.abs(event.clientY - rect.top) <= HANDLE_REVEAL_THRESHOLD;
+        const nearBottom = Math.abs(event.clientY - rect.bottom) <= HANDLE_REVEAL_THRESHOLD;
+        return nearLeft || nearRight || nearTop || nearBottom;
+    };
+
+    const syncHandleVisibility = (event) => {
+        if (resizing || pointerId !== null) return;
+
+        if (isNearDeviceEdge(event)) {
+            showAllHandles();
+        } else {
+            clearVisibleHandles();
+        }
+    };
+
+    const onPointerMove = (event) => {
+        if (event.pointerId !== pointerId || !canResize() || !activeHandle) return;
+
+        const deltaX = event.clientX - startX;
+        const deltaY = event.clientY - startY;
+        const handleName = activeHandle.dataset.resizeHandle || '';
+        const widthFactor = handleName.includes('left') ? -2 : 2;
+        const heightFactor = handleName.includes('top') ? -2 : 2;
+        const nextWidth = clamp(originWidth + (deltaX * widthFactor), MIN_WIDTH, maxWidth());
+        const nextHeight = clamp(originHeight + (deltaY * heightFactor), MIN_HEIGHT, maxHeight());
+        const movedEnough = Math.abs(deltaX) > DRAG_THRESHOLD || Math.abs(deltaY) > DRAG_THRESHOLD;
+
+        if (movedEnough) {
+            resizing = true;
+            device.classList.add('is-window-resizing');
+            activeHandle?.classList.add('is-dragging');
+        }
+
+        const widthRange = Math.max(maxWidth() - MIN_WIDTH, 1);
+        const heightRange = Math.max(maxHeight() - MIN_HEIGHT, 1);
+        const previewProgress = Math.max(
+            Math.abs(nextWidth - originWidth) / widthRange,
+            Math.abs(nextHeight - originHeight) / heightRange
+        );
+        const scale = 1 + (previewProgress * 0.014);
+        device.classList.toggle('is-resize-preview', previewProgress >= PREVIEW_THRESHOLD);
+
+        applySize(nextWidth, nextHeight, resizing ? scale : 1);
+        updateResizeState(nextWidth, nextHeight);
+    };
+
+    const finishDrag = () => {
+        const releasedHandle = activeHandle;
+
+        if (!resizing) {
+            clearPreview();
+            clearVisibleHandles();
+            pointerId = null;
+            activeHandle = null;
+            return;
+        }
+
+        const current = readCurrentSize();
+        commitSize(current.width, current.height, 1);
+        clearPreview();
+        clearVisibleHandles();
+        if (releasedHandle && canResize()) {
+            showAllHandles();
+        }
+        resizing = false;
+        pointerId = null;
+        activeHandle = null;
+        window.__deviceShellSuppressCloseUntil = Date.now() + CLICK_SUPPRESS_MS;
+        document.addEventListener('click', (clickEvent) => {
+            clickEvent.stopPropagation();
+            clickEvent.preventDefault();
+        }, { capture: true, once: true });
+    };
+
+    const startDrag = (event) => {
+        if (!canResize()) return;
+        if (!(event.target instanceof Element)) return;
+        event.preventDefault();
+        event.stopPropagation();
+
+        const handle = event.target.closest('[data-resize-handle]');
+        if (!(handle instanceof HTMLElement)) return;
+
+        pointerId = event.pointerId;
+        startX = event.clientX;
+        startY = event.clientY;
+        const current = readCurrentSize();
+        originWidth = current.width;
+        originHeight = current.height;
+        committedWidth = current.width;
+        committedHeight = current.height;
+        resizing = false;
+        activeHandle = handle;
+        clearVisibleHandles();
+        showAllHandles();
+
+        handle.setPointerCapture(pointerId);
+    };
+
+    device.addEventListener('pointermove', syncHandleVisibility, { passive: true });
+    device.addEventListener('pointerleave', (event) => {
+        if (event.relatedTarget instanceof Element && event.relatedTarget.closest('[data-resize-handle]')) {
+            return;
+        }
+        if (!resizing && pointerId === null) {
+            clearVisibleHandles();
+        }
+    });
+
+    edgeHandles.forEach((handle) => {
+        handle.addEventListener('pointerdown', startDrag);
+        handle.addEventListener('pointermove', onPointerMove, { passive: true });
+        handle.addEventListener('pointerup', finishDrag);
+        handle.addEventListener('pointercancel', finishDrag);
+        handle.addEventListener('lostpointercapture', finishDrag);
+    });
+
+    const syncModeDefaults = () => {
+        if (device.classList.contains('recruiter-mode')) {
+            commitSize(RECRUITER_DEFAULT_WIDTH, Math.min(window.innerHeight * 0.9, 980), 1);
+            return;
+        }
+        clearResizeState();
+        clearVisibleHandles();
+    };
+
+    const resetNudge = () => {
+        syncModeDefaults();
+        clearPreview();
+        clearVisibleHandles();
+        resizing = false;
+        pointerId = null;
+        activeHandle = null;
+    };
+
+    window.addEventListener('resize', resetNudge);
+    window.addEventListener('orientationchange', resetNudge);
+
+    if (caseWindowEl) {
+        const caseObserver = new MutationObserver(() => {
+            if (document.body.classList.contains('case-open')) {
+                clearVisibleHandles();
+                clearPreview();
+            }
+        });
+        caseObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    }
+
+    window.__deviceShellResizeController = {
+        syncModeDefaults,
+        resetToDefault: resetNudge
+    };
+
+    resetNudge();
 }
 function initHeroLanguageLoop() {
     const lineEl = document.getElementById('hero-language-line');
@@ -2881,6 +3215,7 @@ function initRecruiterMode() {
         recruiterInlineEl?.setAttribute('aria-hidden', 'false');
         syncRecruiterHeaderState();
         window.requestAnimationFrame(() => {
+            window.__deviceShellResizeController?.syncModeDefaults?.();
             syncRecruiterPillWidth();
         });
         if (scrollableContent) {
@@ -2894,6 +3229,7 @@ function initRecruiterMode() {
         document.body.classList.remove('recruiter-mode');
         recruiterInlineEl?.setAttribute('aria-hidden', 'true');
         topBarPill?.style.removeProperty('--recruiter-pill-target-width');
+        window.__deviceShellResizeController?.syncModeDefaults?.();
     };
 
     const toggle = () => {
@@ -3588,6 +3924,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatMode = init3DChatMode();
     const resumeDockSystem = initResumeDockSystem();
     const idCardSystem = initIdCardSystem();
+    initDeviceWindowNudge();
     let fittyRefreshTimer = null;
 
     const scheduleFittyRefresh = () => {
@@ -3646,6 +3983,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         setTimeout(() => {
             if (miniMatrixInstance) miniMatrixInstance.resize();
+            resumeDockSystem.updateAnchor();
             idCardSystem.updateAnchor();
             leftOrbControls.updateScrollPosition();
             if (typeof fitty !== 'undefined') fitty.fitAll();
@@ -3858,6 +4196,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }, { passive: true });
     document.body.addEventListener('click', (e) => {
+        if ((window.__deviceShellSuppressCloseUntil || 0) > Date.now()) {
+            return;
+        }
+
         const caseOverlayControl = window.CaseOverlayControl;
         const caseIsOpen = caseOverlayControl
             ? caseOverlayControl.isVisible()
@@ -4284,7 +4626,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.documentElement.style.setProperty('--panel', colorPanel);
 
                 // Force update on the white blocks if they aren't reactive
-                document.querySelectorAll('.content-block-white').forEach(block => {
+                document.querySelectorAll('.content-panel').forEach(block => {
                     block.style.backgroundColor = colorPanel;
                 });
             };
@@ -4323,7 +4665,7 @@ document.addEventListener('DOMContentLoaded', () => {
             resetBgBtn.addEventListener('click', () => {
                 document.documentElement.style.setProperty('--bg', '#EBEAE6');
                 document.documentElement.style.setProperty('--panel', '#ffffff');
-                document.querySelectorAll('.content-block-white').forEach(block => {
+                document.querySelectorAll('.content-panel').forEach(block => {
                     block.style.backgroundColor = '#ffffff';
                 });
                 if (colorHandle) {
@@ -4543,7 +4885,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const panelColor = 'rgba(255, 255, 255, 0.98)';
                     document.documentElement.style.setProperty('--panel', panelColor);
 
-                    document.querySelectorAll('.content-block-white').forEach(block => {
+                    document.querySelectorAll('.content-panel').forEach(block => {
                         block.style.backgroundColor = panelColor;
                     });
                 });
@@ -4578,7 +4920,7 @@ document.addEventListener('DOMContentLoaded', () => {
             resetBgBtn.addEventListener('click', () => {
                 document.documentElement.style.setProperty('--bg', defaultPaletteBg);
                 document.documentElement.style.setProperty('--panel', '#ffffff');
-                document.querySelectorAll('.content-block-white').forEach(block => {
+                document.querySelectorAll('.content-panel').forEach(block => {
                     block.style.backgroundColor = '#ffffff';
                 });
                 document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
