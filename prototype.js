@@ -158,8 +158,8 @@ const SITE_CONFIG = {
         let isTransitioning = false;
         let caseMotionTimer = null;
         let activeCaseHref = '';
-        const CASE_ANIM_MS = 560;
-        const CASE_MORPH_MS = 620;
+        const CASE_ANIM_MS = 280;
+        const CASE_MORPH_MS = 310;
         const resumePdfHref = 'threeD/CV_RESUME-RAGHAV.pdf';
         const resumePageImages = Array.from({ length: 4 }, (_, index) => `images/resume-pages/page-${String(index + 1).padStart(2, '0')}.png`);
         let activeMorphCleanup = null;
@@ -409,26 +409,7 @@ const SITE_CONFIG = {
             if (titleDisp) titleDisp.textContent = 'Resume';
             setDownloadLink('Download', resumePdfHref, 'Download resume PDF');
 
-            contentArea.innerHTML = `
-                <section class="resume-panel">
-                    <div class="resume-panel-intro">
-                        <div class="resume-panel-copy">
-                            <p class="resume-panel-kicker">Resume</p>
-                            <h2 class="resume-panel-title">Raghav Prasanna</h2>
-                            <p class="resume-panel-summary">
-                                Product designer engineer based in London. The full resume is shown below as a complete page stack.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="resume-panel-pages" aria-label="Resume pages">
-                        ${resumePageImages.map((src, index) => `
-                            <figure class="resume-page">
-                                <img src="${escapeAttr(src)}" alt="Resume page ${index + 1} for Raghav Prasanna" loading="${index === 0 ? 'eager' : 'lazy'}" decoding="async">
-                            </figure>
-                        `).join('')}
-                    </div>
-                </section>
-            `;
+            contentArea.innerHTML = `<img src="images/Letter - 3.png" alt="Resume for Raghav Prasanna" loading="eager" decoding="async" fetchpriority="high">`;
 
             activeCaseHref = resumePdfHref;
             setExternalLink('PDF', resumePdfHref, 'Open resume PDF in a new tab');
@@ -1102,7 +1083,10 @@ function initResumeDockSystem() {
     window.addEventListener('scroll', () => {
         if (!active) return;
         if (isPanelOpen()) {
-            closeToPeek();
+            // Panel is open and user scrolled — hide everything completely.
+            // Don't closeToPeek() here: that would re-show the floating dock
+            // which then drifts as the user scrolls. They can press Show Resume again.
+            hide();
             return;
         }
         if (peekVisible) updateAnchor();
@@ -1176,8 +1160,9 @@ function initIdCardSystem() {
         };
     };
 
-    const setDockPosition = (left, top) => {
-        const { width, height } = getDockBounds();
+    const setDockPosition = (left, top, boundsOverride = null) => {
+        const measured = boundsOverride || getDockBounds();
+        const { width, height } = measured;
         const padding = 8;
         const maxLeft = Math.max(padding, window.innerWidth - width - padding);
         const maxTop = Math.max(padding, window.innerHeight - height - padding);
@@ -1194,6 +1179,9 @@ function initIdCardSystem() {
     const supportsHoverMotion = !window.matchMedia('(pointer: coarse)').matches && !prefersReducedMotion;
 
     let peekHideTimer = 0;
+    let lastClosedWidth = 0;
+    let lastPeekLeft = null;
+    let lastPeekTop = null;
 
     const scheduleClosedPeekReanchor = () => {
         window.requestAnimationFrame(() => updateAnchor());
@@ -1201,7 +1189,12 @@ function initIdCardSystem() {
             if (state.visible && !state.open) updateAnchor();
         }, 220);
         window.setTimeout(() => {
-            if (state.visible && !state.open) updateAnchor();
+            if (state.visible && !state.open) {
+                // Re-measure width now that the CSS close transition has finished,
+                // so future cycles have an accurate lastClosedWidth.
+                rememberClosedWidth();
+                updateAnchor();
+            }
         }, 460);
     };
 
@@ -1209,6 +1202,12 @@ function initIdCardSystem() {
         if (!peekHideTimer) return;
         window.clearTimeout(peekHideTimer);
         peekHideTimer = 0;
+    };
+
+    const rememberClosedWidth = () => {
+        if (state.open) return;
+        const { width } = getDockBounds();
+        if (width > 0) lastClosedWidth = width;
     };
 
     const resetOpenHoverMotion = () => {
@@ -1275,13 +1274,18 @@ function initIdCardSystem() {
             return;
         }
 
-        const { width } = getDockBounds();
+        const measuredBounds = getDockBounds();
+        const width = lastClosedWidth || measuredBounds.width;
+        const height = measuredBounds.height;
         const anchorY = buttonRect?.height
             ? (buttonRect.top / zoom) + ((buttonRect.height / zoom) / 2)
             : deviceTop + (deviceHeight * anchorYRatio);
         const left = deviceRight - width + getPeekExposed() + anchorOffsetX;
         const top = clamp(anchorY, padding, (window.innerHeight / zoom) - padding);
-        setDockPosition(left, top);
+        // Cache the correctly-computed peek position for use by closeToPeek()
+        lastPeekLeft = left;
+        lastPeekTop = top;
+        setDockPosition(left, top, { width, height });
     };
 
     const hide = () => {
@@ -1316,6 +1320,7 @@ function initIdCardSystem() {
         idCardDock.classList.add('visible');
         idCardDock.classList.remove('is-open');
         idCardDock.setAttribute('aria-expanded', 'false');
+        rememberClosedWidth();
         updateAnchor();
         scheduleClosedPeekReanchor();
         schedulePeekAutoHide();
@@ -1341,7 +1346,20 @@ function initIdCardSystem() {
         idCardWrap?.setAttribute('aria-hidden', 'false');
         idCardDock.classList.remove('is-open');
         idCardDock.setAttribute('aria-expanded', 'false');
-        updateAnchor();
+        // Restore from cached peek position rather than recalculating.
+        // Recalculating immediately after removing is-open-layer causes a dirty layout read:
+        // the overlay isn't repainted yet so getBoundingClientRect() returns a stale top value,
+        // making the card appear slightly above its correct position before snapping down.
+        if (lastPeekLeft !== null && lastPeekTop !== null) {
+            const bounds = getDockBounds();
+            setDockPosition(lastPeekLeft, lastPeekTop, {
+                width: lastClosedWidth || bounds.width,
+                height: bounds.height
+            });
+        } else {
+            // Fallback: no cache yet, recalculate (first-ever open/close cycle)
+            updateAnchor();
+        }
         scheduleClosedPeekReanchor();
         schedulePeekAutoHide();
     };
@@ -1382,6 +1400,7 @@ function initIdCardSystem() {
     });
     observer.observe(device, { attributes: true, attributeFilter: ['class'] });
 
+    rememberClosedWidth();
     updateAnchor();
 
     return {
@@ -4192,7 +4211,9 @@ document.addEventListener('DOMContentLoaded', () => {
             idCardSystem.closeToPeek();
         }
         if (resumeDockSystem.isPanelOpen()) {
-            resumeDockSystem.closeToPeek();
+            // Hide completely when scrolling with panel open — don't revert to peek,
+            // which causes the floating dock to reappear and drift during scroll.
+            resumeDockSystem.hide();
         }
     }, { passive: true });
     document.body.addEventListener('click', (e) => {
@@ -4549,18 +4570,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.preventDefault();
                 const href = link.href;
 
-                // Trigger effect
+        // Trigger effect
                 deviceContainer.classList.add('is-navigating');
 
-                // Open link after delay
+                // Open link after the dissolve has settled (~280ms)
                 setTimeout(() => {
                     window.open(href, '_blank', 'noopener,noreferrer');
 
-                    // Cleanup after a while (allows the user to see the site again if they come back)
+                    // Restore after a moment so returning users see a clean state
                     setTimeout(() => {
                         deviceContainer.classList.remove('is-navigating');
-                    }, 1000);
-                }, 600);
+                    }, 500);
+                }, 280);
             }
         });
 
