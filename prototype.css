@@ -22,7 +22,7 @@
     --device-expand-ease: cubic-bezier(0.16, 1, 0.3, 1);
     --device-drift-x: 0px;
     --device-drift-y: 0px;
-    --recruiter-resize-width: 1180px;
+    --recruiter-resize-width: 1240px;
     --recruiter-resize-height: 90vh;
     --device-shell-scale: 1;
     --case-window-width: min(58vw, 960px);
@@ -701,7 +701,7 @@ summary {
     max-width: 100%;
     height: 100%;
     border-radius: 999px;
-    padding: 3px;
+    padding: 6px;
     /* gap: 3px; */
     position: relative;
     border: 1px solid rgba(255, 255, 255, 0.55);
@@ -900,7 +900,7 @@ body:not(.device-expanded):not(.reader-mode):not(.recruiter-mode) .pill-greeting
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 3px;
+    gap: 5px;
     height: 100%;
     flex: 1;
     min-width: 0;
@@ -1966,18 +1966,18 @@ body.device-transitioning .device-container.expanded #pill-fifth-btn {
 }
 
 .device-container.recruiter-mode {
-    width: min(96vw, 1180px);
-    background: white;
-    border: 1px solid rgba(255, 255, 255, 0.14);
+    width: min(96vw, 1240px);
+    background: #EBEAE6;
+    border: 1px solid rgba(0, 0, 0, 0.08);
     box-shadow:
-        0 24px 72px rgba(0, 0, 0, 0.26),
+        0 24px 72px rgba(0, 0, 0, 0.28),
         0 4px 18px rgba(0, 0, 0, 0.08);
     overflow: visible;
     border-radius: var(--recruiter-radius);
 }
 
 .device-container.recruiter-mode.expanded {
-    width: min(96vw, var(--recruiter-resize-width, 1180px));
+    width: min(96vw, var(--recruiter-resize-width, 1240px));
     height: min(var(--recruiter-resize-height, 90vh), var(--device-expanded-max-height));
 }
 
@@ -2007,7 +2007,7 @@ body.recruiter-mode .top-bar-pill {
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
     width: 100%;
-    max-width: var(--recruiter-pill-target-width, 40%);
+    max-width: var(--recruiter-pill-target-width, 260px);
     justify-content: center;
     /* gap: 6px; */
     padding: 5px;
@@ -2126,333 +2126,204 @@ body.recruiter-mode .pill-tooltip {
     -webkit-backdrop-filter: none;
 }
 
-.recruiter-editorial {
-    width: 100%;
-    --re-space-1: 8px;
-    --re-space-2: 16px;
-    --re-space-3: 24px;
-    --re-space-4: 36px;
-    --re-space-5: 56px;
-    padding: var(--re-space-3) 28px var(--re-space-5);
+.recruiter-inline {
+    display: none;
+    min-height: 100%;
+    color: #000000;
+    font-family: 'Google Sans', sans-serif;
+    padding: 72px 0 40px;
+    background: #EBEAE6;
 }
 
-/* ── Section layout ─────────────────────────────────── */
-.recruiter-editorial-section {
-    display: grid;
-    grid-template-columns: 96px minmax(0, 1fr);
-    gap: var(--re-space-2) var(--re-space-3);
-    padding: var(--re-space-3) 0 var(--re-space-4);
-    align-items: start;
-}
-
-.recruiter-editorial-section+.recruiter-editorial-section {
-    border-top: 1px solid var(--recruiter-blue-line);
-}
-
-/* ── Section label — vertical rule anchor ───────────── */
-.recruiter-editorial-label {
-    padding-top: 4px;
-    position: relative;
-}
-
-.recruiter-editorial-label span {
+.recruiter-blank {
+    min-height: 100%;
     display: block;
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: rgba(18, 36, 92, 0.52);
-    padding-left: 10px;
-    border-left: 2px solid var(--recruiter-blue-line);
-    line-height: 1.4;
-}
-
-.recruiter-editorial-main {
-    min-width: 0;
-}
-
-/* ── Hero lead text ─────────────────────────────────── */
-.recruiter-editorial-lead {
-    margin: 0;
-    max-width: 22ch;
-    font-size: clamp(2rem, 3vw, 3.6rem);
-    line-height: 1.05;
-    letter-spacing: -0.025em;
-    font-weight: 500;
-    color: var(--recruiter-ink);
-    text-wrap: balance;
-}
-
-.recruiter-accent-highlight {
-    display: inline;
-    padding: 0.05em 0.2em 0.08em;
-    background: rgba(0, 0, 0, 0.06);
-    color: var(--recruiter-ink);
-    box-decoration-break: clone;
-    -webkit-box-decoration-break: clone;
-    border-radius: 3px;
-    font-weight: inherit;
-}
-
-/* ── Hero image ─────────────────────────────────────── */
-.recruiter-editorial-hero-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1.1fr) minmax(200px, 0.9fr);
-    gap: 28px;
-    align-items: start;
-}
-
-.recruiter-editorial-hero-copy {
-    min-width: 0;
-}
-
-.recruiter-editorial-hero-visual {
-    align-self: start;
-    overflow: hidden;
-    border-radius: var(--recruiter-radius);
-}
-
-.recruiter-editorial-hero-visual img {
     width: 100%;
-    height: auto;
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
-    object-position: top center;
-    display: block;
-    filter: grayscale(1) contrast(1.04);
-    transition: filter 0.4s ease;
 }
 
-.recruiter-editorial-hero-visual:hover img {
-    filter: grayscale(0.6) contrast(1.02);
+/* ── Editorial Sheet Container ───────────────────────── */
+.re-sheet {
+    width: 100%;
+    max-width: 100%;
+    padding: 24px 40px 48px;
+    box-sizing: border-box;
 }
 
-/* ── Profile / quote section ────────────────────────── */
-.recruiter-editorial-story {
-    align-items: start;
-}
-
-.recruiter-editorial-story-copy {
+/* ── Sheet Header ───────────────────────────────────── */
+.re-header {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--re-space-4);
+    grid-template-columns: 1.1fr 0.9fr 1fr;
+    gap: 32px;
     align-items: start;
+    text-align: left;
 }
 
-.recruiter-editorial-quote {
+.re-header-name {
+    font-size: clamp(2.4rem, 3.8vw, 3.4rem);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.045em;
+    color: #000000;
     margin: 0;
-    max-width: 32ch;
-    font-size: clamp(1.08rem, 1.4vw, 1.28rem);
-    line-height: 1.38;
-    letter-spacing: -0.022em;
-    font-weight: 500;
-    color: rgba(16, 20, 34, 0.92);
-    padding-left: 14px;
-    border-left: 3px solid var(--recruiter-blue);
 }
 
-/* ── Contact grid ───────────────────────────────────── */
-.recruiter-editorial-contact {
-    padding-top: 0;
+.re-header-contact,
+.re-header-status {
+    font-size: 0.8rem;
+    line-height: 1.45;
+    color: #2e2e2e;
+    font-weight: 400;
 }
 
-.recruiter-editorial-subtitle {
-    margin: 0 0 12px;
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: rgba(18, 36, 92, 0.52);
-}
-
-.recruiter-editorial-contact-grid {
-    display: grid;
-    grid-template-columns: 72px 1fr;
-    gap: 8px 0;
-    max-width: 420px;
-    font-size: 0.96rem;
-    line-height: 1.38;
-    color: rgba(18, 22, 36, 0.9);
-}
-
-.recruiter-editorial-contact-grid span:nth-child(odd) {
-    font-size: 0.82rem;
-    font-weight: 500;
-    color: rgba(18, 36, 92, 0.52);
-    padding-top: 2px;
-    align-self: start;
-}
-
-.recruiter-editorial-contact-grid a {
-    color: var(--recruiter-blue-deep);
-    text-decoration: none;
-    font-weight: 500;
-}
-
-.recruiter-editorial-contact-grid a:hover {
+.re-header-contact a {
+    color: #000000;
     text-decoration: underline;
-}
-
-/* ── Experience items ───────────────────────────────── */
-.recruiter-editorial-stack {
-    display: grid;
-    gap: 0;
-}
-
-.recruiter-editorial-item {
-    display: grid;
-    grid-template-columns: 120px minmax(0, 1fr);
-    gap: 12px 20px;
-    padding: 20px 0;
-    border-top: 1px solid var(--recruiter-blue-line);
-    align-items: start;
-}
-
-.recruiter-editorial-item-head {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 4px;
-}
-
-/* Date badge */
-.recruiter-editorial-item-date {
-    display: block;
-    padding-top: 4px;
-}
-
-.re-date-badge {
-    display: inline-block;
-    font-size: 0.76rem;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    color: rgba(10, 14, 26, 0.65);
-    background: rgba(0, 0, 0, 0.04);
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    border-radius: 99px;
-    padding: 3px 9px;
-    line-height: 1.4;
-    white-space: nowrap;
-}
-
-.recruiter-editorial-item-head h3,
-.recruiter-editorial-work-item h3,
-.recruiter-editorial-list h4 {
-    margin: 0;
-    font-size: clamp(1.05rem, 1.4vw, 1.36rem);
-    line-height: 1.08;
-    letter-spacing: -0.038em;
-    font-weight: 600;
-    color: var(--recruiter-ink);
-}
-
-.recruiter-editorial-work-year,
-.recruiter-editorial-meta,
-.recruiter-editorial-list p {
-    font-size: 0.88rem;
-    line-height: 1.3;
-    color: rgba(18, 36, 92, 0.62);
-}
-
-.recruiter-editorial-meta {
-    margin: 0;
-}
-
-.recruiter-editorial-item-copy {
-    display: grid;
-    gap: 8px;
-}
-
-.recruiter-editorial-item-copy p:last-child {
-    margin: 0;
-    max-width: 60ch;
-    font-size: 0.96rem;
-    line-height: 1.5;
-    color: rgba(16, 20, 34, 0.76);
-}
-
-/* ── Credentials: education + skills ───────────────── */
-.recruiter-editorial-columns {
-    display: grid;
-    grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
-    gap: 36px;
-    align-items: start;
-}
-
-.recruiter-editorial-list {
-    display: grid;
-    gap: 0;
-}
-
-.recruiter-editorial-list article {
-    display: grid;
-    gap: 4px;
-    padding: 16px 0;
-    border-top: 1px solid var(--recruiter-blue-line);
-}
-
-.recruiter-editorial-list p {
-    margin: 0;
-}
-
-/* Skills as pill chips */
-.recruiter-editorial-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    align-content: start;
-    padding-top: 2px;
-}
-
-.recruiter-editorial-tags span {
-    display: inline-block;
-    padding: 5px 12px 6px;
-    border-radius: 99px;
-    font-size: 0.84rem;
+    text-decoration-color: rgba(0, 0, 0, 0.2);
     font-weight: 500;
-    line-height: 1.2;
-    color: var(--recruiter-ink);
-    background: rgba(0, 0, 0, 0.04);
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    white-space: nowrap;
+    transition: text-decoration-color 0.18s ease;
 }
 
-/* ── Selected work grid ─────────────────────────────── */
-.recruiter-editorial-work-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0 28px;
+.re-header-contact a:hover {
+    text-decoration-color: rgba(0, 0, 0, 0.85);
 }
 
-.recruiter-editorial-work-item {
+.re-muted-text {
+    color: #6a6a6a;
+    margin-top: 2px;
+}
+
+/* ── Divider Rules ──────────────────────────────────── */
+.re-divider {
+    border: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.14);
+    margin: 28px 0;
+    height: 0;
+}
+
+/* ── Intro Section ──────────────────────────────────── */
+.re-intro p {
+    margin: 0;
+    font-size: clamp(1.18rem, 1.48vw, 1.34rem);
+    line-height: 1.42;
+    color: #1a1a1a;
+    font-weight: 400;
+    max-width: 82ch;
+    text-wrap: balance;
+    letter-spacing: -0.015em;
+}
+
+/* ── Main Body Grid ────────────────────────────────── */
+.re-body-grid {
     display: grid;
-    grid-template-columns: 44px minmax(0, 1fr);
-    gap: 10px 12px;
-    padding: 18px 0 20px;
-    border-top: 1px solid var(--recruiter-blue-line);
-    color: inherit;
-    text-decoration: none;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 48px;
     align-items: start;
-    transition: opacity 0.18s ease;
 }
 
-.recruiter-editorial-work-item:hover {
-    opacity: 0.7;
+.re-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
 }
 
-.recruiter-editorial-work-year {
-    display: block;
-    padding-top: 4px;
-    font-size: 0.78rem;
+.re-col-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #000000;
+    margin: 0 0 24px;
+    letter-spacing: -0.02em;
+    text-transform: none;
+    line-height: 1.2;
+}
+
+/* ── Item Block ─────────────────────────────────────── */
+.re-item {
+    margin-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.re-item:last-child {
+    margin-bottom: 0;
+}
+
+.re-item-date {
+    font-size: 0.74rem;
+    color: #5a5a5a;
     font-weight: 600;
-    letter-spacing: 0.02em;
-    color: rgba(18, 36, 92, 0.52);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 1px;
 }
 
-.recruiter-editorial-work-item p {
+.re-item-title {
+    font-size: 0.94rem;
+    font-weight: 700;
+    color: #000000;
+    line-height: 1.35;
+    letter-spacing: -0.015em;
+}
+
+.re-item-subtitle {
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: #404040;
+    margin-top: 1px;
+}
+
+.re-item-desc {
+    font-size: 0.85rem;
+    color: #3e3e3e;
+    line-height: 1.42;
     margin: 5px 0 0;
-    font-size: 0.92rem;
-    line-height: 1.4;
-    color: rgba(16, 20, 34, 0.72);
+    font-weight: 400;
+}
+
+.re-project-link {
+    color: #000000;
+    text-decoration: underline;
+    text-decoration-color: rgba(0, 0, 0, 0.2);
+    font-weight: 700;
+    transition: text-decoration-color 0.18s ease;
+}
+
+.re-project-link:hover {
+    text-decoration-color: rgba(0, 0, 0, 0.85);
+}
+
+/* ── Responsiveness / Resizing Squeezed overrides ────── */
+@media (max-width: 992px) {
+    .re-sheet {
+        padding: 24px 28px 40px;
+    }
+
+    .re-body-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 36px;
+    }
+}
+
+@media (max-width: 760px) {
+    .re-header {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .re-body-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+}
+
+.device-container.recruiter-mode.expanded.is-resize-squeezed .re-header {
+    grid-template-columns: 1fr;
+    gap: 16px;
+}
+
+.device-container.recruiter-mode.expanded.is-resize-squeezed .re-body-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
 }
 
 .recruiter-header {
@@ -3280,96 +3151,11 @@ body.recruiter-mode .recruiter-cases .folder-menu {
     padding: calc(var(--pill-container-h) + 10px) 0 24px;
 }
 
-.device-container.recruiter-mode.expanded.is-resize-squeezed .recruiter-editorial {
-    padding: 14px 18px 28px;
+.device-container.recruiter-mode.expanded.is-resize-squeezed .re-sheet {
+    padding: 20px 20px 36px;
 }
 
-.device-container.recruiter-mode.expanded.is-resize-squeezed .recruiter-editorial-hero-grid,
-.device-container.recruiter-mode.expanded.is-resize-squeezed .recruiter-editorial-section,
-.device-container.recruiter-mode.expanded.is-resize-squeezed .recruiter-editorial-item,
-.device-container.recruiter-mode.expanded.is-resize-squeezed .recruiter-editorial-story-copy,
-.device-container.recruiter-mode.expanded.is-resize-squeezed .recruiter-editorial-columns,
-.device-container.recruiter-mode.expanded.is-resize-squeezed .recruiter-editorial-work-grid,
-.device-container.recruiter-mode.expanded.is-resize-squeezed .recruiter-editorial-tags,
-.device-container.recruiter-mode.expanded.is-resize-squeezed .recruiter-editorial-contact-grid,
-.device-container.recruiter-mode.expanded.is-resize-squeezed .recruiter-header-grid,
-.device-container.recruiter-mode.expanded.is-resize-squeezed .recruiter-summary-section,
-.device-container.recruiter-mode.expanded.is-resize-squeezed .recruiter-grid-2,
-.device-container.recruiter-mode.expanded.is-resize-squeezed .recruiter-meta {
-    grid-template-columns: 1fr;
-}
 
-.device-container.recruiter-mode.expanded.is-resize-squeezed .recruiter-editorial-section {
-    gap: 12px;
-    padding: 14px 0 22px;
-}
-
-.device-container.recruiter-mode.expanded.is-resize-squeezed .recruiter-editorial-label,
-.device-container.recruiter-mode.expanded.is-resize-squeezed .recruiter-editorial-item-date {
-    padding-top: 0;
-}
-
-.device-container.recruiter-mode.expanded.is-resize-squeezed .recruiter-editorial-lead {
-    max-width: 22ch;
-    font-size: clamp(1.8rem, 4.8vw, 3rem);
-}
-
-.device-container.recruiter-mode.expanded.is-resize-squeezed .recruiter-editorial-quote,
-.device-container.recruiter-mode.expanded.is-resize-squeezed .recruiter-editorial-item-copy p:last-child,
-.device-container.recruiter-mode.expanded.is-resize-squeezed .recruiter-editorial-work-item p {
-    font-size: 0.96rem;
-}
-
-.device-container.recruiter-mode.expanded.is-resize-squeezed .recruiter-editorial-item {
-    gap: 8px;
-}
-
-.device-container.recruiter-mode.expanded.is-resize-squeezed .recruiter-editorial-hero-visual img {
-    min-height: 0;
-}
-
-.device-container.recruiter-mode.expanded.is-resize-squeezed .recruiter-hero-card {
-    grid-template-columns: 82px minmax(0, 1fr);
-    grid-template-areas:
-        "gutter image"
-        "intro intro"
-        ". subcopy"
-        ". details";
-    min-height: auto;
-    padding: 14px 14px 24px;
-}
-
-.device-container.recruiter-mode.expanded.is-resize-squeezed .recruiter-hero-details {
-    width: min(100%, 360px);
-    grid-template-columns: 1fr;
-    gap: 14px;
-}
-
-.device-container.recruiter-mode.expanded.is-resize-squeezed .recruiter-hero-subcopy {
-    width: min(100%, 260px);
-}
-
-.device-container.recruiter-mode.expanded.is-resize-squeezed .recruiter-meta-row {
-    grid-template-columns: 1fr;
-    gap: 2px;
-}
-
-.device-container.recruiter-mode.expanded.is-resize-wide .recruiter-editorial {
-    padding-left: 36px;
-    padding-right: 36px;
-}
-
-.device-container.recruiter-mode.expanded.is-resize-wide .recruiter-editorial-hero-grid {
-    grid-template-columns: minmax(0, 1fr) minmax(300px, 0.9fr);
-}
-
-.device-container.recruiter-mode.expanded.is-resize-wide .recruiter-editorial-story-copy {
-    grid-template-columns: minmax(260px, 0.42fr) minmax(0, 0.58fr);
-}
-
-.device-container.recruiter-mode.expanded.is-resize-wide .recruiter-editorial-work-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-}
 
 .reader-about-grid {
     display: grid;

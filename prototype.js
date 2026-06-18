@@ -2232,7 +2232,7 @@ function initDeviceWindowNudge() {
     const MIN_WIDTH = 360;
     const MIN_HEIGHT = 560;
     const DEFAULT_WIDTH = 450;
-    const RECRUITER_DEFAULT_WIDTH = 1180;
+    const RECRUITER_DEFAULT_WIDTH = 1240;
     const PREVIEW_THRESHOLD = 0.72;
     const DRAG_THRESHOLD = 3;
     const HANDLE_REVEAL_THRESHOLD = 34;
