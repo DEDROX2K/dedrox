@@ -450,15 +450,47 @@ summary {
     display: flex;
     flex-direction: column;
     z-index: 1000;
+    background-color: #161618;
+    border-radius: 999px;
     transition:
-        width 0.6s var(--device-expand-ease),
-        height 0.6s var(--device-expand-ease),
-        transform 0.6s var(--device-expand-ease),
-        top 0.6s var(--device-expand-ease),
-        left 0.6s var(--device-expand-ease),
-        border-radius 0.3s var(--device-expand-ease),
+        width 0.45s var(--device-expand-ease),
+        height 0.45s var(--device-expand-ease),
+        transform 0.45s var(--device-expand-ease),
+        top 0.45s var(--device-expand-ease),
+        left 0.45s var(--device-expand-ease),
+        background-color 0.45s var(--device-expand-ease),
+        border-radius 0.45s var(--device-expand-ease),
         box-shadow 0.4s var(--device-expand-ease);
     will-change: width, height, transform;
+}
+
+.device-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ffffff;
+    border-radius: inherit;
+    z-index: -1;
+    transform: scaleY(0);
+    transform-origin: top center;
+    transition: transform 0.45s var(--device-expand-ease);
+}
+
+.device-container.expanded::before {
+    transform: scaleY(1);
+    animation: fade-out-bg 0.4s ease-out 2.0s forwards;
+}
+
+@keyframes fade-out-bg {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
 }
 
 .device-container::after {
@@ -476,10 +508,11 @@ summary {
 /* Removed duplicate positioning */
 
 .device-container.expanded {
+    top: 50%;
+    transform: translate(-50%, -50%) translate3d(var(--device-drift-x), var(--device-drift-y), 0) scale(var(--device-shell-scale));
     width: min(96vw, var(--device-width));
     height: min(var(--device-expanded-height), var(--device-expanded-max-height));
-    background: transparent;
-    /* Changed to transparent to allow isolated sections to stand out */
+    background-color: transparent;
     border-radius: var(--site-radius);
     overflow: visible;
 }
@@ -749,11 +782,11 @@ body:not(.device-expanded):not(.reader-mode):not(.recruiter-mode) {
     z-index: 999;
     opacity: 0;
     visibility: hidden;
-    /* Transition matching the device container's 0.6s expand duration and easing */
+    /* Transition matching the device container's 0.45s expand duration and easing */
     transition:
-        transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-        opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-        visibility 0.6s;
+        transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+        opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+        visibility 0.45s;
 }
 
 body:not(.device-expanded):not(.reader-mode):not(.recruiter-mode) .pill-radiating-glow {
@@ -769,7 +802,7 @@ body:not(.device-expanded):not(.reader-mode):not(.recruiter-mode) .pill-radiatin
     left: 0;
     width: 100%;
     height: 100%;
-    border: 0.5px solid rgba(100, 100, 100, 0.089);
+    border: 0.5px solid rgba(107, 107, 107, 0.089);
     border-radius: 999px;
     box-sizing: border-box;
     pointer-events: none;
@@ -779,47 +812,47 @@ body:not(.device-expanded):not(.reader-mode):not(.recruiter-mode) .pill-radiatin
 }
 
 .radiating-ring.ring-1 {
-    animation-delay: 1s;
-}
-
-.radiating-ring.ring-2 {
-    animation-delay: -2s;
-}
-
-.radiating-ring.ring-3 {
-    animation-delay: -3s;
-}
-
-.radiating-ring.ring-4 {
-    animation-delay: -4s;
-}
-
-.radiating-ring.ring-5 {
-    animation-delay: -5s;
-}
-
-.radiating-ring.ring-6 {
-    animation-delay: -6s;
-}
-
-.radiating-ring.ring-7 {
-    animation-delay: -7s;
-}
-
-.radiating-ring.ring-8 {
-    animation-delay: -8s;
-}
-
-.radiating-ring.ring-9 {
-    animation-delay: -9s;
-}
-
-.radiating-ring.ring-10 {
     animation-delay: -10s;
 }
 
+.radiating-ring.ring-2 {
+    animation-delay: -5s;
+}
+
+.radiating-ring.ring-3 {
+    animation-delay: 0s;
+}
+
+.radiating-ring.ring-4 {
+    animation-delay: 5s;
+}
+
+.radiating-ring.ring-5 {
+    animation-delay: 10s;
+}
+
+.radiating-ring.ring-6 {
+    animation-delay: 15s;
+}
+
+.radiating-ring.ring-7 {
+    animation-delay: 20s;
+}
+
+.radiating-ring.ring-8 {
+    animation-delay: 25s;
+}
+
+.radiating-ring.ring-9 {
+    animation-delay: 30s;
+}
+
+.radiating-ring.ring-10 {
+    animation-delay: 35s;
+}
+
 .radiating-ring.ring-11 {
-    animation-delay: -11s;
+    animation-delay: 40s;
 }
 
 @keyframes radiate-out {
@@ -833,6 +866,48 @@ body:not(.device-expanded):not(.reader-mode):not(.recruiter-mode) .pill-radiatin
         opacity: 0;
     }
 }
+
+/* Bottom-to-top sweep light transition */
+.expand-shockwave {
+    position: fixed;
+    bottom: -45vh;
+    left: 0;
+    width: 100vw;
+    height: 45vh;
+    background: linear-gradient(to top, 
+        rgba(255, 255, 255, 0) 0%, 
+        rgba(255, 255, 255, 0.28) 45%, 
+        rgba(255, 255, 255, 0.55) 80%, 
+        rgba(255, 255, 255, 0) 100%
+    );
+    pointer-events: none;
+    z-index: 9999;
+    transform: translateY(0);
+    opacity: 0;
+}
+
+body.device-expanded .expand-shockwave {
+    animation: sweep-up-wave 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes sweep-up-wave {
+    0% {
+        transform: translateY(0);
+        opacity: 0;
+    }
+    12% {
+        opacity: 1;
+    }
+    85% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-150vh);
+        opacity: 0;
+    }
+}
+
+
 
 body:not(.device-expanded):not(.reader-mode):not(.recruiter-mode) .top-bar-pill {
     background: linear-gradient(110deg,
@@ -2020,7 +2095,9 @@ body.device-transitioning .device-container.expanded #pill-fifth-btn {
     z-index: 10;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.42s var(--ease-genie);
+    transition: 
+        opacity 0.25s ease-out,
+        visibility 0.25s;
     overflow-y: auto;
     overflow-x: hidden;
     /* Content starts directly under the frosted glass pill. */
@@ -2032,7 +2109,6 @@ body.device-transitioning .device-container.expanded #pill-fifth-btn {
 .device-container.expanded .site-content {
     opacity: 1;
     visibility: visible;
-    transition-delay: 0s;
 }
 
 .site-content::-webkit-scrollbar {
@@ -2060,12 +2136,17 @@ body.device-transitioning .device-container.expanded #pill-fifth-btn {
 
 .device-container.reader-mode {
     width: min(98vw, 25%);
-    background: #ececec;
+    background: #ececec !important;
+}
+
+.device-container.reader-mode::before,
+.device-container.recruiter-mode::before {
+    display: none !important;
 }
 
 .device-container.recruiter-mode {
     width: min(96vw, 1240px);
-    background: #EBEAE6;
+    background: #EBEAE6 !important;
     border: 1px solid rgba(0, 0, 0, 0.08);
     box-shadow:
         0 24px 72px rgba(0, 0, 0, 0.28),
@@ -7798,6 +7879,8 @@ body.reader-mode .wip-swinging-img {
 
     /* Adjust expanded container padding and layout */
     .device-container.expanded {
+        top: 0;
+        transform: translate(-50%, 0);
         width: 100vw;
         height: 100vh;
         max-height: 100vh;

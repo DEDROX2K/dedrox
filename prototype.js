@@ -3988,18 +3988,16 @@ document.addEventListener('DOMContentLoaded', () => {
             gsap.fromTo(contentBlocks,
                 {
                     opacity: 0,
-                    y: 80,
-                    scale: 0.9,
-                    filter: 'blur(10px)'
+                    y: 30,
+                    scale: 0.98
                 },
                 {
                     opacity: 1,
                     y: 0,
                     scale: 1,
-                    filter: 'blur(0px)',
-                    duration: 0.8,
-                    stagger: 0.05,
-                    ease: "power4.out",
+                    duration: 0.4,
+                    stagger: 0.03,
+                    ease: "power3.out",
                     delay: 0,
                     clearProps: "all" // Important so CSS can take over after
                 }
@@ -4018,7 +4016,7 @@ document.addEventListener('DOMContentLoaded', () => {
             idCardSystem.updateAnchor();
             leftOrbControls.updateScrollPosition();
             if (typeof fitty !== 'undefined') fitty.fitAll();
-        }, 1220);
+        }, 500);
     };
 
     // Config based UI updates
