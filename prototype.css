@@ -68,7 +68,7 @@
 
     /* Section spacing */
     --section-vertical-space: 0px;
-    --content-section-gap: 24px;
+    --content-section-gap: 10px;
 
     /* Unified section vertical padding */
     --section-gap-xs: 10px;
@@ -734,6 +734,104 @@ summary {
 body:not(.device-expanded):not(.reader-mode):not(.recruiter-mode) {
     background: #0e0e0f;
     color: #ededed;
+}
+
+/* Radiating background rings around the closed pill area */
+.pill-radiating-glow {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    /* Default state (Open): stretched vertically and faded out */
+    transform: translate(-50%, -50%) scale(var(--device-shell-scale, 1)) scaleX(1.15) scaleY(5.5);
+    width: var(--pill-container-w);
+    height: var(--pill-container-h);
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    /* Transition matching the device container's 0.6s expand duration and easing */
+    transition:
+        transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+        opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+        visibility 0.6s;
+}
+
+body:not(.device-expanded):not(.reader-mode):not(.recruiter-mode) .pill-radiating-glow {
+    opacity: 1;
+    visibility: visible;
+    /* Closed state: standard scale */
+    transform: translate(-50%, -50%) scale(var(--device-shell-scale, 1)) scale(1);
+}
+
+.radiating-ring {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0.5px solid rgba(100, 100, 100, 0.089);
+    border-radius: 999px;
+    box-sizing: border-box;
+    pointer-events: none;
+    opacity: 0;
+    transform: scale(2);
+    animation: radiate-out 60s linear infinite;
+}
+
+.radiating-ring.ring-1 {
+    animation-delay: 1s;
+}
+
+.radiating-ring.ring-2 {
+    animation-delay: -2s;
+}
+
+.radiating-ring.ring-3 {
+    animation-delay: -3s;
+}
+
+.radiating-ring.ring-4 {
+    animation-delay: -4s;
+}
+
+.radiating-ring.ring-5 {
+    animation-delay: -5s;
+}
+
+.radiating-ring.ring-6 {
+    animation-delay: -6s;
+}
+
+.radiating-ring.ring-7 {
+    animation-delay: -7s;
+}
+
+.radiating-ring.ring-8 {
+    animation-delay: -8s;
+}
+
+.radiating-ring.ring-9 {
+    animation-delay: -9s;
+}
+
+.radiating-ring.ring-10 {
+    animation-delay: -10s;
+}
+
+.radiating-ring.ring-11 {
+    animation-delay: -11s;
+}
+
+@keyframes radiate-out {
+    0% {
+        transform: scale(1);
+        opacity: 0.65;
+    }
+
+    100% {
+        transform: scale(20);
+        opacity: 0;
+    }
 }
 
 body:not(.device-expanded):not(.reader-mode):not(.recruiter-mode) .top-bar-pill {
@@ -3648,7 +3746,7 @@ body.recruiter-mode .recruiter-cases .folder-menu {
 
 .partners-section {
     margin-bottom: 0;
-    /* padding: 40px 0; */
+    padding: 30px 0;
 }
 
 .arrow-marquee {
@@ -6927,15 +7025,12 @@ body.reader-mode .wip-swinging-img {
     left: 50%;
     transform: translateX(-50%);
     width: 550px;
-    height: 96px;
-    /* Keep height fixed so SVG viewBox doesn't squash */
+    height: 24px;
     z-index: 10000;
     display: flex;
     justify-content: center;
-    align-items: flex-start;
-    padding-top: 12px;
+    align-items: center;
     pointer-events: none;
-    /* Let events pass through to elements behind when collapsed */
     transition: top 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     will-change: top;
 }
@@ -6956,16 +7051,11 @@ body.reader-mode .wip-swinging-img {
 
 .status-notch-bg path {
     pointer-events: auto;
-    /* Catch hover/clicks only exactly on the black shape */
-    d: path("M 0 0 L 20 60 Q 25 96 45 96 L 505 96 Q 525 96 530 60 L 550 0 Z");
-    transition: d 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.status-notch-wrapper.notch-collapsed:not(.hover-expanded) .status-notch-bg path {
+    /* Permanent mini notch SVG path */
     d: path("M 0 0 L 15 18 Q 20 24 30 24 L 520 24 Q 530 24 535 18 L 550 0 Z");
 }
 
-/* Collapsed Content */
+/* Collapsed Content (Permanently visible inside the mini notch wrapper) */
 .notch-content-collapsed {
     position: absolute;
     top: 0;
@@ -6976,193 +7066,24 @@ body.reader-mode .wip-swinging-img {
     justify-content: center;
     align-items: center;
     gap: 40px;
-    /* Restored gap */
     color: #e0e0e0;
-    /* Restored brightness */
     font-size: 10px;
-    /* Restored text size */
     font-family: 'Inter', sans-serif;
     font-weight: 400;
-    /* Restored normal weight */
     letter-spacing: normal;
     text-transform: none;
-    /* Restored sentence case */
-    opacity: 0;
-    filter: blur(8px);
-    transform: scale(0.96);
-    pointer-events: none;
-    transition: opacity 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-    transition-delay: 0s;
-}
-
-.status-notch-wrapper.notch-collapsed:not(.hover-expanded) .notch-content-collapsed {
     opacity: 1;
-    filter: blur(0px);
-    transform: scale(1);
     pointer-events: auto;
-    transition-delay: 0.1s;
 }
 
 .notch-content-collapsed .status-item {
     display: flex;
     align-items: center;
     gap: 8px;
-    /* Restored dot spacing */
 }
 
 .notch-content-collapsed .status-time {
     color: #a0a0a0;
-}
-
-/* Expanded Content */
-.nn-widget {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    padding: 0 48px;
-    padding-bottom: 8px;
-    /* Offset the 12px padding-top of the wrapper to optically center */
-    opacity: 1;
-    filter: blur(0px);
-    transform: scale(1);
-    pointer-events: auto;
-    /* allow interaction */
-    transition: opacity 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-    transition-delay: 0.1s;
-}
-
-.nn-status-sub-accent {
-    color: #3f8cf2;
-}
-
-.nn-status-arrow {
-    font-size: 10px;
-}
-
-.status-notch-wrapper.notch-collapsed:not(.hover-expanded) .nn-widget {
-    opacity: 0;
-    filter: blur(8px);
-    transform: scale(0.96);
-    pointer-events: none;
-    transition-delay: 0s;
-}
-
-.nn-top {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 20px;
-}
-
-.nn-month {
-    color: #fff;
-    font-size: 26px;
-    font-weight: 800;
-    font-family: 'Inter', sans-serif;
-    letter-spacing: -1px;
-    line-height: 1;
-    margin-bottom: 0;
-}
-
-.nn-days {
-    display: flex;
-    gap: 14px;
-}
-
-.nn-day {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    width: 24px;
-}
-
-.nn-day-name {
-    color: #444;
-    font-size: 9px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.nn-day.active .nn-day-name {
-    color: #fff;
-}
-
-.nn-day-num {
-    color: #555;
-    font-size: 15px;
-    font-weight: 600;
-    line-height: 1;
-}
-
-.nn-day.active .nn-day-num {
-    color: #3f8cf2;
-    font-size: 18px;
-    font-weight: 800;
-}
-
-.nn-day-dot {
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background: #222;
-}
-
-.nn-day.active .nn-day-dot {
-    background: #3f8cf2;
-    box-shadow: 0 0 6px rgba(63, 140, 242, 0.4);
-}
-
-.nn-bottom {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 14px;
-}
-
-.nn-left {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 2px;
-}
-
-.nn-status-text {
-    color: #fff;
-    font-size: 13px;
-    font-weight: 600;
-    line-height: 1;
-}
-
-.nn-status-sub {
-    color: #888;
-    font-size: 12px;
-    line-height: 1;
-}
-
-.nn-divider {
-    width: 2px;
-    height: 20px;
-    background: #222;
-    border-radius: 2px;
-}
-
-.nn-right {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    min-width: 50px;
-    text-decoration: none;
-    transition: filter 0.2s ease, transform 0.2s ease;
-}
-
-a.nn-right:hover {
-    filter: brightness(1.2);
-    transform: scale(1.02);
 }
 
 .nn-time-row {
@@ -7266,30 +7187,49 @@ a.nn-right:hover {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 16px 20px;
+    overflow: hidden;
 }
 
-.link-pill-grid {
+.company-marquee {
+    overflow: hidden;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    position: relative;
+    -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 12%, rgba(0, 0, 0, 1) 88%, rgba(0, 0, 0, 0) 100%);
+    mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 12%, rgba(0, 0, 0, 1) 88%, rgba(0, 0, 0, 0) 100%);
+}
+
+.marquee-track {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
-    width: 100%;
-    gap: 12px;
+    width: max-content;
+    animation: marquee-left-to-right 28s linear infinite;
 }
 
-
-.link-pill-item {
-    text-decoration: none;
-    color: #a0a0a0;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    transition: color 0.3s var(--ease-lux), transform 0.3s var(--ease-lux);
+.marquee-image {
+    height: 38px;
+    width: auto;
+    flex-shrink: 0;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
 }
 
-.link-pill-item:hover {
-    color: #111;
-    opacity: 0.85;
+@keyframes marquee-left-to-right {
+    0% {
+        transform: translateX(-50%);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .marquee-track {
+        animation-play-state: paused;
+    }
 }
 
 
@@ -7792,10 +7732,10 @@ a.nn-right:hover {
 
 .mini-carousel {
     position: relative;
-    width: 100%;
+    width: 95%;
     height: 280px;
-    background: #000;
-    border-radius: 40px;
+    /* background: #000; */
+    border-radius: 20px;
     overflow: hidden;
     /* box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1); */
 }
@@ -7827,12 +7767,12 @@ a.nn-right:hover {
     left: 50%;
     transform: translateX(-50%);
     display: flex;
-    gap: 10px;
+    /* gap: 10px; */
     z-index: 10;
 }
 
 .indicator {
-    width: 35px;
+    width: 20px;
     height: 4px;
     background: rgba(255, 255, 255, 0.3);
     border-radius: 2px;
@@ -7986,17 +7926,11 @@ a.nn-right:hover {
     }
 
     .link-pill-card {
-        padding: 14px 16px;
+        padding: 10px 0;
     }
 
-    .link-pill-grid {
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 10px 14px;
-    }
-
-    .link-pill-item {
-        font-size: 11px;
+    .marquee-image {
+        height: 30px;
     }
 
     .pixel-section {

@@ -638,8 +638,20 @@ function initManagedCarousel(miniCarousel) {
 
     const track = miniCarousel.querySelector('.carousel-track');
     const images = Array.from(miniCarousel.querySelectorAll('.carousel-track img'));
-    const indicators = Array.from(miniCarousel.querySelectorAll('.indicator'));
-    if (!track || images.length <= 1 || indicators.length !== images.length) return;
+    let indicators = Array.from(miniCarousel.querySelectorAll('.indicator'));
+    if (!track || images.length <= 1) return;
+
+    // Dynamically align indicators if they do not match the image count
+    const indicatorsContainer = miniCarousel.querySelector('.carousel-indicators');
+    if (indicatorsContainer && indicators.length !== images.length) {
+        indicatorsContainer.innerHTML = '';
+        for (let i = 0; i < images.length; i++) {
+            const span = document.createElement('span');
+            span.className = 'indicator' + (i === 0 ? ' active' : '');
+            indicatorsContainer.appendChild(span);
+        }
+        indicators = Array.from(indicatorsContainer.querySelectorAll('.indicator'));
+    }
 
     miniCarousel.dataset.carouselInitialized = 'true';
 
