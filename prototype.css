@@ -1046,7 +1046,7 @@ body.recruiter-mode #pill-fifth-btn {
     position: relative;
     isolation: isolate;
     overflow: visible;
-    background: #232100 !important;
+    background: #000000 !important;
     /* border: 1px solid rgba(0, 0, 0, 0.12);
     box-shadow:
         0 0 0 1px rgba(42, 102, 255, 0.35),
@@ -3527,10 +3527,10 @@ body.recruiter-mode .recruiter-cases .folder-menu {
     overflow: hidden;
     position: relative;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-    background-image:
+    /* background-image:
         radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.08), transparent 48%),
         radial-gradient(circle at 50% 100%, rgba(39, 132, 255, 0.12), transparent 52%),
-        linear-gradient(180deg, #111111 0%, #080808 100%);
+        linear-gradient(180deg, #111111 0%, #080808 100%); */
 }
 
 .toy-model-container model-viewer {
@@ -6308,6 +6308,7 @@ body.case-open .case-window {
     border-left: 0;
     border-top: 1px solid rgba(255, 255, 255, 0.08);
     padding-left: 0;
+    margin-top: 10px;
 }
 
 .footer-col-title {
@@ -7648,7 +7649,7 @@ a.nn-right:hover {
 .color-wheel-outer {
     position: relative;
     width: 200px;
-    height: 200px;
+    height: 150px;
     padding: 12px;
     border-radius: 50%;
     box-shadow: 0 10px 30px rgba(163, 163, 163, 0.05);
@@ -7667,9 +7668,9 @@ a.nn-right:hover {
 
 .color-swatch {
     position: absolute;
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    border-radius: 30%;
     cursor: pointer;
     --swatch-scale: 1;
     --swatch-translate-x: 0px;
