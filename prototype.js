@@ -3998,7 +3998,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     duration: 0.4,
                     stagger: 0.03,
                     ease: "power3.out",
-                    delay: 0,
+                    delay: 0.32, // Delay GSAP entrance to match the CSS delay of the container reveal
                     clearProps: "all" // Important so CSS can take over after
                 }
             );

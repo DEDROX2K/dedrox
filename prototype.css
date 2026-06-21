@@ -2058,9 +2058,11 @@ body.device-maximized .expand-fab .icon-expand {
 }
 
 /* Keep expand/collapse smooth by disabling expensive effects during the transition window */
+body.device-transitioning .top-bar-pill,
 body.device-transitioning .content-mask,
 body.device-transitioning .device-bottom-blur {
     backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
 }
 
 body.device-transitioning .device-container.expanded #pill-notes-btn,
@@ -2095,9 +2097,11 @@ body.device-transitioning .device-container.expanded #pill-fifth-btn {
     z-index: 10;
     opacity: 0;
     visibility: hidden;
+    will-change: opacity;
+    /* Snappy exit transition when collapsing */
     transition: 
-        opacity 0.25s ease-out,
-        visibility 0.25s;
+        opacity 0.15s ease-in,
+        visibility 0.15s;
     overflow-y: auto;
     overflow-x: hidden;
     /* Content starts directly under the frosted glass pill. */
@@ -2109,6 +2113,10 @@ body.device-transitioning .device-container.expanded #pill-fifth-btn {
 .device-container.expanded .site-content {
     opacity: 1;
     visibility: visible;
+    /* 0.3s delay when expanding to keep layout size animations fast */
+    transition: 
+        opacity 0.2s ease-out 0.3s,
+        visibility 0.2s 0.3s;
 }
 
 .site-content::-webkit-scrollbar {
