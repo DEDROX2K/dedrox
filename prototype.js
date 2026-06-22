@@ -4685,6 +4685,31 @@ document.addEventListener('DOMContentLoaded', () => {
         const colorHandle = document.getElementById('colorPickerHandle');
         const resetBgBtn = document.getElementById('resetBgBtn');
         const miniCarousel = document.getElementById('miniCarousel');
+        const themeBloom = document.getElementById('theme-bloom');
+        let themeBloomTimerId = 0;
+
+        const triggerThemeBloom = (color, sourceRect = null) => {
+            if (!themeBloom) return;
+
+            const rect = sourceRect;
+            const x = rect ? rect.left + (rect.width / 2) : window.innerWidth / 2;
+            const y = rect ? rect.top + (rect.height / 2) : window.innerHeight / 2;
+
+            themeBloom.style.setProperty('--bloom-x', `${x}px`);
+            themeBloom.style.setProperty('--bloom-y', `${y}px`);
+            themeBloom.style.setProperty('--bloom-color', color);
+            themeBloom.classList.remove('is-active');
+            void themeBloom.offsetWidth;
+            themeBloom.classList.add('is-active');
+
+            if (themeBloomTimerId) {
+                window.clearTimeout(themeBloomTimerId);
+            }
+            themeBloomTimerId = window.setTimeout(() => {
+                themeBloom.classList.remove('is-active');
+                themeBloomTimerId = 0;
+            }, 360);
+        };
 
         if (colorWheel && colorHandle) {
             let isDragging = false;
@@ -4723,15 +4748,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 const l = 92 + (distPercent * 6); // 92% (center) to 98% (edge)
 
                 const colorBg = `hsl(${hue}, ${s}%, ${l}%)`;
-                const colorPanel = `hsl(${hue}, ${s}%, ${Math.min(99, l + 2)}%)`;
+                const colorPanel = '#ffffff';
 
                 document.documentElement.style.setProperty('--bg', colorBg);
                 document.documentElement.style.setProperty('--panel', colorPanel);
+                triggerThemeBloom(colorBg, colorWheel.getBoundingClientRect());
 
-                // Force update on the white blocks if they aren't reactive
-                document.querySelectorAll('.content-panel').forEach(block => {
-                    block.style.backgroundColor = colorPanel;
-                });
             };
 
             colorWheel.addEventListener('mousedown', (e) => {
@@ -4768,9 +4790,7 @@ document.addEventListener('DOMContentLoaded', () => {
             resetBgBtn.addEventListener('click', () => {
                 document.documentElement.style.setProperty('--bg', '#EBEAE6');
                 document.documentElement.style.setProperty('--panel', '#ffffff');
-                document.querySelectorAll('.content-panel').forEach(block => {
-                    block.style.backgroundColor = '#ffffff';
-                });
+                triggerThemeBloom('#EBEAE6', colorWheel.getBoundingClientRect());
                 if (colorHandle) {
                     colorHandle.style.left = '50%';
                     colorHandle.style.top = '50%';
@@ -4838,6 +4858,28 @@ document.addEventListener('DOMContentLoaded', () => {
         const resetBgBtn = document.getElementById('resetBgBtn');
         const miniCarousel = document.getElementById('miniCarousel');
         const defaultPaletteBg = '#EBEAE6';
+        const themeBloom = document.getElementById('theme-bloom');
+        let themeBloomTimerId = 0;
+
+        const triggerThemeBloom = (color, sourceRect = null) => {
+            if (!themeBloom) return;
+
+            const x = sourceRect ? sourceRect.left + (sourceRect.width / 2) : window.innerWidth / 2;
+            const y = sourceRect ? sourceRect.top + (sourceRect.height / 2) : window.innerHeight / 2;
+
+            themeBloom.style.setProperty('--bloom-x', `${x}px`);
+            themeBloom.style.setProperty('--bloom-y', `${y}px`);
+            themeBloom.style.setProperty('--bloom-color', color);
+            themeBloom.classList.remove('is-active');
+            void themeBloom.offsetWidth;
+            themeBloom.classList.add('is-active');
+
+            if (themeBloomTimerId) window.clearTimeout(themeBloomTimerId);
+            themeBloomTimerId = window.setTimeout(() => {
+                themeBloom.classList.remove('is-active');
+                themeBloomTimerId = 0;
+            }, 360);
+        };
 
         const paletteColors = [
             '#ffec59ff', // Yellow
@@ -4984,13 +5026,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     document.documentElement.style.setProperty('--bg', hex);
                     setResetButtonState(hex.toLowerCase() === defaultPaletteBg.toLowerCase());
 
-                    // Keep panels clean (white with very subtle transparency to let color bleed through)
-                    const panelColor = 'rgba(255, 255, 255, 0.98)';
+                    // Keep panels translucent so the mini site stays visually open
+                    const panelColor = '#ffffff';
                     document.documentElement.style.setProperty('--panel', panelColor);
-
-                    document.querySelectorAll('.content-panel').forEach(block => {
-                        block.style.backgroundColor = panelColor;
-                    });
+                    triggerThemeBloom(hex, colorPalette.getBoundingClientRect());
                 });
 
                 colorPalette.appendChild(swatch);
@@ -5023,9 +5062,7 @@ document.addEventListener('DOMContentLoaded', () => {
             resetBgBtn.addEventListener('click', () => {
                 document.documentElement.style.setProperty('--bg', defaultPaletteBg);
                 document.documentElement.style.setProperty('--panel', '#ffffff');
-                document.querySelectorAll('.content-panel').forEach(block => {
-                    block.style.backgroundColor = '#ffffff';
-                });
+                triggerThemeBloom(defaultPaletteBg, colorPalette.getBoundingClientRect());
                 document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
                 if (colorPreview) colorPreview.style.backgroundColor = defaultPaletteBg;
                 resetBgBtn.disabled = true;
