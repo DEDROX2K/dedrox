@@ -1337,6 +1337,28 @@ body.device-closing .pill-icon-btn img {
     transition-duration: 0.26s, 0.42s, 0.26s;
 }
 
+body:not(.pill-controls-revealed) .device-container.expanded #pill-notes-btn,
+body:not(.pill-controls-revealed) .device-container.expanded #pill-fourth-btn {
+    width: 0 !important;
+    min-width: 0;
+    padding: 0;
+    margin: 0;
+    opacity: 0;
+    transform: scaleX(0.15) translateY(6px);
+    filter: blur(4px);
+    pointer-events: none;
+    overflow: hidden;
+}
+
+body.pill-controls-revealed .device-container.expanded #pill-notes-btn,
+body.pill-controls-revealed .device-container.expanded #pill-fourth-btn {
+    opacity: 1;
+    transform: scaleX(1) translateY(0);
+    filter: blur(0);
+    pointer-events: auto;
+    overflow: visible;
+}
+
 .pill-icon-btn::before {
     content: '';
     position: absolute;
@@ -1553,12 +1575,24 @@ body.device-closing .pill-icon-btn img {
 }
 
 .device-container.expanded .pill-portfolio-text {
+    flex: 0 0 auto;
+    width: auto;
+    padding: 0 16px;
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0) scale(1);
+    background: #ebeae6;
+    box-shadow: inset 0 0 0 1px rgba(17, 17, 17, 0.05);
+}
+
+body.pill-controls-revealed .device-container.expanded .pill-portfolio-text {
     flex: 0;
     width: 0;
     padding: 0;
     margin: 0;
     opacity: 0;
     pointer-events: none;
+    transform: translateY(4px) scale(0.96);
 }
 
 .pill-text {
@@ -1578,15 +1612,25 @@ body.device-closing .pill-icon-btn img {
 }
 
 .device-container.expanded .pill-text {
+    opacity: 1;
+    color: #111111;
+    text-shadow: none;
+}
+
+body.pill-controls-revealed .device-container.expanded .pill-text {
     opacity: 0;
+}
+
+body.pill-controls-revealed .device-container.expanded #pill-notes-btn {
+    transition-delay: 0.02s;
+}
+
+body.pill-controls-revealed .device-container.expanded #pill-fourth-btn {
+    transition-delay: 0.1s;
 }
 
 body.device-closing .top-bar-pill {
     transform: scale(0.988);
-}
-
-body.device-closing .pill-portfolio-text {
-    transition-delay: 0.12s;
 }
 
 /* Unified pill state handles all buttons together */

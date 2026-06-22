@@ -4007,6 +4007,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initDeviceWindowNudge();
     let fittyRefreshTimer = null;
     let hasExpandedOnce = false;
+    let pillControlsRevealTimerId = 0;
+    let hasPillControlsIntroCompleted = false;
 
     const scheduleFittyRefresh = () => {
         if (typeof fitty === 'undefined') return;
@@ -4025,6 +4027,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const expandDeviceShell = (autoOpenNotes = true) => {
         if (!device || device.classList.contains('expanded')) return;
+
+        if (pillControlsRevealTimerId) {
+            window.clearTimeout(pillControlsRevealTimerId);
+            pillControlsRevealTimerId = 0;
+        }
+        document.body.classList.remove('pill-controls-revealed');
 
         withTemporaryDeviceTransition(() => {
             device.style.backgroundColor = '#ebeae6';
@@ -4058,6 +4066,17 @@ document.addEventListener('DOMContentLoaded', () => {
         ensureBackgroundsReady();
         window.hasMatrixStarted = true;
         hasExpandedOnce = true;
+
+        if (hasPillControlsIntroCompleted) {
+            document.body.classList.add('pill-controls-revealed');
+        } else {
+            pillControlsRevealTimerId = window.setTimeout(() => {
+                if (!device || !device.classList.contains('expanded')) return;
+                document.body.classList.add('pill-controls-revealed');
+                hasPillControlsIntroCompleted = true;
+                pillControlsRevealTimerId = 0;
+            }, 4000);
+        }
 
         setTimeout(() => {
             if (miniMatrixInstance) miniMatrixInstance.resize();
@@ -4341,6 +4360,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 device.classList.remove('maximized');
                 document.body.classList.remove('device-maximized');
                 applyPillSizes('collapsed');
+                if (pillControlsRevealTimerId) {
+                    window.clearTimeout(pillControlsRevealTimerId);
+                    pillControlsRevealTimerId = 0;
+                }
+                document.body.classList.remove('pill-controls-revealed');
                 readerMode.close();
                 recruiterMode.close();
                 stickyNote.close();
@@ -4365,9 +4389,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const blogSystem = initReaderBlogs();
 
     // Initialize Scramble Animations
-    const pillTextEl = document.querySelector('.pill-text');
-    scrambleText(pillTextEl, "portfolio", 1000);
-
     const resumeBtnEl = document.querySelector('.resume-fab');
     scrambleText(resumeBtnEl, "/-Resume", 1000);
 
