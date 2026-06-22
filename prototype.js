@@ -1635,6 +1635,7 @@ class MatrixRain {
 let miniMatrixInstance = null;
 let backgroundMatrixInstance = null;
 let matrixPaused = false;
+let backgroundWarmupPromise = null;
 
 function applyMatrixPausedState() {
     document.body.classList.toggle('matrix-paused', matrixPaused);
@@ -1664,6 +1665,11 @@ function toggleMatrixPaused() {
 }
 
 function initBackgrounds() {
+    if (backgroundMatrixInstance) {
+        applyMatrixPausedState();
+        return backgroundMatrixInstance;
+    }
+
     const cfg = SITE_CONFIG.asciiRain;
     backgroundMatrixInstance = new MatrixRain(
         'canvas-bg',
@@ -1683,20 +1689,55 @@ function initBackgrounds() {
     }
     applyMatrixPausedState();
     miniMatrixInstance = null;
+    return backgroundMatrixInstance;
 }
 
-function withTemporaryDeviceTransition(loadFn, duration = 1220) {
+function ensureBackgroundsReady({ defer = false } = {}) {
+    if (backgroundMatrixInstance) return Promise.resolve(backgroundMatrixInstance);
+    if (backgroundWarmupPromise) return backgroundWarmupPromise;
+
+    backgroundWarmupPromise = new Promise((resolve) => {
+        const boot = () => resolve(initBackgrounds());
+        if (defer && 'requestIdleCallback' in window) {
+            window.requestIdleCallback(boot, { timeout: 1200 });
+        } else if (defer) {
+            window.setTimeout(boot, 180);
+        } else {
+            boot();
+        }
+    }).finally(() => {
+        backgroundWarmupPromise = null;
+    });
+
+    return backgroundWarmupPromise;
+}
+
+let deviceTransitionTimerId = 0;
+function withTemporaryDeviceTransition(loadFn, { duration = 760, phase = null } = {}) {
+    if (deviceTransitionTimerId) {
+        window.clearTimeout(deviceTransitionTimerId);
+        deviceTransitionTimerId = 0;
+    }
+
+    document.body.classList.remove('device-opening', 'device-closing');
     document.body.classList.add('device-transitioning');
+    if (phase === 'opening' || phase === 'closing') {
+        document.body.classList.add(`device-${phase}`);
+    }
+
     const shouldTemporarilyPauseMatrix = backgroundMatrixInstance && !matrixPaused;
     if (shouldTemporarilyPauseMatrix) {
         backgroundMatrixInstance.setPaused(true);
     }
     loadFn();
-    window.setTimeout(() => {
+
+    deviceTransitionTimerId = window.setTimeout(() => {
         document.body.classList.remove('device-transitioning');
+        document.body.classList.remove('device-opening', 'device-closing');
         if (shouldTemporarilyPauseMatrix && backgroundMatrixInstance) {
             backgroundMatrixInstance.setPaused(false);
         }
+        deviceTransitionTimerId = 0;
     }, duration);
 }
 
@@ -1708,17 +1749,18 @@ function primeExpandableAssets() {
     const imageUrls = Array.from(document.querySelectorAll('.site-content img'))
         .map((img) => img.currentSrc || img.getAttribute('src'))
         .filter(Boolean);
-    imageUrls.forEach((url) => {
+    imageUrls.slice(0, 10).forEach((url) => {
         const warm = new Image();
         warm.decoding = 'async';
         warm.src = url;
     });
 
-    const modelViewer = document.querySelector('model-viewer[src]');
-    const modelUrl = modelViewer?.getAttribute('src');
-    if (modelUrl) {
+    const modelUrls = Array.from(document.querySelectorAll('model-viewer[src], model-viewer[data-src]'))
+        .map((viewer) => viewer.getAttribute('src') || viewer.getAttribute('data-src'))
+        .filter(Boolean);
+    modelUrls.forEach((modelUrl) => {
         fetch(modelUrl, { cache: 'force-cache' }).catch(() => { });
-    }
+    });
 
 }
 
@@ -3361,20 +3403,27 @@ function initReaderBlogs() {
     });
 
     const loadBlogs = async () => {
+        if (loadBlogs.pending) return loadBlogs.pending;
+        if (loadBlogs.loaded) return loadBlogs.loaded;
+
         try {
-            const response = await fetch('./posts.json', { cache: 'no-store' });
+            loadBlogs.pending = fetch('./posts.json', { cache: 'default' });
+            const response = await loadBlogs.pending;
             if (!response.ok) {
                 throw new Error(`Unable to load posts.json (${response.status})`);
             }
             const posts = await response.json();
             renderBlogs(posts);
+            loadBlogs.loaded = posts;
+            return posts;
         } catch (error) {
             console.error(error);
             renderStatus('Unable to load blog posts.');
+            return null;
+        } finally {
+            loadBlogs.pending = null;
         }
     };
-
-    loadBlogs();
 
     return { loadBlogs };
 }
@@ -3957,6 +4006,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const idCardSystem = initIdCardSystem();
     initDeviceWindowNudge();
     let fittyRefreshTimer = null;
+    let hasExpandedOnce = false;
 
     const scheduleFittyRefresh = () => {
         if (typeof fitty === 'undefined') return;
@@ -3977,14 +4027,15 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!device || device.classList.contains('expanded')) return;
 
         withTemporaryDeviceTransition(() => {
+            device.style.backgroundColor = '#ebeae6';
             device.classList.add('expanded');
             document.body.classList.add('device-expanded');
             applyPillSizes('expanded');
-        });
+        }, { duration: 760, phase: 'opening' });
 
         // GSAP Staggered Entrance (Apple-like)
         const contentBlocks = document.querySelectorAll('.site-content > *:not(.content-mask)');
-        if (contentBlocks.length > 0 && typeof gsap !== 'undefined') {
+        if (hasExpandedOnce && contentBlocks.length > 0 && typeof gsap !== 'undefined') {
             gsap.fromTo(contentBlocks,
                 {
                     opacity: 0,
@@ -4004,11 +4055,9 @@ document.addEventListener('DOMContentLoaded', () => {
             );
         }
 
-        // Start Matrix Effect only on first open
-        if (!window.hasMatrixStarted) {
-            initBackgrounds();
-            window.hasMatrixStarted = true;
-        }
+        ensureBackgroundsReady();
+        window.hasMatrixStarted = true;
+        hasExpandedOnce = true;
 
         setTimeout(() => {
             if (miniMatrixInstance) miniMatrixInstance.resize();
@@ -4061,6 +4110,7 @@ document.addEventListener('DOMContentLoaded', () => {
             window.setTimeout(primeExpandableAssets, 450);
         }
     };
+    ensureBackgroundsReady({ defer: true });
     scheduleAssetPriming();
     topBar?.addEventListener('pointerenter', primeExpandableAssets, { once: true, passive: true });
     expandBtn?.addEventListener('pointerenter', primeExpandableAssets, { once: true, passive: true });
@@ -4285,6 +4335,7 @@ document.addEventListener('DOMContentLoaded', () => {
             !clickedInsideIdCard
         ) {
             withTemporaryDeviceTransition(() => {
+                device.style.backgroundColor = '';
                 device.classList.remove('expanded');
                 document.body.classList.remove('device-expanded');
                 device.classList.remove('maximized');
@@ -4297,7 +4348,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (resumeDockSystem.isPanelOpen()) resumeDockSystem.closeToPeek();
                 resumeDockSystem.hide();
                 idCardSystem.hide();
-            });
+            }, { duration: 720, phase: 'closing' });
             setTimeout(() => { if (miniMatrixInstance) miniMatrixInstance.resize(); }, 520);
         }
     });

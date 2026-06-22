@@ -20,6 +20,8 @@
     --device-expanded-height: 80vh;
     --device-expanded-max-height: 980px;
     --device-expand-ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --device-open-duration: 760ms;
+    --device-close-duration: 720ms;
     --device-drift-x: 0px;
     --device-drift-y: 0px;
     --recruiter-resize-width: 1240px;
@@ -458,39 +460,9 @@ summary {
         transform 0.45s var(--device-expand-ease),
         top 0.45s var(--device-expand-ease),
         left 0.45s var(--device-expand-ease),
-        background-color 0.45s var(--device-expand-ease),
         border-radius 0.45s var(--device-expand-ease),
         box-shadow 0.4s var(--device-expand-ease);
     will-change: width, height, transform;
-}
-
-.device-container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ffffff;
-    border-radius: inherit;
-    z-index: -1;
-    transform: scaleY(0);
-    transform-origin: top center;
-    transition: transform 0.45s var(--device-expand-ease);
-}
-
-.device-container.expanded::before {
-    transform: scaleY(1);
-    animation: fade-out-bg 0.4s ease-out 2.0s forwards;
-}
-
-@keyframes fade-out-bg {
-    0% {
-        opacity: 1;
-    }
-    100% {
-        opacity: 0;
-    }
 }
 
 .device-container::after {
@@ -515,6 +487,25 @@ summary {
     background-color: transparent;
     border-radius: var(--site-radius);
     overflow: visible;
+}
+
+body.device-opening .device-container.expanded,
+body.device-closing .device-container {
+    background-color: #161618;
+    overflow: hidden;
+}
+
+body.device-closing .device-container {
+    animation: shell-close-sync var(--device-close-duration) cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+body.device-opening .device-container.expanded::after,
+body.device-closing .device-container::after {
+    opacity: 0.38;
+    border-color: rgba(255, 255, 255, 0.18);
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.08),
+        0 18px 42px rgba(0, 0, 0, 0.22);
 }
 
 .device-edge-handles {
@@ -790,10 +781,18 @@ body:not(.device-expanded):not(.reader-mode):not(.recruiter-mode) {
 }
 
 body:not(.device-expanded):not(.reader-mode):not(.recruiter-mode) .pill-radiating-glow {
-    opacity: 1;
-    visibility: visible;
-    /* Closed state: standard scale */
-    transform: translate(-50%, -50%) scale(var(--device-shell-scale, 1)) scale(1);
+    opacity: 0;
+    visibility: hidden;
+}
+
+body.device-opening .pill-radiating-glow {
+    opacity: 0;
+    visibility: hidden;
+}
+
+body.device-closing .pill-radiating-glow {
+    opacity: 0;
+    visibility: hidden;
 }
 
 .radiating-ring {
@@ -886,9 +885,28 @@ body:not(.device-expanded):not(.reader-mode):not(.recruiter-mode) .pill-radiatin
     opacity: 0;
 }
 
-body.device-expanded .expand-shockwave {
+body.device-opening .expand-shockwave {
     animation: sweep-up-wave 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+@keyframes shell-close-sync {
+    0% {
+        background-color: #ebeae6;
+    }
+
+    38% {
+        background-color: #ebeae6;
+    }
+
+    72% {
+        background-color: #161618;
+    }
+
+    100% {
+        background-color: #161618;
+    }
+}
+
 
 @keyframes sweep-up-wave {
     0% {
@@ -1295,6 +1313,30 @@ body.recruiter-mode #pill-fifth-btn img {
     transition-delay: 0.35s;
 }
 
+body.device-closing #pill-fifth-btn img {
+    transition-delay: 0.02s;
+}
+
+body.device-closing #pill-fourth-btn img {
+    transition-delay: 0.06s;
+}
+
+body.device-closing #pill-third-btn img {
+    transition-delay: 0.1s;
+}
+
+body.device-closing #pill-resume-btn img {
+    transition-delay: 0.14s;
+}
+
+body.device-closing #pill-notes-btn img {
+    transition-delay: 0.18s;
+}
+
+body.device-closing .pill-icon-btn img {
+    transition-duration: 0.26s, 0.42s, 0.26s;
+}
+
 .pill-icon-btn::before {
     content: '';
     position: absolute;
@@ -1495,6 +1537,7 @@ body.recruiter-mode #pill-fifth-btn img {
     overflow: hidden;
     position: relative;
     box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.02);
+    transform-origin: center;
 }
 
 
@@ -1536,6 +1579,14 @@ body.recruiter-mode #pill-fifth-btn img {
 
 .device-container.expanded .pill-text {
     opacity: 0;
+}
+
+body.device-closing .top-bar-pill {
+    transform: scale(0.988);
+}
+
+body.device-closing .pill-portfolio-text {
+    transition-delay: 0.12s;
 }
 
 /* Unified pill state handles all buttons together */
@@ -8159,4 +8210,43 @@ body.reader-mode .wip-swinging-img {
     transition:
         transform 0.32s cubic-bezier(0.4, 0, 0.2, 1),
         opacity 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.contract-shockwave {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: calc(var(--pill-container-w) + 180px);
+    height: calc(var(--pill-container-h) + 180px);
+    border-radius: 999px;
+    background:
+        radial-gradient(circle at center,
+            rgba(255, 255, 255, 0.52) 0%,
+            rgba(255, 255, 255, 0.18) 32%,
+            rgba(255, 255, 255, 0.06) 54%,
+            rgba(255, 255, 255, 0) 72%);
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%) scale(2.4);
+    opacity: 0;
+}
+
+body.device-closing .contract-shockwave {
+    animation: contract-pill-wave 0.52s cubic-bezier(0.32, 0, 0.2, 1) forwards;
+}
+
+@keyframes contract-pill-wave {
+    0% {
+        transform: translate(-50%, -50%) scale(2.6);
+        opacity: 0;
+    }
+
+    18% {
+        opacity: 0.62;
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0;
+    }
 }
