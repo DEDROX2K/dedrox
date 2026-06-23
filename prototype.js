@@ -4006,9 +4006,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const idCardSystem = initIdCardSystem();
     initDeviceWindowNudge();
     let fittyRefreshTimer = null;
-    let hasExpandedOnce = false;
     let pillControlsRevealTimerId = 0;
-    let hasPillControlsIntroCompleted = false;
+    const PILL_CONTROLS_REVEAL_DELAY_MS = 4760;
 
     const scheduleFittyRefresh = () => {
         if (typeof fitty === 'undefined') return;
@@ -4041,42 +4040,14 @@ document.addEventListener('DOMContentLoaded', () => {
             applyPillSizes('expanded');
         }, { duration: 760, phase: 'opening' });
 
-        // GSAP Staggered Entrance (Apple-like)
-        const contentBlocks = document.querySelectorAll('.site-content > *:not(.content-mask)');
-        if (hasExpandedOnce && contentBlocks.length > 0 && typeof gsap !== 'undefined') {
-            gsap.fromTo(contentBlocks,
-                {
-                    opacity: 0,
-                    y: 30,
-                    scale: 0.98
-                },
-                {
-                    opacity: 1,
-                    y: 0,
-                    scale: 1,
-                    duration: 0.4,
-                    stagger: 0.03,
-                    ease: "power3.out",
-                    delay: 0.32, // Delay GSAP entrance to match the CSS delay of the container reveal
-                    clearProps: "all" // Important so CSS can take over after
-                }
-            );
-        }
-
         ensureBackgroundsReady();
         window.hasMatrixStarted = true;
-        hasExpandedOnce = true;
 
-        if (hasPillControlsIntroCompleted) {
+        pillControlsRevealTimerId = window.setTimeout(() => {
+            if (!device || !device.classList.contains('expanded')) return;
             document.body.classList.add('pill-controls-revealed');
-        } else {
-            pillControlsRevealTimerId = window.setTimeout(() => {
-                if (!device || !device.classList.contains('expanded')) return;
-                document.body.classList.add('pill-controls-revealed');
-                hasPillControlsIntroCompleted = true;
-                pillControlsRevealTimerId = 0;
-            }, 4000);
-        }
+            pillControlsRevealTimerId = 0;
+        }, PILL_CONTROLS_REVEAL_DELAY_MS);
 
         setTimeout(() => {
             if (miniMatrixInstance) miniMatrixInstance.resize();

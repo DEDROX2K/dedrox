@@ -169,7 +169,7 @@ body {
 }
 
 body {
-    background: var(--bg);
+    background-color: var(--bg);
     background-size: 44px 44px, 44px 44px, 44px 44px;
     background-position: 0 0, 22px 10px, 9px 27px;
     color: var(--ink);
@@ -180,7 +180,9 @@ body {
     overflow: hidden;
     font-family: 'Google Sans', sans-serif;
     font-weight: 400;
-    transition: color 0.45s var(--ease-lux);
+    transition:
+        background-color 0.42s var(--ease-lux),
+        color 0.45s var(--ease-lux);
 }
 
 .theme-bloom {
@@ -485,6 +487,7 @@ summary {
         top 0.45s var(--device-expand-ease),
         left 0.45s var(--device-expand-ease),
         border-radius 0.45s var(--device-expand-ease),
+        background-color 0.42s var(--ease-lux),
         box-shadow 0.4s var(--device-expand-ease);
     will-change: width, height, transform;
 }
@@ -515,12 +518,7 @@ summary {
 
 body.device-opening .device-container.expanded,
 body.device-closing .device-container {
-    background-color: #161618;
     overflow: hidden;
-}
-
-body.device-closing .device-container {
-    animation: shell-close-sync var(--device-close-duration) cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 body.device-opening .device-container.expanded::after,
@@ -780,7 +778,7 @@ body.device-closing .device-container::after {
 
 /* Collapsed landing state: dark mode */
 body:not(.device-expanded):not(.reader-mode):not(.recruiter-mode) {
-    background: #0e0e0f;
+    background-color: #0e0e0f;
     color: #ededed;
 }
 
@@ -890,17 +888,19 @@ body.device-closing .pill-radiating-glow {
     }
 }
 
-/* Bottom-to-top sweep light transition */
+/* Top-to-bottom sweep light transition */
 .expand-shockwave {
     position: fixed;
-    bottom: -45vh;
-    left: 0;
-    width: 100vw;
-    height: 45vh;
-    background: linear-gradient(to top, 
+    top: -100vh;
+    left: -20vw;
+    width: 140vw;
+    height: 100vh;
+    background: linear-gradient(to bottom,
         rgba(255, 255, 255, 0) 0%, 
-        rgba(255, 255, 255, 0.28) 45%, 
-        rgba(255, 255, 255, 0.55) 80%, 
+        rgba(255, 255, 255, 0.3) 18%,
+        rgba(255, 255, 255, 0.72) 46%,
+        rgba(255, 255, 255, 0.88) 58%,
+        rgba(255, 255, 255, 0.26) 82%,
         rgba(255, 255, 255, 0) 100%
     );
     pointer-events: none;
@@ -910,41 +910,22 @@ body.device-closing .pill-radiating-glow {
 }
 
 body.device-opening .expand-shockwave {
-    animation: sweep-up-wave 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: sweep-down-wave 0.62s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-@keyframes shell-close-sync {
-    0% {
-        background-color: #ebeae6;
-    }
-
-    38% {
-        background-color: #ebeae6;
-    }
-
-    72% {
-        background-color: #161618;
-    }
-
-    100% {
-        background-color: #161618;
-    }
-}
-
-
-@keyframes sweep-up-wave {
+@keyframes sweep-down-wave {
     0% {
         transform: translateY(0);
         opacity: 0;
     }
-    12% {
+    10% {
         opacity: 1;
     }
-    85% {
+    80% {
         opacity: 1;
     }
     100% {
-        transform: translateY(-150vh);
+        transform: translateY(170vh);
         opacity: 0;
     }
 }
@@ -1318,23 +1299,23 @@ body.recruiter-mode #pill-fifth-btn img {
 }
 
 .device-container.expanded #pill-notes-btn img {
-    transition-delay: 0.05s;
+    transition-delay: 0.08s;
 }
 
 .device-container.expanded #pill-resume-btn img {
-    transition-delay: 0.15s;
+    transition-delay: 0.18s;
 }
 
 .device-container.expanded #pill-third-btn img {
-    transition-delay: 0.25s;
+    transition-delay: 0.3s;
 }
 
 .device-container.expanded #pill-fourth-btn img {
-    transition-delay: 0.30s;
+    transition-delay: 0.42s;
 }
 
 .device-container.expanded #pill-fifth-btn img {
-    transition-delay: 0.35s;
+    transition-delay: 0.5s;
 }
 
 body.device-closing #pill-fifth-btn img {
@@ -1374,6 +1355,13 @@ body:not(.pill-controls-revealed) .device-container.expanded #pill-fourth-btn {
     overflow: hidden;
 }
 
+body:not(.pill-controls-revealed) .device-container.expanded #pill-notes-btn img,
+body:not(.pill-controls-revealed) .device-container.expanded #pill-fourth-btn img {
+    opacity: 0;
+    transform: translate3d(-50%, -50%, 0) translateY(12px) scale(0.6) rotate(-15deg);
+    filter: blur(4px);
+}
+
 body.pill-controls-revealed .device-container.expanded #pill-notes-btn,
 body.pill-controls-revealed .device-container.expanded #pill-fourth-btn {
     opacity: 1;
@@ -1381,6 +1369,14 @@ body.pill-controls-revealed .device-container.expanded #pill-fourth-btn {
     filter: blur(0);
     pointer-events: auto;
     overflow: visible;
+}
+
+body.pill-controls-revealed .device-container.expanded #pill-notes-btn img {
+    transition-delay: 0.06s;
+}
+
+body.pill-controls-revealed .device-container.expanded #pill-fourth-btn img {
+    transition-delay: 0.18s;
 }
 
 .pill-icon-btn::before {
@@ -1579,7 +1575,13 @@ body.pill-controls-revealed .device-container.expanded #pill-fourth-btn {
     justify-content: center;
     padding: 0 12px;
     margin-left: 3px;
-    transition: all 0.52s var(--device-expand-ease);
+    transition:
+        width 0.52s var(--device-expand-ease),
+        padding 0.52s var(--device-expand-ease),
+        margin 0.52s var(--device-expand-ease),
+        opacity 0.34s ease,
+        transform 0.52s var(--device-expand-ease),
+        background-color 0.32s var(--ease-lux);
     overflow: hidden;
     position: relative;
     box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.02);
@@ -1602,11 +1604,12 @@ body.pill-controls-revealed .device-container.expanded #pill-fourth-btn {
     flex: 0 0 auto;
     width: auto;
     padding: 0 40px;
+    margin-left: 0;
     opacity: 1;
     pointer-events: auto;
     transform: translateY(0) scale(1);
     background: #eeeeee;
-    box-shadow: inset 0 0 0 1px rgba(17, 17, 17, 0.05);
+    box-shadow: none;
 }
 
 body.pill-controls-revealed .device-container.expanded .pill-portfolio-text {
@@ -1617,6 +1620,8 @@ body.pill-controls-revealed .device-container.expanded .pill-portfolio-text {
     opacity: 0;
     pointer-events: none;
     transform: translateY(4px) scale(0.96);
+    background-color: transparent;
+    box-shadow: none;
 }
 
 .pill-text {
@@ -2216,11 +2221,15 @@ body.device-transitioning .device-container.expanded #pill-fifth-btn {
     z-index: 10;
     opacity: 0;
     visibility: hidden;
-    will-change: opacity;
+    filter: blur(12px);
+    transform: translateY(8px);
+    will-change: opacity, filter, transform;
     /* Snappy exit transition when collapsing */
     transition: 
         opacity 0.15s ease-in,
-        visibility 0.15s;
+        visibility 0.15s,
+        filter 0.15s ease-in,
+        transform 0.15s ease-in;
     overflow-y: auto;
     overflow-x: hidden;
     /* Content starts directly under the frosted glass pill. */
@@ -2232,10 +2241,13 @@ body.device-transitioning .device-container.expanded #pill-fifth-btn {
 .device-container.expanded .site-content {
     opacity: 1;
     visibility: visible;
-    /* 0.3s delay when expanding to keep layout size animations fast */
+    filter: blur(0);
+    transform: translateY(0);
     transition: 
-        opacity 0.2s ease-out 0.3s,
-        visibility 0.2s 0.3s;
+        opacity 0.12s ease-out 0.05s,
+        visibility 0.12s 0.05s,
+        filter 0.12s ease-out 0.05s,
+        transform 0.12s ease-out 0.05s;
 }
 
 .site-content::-webkit-scrollbar {
@@ -3657,61 +3669,18 @@ body.recruiter-mode .recruiter-cases .folder-menu {
     }
 }
 
-/* Staggered entrance for main content blocks */
 .site-content>* {
-    /* padding-top: 80px; */
-    opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 0.8s var(--device-expand-ease), transform 0.8s var(--device-expand-ease), filter 0.8s var(--device-expand-ease);
-    filter: blur(8px);
-    will-change: transform, opacity, filter;
+    opacity: 1;
+    transform: none;
+    transition: none;
+    filter: none;
+    will-change: auto;
 }
 
 .device-container.expanded .site-content>* {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
     filter: blur(0);
-}
-
-/* Delay for each child - CSS Fallback if GSAP is missing */
-.device-container.expanded .site-content>*:nth-child(1) {
-    transition-delay: 0.1s;
-}
-
-.device-container.expanded .site-content>*:nth-child(2) {
-    transition-delay: 0.14s;
-}
-
-.device-container.expanded .site-content>*:nth-child(3) {
-    transition-delay: 0.18s;
-}
-
-.device-container.expanded .site-content>*:nth-child(4) {
-    transition-delay: 0.22s;
-}
-
-.device-container.expanded .site-content>*:nth-child(5) {
-    transition-delay: 0.26s;
-}
-
-.device-container.expanded .site-content>*:nth-child(6) {
-    transition-delay: 0.30s;
-}
-
-.device-container.expanded .site-content>*:nth-child(7) {
-    transition-delay: 0.34s;
-}
-
-.device-container.expanded .site-content>*:nth-child(8) {
-    transition-delay: 0.38s;
-}
-
-.device-container.expanded .site-content>*:nth-child(9) {
-    transition-delay: 0.42s;
-}
-
-.device-container.expanded .site-content>*:nth-child(10) {
-    transition-delay: 0.46s;
 }
 
 .hero-grid {
