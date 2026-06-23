@@ -54,25 +54,8 @@
             <span class="status-item"><span class="dot-orange"></span> Visits - 74</span>
         </div>
     </div>
-    <div class="status-banner" id="status-banner" aria-hidden="true">
-        <div class="status-banner-left">
-            <span class="status-banner-item">Open to work <span class="dot-green"></span></span>
-        </div>
-        <div class="status-banner-center">
-            <span class="status-banner-item status-banner-time" id="status-banner-time">12:03 - London - Available</span>
-            <span class="status-banner-divider" aria-hidden="true"></span>
-            <span class="status-banner-item" id="status-banner-page">Portfolio</span>
-        </div>
-        <div class="status-banner-right" aria-hidden="true">
-            <span class="status-banner-clock">
-                <span class="status-banner-clock-face">
-                    <span class="status-banner-clock-hand status-banner-clock-hand-minute" id="status-banner-minute-hand"></span>
-                    <span class="status-banner-clock-hand status-banner-clock-hand-second" id="status-banner-second-hand"></span>
-                    <span class="status-banner-clock-center-dot"></span>
-                </span>
-            </span>
-        </div>
-    </div>
+
+
 
     <!-- Radiating background rings for closed pill landing state -->
     <div class="pill-radiating-glow" aria-hidden="true">
@@ -1055,68 +1038,10 @@ Raghav Prasanna
             const nnMonth = document.getElementById('nn-month');
             const nnDays = document.getElementById('nn-days');
             const globalTimeBadge = document.getElementById('global-status-time');
-            const statusBannerTime = document.getElementById('status-banner-time');
-            const statusBannerPage = document.getElementById('status-banner-page');
-            const statusBannerMinuteHand = document.getElementById('status-banner-minute-hand');
-            const statusBannerSecondHand = document.getElementById('status-banner-second-hand');
-
             // --- Notch State Management ---
             const notchWrapper = document.getElementById('status-notch');
-            const statusBanner = document.getElementById('status-banner');
-            const deviceEl = document.getElementById('portfolio-device');
-
-            const updateStatusBannerPage = () => {
-                if (!statusBannerPage) return;
-                const pageLabel = document.body.classList.contains('reader-mode')
-                    ? 'Blogs'
-                    : document.body.classList.contains('recruiter-mode')
-                        ? 'Recruiter Mode'
-                        : 'Portfolio';
-                statusBannerPage.textContent = pageLabel;
-            };
-
-            if (notchWrapper && deviceEl && statusBanner) {
-                let notchTimer = null;
-
-                const resetNotchTimer = () => {
-                    // Always show the notch first
-                    notchWrapper.classList.remove('notch-offscreen');
-                    statusBanner.classList.remove('is-visible');
-                    statusBanner.setAttribute('aria-hidden', 'true');
-
-                    // Clear existing timer
-                    if (notchTimer) clearTimeout(notchTimer);
-
-                    // Set new timer to hide after 3s
-                    notchTimer = setTimeout(() => {
-                        notchWrapper.classList.add('notch-offscreen');
-                        statusBanner.classList.add('is-visible');
-                        statusBanner.setAttribute('aria-hidden', 'false');
-                    }, 3000);
-                };
-
-                // Hover interaction: keep visible on hover
-                notchWrapper.addEventListener('mouseenter', () => {
-                    notchWrapper.classList.remove('notch-offscreen');
-                    statusBanner.classList.remove('is-visible');
-                    statusBanner.setAttribute('aria-hidden', 'true');
-                    if (notchTimer) clearTimeout(notchTimer);
-                });
-
-                notchWrapper.addEventListener('mouseleave', () => {
-                    resetNotchTimer();
-                });
-
-                // Device state observer: show on change
-                const deviceObserver = new MutationObserver(() => {
-                    updateStatusBannerPage();
-                    resetNotchTimer();
-                });
-                deviceObserver.observe(deviceEl, { attributes: true, attributeFilter: ['class'] });
-
-                // Initial run
-                updateStatusBannerPage();
-                resetNotchTimer();
+            if (notchWrapper) {
+                notchWrapper.classList.remove('notch-offscreen');
             }
 
             // Generate 5 days centered on today
@@ -1177,17 +1102,6 @@ Raghav Prasanna
                     globalTimeBadge.textContent = `${timeStr} - London 14°C - ${batteryStr}`;
                 }
 
-                if (statusBannerTime) {
-                    statusBannerTime.textContent = `${timeStr} - London`;
-                }
-
-                if (statusBannerMinuteHand) {
-                    statusBannerMinuteHand.style.transform = `translateX(-50%) rotate(${minuteRotation}deg)`;
-                }
-
-                if (statusBannerSecondHand) {
-                    statusBannerSecondHand.style.transform = `translateX(-50%) rotate(${secondRotation}deg)`;
-                }
             }
 
             // Try to get actual battery
@@ -1258,14 +1172,7 @@ Raghav Prasanna
                 });
             }
 
-            // Expand Case Window Logic
-            const expandBtn = document.getElementById('case-expand');
-            if (expandBtn) {
-                expandBtn.addEventListener('click', () => {
-                    const caseWindow = document.getElementById('case-window');
-                    if (caseWindow) caseWindow.classList.toggle('expanded-height');
-                });
-            }
+
 
             // Minimize Case Window Logic
             const minBtn = document.getElementById('case-min');
