@@ -8448,8 +8448,8 @@ body.talk-scene-active .theme-bloom {
 
 .content-panel-showcase {
     border-radius: var(--master-content-radius);
-    padding-top: var(--content-section-gap);
-    padding-bottom: var(--content-section-gap);
+    padding-top: 30px;
+    padding-bottom: 45px;
 }
 
 .content-panel-footer {
