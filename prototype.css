@@ -6405,7 +6405,7 @@ body.case-open .case-window {
 
 .hero-section-subtitle {
     max-width: 600px;
-    margin: 0 auto 32px;
+    margin: 0 32px 32px;
 }
 
 .hero-section-subtitle strong {
@@ -6948,6 +6948,24 @@ body.reader-mode .wip-swinging-img {
         visibility 0s linear 0.5s;
 }
 
+.talk-inline::before {
+    content: '';
+    position: absolute;
+    inset: -8%;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0;
+    background:
+        radial-gradient(circle at center,
+            rgba(236, 231, 227, 0) 0%,
+            rgba(236, 231, 227, 0) 44%,
+            rgba(236, 231, 227, 0.2) 58%,
+            rgba(236, 231, 227, 0.72) 74%,
+            rgba(236, 231, 227, 0.96) 88%,
+            rgba(236, 231, 227, 1) 100%);
+    transform: scale(1.08);
+}
+
 .talk-inline.is-visible {
     opacity: 1;
     visibility: visible;
@@ -6955,6 +6973,27 @@ body.reader-mode .wip-swinging-img {
     transition:
         opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
         visibility 0s linear 0s;
+}
+
+.talk-inline.is-pre-entering {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: none;
+}
+
+.talk-inline.is-pre-entering::before {
+    animation: talkEdgeBloomIn 0.72s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.talk-inline.is-pre-entering .talk-hero-layers {
+    opacity: 0.58;
+}
+
+.talk-inline.is-pre-entering .talk-container-3d,
+.talk-inline.is-pre-entering .talk-loading-overlay,
+.talk-inline.is-pre-entering .chat-phone-shell {
+    opacity: 0;
+    visibility: hidden;
 }
 
 .talk-inline.is-entering {
@@ -6983,6 +7022,7 @@ body.reader-mode .wip-swinging-img {
     justify-content: center;
     pointer-events: none;
     z-index: 0;
+    transition: opacity 0.28s ease;
 }
 
 .talk-inline .layer {
@@ -7784,13 +7824,13 @@ body.talk-scene-active .theme-bloom {
 @keyframes talkSceneIn {
     0% {
         opacity: 0;
-        transform: translateY(-36px);
+        clip-path: inset(49.6% 0 49.6% 0);
         filter: blur(4px);
     }
 
     100% {
         opacity: 1;
-        transform: translateY(0);
+        clip-path: inset(0 0 0 0);
         filter: blur(0);
     }
 }
@@ -7798,13 +7838,13 @@ body.talk-scene-active .theme-bloom {
 @keyframes talkSceneOut {
     0% {
         opacity: 1;
-        transform: translateY(0);
+        clip-path: inset(0 0 0 0);
         filter: blur(0);
     }
 
     100% {
         opacity: 0;
-        transform: translateY(-36px);
+        clip-path: inset(49.6% 0 49.6% 0);
         filter: blur(4px);
     }
 }
@@ -7812,19 +7852,19 @@ body.talk-scene-active .theme-bloom {
 @keyframes talkPhoneIn {
     0% {
         opacity: 0;
-        transform: translateY(-44px) scale(0.96);
+        transform: scaleX(0.18) scaleY(0.015);
         filter: blur(4px);
     }
 
-    65% {
+    56% {
         opacity: 1;
-        transform: translateY(6px) scale(1.01);
-        filter: blur(1px);
+        transform: scaleX(1.02) scaleY(0.09);
+        filter: blur(0.9px);
     }
 
     100% {
         opacity: 1;
-        transform: translateY(0) scale(1);
+        transform: scaleX(1) scaleY(1);
         filter: blur(0);
     }
 }
@@ -7832,14 +7872,54 @@ body.talk-scene-active .theme-bloom {
 @keyframes talkPhoneOut {
     0% {
         opacity: 1;
-        transform: translateY(0) scale(1);
+        transform: scaleX(1) scaleY(1);
         filter: blur(0);
     }
 
     100% {
         opacity: 0;
-        transform: translateY(-44px) scale(0.96);
+        transform: scaleX(0.18) scaleY(0.015);
         filter: blur(4px);
+    }
+}
+
+@keyframes talkEdgeBloomIn {
+    0% {
+        opacity: 0.98;
+        transform: scale(1.14);
+        background:
+            radial-gradient(circle at center,
+                rgba(236, 231, 227, 0) 0%,
+                rgba(236, 231, 227, 0) 52%,
+                rgba(236, 231, 227, 0.18) 64%,
+                rgba(236, 231, 227, 0.7) 78%,
+                rgba(236, 231, 227, 0.96) 90%,
+                rgba(236, 231, 227, 1) 100%);
+    }
+
+    70% {
+        opacity: 0.86;
+        transform: scale(1.04);
+        background:
+            radial-gradient(circle at center,
+                rgba(236, 231, 227, 0.06) 0%,
+                rgba(236, 231, 227, 0.06) 18%,
+                rgba(236, 231, 227, 0.26) 38%,
+                rgba(236, 231, 227, 0.74) 62%,
+                rgba(236, 231, 227, 0.96) 82%,
+                rgba(236, 231, 227, 1) 100%);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(1);
+        background:
+            radial-gradient(circle at center,
+                rgba(236, 231, 227, 0.12) 0%,
+                rgba(236, 231, 227, 0.3) 48%,
+                rgba(236, 231, 227, 0.72) 76%,
+                rgba(236, 231, 227, 0.96) 90%,
+                rgba(236, 231, 227, 1) 100%);
     }
 }
 

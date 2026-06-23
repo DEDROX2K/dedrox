@@ -4530,10 +4530,15 @@ function initInlineTalkScene() {
     };
 
     return {
+        prepare() {
+            talkSceneEl.classList.remove('is-exiting');
+            talkSceneEl.classList.add('is-visible', 'is-pre-entering');
+            talkSceneEl.setAttribute('aria-hidden', 'false');
+        },
         activate() {
             if (!ensureInitialized()) return;
             isActive = true;
-            talkSceneEl.classList.remove('is-exiting');
+            talkSceneEl.classList.remove('is-pre-entering', 'is-exiting');
             talkSceneEl.classList.add('is-visible', 'is-entering');
             talkSceneEl.setAttribute('aria-hidden', 'false');
             window.setTimeout(() => {
@@ -4545,7 +4550,7 @@ function initInlineTalkScene() {
         deactivate() {
             isActive = false;
             clearPendingStep();
-            talkSceneEl.classList.remove('is-entering');
+            talkSceneEl.classList.remove('is-pre-entering', 'is-entering');
             talkSceneEl.classList.add('is-exiting');
             window.setTimeout(() => {
                 talkSceneEl.classList.remove('is-visible', 'is-exiting');
@@ -4621,6 +4626,7 @@ function init3DChatMode(options = {}) {
         lastTriggerEl = triggerEl || lastTriggerEl || pillResumeBtn || topBar || device;
         closeConflictingUi();
         document.body.classList.add('talk-scene-transitioning');
+        talkScene.prepare();
 
         device?.classList.add('is-crt-transitioning', 'is-crt-closing');
         window.setTimeout(() => {
