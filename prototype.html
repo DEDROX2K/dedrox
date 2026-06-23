@@ -35,6 +35,8 @@
 
     <!-- Animation Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/renderers/CSS3DRenderer.js" defer></script>
 </head>
 
 <body>
@@ -50,6 +52,25 @@
             <span class="status-item">Open to work <span class="dot-green"></span></span>
             <span class="status-time" id="global-status-time">12:03 - London 14°C - 80%</span>
             <span class="status-item"><span class="dot-orange"></span> Visits - 74</span>
+        </div>
+    </div>
+    <div class="status-banner" id="status-banner" aria-hidden="true">
+        <div class="status-banner-left">
+            <span class="status-banner-item">Open to work <span class="dot-green"></span></span>
+        </div>
+        <div class="status-banner-center">
+            <span class="status-banner-item status-banner-time" id="status-banner-time">12:03 - London - Available</span>
+            <span class="status-banner-divider" aria-hidden="true"></span>
+            <span class="status-banner-item" id="status-banner-page">Portfolio</span>
+        </div>
+        <div class="status-banner-right" aria-hidden="true">
+            <span class="status-banner-clock">
+                <span class="status-banner-clock-face">
+                    <span class="status-banner-clock-hand status-banner-clock-hand-minute" id="status-banner-minute-hand"></span>
+                    <span class="status-banner-clock-hand status-banner-clock-hand-second" id="status-banner-second-hand"></span>
+                    <span class="status-banner-clock-center-dot"></span>
+                </span>
+            </span>
         </div>
     </div>
 
@@ -72,6 +93,108 @@
     <div class="expand-shockwave" aria-hidden="true"></div>
     <div class="contract-shockwave" aria-hidden="true"></div>
     <div class="theme-bloom" id="theme-bloom" aria-hidden="true"></div>
+    <div class="page-transition-overlay on-load" id="page-overlay" aria-hidden="true"></div>
+
+    <section id="talk-inline" class="talk-inline" aria-hidden="true">
+        <div class="hero-layers talk-hero-layers" aria-hidden="true">
+            <div class="layer layer-7" data-speed="0.1"></div>
+            <div class="layer layer-6" data-speed="0.2"></div>
+            <div class="layer layer-5" data-speed="0.4"></div>
+            <div class="layer layer-4" data-speed="0.6"></div>
+            <div class="layer layer-3" data-speed="0.8"></div>
+            <div class="layer layer-2" data-speed="1.0"></div>
+            <div class="layer layer-1" data-speed="1.2"></div>
+        </div>
+
+        <div id="talk-loading-overlay" class="talk-loading-overlay">Initializing 3D Chat...</div>
+        <div id="talk-container-3d" class="talk-container-3d" aria-hidden="true"></div>
+
+        <div id="talk-ui-source" class="talk-ui-source" aria-hidden="true">
+            <div class="chat-phone-shell">
+                <div class="ios-status-bar">
+                    <div class="ios-status-left">
+                        <div class="ios-signal">
+                            <div class="ios-signal-bar ios-signal-1"></div>
+                            <div class="ios-signal-bar ios-signal-2"></div>
+                            <div class="ios-signal-bar ios-signal-3"></div>
+                            <div class="ios-signal-bar ios-signal-4"></div>
+                            <div class="ios-signal-bar ios-signal-5"></div>
+                        </div>
+                        <span>Verizon</span>
+                        <span>3G</span>
+                    </div>
+                    <div class="ios-status-center">10:51 AM</div>
+                    <div class="ios-status-right">
+                        <span>19%</span>
+                        <div class="ios-battery">
+                            <div class="ios-battery-fill"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-header">
+                    <button class="chat-nav-btn back" id="talk-chat-btn-back" type="button">Go back</button>
+                    <div class="chat-title"><span id="talk-chat-contact-name">Raghav</span></div>
+                    <button class="chat-nav-btn" id="talk-chat-btn-clear" type="button">Restart</button>
+                </div>
+
+                <div class="chat-messages-area" id="talk-chat-messages-area">
+                    <div class="chat-timestamp">Today 10:51 AM</div>
+                </div>
+
+                <div class="chat-input-area">
+                    <div class="chat-input-wrapper"><textarea class="chat-input-text" id="talk-chat-input-text"
+                            placeholder="Text Message" readonly rows="1"></textarea></div>
+                    <button class="chat-btn-send" id="talk-chat-btn-send" type="button">
+                        <span class="chat-btn-send-label">Send</span>
+                        <span class="chat-btn-send-icon" aria-hidden="true">&#9654;</span>
+                    </button>
+                </div>
+
+                <div class="chat-keyboard" aria-hidden="true">
+                    <div class="kb-row">
+                        <div class="kb-key">Q</div>
+                        <div class="kb-key">W</div>
+                        <div class="kb-key">E</div>
+                        <div class="kb-key">R</div>
+                        <div class="kb-key">T</div>
+                        <div class="kb-key">Y</div>
+                        <div class="kb-key">U</div>
+                        <div class="kb-key">I</div>
+                        <div class="kb-key">O</div>
+                        <div class="kb-key">P</div>
+                    </div>
+                    <div class="kb-row kb-row-offset">
+                        <div class="kb-key">A</div>
+                        <div class="kb-key">S</div>
+                        <div class="kb-key">D</div>
+                        <div class="kb-key">F</div>
+                        <div class="kb-key">G</div>
+                        <div class="kb-key">H</div>
+                        <div class="kb-key">J</div>
+                        <div class="kb-key">K</div>
+                        <div class="kb-key">L</div>
+                    </div>
+                    <div class="kb-row">
+                        <div class="kb-key kb-key-dark kb-key-wide">⇧</div>
+                        <div class="kb-key">Z</div>
+                        <div class="kb-key">X</div>
+                        <div class="kb-key">C</div>
+                        <div class="kb-key">V</div>
+                        <div class="kb-key">B</div>
+                        <div class="kb-key">N</div>
+                        <div class="kb-key">M</div>
+                        <div class="kb-key kb-key-dark kb-key-wide">⌫</div>
+                    </div>
+                    <div class="kb-row">
+                        <div class="kb-key kb-key-dark kb-key-wide">123</div>
+                        <div class="kb-key kb-key-dark kb-key-wide">mic</div>
+                        <div class="kb-key kb-key-space">space</div>
+                        <div class="kb-key kb-key-dark kb-key-return">return</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <div id="portfolio-device" class="device-container">
 
@@ -799,6 +922,16 @@
                     </svg>
                 </button>
             </div>
+            <button class="floating-controls floating-controls-center" id="case-fullscreen-toggle" type="button"
+                aria-label="Toggle full screen" data-cursor="link">
+                <span class="f-fullscreen-label">Full screen</span>
+                <span class="f-fullscreen-icon" aria-hidden="true">
+                    <svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor"
+                        stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M1.5 4V1.5H4M8 1.5h2.5V4M10.5 8v2.5H8M4 10.5H1.5V8" />
+                    </svg>
+                </span>
+            </button>
             <a class="floating-controls floating-controls-left" id="case-download-link" href="#" target="_blank"
                 rel="noopener noreferrer" aria-label="Download resume" data-cursor="link">
                 <span class="f-download-label">Download</span>
@@ -914,17 +1047,34 @@
             const nnMonth = document.getElementById('nn-month');
             const nnDays = document.getElementById('nn-days');
             const globalTimeBadge = document.getElementById('global-status-time');
+            const statusBannerTime = document.getElementById('status-banner-time');
+            const statusBannerPage = document.getElementById('status-banner-page');
+            const statusBannerMinuteHand = document.getElementById('status-banner-minute-hand');
+            const statusBannerSecondHand = document.getElementById('status-banner-second-hand');
 
             // --- Notch State Management ---
             const notchWrapper = document.getElementById('status-notch');
+            const statusBanner = document.getElementById('status-banner');
             const deviceEl = document.getElementById('portfolio-device');
 
-            if (notchWrapper && deviceEl) {
+            const updateStatusBannerPage = () => {
+                if (!statusBannerPage) return;
+                const pageLabel = document.body.classList.contains('reader-mode')
+                    ? 'Blogs'
+                    : document.body.classList.contains('recruiter-mode')
+                        ? 'Recruiter Mode'
+                        : 'Portfolio';
+                statusBannerPage.textContent = pageLabel;
+            };
+
+            if (notchWrapper && deviceEl && statusBanner) {
                 let notchTimer = null;
 
                 const resetNotchTimer = () => {
                     // Always show the notch first
                     notchWrapper.classList.remove('notch-offscreen');
+                    statusBanner.classList.remove('is-visible');
+                    statusBanner.setAttribute('aria-hidden', 'true');
 
                     // Clear existing timer
                     if (notchTimer) clearTimeout(notchTimer);
@@ -932,12 +1082,16 @@
                     // Set new timer to hide after 3s
                     notchTimer = setTimeout(() => {
                         notchWrapper.classList.add('notch-offscreen');
+                        statusBanner.classList.add('is-visible');
+                        statusBanner.setAttribute('aria-hidden', 'false');
                     }, 3000);
                 };
 
                 // Hover interaction: keep visible on hover
                 notchWrapper.addEventListener('mouseenter', () => {
                     notchWrapper.classList.remove('notch-offscreen');
+                    statusBanner.classList.remove('is-visible');
+                    statusBanner.setAttribute('aria-hidden', 'true');
                     if (notchTimer) clearTimeout(notchTimer);
                 });
 
@@ -947,11 +1101,13 @@
 
                 // Device state observer: show on change
                 const deviceObserver = new MutationObserver(() => {
+                    updateStatusBannerPage();
                     resetNotchTimer();
                 });
                 deviceObserver.observe(deviceEl, { attributes: true, attributeFilter: ['class'] });
 
                 // Initial run
+                updateStatusBannerPage();
                 resetNotchTimer();
             }
 
@@ -995,6 +1151,10 @@
                 const dayOpts = { timeZone: 'Europe/London', weekday: 'short' };
 
                 const timeStr = now.toLocaleTimeString('en-GB', opts);
+                const minutes = now.getMinutes();
+                const seconds = now.getSeconds();
+                const minuteRotation = ((minutes + (seconds / 60)) / 60) * 360;
+                const secondRotation = (seconds / 60) * 360;
 
                 if (timeBadge && dayBadge) {
                     timeBadge.textContent = timeStr;
@@ -1007,6 +1167,18 @@
 
                 if (globalTimeBadge) {
                     globalTimeBadge.textContent = `${timeStr} - London 14°C - ${batteryStr}`;
+                }
+
+                if (statusBannerTime) {
+                    statusBannerTime.textContent = `${timeStr} - London`;
+                }
+
+                if (statusBannerMinuteHand) {
+                    statusBannerMinuteHand.style.transform = `translateX(-50%) rotate(${minuteRotation}deg)`;
+                }
+
+                if (statusBannerSecondHand) {
+                    statusBannerSecondHand.style.transform = `translateX(-50%) rotate(${secondRotation}deg)`;
                 }
             }
 

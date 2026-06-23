@@ -119,6 +119,9 @@ const SITE_CONFIG = {
         const cards = document.querySelectorAll('[data-case]');
         const caseWindow = document.getElementById('case-window');
         const closeBtn = document.getElementById('case-close');
+        const minBtn = document.getElementById('case-min');
+        const expandBtn = document.getElementById('case-expand');
+        const fullscreenToggleBtn = document.getElementById('case-fullscreen-toggle');
         const openBtn = document.getElementById('case-open-link');
         const downloadBtn = document.getElementById('case-download-link');
         const behanceBtn = document.getElementById('case-behance-link');
@@ -330,14 +333,36 @@ const SITE_CONFIG = {
             caseWindow.classList.remove('is-closing');
         };
 
+        const syncFullscreenUi = () => {
+            const isExpanded = caseWindow.classList.contains('expanded-height');
+            if (fullscreenToggleBtn) {
+                fullscreenToggleBtn.setAttribute('aria-label', isExpanded ? 'Exit full screen' : 'Toggle full screen');
+                fullscreenToggleBtn.setAttribute('title', isExpanded ? 'Exit full screen' : 'Full screen');
+                const label = fullscreenToggleBtn.querySelector('.f-fullscreen-label');
+                if (label) label.textContent = isExpanded ? 'Windowed' : 'Full screen';
+            }
+            if (expandBtn) {
+                expandBtn.setAttribute('title', isExpanded ? 'Windowed' : 'Expand');
+                expandBtn.setAttribute('aria-pressed', isExpanded ? 'true' : 'false');
+            }
+        };
+
+        const toggleCaseFullscreen = () => {
+            if (!caseWindow.classList.contains('visible')) return;
+            caseWindow.classList.toggle('expanded-height');
+            syncFullscreenUi();
+        };
+
         const finalizeClose = (keepLayout = false) => {
             clearCaseMotion();
             caseWindow.classList.remove('visible');
             caseWindow.classList.remove('minimized');
+            caseWindow.classList.remove('expanded-height');
             caseWindow.classList.remove('is-resume-content');
             setBehanceUrl('');
             setDownloadLink('Download', '#', 'Download resume');
             setExternalLink('Visit', '#', 'Visit Site');
+            syncFullscreenUi();
             if (!keepLayout) {
                 setCaseLayout(false);
             }
@@ -376,9 +401,11 @@ const SITE_CONFIG = {
             setCaseLayout(true);
             clearCaseMotion();
             caseWindow.classList.remove('minimized');
+            caseWindow.classList.remove('expanded-height');
             caseWindow.classList.add('visible');
             caseWindow.classList.add('is-opening');
             contentArea.scrollTop = 0;
+            syncFullscreenUi();
             finishCaseWindowOpen();
         };
 
@@ -395,9 +422,11 @@ const SITE_CONFIG = {
             setCaseLayout(true);
             clearCaseMotion();
             caseWindow.classList.remove('minimized');
+            caseWindow.classList.remove('expanded-height');
             caseWindow.classList.add('visible');
             caseWindow.classList.add('is-opening');
             contentArea.scrollTop = 0;
+            syncFullscreenUi();
 
             caseMotionTimer = window.setTimeout(() => {
                 clearCaseMotion();
@@ -418,8 +447,10 @@ const SITE_CONFIG = {
             setCaseLayout(true);
             clearCaseMotion();
             caseWindow.classList.remove('minimized');
+            caseWindow.classList.remove('expanded-height');
             caseWindow.classList.add('visible', 'is-opening');
             contentArea.scrollTop = 0;
+            syncFullscreenUi();
 
             caseMotionTimer = window.setTimeout(() => {
                 clearCaseMotion();
@@ -488,6 +519,16 @@ const SITE_CONFIG = {
         if (closeBtn) {
             closeBtn.addEventListener('click', closeCase);
         }
+
+        minBtn?.addEventListener('click', () => {
+            if (!caseWindow.classList.contains('visible')) return;
+            caseWindow.classList.remove('expanded-height');
+            caseWindow.classList.toggle('minimized');
+            syncFullscreenUi();
+        });
+
+        expandBtn?.addEventListener('click', toggleCaseFullscreen);
+        fullscreenToggleBtn?.addEventListener('click', toggleCaseFullscreen);
 
         if (openBtn) {
             syncOpenButton();
@@ -627,6 +668,11 @@ const resumePopoutEl = document.getElementById('resume-popout');
 const readerInlineEl = document.getElementById('reader-inline');
 const recruiterInlineEl = document.getElementById('recruiter-inline');
 const recruiterHeaderEl = recruiterInlineEl?.querySelector('.recruiter-header');
+const talkSceneEl = document.getElementById('talk-inline');
+const talkContainerEl = document.getElementById('talk-container-3d');
+const talkUiSourceEl = document.getElementById('talk-ui-source');
+const talkLoadingOverlayEl = document.getElementById('talk-loading-overlay');
+const pageOverlayEl = document.getElementById('page-overlay');
 const showResumeBtn = document.getElementById('show-resume-btn');
 const showIdBtn = document.getElementById('show-id-btn');
 const resumeCardDock = document.getElementById('resume-card-dock');
@@ -3980,11 +4026,644 @@ function initNodeGraph() {
 // --------------------------------------------------------
 // INTERACTIVE CHAT MODE
 // --------------------------------------------------------
-function init3DChatMode() {
-    const open = () => {
-        window.location.href = 'chat3d.html';
+function initInlineTalkScene() {
+    if (!talkSceneEl || !talkContainerEl || !talkUiSourceEl) {
+        return {
+            activate: () => { },
+            deactivate: () => { },
+            setBackHandler: () => { },
+            isActive: () => false
+        };
+    }
+
+    const CHAT_SETTINGS = {
+        contactName: 'Raghav',
+        timestampLabel: 'Today 10:51 AM',
+        initialPromptDelay: 50,
+        draftRevealDuration: 2000,
+        maxDraftLines: 4,
+        sendMorphDuration: 380,
+        replyTypingDelay: 1000,
+        nextDraftDelay: 1000,
+        loopThread: false,
+        flinchIntensity: 0.01,
+        flinchDepth: -0.004,
+        flinchInDuration: 0.07,
+        flinchOutDuration: 0.15,
+        flinchElasticity: 1
     };
-    return { open, close: () => { }, isActive: () => false };
+
+    const CHAT_THREAD = [
+        {
+            draft: "Where are you based and what's your current situation?",
+            reply: [
+                "I'm a Product Development Assistant at Aircards in Newcastle, UK, holding a UX Master's from Birmingham.",
+                "Right now, I'm looking for my next long-term home. I'm specifically targeting roles that offer visa sponsorship so I can plant roots and grow with the team."
+            ]
+        },
+        {
+            draft: "What's your actual skillset / day-to-day?",
+            reply: "I design and develop products, interfaces, and software that just work. Lately, I've been focused on XR/AR experiences and interactive displays. I also recently co-built an open-source bookmarking tool for designers using React, Tauri, and DevOps."
+        },
+        {
+            draft: "Are you a good fit for my team? (How do I contact you?)",
+            reply: "If you value direct feedback, fast iterations, and zero boring workflows-yes. Drop your details in the contact form below and let's build something cool."
+        }
+    ];
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const chatScreenEl = talkUiSourceEl.querySelector('.chat-phone-shell');
+    const contactNameEl = document.getElementById('talk-chat-contact-name');
+    const inputArea = talkSceneEl.querySelector('.chat-input-area');
+    const btnBack = document.getElementById('talk-chat-btn-back');
+    const btnClear = document.getElementById('talk-chat-btn-clear');
+    const messagesArea = document.getElementById('talk-chat-messages-area');
+    const inputText = document.getElementById('talk-chat-input-text');
+    const btnSend = document.getElementById('talk-chat-btn-send');
+
+    let currentExchangeIndex = 0;
+    let isTyping = false;
+    let isSending = false;
+    let isDraftTyping = false;
+    let chatSequenceId = 0;
+    let activeExchange = null;
+    let pendingTimeoutId = null;
+    let initialized = false;
+    let isActive = false;
+    let onBack = () => { };
+    let scene = null;
+    let camera = null;
+    let renderer = null;
+    let cssRenderer = null;
+    let phoneModel = null;
+    let phoneScreenMesh = null;
+    let modelReady = false;
+    let targetRotX = 0;
+    let targetRotY = 0;
+    let currentRotX = 0;
+    let currentRotY = 0;
+    let rafId = 0;
+    const flinchObj = { z: 0, rx: 0, ry: 0 };
+
+    const clearPendingStep = () => {
+        if (pendingTimeoutId !== null) {
+            window.clearTimeout(pendingTimeoutId);
+            pendingTimeoutId = null;
+        }
+    };
+
+    const scheduleStep = (callback, delay) => {
+        clearPendingStep();
+        pendingTimeoutId = window.setTimeout(() => {
+            pendingTimeoutId = null;
+            callback();
+        }, delay);
+    };
+
+    const syncDraftBoxHeight = () => {
+        if (!inputText) return;
+        inputText.style.height = '0px';
+        const inputStyles = window.getComputedStyle(inputText);
+        const lineHeight = parseFloat(inputStyles.lineHeight) || 20;
+        const maxHeight = (CHAT_SETTINGS.maxDraftLines * lineHeight) + 2;
+        inputText.style.height = `${Math.min(inputText.scrollHeight, maxHeight)}px`;
+    };
+
+    const updateSendState = () => {
+        if (!btnSend || !inputText) return;
+        const canSend = !isTyping && !isSending && !isDraftTyping && !!activeExchange && inputText.value.trim().length > 0;
+        btnSend.classList.toggle('active', canSend);
+        btnSend.setAttribute('aria-disabled', String(!canSend));
+    };
+
+    const setDraft = (text = '') => {
+        if (!inputText) return;
+        inputText.value = text;
+        syncDraftBoxHeight();
+        updateSendState();
+    };
+
+    const resetMessages = () => {
+        if (!messagesArea) return;
+        messagesArea.innerHTML = `<div class="chat-timestamp">${CHAT_SETTINGS.timestampLabel}</div>`;
+    };
+
+    const getCurrentExchange = () => {
+        if (!CHAT_THREAD.length) return null;
+        if (currentExchangeIndex >= CHAT_THREAD.length) {
+            if (!CHAT_SETTINGS.loopThread) return null;
+            currentExchangeIndex = 0;
+        }
+        return CHAT_THREAD[currentExchangeIndex];
+    };
+
+    const stageCurrentDraft = () => {
+        const exchange = getCurrentExchange();
+        activeExchange = exchange;
+        if (!exchange) {
+            isDraftTyping = false;
+            setDraft('');
+            return;
+        }
+        typeDraftText(exchange.draft, exchange.draftRevealDuration ?? CHAT_SETTINGS.draftRevealDuration);
+    };
+
+    const resetConversation = (autoStart = false) => {
+        chatSequenceId += 1;
+        clearPendingStep();
+        currentExchangeIndex = 0;
+        activeExchange = null;
+        isTyping = false;
+        isSending = false;
+        isDraftTyping = false;
+        inputArea?.classList.remove('is-sending');
+        resetMessages();
+        setDraft('');
+        if (autoStart && modelReady) triggerConversation();
+    };
+
+    function triggerConversation() {
+        if (!isActive || !CHAT_THREAD.length || activeExchange || isTyping || isSending || isDraftTyping) return;
+        const runId = chatSequenceId;
+        scheduleStep(() => {
+            if (runId !== chatSequenceId || !isActive) return;
+            stageCurrentDraft();
+        }, CHAT_SETTINGS.initialPromptDelay);
+    }
+
+    function typeDraftText(text = '', revealDuration = CHAT_SETTINGS.draftRevealDuration) {
+        const draft = String(text ?? '');
+        clearPendingStep();
+        isDraftTyping = true;
+        setDraft('');
+
+        if (!draft.length) {
+            isDraftTyping = false;
+            updateSendState();
+            return;
+        }
+
+        const startTime = performance.now();
+        let visibleChars = 0;
+
+        const revealNextChunk = () => {
+            const elapsed = performance.now() - startTime;
+            const progress = Math.min(1, elapsed / Math.max(1, revealDuration));
+            const nextVisibleChars = Math.max(1, Math.ceil(draft.length * progress));
+            visibleChars = Math.max(visibleChars, nextVisibleChars);
+            setDraft(draft.slice(0, visibleChars));
+            if (messagesArea) {
+                messagesArea.scrollTop = messagesArea.scrollHeight;
+            }
+
+            if (visibleChars >= draft.length) {
+                isDraftTyping = false;
+                updateSendState();
+                return;
+            }
+
+            scheduleStep(revealNextChunk, 16);
+        };
+
+        scheduleStep(revealNextChunk, 20);
+    }
+
+    const appendBubble = (sender, text) => {
+        if (!messagesArea) return;
+        const bubble = document.createElement('div');
+        bubble.className = `chat-bubble chat-bubble-${sender === 'viewer' ? 'send' : 'recv'}`;
+        bubble.innerText = text;
+        messagesArea.appendChild(bubble);
+        messagesArea.scrollTop = messagesArea.scrollHeight;
+    };
+
+    const showTypingIndicator = () => {
+        const typing = document.createElement('div');
+        typing.className = 'chat-typing active';
+        typing.innerHTML = '<span></span><span></span><span></span>';
+        messagesArea?.appendChild(typing);
+        if (messagesArea) {
+            messagesArea.scrollTop = messagesArea.scrollHeight;
+        }
+        return typing;
+    };
+
+    const playExchange = (exchange) => {
+        const runId = chatSequenceId;
+        const sentText = (inputText?.value.trim() || exchange.sent || exchange.draft).trim();
+
+        activeExchange = null;
+        isSending = true;
+        inputArea?.classList.add('is-sending');
+        updateSendState();
+
+        scheduleStep(() => {
+            if (runId !== chatSequenceId || !isActive) return;
+
+            inputArea?.classList.remove('is-sending');
+            isSending = false;
+            appendBubble('viewer', sentText);
+            setDraft('');
+
+            const replies = Array.isArray(exchange.reply) ? exchange.reply : [exchange.reply];
+            const showNextReply = (replyIndex) => {
+                if (runId !== chatSequenceId || !isActive) return;
+
+                if (replyIndex >= replies.length) {
+                    isTyping = false;
+                    currentExchangeIndex += 1;
+                    updateSendState();
+                    scheduleStep(() => {
+                        if (runId !== chatSequenceId || !isActive) return;
+                        stageCurrentDraft();
+                    }, exchange.nextDraftDelay ?? CHAT_SETTINGS.nextDraftDelay);
+                    return;
+                }
+
+                isTyping = true;
+                updateSendState();
+                const typingIndicator = showTypingIndicator();
+
+                scheduleStep(() => {
+                    if (runId !== chatSequenceId || !isActive) return;
+                    typingIndicator.remove();
+                    appendBubble('contact', replies[replyIndex]);
+                    scheduleStep(() => showNextReply(replyIndex + 1), 600);
+                }, exchange.typingDelay ?? CHAT_SETTINGS.replyTypingDelay);
+            };
+
+            showNextReply(0);
+        }, exchange.sendMorphDuration ?? CHAT_SETTINGS.sendMorphDuration);
+    };
+
+    const enableSmoothWheelOn = (el) => {
+        if (!el || el.dataset.smoothWheelBound === 'true') return;
+        el.dataset.smoothWheelBound = 'true';
+
+        const state = {
+            current: el.scrollTop,
+            target: el.scrollTop,
+            raf: 0
+        };
+
+        const tick = () => {
+            state.current += (state.target - state.current) * 0.18;
+            if (Math.abs(state.target - state.current) < 0.35) {
+                state.current = state.target;
+            }
+            el.scrollTop = state.current;
+            if (Math.abs(state.target - state.current) > 0.35) {
+                state.raf = requestAnimationFrame(tick);
+            } else {
+                state.raf = 0;
+            }
+        };
+
+        el.addEventListener('wheel', (event) => {
+            if (event.ctrlKey) return;
+            const maxScroll = Math.max(0, el.scrollHeight - el.clientHeight);
+            if (maxScroll <= 0) return;
+
+            const delta = Math.abs(event.deltaY) >= Math.abs(event.deltaX) ? event.deltaY : event.deltaX;
+            if (!Number.isFinite(delta) || Math.abs(delta) < 0.2) return;
+
+            state.target = Math.min(Math.max(state.target + (delta * 1.05), 0), maxScroll);
+            event.preventDefault();
+            if (!state.raf) {
+                state.raf = requestAnimationFrame(tick);
+            }
+        }, { passive: false });
+
+        el.addEventListener('scroll', () => {
+            if (state.raf) return;
+            state.current = el.scrollTop;
+            state.target = el.scrollTop;
+        }, { passive: true });
+    };
+
+    const onWindowResize = () => {
+        if (!camera || !renderer || !cssRenderer || !talkSceneEl.classList.contains('is-visible')) return;
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        cssRenderer.setSize(window.innerWidth, window.innerHeight);
+    };
+
+    const onPointerMove = (event) => {
+        if (!isActive) return;
+        const mx = (event.clientX / window.innerWidth) * 2 - 1;
+        const my = -(event.clientY / window.innerHeight) * 2 + 1;
+        targetRotY = mx * 0.13;
+        targetRotX = -my * 0.13;
+    };
+
+    const onPointerDown = (event) => {
+        if (!isActive || !phoneModel || typeof gsap === 'undefined') return;
+        const mx = (event.clientX / window.innerWidth) * 2 - 1;
+        const my = -(event.clientY / window.innerHeight) * 2 + 1;
+        gsap.killTweensOf(flinchObj);
+        gsap.to(flinchObj, {
+            z: CHAT_SETTINGS.flinchDepth,
+            rx: -my * CHAT_SETTINGS.flinchIntensity,
+            ry: mx * CHAT_SETTINGS.flinchIntensity,
+            duration: CHAT_SETTINGS.flinchInDuration,
+            ease: 'power3.out',
+            onComplete: () => {
+                gsap.to(flinchObj, {
+                    z: 0,
+                    rx: 0,
+                    ry: 0,
+                    duration: CHAT_SETTINGS.flinchOutDuration,
+                    ease: `elastic.out(1, ${CHAT_SETTINGS.flinchElasticity})`
+                });
+            }
+        });
+    };
+
+    const renderLoop = () => {
+        rafId = requestAnimationFrame(renderLoop);
+        if (!renderer || !cssRenderer || !camera) return;
+
+        if (phoneModel) {
+            currentRotX += (targetRotX - currentRotX) * 0.1;
+            currentRotY += (targetRotY - currentRotY) * 0.1;
+            const baseRotX = phoneModel.userData.baseRotX || 0;
+            phoneModel.rotation.x = baseRotX + currentRotX + flinchObj.rx;
+            phoneModel.rotation.y = currentRotY + flinchObj.ry;
+            phoneModel.position.z = flinchObj.z;
+        }
+
+        renderer.render(scene, camera);
+        cssRenderer.render(scene, camera);
+    };
+
+    const setupChatLogic = () => {
+        if (!contactNameEl || !inputArea || !btnBack || !btnClear || !messagesArea || !inputText || !btnSend) return;
+        enableSmoothWheelOn(messagesArea);
+        contactNameEl.textContent = CHAT_SETTINGS.contactName;
+
+        btnSend.addEventListener('click', (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            if (isTyping || isSending || isDraftTyping || !activeExchange || !btnSend.classList.contains('active')) return;
+            playExchange(activeExchange);
+        });
+
+        btnBack.addEventListener('click', (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            onBack();
+        });
+
+        btnClear.addEventListener('click', () => {
+            resetConversation(true);
+        });
+
+        resetConversation(false);
+    };
+
+    const ensureInitialized = () => {
+        if (initialized) return true;
+        if (!window.THREE || typeof THREE.GLTFLoader === 'undefined' || typeof THREE.CSS3DRenderer === 'undefined' || !chatScreenEl) {
+            console.error('Talk scene dependencies are missing.');
+            return false;
+        }
+
+        initialized = true;
+        talkUiSourceEl.style.display = 'block';
+        talkContainerEl.setAttribute('aria-hidden', 'false');
+
+        scene = new THREE.Scene();
+        camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+        camera.position.set(0, 0, 1.8);
+
+        renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'high-performance' });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.domElement.style.pointerEvents = 'none';
+        talkContainerEl.appendChild(renderer.domElement);
+
+        cssRenderer = new THREE.CSS3DRenderer();
+        cssRenderer.setSize(window.innerWidth, window.innerHeight);
+        cssRenderer.domElement.style.top = '0';
+        talkContainerEl.appendChild(cssRenderer.domElement);
+
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+        scene.add(ambientLight);
+        const dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
+        dirLight.position.set(2, 3, 2);
+        scene.add(dirLight);
+
+        const loader = new THREE.GLTFLoader();
+        loader.load('threeD/phone.glb', (gltf) => {
+            phoneModel = gltf.scene;
+            phoneModel.traverse((child) => {
+                if (!child.isMesh) return;
+                if (child.name === 'Phone_Screen' || child.name.toLowerCase().includes('screen')) {
+                    phoneScreenMesh = child;
+                    child.material.color.setHex(0x000000);
+                    child.material.opacity = 0;
+                    child.material.transparent = true;
+                    child.material.blending = THREE.NoBlending;
+                }
+            });
+
+            const box = new THREE.Box3().setFromObject(phoneModel);
+            const center = box.getCenter(new THREE.Vector3());
+            phoneModel.position.sub(center);
+            phoneModel.scale.setScalar(2.5);
+
+            const cssObject = new THREE.CSS3DObject(chatScreenEl);
+            if (talkUiSourceEl.parentNode) {
+                talkUiSourceEl.parentNode.removeChild(talkUiSourceEl);
+            }
+            cssObject.scale.setScalar(0.00062);
+            if (phoneScreenMesh) {
+                cssObject.position.copy(phoneScreenMesh.position);
+                cssObject.quaternion.copy(phoneScreenMesh.quaternion);
+            } else {
+                cssObject.position.set(0, 0, 0.015);
+            }
+            phoneModel.add(cssObject);
+            scene.add(phoneModel);
+
+            phoneModel.position.y = 10;
+            phoneModel.rotation.x = Math.PI;
+            phoneModel.userData.baseRotX = Math.PI;
+
+            if (talkLoadingOverlayEl) {
+                talkLoadingOverlayEl.style.opacity = '0';
+                window.setTimeout(() => {
+                    talkLoadingOverlayEl.style.display = 'none';
+                }, 500);
+            }
+
+            if (typeof gsap !== 'undefined') {
+                gsap.to(phoneModel.position, {
+                    y: 0,
+                    duration: prefersReducedMotion ? 0.01 : 2,
+                    ease: 'expo.out'
+                });
+                gsap.to(phoneModel.userData, {
+                    baseRotX: 0,
+                    duration: prefersReducedMotion ? 0.01 : 2,
+                    ease: 'expo.out',
+                    onComplete: () => {
+                        modelReady = true;
+                        if (isActive) triggerConversation();
+                    }
+                });
+            } else {
+                phoneModel.position.y = 0;
+                phoneModel.userData.baseRotX = 0;
+                modelReady = true;
+                if (isActive) triggerConversation();
+            }
+        });
+
+        window.addEventListener('resize', onWindowResize);
+        window.addEventListener('pointermove', onPointerMove);
+        window.addEventListener('pointerdown', onPointerDown);
+        setupChatLogic();
+        renderLoop();
+        return true;
+    };
+
+    return {
+        activate() {
+            if (!ensureInitialized()) return;
+            isActive = true;
+            talkSceneEl.classList.remove('is-exiting');
+            talkSceneEl.classList.add('is-visible', 'is-entering');
+            talkSceneEl.setAttribute('aria-hidden', 'false');
+            window.setTimeout(() => {
+                talkSceneEl.classList.remove('is-entering');
+            }, prefersReducedMotion ? 10 : 720);
+            resetConversation(true);
+            btnBack?.focus({ preventScroll: true });
+        },
+        deactivate() {
+            isActive = false;
+            clearPendingStep();
+            talkSceneEl.classList.remove('is-entering');
+            talkSceneEl.classList.add('is-exiting');
+            window.setTimeout(() => {
+                talkSceneEl.classList.remove('is-visible', 'is-exiting');
+                talkSceneEl.setAttribute('aria-hidden', 'true');
+            }, prefersReducedMotion ? 10 : 520);
+        },
+        setBackHandler(handler) {
+            onBack = typeof handler === 'function' ? handler : () => { };
+        },
+        isActive: () => isActive
+    };
+}
+
+function init3DChatMode(options = {}) {
+    const {
+        readerMode,
+        recruiterMode,
+        stickyNote,
+        resumePopout,
+        resumeDockSystem,
+        idCardSystem
+    } = options;
+
+    const talkScene = initInlineTalkScene();
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const CRT_DURATION_MS = prefersReducedMotion ? 20 : 720;
+    const TALK_EXIT_MS = prefersReducedMotion ? 20 : 520;
+    const TALK_ENTER_MS = prefersReducedMotion ? 20 : 720;
+    let isTransitioning = false;
+    let isActive = false;
+    let lastTriggerEl = pillResumeBtn || topBar || device;
+
+    const finishCrtState = () => {
+        device?.classList.remove('is-crt-transitioning', 'is-crt-closing', 'is-crt-opening');
+    };
+
+    const hidePortfolioScene = () => {
+        device?.classList.add('is-scene-hidden');
+    };
+
+    const showPortfolioScene = () => {
+        device?.classList.remove('is-scene-hidden');
+    };
+
+    const hideCaseWindow = () => {
+        const overlay = window.CaseOverlayControl;
+        if (overlay?.isVisible?.()) {
+            overlay.close();
+            return;
+        }
+        if (caseWindowEl) {
+            caseWindowEl.classList.remove('visible', 'minimized', 'expanded-height', 'is-opening', 'is-closing');
+            document.body.classList.remove('case-open');
+        }
+    };
+
+    const closeConflictingUi = () => {
+        readerMode?.close?.();
+        recruiterMode?.close?.();
+        stickyNote?.close?.();
+        resumePopout?.close?.();
+        if (resumeDockSystem?.isPanelOpen?.()) {
+            resumeDockSystem.closeToPeek();
+        }
+        resumeDockSystem?.hide?.();
+        idCardSystem?.hide?.();
+        hideCaseWindow();
+    };
+
+    const open = (triggerEl = pillResumeBtn) => {
+        if (isActive || isTransitioning) return;
+        isTransitioning = true;
+        lastTriggerEl = triggerEl || lastTriggerEl || pillResumeBtn || topBar || device;
+        closeConflictingUi();
+        document.body.classList.add('talk-scene-transitioning');
+
+        device?.classList.add('is-crt-transitioning', 'is-crt-closing');
+        window.setTimeout(() => {
+            hidePortfolioScene();
+            document.body.classList.add('talk-scene-active');
+            talkScene.activate();
+            finishCrtState();
+            window.setTimeout(() => {
+                document.body.classList.remove('talk-scene-transitioning');
+                isActive = true;
+                isTransitioning = false;
+            }, TALK_ENTER_MS);
+        }, CRT_DURATION_MS);
+    };
+
+    const close = () => {
+        if (!isActive || isTransitioning) return;
+        isTransitioning = true;
+        document.body.classList.add('talk-scene-transitioning');
+        talkScene.deactivate();
+        window.setTimeout(() => {
+            document.body.classList.remove('talk-scene-active');
+            showPortfolioScene();
+            device?.classList.add('is-crt-transitioning', 'is-crt-opening');
+            window.setTimeout(() => {
+                finishCrtState();
+                document.body.classList.remove('talk-scene-transitioning');
+                isActive = false;
+                isTransitioning = false;
+                if (lastTriggerEl instanceof HTMLElement) {
+                    lastTriggerEl.focus({ preventScroll: true });
+                }
+            }, CRT_DURATION_MS);
+        }, TALK_EXIT_MS);
+    };
+
+    talkScene.setBackHandler(close);
+
+    return {
+        open,
+        close,
+        isActive: () => isActive
+    };
 }
 
 // --------------------------------------------------------
@@ -4001,9 +4680,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const resumePopout = initResumePopout();
     const readerMode = initReaderMode(onboardingFlow);
     const recruiterMode = initRecruiterMode();
-    const chatMode = init3DChatMode();
     const resumeDockSystem = initResumeDockSystem();
     const idCardSystem = initIdCardSystem();
+    const chatMode = init3DChatMode({
+        readerMode,
+        recruiterMode,
+        stickyNote,
+        resumePopout,
+        resumeDockSystem,
+        idCardSystem
+    });
     initDeviceWindowNudge();
     let fittyRefreshTimer = null;
     let pillControlsRevealTimerId = 0;
@@ -4154,18 +4840,7 @@ document.addEventListener('DOMContentLoaded', () => {
     pillResumeBtn?.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
-
-        const overlay = document.getElementById('page-overlay');
-        if (overlay) {
-            overlay.classList.add('active');
-            // Store that we was expanded so we come back to this state
-            localStorage.setItem('forcePillExpanded', 'true');
-            setTimeout(() => {
-                window.location.href = 'chat3d.html';
-            }, 600);
-        } else {
-            window.location.href = 'chat3d.html';
-        }
+        chatMode.open(pillResumeBtn);
     });
 
     pillThirdBtn?.addEventListener('click', (e) => {
@@ -4267,6 +4942,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }, { passive: true });
     document.body.addEventListener('click', (e) => {
+        if (chatMode.isActive()) {
+            return;
+        }
         if ((window.__deviceShellSuppressCloseUntil || 0) > Date.now()) {
             return;
         }
@@ -4364,10 +5042,9 @@ document.addEventListener('DOMContentLoaded', () => {
     scrambleText(resumeBtnEl, "/-Resume", 1000);
 
     // Page Transition: Fade in from white
-    const pageOverlay = document.getElementById('page-overlay');
-    if (pageOverlay) {
+    if (pageOverlayEl) {
         setTimeout(() => {
-            pageOverlay.classList.remove('on-load');
+            pageOverlayEl.classList.remove('on-load');
         }, 100);
     }
 
@@ -4407,378 +5084,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-
-/* -------------------------------------------------------- */
-/* INTERACTIVE CHAT 3D LOGIC                                */
-/* -------------------------------------------------------- */
-(function initChat3D() {
-    const container = document.getElementById('chat-3d-container');
-    const uiSource = document.getElementById('chat-ui-source');
-    if (!container || !uiSource) return;
-
-    let scene, camera, cssRenderer;
-    let cssObject;
-    let targetRotX = 0, targetRotY = 0;
-    let currentRotX = 0, currentRotY = 0;
-
-    let currentExchangeIndex = 0;
-    let isTyping = false;
-    let isSending = false;
-    let isDraftTyping = false;
-    let chatSequenceId = 0;
-
-    const CHAT_SETTINGS = {
-        contactName: 'Raghav',
-        timestampLabel: 'Today 10:51 AM',
-        initialPromptDelay: 800,
-        draftRevealDuration: 1800,
-        maxDraftLines: 4,
-        sendMorphDuration: 300,
-        replyTypingDelay: 1200,
-        nextDraftDelay: 1500,
-        loopThread: true
-    };
-
-    const CHAT_THREAD = [
-        { draft: "Hey Raghav, so… what do you actually *do*?", reply: "I design stuff that’s not boring — apps, weird interfaces, sometimes things that probably shouldn’t exist but do anyway." },
-        { draft: "Okay but like… what can you do for *me*?", reply: "I can take your half-baked idea and turn it into something people actually want to use. Or at least something they’ll screenshot." },
-        { draft: "What do you do in your free time?", reply: "Start projects I may or may not finish. Mess with XR, build random tools, overthink UX, occasionally go outside." },
-        { draft: "Be honest… what’s the budget looking like?", reply: "Somewhere between ‘this is fun’ and ‘I can pay rent’. Send what you’ve got, I’ll tell you what’s realistic." },
-        { draft: "Would we get along working together?", reply: "If you like honest feedback, fast iterations, and the occasional unhinged idea — yeah, we’ll be fine." },
-        { draft: "Are you working currently?", reply: "Before finishing my UX masters in birmingham I pivoted towards AIRCARDS as a product development assistant." }
-    ];
-
-    function init() {
-        if (!container.getBoundingClientRect().width) {
-            window.setTimeout(init, 100);
-            return;
-        }
-
-        const rect = container.getBoundingClientRect();
-        scene = new THREE.Scene();
-        camera = new THREE.PerspectiveCamera(40, rect.width / rect.height, 1, 5000);
-        camera.position.z = 1200;
-
-        cssRenderer = new THREE.CSS3DRenderer();
-        cssRenderer.setSize(rect.width, rect.height);
-        container.appendChild(cssRenderer.domElement);
-
-        const chatEl = uiSource.querySelector('.chat-panel-shell');
-        uiSource.style.display = 'block';
-        cssObject = new THREE.CSS3DObject(chatEl);
-        scene.add(cssObject);
-
-        setupChatLogic(chatEl);
-
-        window.addEventListener('resize', onWindowResize);
-        window.addEventListener('scroll', onScrollSync, { passive: true });
-        window.addEventListener('mousemove', onMouseMove);
-
-        requestAnimationFrame(animate);
-
-        // Start conversation when revealed
-        const observer = new IntersectionObserver((entries) => {
-            if (entries[0].isIntersecting) {
-                window.setTimeout(() => {
-                    if (currentExchangeIndex === 0 && !activeExchange) {
-                        stageCurrentDraft();
-                    }
-                }, 1000);
-            }
-        }, { threshold: 0.3 });
-        observer.observe(container);
-    }
-
-    function onWindowResize() {
-        const rect = container.getBoundingClientRect();
-        camera.aspect = rect.width / rect.height;
-        camera.updateProjectionMatrix();
-        cssRenderer.setSize(rect.width, rect.height);
-    }
-
-    function onScrollSync() {
-        // Sync perspective if needed, but relative to the container
-    }
-
-    function onMouseMove(e) {
-        const x = (e.clientX / window.innerWidth) * 2 - 1;
-        const y = -(e.clientY / window.innerHeight) * 2 + 1;
-        targetRotY = x * 0.12;
-        targetRotX = -y * 0.12;
-    }
-
-    function animate() {
-        requestAnimationFrame(animate);
-        currentRotX += (targetRotX - currentRotX) * 0.08;
-        currentRotY += (targetRotY - currentRotY) * 0.08;
-        cssObject.rotation.x = currentRotX;
-        cssObject.rotation.y = currentRotY;
-        cssRenderer.render(scene, camera);
-    }
-
-    let activeExchange = null;
-    let pendingTimeoutId = null;
-
-    function setupChatLogic(screenEl) {
-        const messagesArea = screenEl.querySelector('#chat-messages-area');
-        const inputText = screenEl.querySelector('#chat-input-text');
-        const btnSend = screenEl.querySelector('#chat-btn-send');
-        const btnClear = screenEl.querySelector('#chat-btn-clear');
-
-        const scheduleStep = (callback, delay) => {
-            if (pendingTimeoutId) clearTimeout(pendingTimeoutId);
-            pendingTimeoutId = window.setTimeout(callback, delay);
-        };
-
-        const updateSendState = () => {
-            const canSend = !isTyping && !isSending && !isDraftTyping && !!activeExchange && inputText.value.trim().length > 0;
-            btnSend.classList.toggle('active', canSend);
-        };
-
-        window.typeDraftText = (text, duration) => {
-            isDraftTyping = true;
-            let visibleChars = 0;
-            const start = performance.now();
-
-            const step = () => {
-                const elapsed = performance.now() - start;
-                const progress = Math.min(1, elapsed / duration);
-                const nextChars = Math.ceil(text.length * progress);
-                if (nextChars > visibleChars) {
-                    visibleChars = nextChars;
-                    inputText.value = text.slice(0, visibleChars);
-                    updateSendState();
-                    messagesArea.scrollTop = messagesArea.scrollHeight;
-                }
-                if (progress < 1) scheduleStep(step, 16);
-                else isDraftTyping = false;
-            };
-            step();
-        };
-
-        window.stageCurrentDraft = () => {
-            activeExchange = CHAT_THREAD[currentExchangeIndex % CHAT_THREAD.length];
-            window.typeDraftText(activeExchange.draft, CHAT_SETTINGS.draftRevealDuration);
-        };
-
-        const appendBubble = (sender, text) => {
-            const bubble = document.createElement('div');
-            bubble.className = "chat-bubble chat-bubble-" + (sender === 'viewer' ? 'send' : 'recv');
-            bubble.innerText = text;
-            messagesArea.appendChild(bubble);
-            messagesArea.scrollTop = messagesArea.scrollHeight;
-        };
-
-        const showTypingIndicator = () => {
-            const typing = document.createElement('div');
-            typing.className = 'chat-typing';
-            typing.innerHTML = '<span></span><span></span><span></span>';
-            messagesArea.appendChild(typing);
-            messagesArea.scrollTop = messagesArea.scrollHeight;
-            return typing;
-        };
-
-        const playExchange = () => {
-            const exchange = activeExchange;
-            const sentText = inputText.value;
-            activeExchange = null;
-            isSending = true;
-            updateSendState();
-
-            scheduleStep(() => {
-                isSending = false;
-                appendBubble('viewer', sentText);
-                inputText.value = '';
-
-                isTyping = true;
-                const typing = showTypingIndicator();
-
-                scheduleStep(() => {
-                    typing.remove();
-                    appendBubble('contact', exchange.reply);
-                    isTyping = false;
-                    currentExchangeIndex++;
-
-                    scheduleStep(window.stageCurrentDraft, CHAT_SETTINGS.nextDraftDelay);
-                }, CHAT_SETTINGS.replyTypingDelay);
-            }, CHAT_SETTINGS.sendMorphDuration);
-        };
-
-        btnSend.addEventListener('click', playExchange);
-        btnClear.addEventListener('click', () => {
-            messagesArea.innerHTML = "<div class=\"chat-timestamp\">" + CHAT_SETTINGS.timestampLabel + "</div>";
-            currentExchangeIndex = 0;
-            activeExchange = null;
-            inputText.value = '';
-            window.stageCurrentDraft();
-        });
-    }
-
-    function initCustomization() {
-        // Calm Navigation Transition
-        const deviceContainer = document.getElementById('portfolio-device');
-        document.addEventListener('click', (e) => {
-            const link = e.target.closest('a[target="_blank"]');
-            if (link && !link.classList.contains('side-panel-trigger') && deviceContainer) {
-                e.preventDefault();
-                const href = link.href;
-
-        // Trigger effect
-                deviceContainer.classList.add('is-navigating');
-
-                // Open link after the dissolve has settled (~280ms)
-                setTimeout(() => {
-                    window.open(href, '_blank', 'noopener,noreferrer');
-
-                    // Restore after a moment so returning users see a clean state
-                    setTimeout(() => {
-                        deviceContainer.classList.remove('is-navigating');
-                    }, 500);
-                }, 280);
-            }
-        });
-
-        // Back to Top functionality
-        const backToTopBtn = document.getElementById('footer-back-to-top');
-        if (backToTopBtn) {
-            backToTopBtn.addEventListener('click', () => {
-                const scrollableContent = document.getElementById('scrollable-content');
-                if (scrollableContent) {
-                    scrollableContent.scrollTo({ top: 0, behavior: 'smooth' });
-                } else {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                }
-            });
-        }
-
-        // ---- Customization Section Logic ----
-        const colorWheel = document.getElementById('colorWheel');
-        const colorHandle = document.getElementById('colorPickerHandle');
-        const resetBgBtn = document.getElementById('resetBgBtn');
-        const miniCarousel = document.getElementById('miniCarousel');
-        const themeBloom = document.getElementById('theme-bloom');
-        let themeBloomTimerId = 0;
-
-        const triggerThemeBloom = (color, sourceRect = null) => {
-            if (!themeBloom) return;
-
-            const rect = sourceRect;
-            const x = rect ? rect.left + (rect.width / 2) : window.innerWidth / 2;
-            const y = rect ? rect.top + (rect.height / 2) : window.innerHeight / 2;
-
-            themeBloom.style.setProperty('--bloom-x', `${x}px`);
-            themeBloom.style.setProperty('--bloom-y', `${y}px`);
-            themeBloom.style.setProperty('--bloom-color', color);
-            themeBloom.classList.remove('is-active');
-            void themeBloom.offsetWidth;
-            themeBloom.classList.add('is-active');
-
-            if (themeBloomTimerId) {
-                window.clearTimeout(themeBloomTimerId);
-            }
-            themeBloomTimerId = window.setTimeout(() => {
-                themeBloom.classList.remove('is-active');
-                themeBloomTimerId = 0;
-            }, 360);
-        };
-
-        if (colorWheel && colorHandle) {
-            let isDragging = false;
-
-            const updateColor = (e) => {
-                const rect = colorWheel.getBoundingClientRect();
-                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-
-                const x = clientX - rect.left - rect.width / 2;
-                const y = clientY - rect.top - rect.height / 2;
-
-                // Calculate angle and distance
-                let angle = Math.atan2(y, x) * (180 / Math.PI);
-                if (angle < 0) angle += 360;
-
-                const distance = Math.sqrt(x * x + y * y);
-                const radius = rect.width / 2;
-                const distPercent = Math.min(1, distance / radius);
-
-                // Move handle
-                const handleX = 50 + distPercent * 50 * Math.cos(angle * Math.PI / 180);
-                const handleY = 50 + distPercent * 50 * Math.sin(angle * Math.PI / 180);
-
-                colorHandle.style.left = `${handleX}%`;
-                colorHandle.style.top = `${handleY}%`;
-
-                // Calculate HSL to match the visual wheel (outer is lighter/whiter)
-                // Hue aligned with conic gradient (red at top)
-                const hue = (angle + 90) % 360;
-
-                // Saturation: Saturated in center, fades out at edge
-                const s = 25 - (distPercent * 15); // 25% to 10%
-
-                // Lightness: Base lightness that goes even higher (lighter) at the edge
-                const l = 92 + (distPercent * 6); // 92% (center) to 98% (edge)
-
-                const colorBg = `hsl(${hue}, ${s}%, ${l}%)`;
-                const colorPanel = '#ffffff';
-
-                document.documentElement.style.setProperty('--bg', colorBg);
-                document.documentElement.style.setProperty('--panel', colorPanel);
-                triggerThemeBloom(colorBg, colorWheel.getBoundingClientRect());
-
-            };
-
-            colorWheel.addEventListener('mousedown', (e) => {
-                isDragging = true;
-                updateColor(e);
-            });
-
-            colorWheel.addEventListener('touchstart', (e) => {
-                isDragging = true;
-                updateColor(e);
-            }, { passive: false });
-
-            window.addEventListener('mousemove', (e) => {
-                if (isDragging) updateColor(e);
-            });
-
-            window.addEventListener('touchmove', (e) => {
-                if (isDragging) {
-                    e.preventDefault();
-                    updateColor(e);
-                }
-            }, { passive: false });
-
-            window.addEventListener('mouseup', () => {
-                isDragging = false;
-            });
-
-            window.addEventListener('touchend', () => {
-                isDragging = false;
-            });
-        }
-
-        if (resetBgBtn) {
-            resetBgBtn.addEventListener('click', () => {
-                document.documentElement.style.setProperty('--bg', '#EBEAE6');
-                document.documentElement.style.setProperty('--panel', '#ffffff');
-                triggerThemeBloom('#EBEAE6', colorWheel.getBoundingClientRect());
-                if (colorHandle) {
-                    colorHandle.style.left = '50%';
-                    colorHandle.style.top = '50%';
-                }
-            });
-        }
-
-        // Mini Carousel Timer
-        if (miniCarousel) {
-            initManagedCarousel(miniCarousel);
-        }
-    }
-
-    if (document.readyState === 'complete') init();
-    else window.addEventListener('load', init);
-
-})();
 
 // --------------------------------------------------------
 // GLOBAL SITE CUSTOMIZATION & NAVIGATION
