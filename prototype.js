@@ -93,6 +93,19 @@ const SITE_CONFIG = {
                 'images/DEDROX.DSGN/f7.png'
             ]
         },
+        case4: {
+            title: "Remote Patient Monitoring Dashboard",
+            logo: "images/c4.png",
+            postedDate: "24/06/2026",
+            behanceUrl: "https://medium.com/@RaghavPrasannaUX/how-i-designed-an-alert-system-for-a-healthcare-platform-a-ux-journey-80d48fca99cc",
+            behanceLabel: "Medium",
+            behanceAriaLabel: "View on Medium",
+            images: [
+                'images/DEDROX.DSGN/XD1.png',
+                'images/DEDROX.DSGN/XD2.png',
+                'images/DEDROX.DSGN/XD3.png'
+            ]
+        },
         about_me: {
             title: "About Me",
             logo: "images/c6.png",
@@ -129,13 +142,16 @@ const SITE_CONFIG = {
         const contentArea = document.getElementById('case-content-area');
         const titleDisp = document.getElementById('case-title');
 
-        const setBehanceUrl = (url) => {
+        const setBehanceUrl = (url, label = 'Behance', ariaLabel = 'View on Behance') => {
             if (!behanceBtn) return;
             if (url) {
                 behanceBtn.href = url;
             } else {
                 behanceBtn.href = '#';
             }
+            const labelEl = behanceBtn.querySelector('.f-behance-label');
+            if (labelEl) labelEl.textContent = label || 'Behance';
+            behanceBtn.setAttribute('aria-label', ariaLabel || 'View on Behance');
         };
 
         const setExternalLink = (label, href, ariaLabel) => {
@@ -396,7 +412,11 @@ const SITE_CONFIG = {
             hydrateCaseContent(data);
             activeCaseHref = caseHref;
             syncOpenButton();
-            setBehanceUrl(data.behanceUrl || '');
+            setBehanceUrl(
+                data.behanceUrl || '',
+                data.behanceLabel || 'Behance',
+                data.behanceAriaLabel || 'View on Behance'
+            );
 
             setCaseLayout(true);
             clearCaseMotion();
@@ -4699,7 +4719,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initDeviceWindowNudge();
     let fittyRefreshTimer = null;
     let pillControlsRevealTimerId = 0;
-    const PILL_CONTROLS_REVEAL_DELAY_MS = 4760;
+    const PILL_CONTROLS_REVEAL_DELAY_MS = 2000;
 
     const scheduleFittyRefresh = () => {
         if (typeof fitty === 'undefined') return;
