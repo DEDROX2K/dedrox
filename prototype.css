@@ -817,6 +817,46 @@ body.device-closing .pill-radiating-glow {
     visibility: hidden;
 }
 
+.pill-particle-field {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 995;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+        opacity 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+        visibility 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+    mask-image: linear-gradient(to bottom,
+            transparent 0%,
+            black 12%,
+            black 84%,
+            transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom,
+            transparent 0%,
+            black 12%,
+            black 84%,
+            transparent 100%);
+}
+
+body:not(.device-expanded):not(.reader-mode):not(.recruiter-mode):not(.talk-scene-active) .pill-particle-field {
+    opacity: 1;
+    visibility: visible;
+}
+
+body.device-opening .pill-particle-field,
+body.device-closing .pill-particle-field {
+    opacity: 0;
+    visibility: hidden;
+}
+
+#pill-particle-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+    opacity: 0.92;
+}
+
 .radiating-ring {
     position: absolute;
     top: 0;

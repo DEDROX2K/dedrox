@@ -1698,10 +1698,239 @@ class MatrixRain {
     }
 }
 
+class ClosedPillParticleField {
+    constructor(canvasId, pillEl) {
+        this.canvas = document.getElementById(canvasId);
+        this.pillEl = pillEl;
+        this.ctx = this.canvas ? this.canvas.getContext('2d') : null;
+        this.particles = [];
+        this.lastTime = 0;
+        this.spawnAccumulator = 0;
+        this.animationFrameId = 0;
+        this.pixelRatio = 1;
+        this.bounds = { width: 0, height: 0 };
+        this.pillRect = null;
+        this.resizeHandler = this.resize.bind(this);
+        this.frameHandler = this.frame.bind(this);
+        this.maxParticles = 88;
+        this.spawnRate = 20;
+        this.topFadePx = 150;
+        this.bottomFadePx = 210;
+
+        if (!this.canvas || !this.ctx || !this.pillEl) return;
+
+        this.resize();
+        window.addEventListener('resize', this.resizeHandler, { passive: true });
+        window.addEventListener('orientationchange', this.resizeHandler);
+        this.animationFrameId = window.requestAnimationFrame(this.frameHandler);
+    }
+
+    isActive() {
+        return !document.body.classList.contains('device-expanded')
+            && !document.body.classList.contains('reader-mode')
+            && !document.body.classList.contains('recruiter-mode')
+            && !document.body.classList.contains('talk-scene-active');
+    }
+
+    resize() {
+        if (!this.canvas || !this.ctx) return;
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+        this.pixelRatio = Math.min(window.devicePixelRatio || 1, 1.8);
+        this.canvas.width = Math.round(width * this.pixelRatio);
+        this.canvas.height = Math.round(height * this.pixelRatio);
+        this.canvas.style.width = `${width}px`;
+        this.canvas.style.height = `${height}px`;
+        this.ctx.setTransform(this.pixelRatio, 0, 0, this.pixelRatio, 0, 0);
+        this.bounds.width = width;
+        this.bounds.height = height;
+        this.updatePillRect();
+    }
+
+    updatePillRect() {
+        if (!this.pillEl) return;
+        this.pillRect = this.pillEl.getBoundingClientRect();
+    }
+
+    spawnParticle() {
+        if (!this.pillRect) this.updatePillRect();
+        if (!this.pillRect) return;
+
+        const x = -20 + (Math.random() * (this.bounds.width + 40));
+        const y = -16 - (Math.random() * 48);
+        const drift = (Math.random() - 0.5) * 0.18;
+        const fallSpeed = 0.92 + (Math.random() * 0.7);
+        const length = 8 + (Math.random() * 18);
+        const thickness = 0.7 + (Math.random() * 1.1);
+
+        this.particles.push({
+            x,
+            y,
+            vx: drift,
+            vy: fallSpeed,
+            length,
+            thickness,
+            life: 0,
+            maxLife: 340 + Math.random() * 180,
+            alpha: 0.12 + Math.random() * 0.22,
+            tilt: -0.08 + (Math.random() * 0.16),
+            touched: false,
+            sparkle: 0,
+            sparkleDecay: 0.024 + Math.random() * 0.012
+        });
+    }
+
+    capsuleCollision(particle) {
+        if (!this.pillRect) return false;
+
+        const rect = this.pillRect;
+        const radius = rect.height * 0.5;
+        const centerX = rect.left + (rect.width * 0.5);
+        const centerY = rect.top + (rect.height * 0.5);
+        const localX = particle.x - centerX;
+        const localY = particle.y - centerY;
+        const innerHalf = Math.max(0, (rect.width * 0.5) - radius);
+        const nearestX = Math.max(-innerHalf, Math.min(innerHalf, localX));
+        const dx = localX - nearestX;
+        const dy = localY;
+        const distSq = (dx * dx) + (dy * dy);
+        const particleRadius = Math.max(1.8, particle.thickness * 1.5);
+        const limit = radius + particleRadius;
+
+        if (distSq > limit * limit) return false;
+
+        const dist = Math.sqrt(Math.max(0.0001, distSq));
+        let nx = dx / dist;
+        let ny = dy / dist;
+
+        if (Math.abs(dx) < 0.001 && Math.abs(dy) < 0.001) {
+            nx = 0;
+            ny = particle.vy >= 0 ? -1 : 1;
+        }
+
+        const contactX = centerX + nearestX + (nx * limit);
+        const contactY = centerY + (ny * limit);
+        particle.x = contactX;
+        particle.y = contactY;
+
+        const tangentOptions = [
+            { x: ny, y: -nx },
+            { x: -ny, y: nx }
+        ];
+        let tangent = tangentOptions[0].y >= tangentOptions[1].y ? tangentOptions[0] : tangentOptions[1];
+        if (localX < -6 && tangent.x > 0) tangent = { x: -tangent.x, y: tangent.y };
+        if (localX > 6 && tangent.x < 0) tangent = { x: -tangent.x, y: tangent.y };
+
+        const tangentLen = Math.hypot(tangent.x, tangent.y) || 1;
+        tangent.x /= tangentLen;
+        tangent.y /= tangentLen;
+
+        const impactSpeed = Math.hypot(particle.vx, particle.vy);
+        const slideSpeed = Math.max(0.8, Math.min(2.4, (impactSpeed * 0.72) + 0.16));
+        particle.vx = tangent.x * slideSpeed;
+        particle.vy = Math.max(0.46, tangent.y * slideSpeed);
+        particle.tilt = particle.vx * 0.18;
+        particle.touched = true;
+        particle.sparkle = Math.max(particle.sparkle, 0.55);
+        return true;
+    }
+
+    updateParticle(particle) {
+        particle.life += 1;
+        particle.vx *= particle.touched ? 0.996 : 0.998;
+        particle.vy += particle.touched ? 0.024 : 0.016;
+        particle.x += particle.vx;
+        particle.y += particle.vy;
+        particle.sparkle = Math.max(0, particle.sparkle - particle.sparkleDecay);
+
+        if (!particle.touched && particle.vy > 0) {
+            this.capsuleCollision(particle);
+        }
+    }
+
+    computeFade(y, lifeProgress) {
+        const top = Math.max(0, Math.min(1, y / this.topFadePx));
+        const bottomDistance = this.bounds.height - y;
+        const bottom = Math.max(0, Math.min(1, bottomDistance / this.bottomFadePx));
+        const intro = Math.max(0, Math.min(1, lifeProgress / 0.14));
+        const outro = lifeProgress > 0.82 ? Math.max(0, (1 - lifeProgress) / 0.18) : 1;
+        return top * bottom * intro * outro;
+    }
+
+    drawParticle(particle) {
+        const ctx = this.ctx;
+        const progress = particle.life / particle.maxLife;
+        const fade = this.computeFade(particle.y, progress);
+        if (fade <= 0.001) return;
+
+        const angle = particle.touched
+            ? Math.atan2(particle.vy, particle.vx)
+            : (Math.PI * 0.5) + particle.tilt;
+        const dx = Math.cos(angle) * particle.length;
+        const dy = Math.sin(angle) * particle.length;
+        const alpha = particle.alpha * fade;
+
+        ctx.beginPath();
+        ctx.moveTo(particle.x, particle.y);
+        ctx.lineTo(particle.x - dx, particle.y - dy);
+        ctx.strokeStyle = `rgba(74, 74, 78, ${alpha.toFixed(3)})`;
+        ctx.lineWidth = particle.thickness;
+        ctx.lineCap = 'round';
+        ctx.stroke();
+
+        if (particle.sparkle > 0.02) {
+            ctx.beginPath();
+            ctx.arc(particle.x, particle.y, 0.8 + (particle.sparkle * 1.4), 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(94, 94, 100, ${(particle.sparkle * fade * 0.24).toFixed(3)})`;
+            ctx.fill();
+        }
+    }
+
+    frame(timestamp) {
+        if (!this.ctx) return;
+
+        if (!this.lastTime) this.lastTime = timestamp;
+        const delta = Math.min(33, timestamp - this.lastTime);
+        this.lastTime = timestamp;
+
+        this.ctx.clearRect(0, 0, this.bounds.width, this.bounds.height);
+
+        if (this.isActive()) {
+            this.updatePillRect();
+            this.spawnAccumulator += (delta / 1000) * this.spawnRate;
+
+            while (this.spawnAccumulator >= 1 && this.particles.length < this.maxParticles) {
+                this.spawnParticle();
+                this.spawnAccumulator -= 1;
+            }
+
+            for (let index = this.particles.length - 1; index >= 0; index -= 1) {
+                const particle = this.particles[index];
+                this.updateParticle(particle);
+                this.drawParticle(particle);
+
+                const expired = particle.life >= particle.maxLife;
+                const outOfView = particle.y - particle.length > this.bounds.height + 48
+                    || particle.x < -80
+                    || particle.x > this.bounds.width + 80;
+                if (expired || outOfView) {
+                    this.particles.splice(index, 1);
+                }
+            }
+        } else if (this.particles.length) {
+            this.particles.length = 0;
+            this.spawnAccumulator = 0;
+        }
+
+        this.animationFrameId = window.requestAnimationFrame(this.frameHandler);
+    }
+}
+
 let miniMatrixInstance = null;
 let backgroundMatrixInstance = null;
 let matrixPaused = false;
 let backgroundWarmupPromise = null;
+let closedPillParticleField = null;
 
 function applyMatrixPausedState() {
     document.body.classList.toggle('matrix-paused', matrixPaused);
@@ -1776,6 +2005,12 @@ function ensureBackgroundsReady({ defer = false } = {}) {
     });
 
     return backgroundWarmupPromise;
+}
+
+function initClosedPillParticleField() {
+    if (closedPillParticleField || !device) return closedPillParticleField;
+    closedPillParticleField = new ClosedPillParticleField('pill-particle-canvas', device);
+    return closedPillParticleField;
 }
 
 let deviceTransitionTimerId = 0;
@@ -5062,6 +5297,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initFeaturedCardHoverMotion();
     initHeroLanguageLoop();
     const blogSystem = initReaderBlogs();
+    initClosedPillParticleField();
 
     // Initialize Scramble Animations
     const resumeBtnEl = document.querySelector('.resume-fab');
