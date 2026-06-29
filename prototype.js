@@ -4282,8 +4282,9 @@ function initNodeGraph() {
 // INTERACTIVE CHAT MODE
 // --------------------------------------------------------
 function initInlineTalkScene() {
-    if (!talkSceneEl || !talkContainerEl || !talkUiSourceEl) {
+    if (!talkSceneEl || !talkUiSourceEl) {
         return {
+            prepare: () => { },
             activate: () => { },
             deactivate: () => { },
             setBackHandler: () => { },
@@ -4327,7 +4328,6 @@ function initInlineTalkScene() {
     ];
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const chatScreenEl = talkUiSourceEl.querySelector('.chat-phone-shell');
     const contactNameEl = document.getElementById('talk-chat-contact-name');
     const inputArea = talkSceneEl.querySelector('.chat-input-area');
     const btnBack = document.getElementById('talk-chat-btn-back');
@@ -4346,19 +4346,7 @@ function initInlineTalkScene() {
     let initialized = false;
     let isActive = false;
     let onBack = () => { };
-    let scene = null;
-    let camera = null;
-    let renderer = null;
-    let cssRenderer = null;
-    let phoneModel = null;
-    let phoneScreenMesh = null;
-    let modelReady = false;
-    let targetRotX = 0;
-    let targetRotY = 0;
-    let currentRotX = 0;
-    let currentRotY = 0;
-    let rafId = 0;
-    const flinchObj = { z: 0, rx: 0, ry: 0 };
+    let uiReady = false;
 
     const clearPendingStep = () => {
         if (pendingTimeoutId !== null) {
@@ -4434,7 +4422,7 @@ function initInlineTalkScene() {
         inputArea?.classList.remove('is-sending');
         resetMessages();
         setDraft('');
-        if (autoStart && modelReady) triggerConversation();
+        if (autoStart && uiReady) triggerConversation();
     };
 
     function triggerConversation() {
@@ -4596,62 +4584,6 @@ function initInlineTalkScene() {
         }, { passive: true });
     };
 
-    const onWindowResize = () => {
-        if (!camera || !renderer || !cssRenderer || !talkSceneEl.classList.contains('is-visible')) return;
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        cssRenderer.setSize(window.innerWidth, window.innerHeight);
-    };
-
-    const onPointerMove = (event) => {
-        if (!isActive) return;
-        const mx = (event.clientX / window.innerWidth) * 2 - 1;
-        const my = -(event.clientY / window.innerHeight) * 2 + 1;
-        targetRotY = mx * 0.13;
-        targetRotX = -my * 0.13;
-    };
-
-    const onPointerDown = (event) => {
-        if (!isActive || !phoneModel || typeof gsap === 'undefined') return;
-        const mx = (event.clientX / window.innerWidth) * 2 - 1;
-        const my = -(event.clientY / window.innerHeight) * 2 + 1;
-        gsap.killTweensOf(flinchObj);
-        gsap.to(flinchObj, {
-            z: CHAT_SETTINGS.flinchDepth,
-            rx: -my * CHAT_SETTINGS.flinchIntensity,
-            ry: mx * CHAT_SETTINGS.flinchIntensity,
-            duration: CHAT_SETTINGS.flinchInDuration,
-            ease: 'power3.out',
-            onComplete: () => {
-                gsap.to(flinchObj, {
-                    z: 0,
-                    rx: 0,
-                    ry: 0,
-                    duration: CHAT_SETTINGS.flinchOutDuration,
-                    ease: `elastic.out(1, ${CHAT_SETTINGS.flinchElasticity})`
-                });
-            }
-        });
-    };
-
-    const renderLoop = () => {
-        rafId = requestAnimationFrame(renderLoop);
-        if (!renderer || !cssRenderer || !camera) return;
-
-        if (phoneModel) {
-            currentRotX += (targetRotX - currentRotX) * 0.1;
-            currentRotY += (targetRotY - currentRotY) * 0.1;
-            const baseRotX = phoneModel.userData.baseRotX || 0;
-            phoneModel.rotation.x = baseRotX + currentRotX + flinchObj.rx;
-            phoneModel.rotation.y = currentRotY + flinchObj.ry;
-            phoneModel.position.z = flinchObj.z;
-        }
-
-        renderer.render(scene, camera);
-        cssRenderer.render(scene, camera);
-    };
-
     const setupChatLogic = () => {
         if (!contactNameEl || !inputArea || !btnBack || !btnClear || !messagesArea || !inputText || !btnSend) return;
         enableSmoothWheelOn(messagesArea);
@@ -4679,108 +4611,11 @@ function initInlineTalkScene() {
 
     const ensureInitialized = () => {
         if (initialized) return true;
-        if (!window.THREE || typeof THREE.GLTFLoader === 'undefined' || typeof THREE.CSS3DRenderer === 'undefined' || !chatScreenEl) {
-            console.error('Talk scene dependencies are missing.');
-            return false;
-        }
-
         initialized = true;
-        talkUiSourceEl.style.display = 'block';
-        talkContainerEl.setAttribute('aria-hidden', 'false');
-
-        scene = new THREE.Scene();
-        camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
-        camera.position.set(0, 0, 1.8);
-
-        renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'high-performance' });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        renderer.domElement.style.pointerEvents = 'none';
-        talkContainerEl.appendChild(renderer.domElement);
-
-        cssRenderer = new THREE.CSS3DRenderer();
-        cssRenderer.setSize(window.innerWidth, window.innerHeight);
-        cssRenderer.domElement.style.top = '0';
-        talkContainerEl.appendChild(cssRenderer.domElement);
-
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-        scene.add(ambientLight);
-        const dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
-        dirLight.position.set(2, 3, 2);
-        scene.add(dirLight);
-
-        const loader = new THREE.GLTFLoader();
-        loader.load('threeD/phone.glb', (gltf) => {
-            phoneModel = gltf.scene;
-            phoneModel.traverse((child) => {
-                if (!child.isMesh) return;
-                if (child.name === 'Phone_Screen' || child.name.toLowerCase().includes('screen')) {
-                    phoneScreenMesh = child;
-                    child.material.color.setHex(0x000000);
-                    child.material.opacity = 0;
-                    child.material.transparent = true;
-                    child.material.blending = THREE.NoBlending;
-                }
-            });
-
-            const box = new THREE.Box3().setFromObject(phoneModel);
-            const center = box.getCenter(new THREE.Vector3());
-            phoneModel.position.sub(center);
-            phoneModel.scale.setScalar(2.5);
-
-            const cssObject = new THREE.CSS3DObject(chatScreenEl);
-            if (talkUiSourceEl.parentNode) {
-                talkUiSourceEl.parentNode.removeChild(talkUiSourceEl);
-            }
-            cssObject.scale.setScalar(0.00062);
-            if (phoneScreenMesh) {
-                cssObject.position.copy(phoneScreenMesh.position);
-                cssObject.quaternion.copy(phoneScreenMesh.quaternion);
-            } else {
-                cssObject.position.set(0, 0, 0.015);
-            }
-            phoneModel.add(cssObject);
-            scene.add(phoneModel);
-
-            phoneModel.position.y = 10;
-            phoneModel.rotation.x = Math.PI;
-            phoneModel.userData.baseRotX = Math.PI;
-
-            if (talkLoadingOverlayEl) {
-                talkLoadingOverlayEl.style.opacity = '0';
-                window.setTimeout(() => {
-                    talkLoadingOverlayEl.style.display = 'none';
-                }, 500);
-            }
-
-            if (typeof gsap !== 'undefined') {
-                gsap.to(phoneModel.position, {
-                    y: 0,
-                    duration: prefersReducedMotion ? 0.01 : 2,
-                    ease: 'expo.out'
-                });
-                gsap.to(phoneModel.userData, {
-                    baseRotX: 0,
-                    duration: prefersReducedMotion ? 0.01 : 2,
-                    ease: 'expo.out',
-                    onComplete: () => {
-                        modelReady = true;
-                        if (isActive) triggerConversation();
-                    }
-                });
-            } else {
-                phoneModel.position.y = 0;
-                phoneModel.userData.baseRotX = 0;
-                modelReady = true;
-                if (isActive) triggerConversation();
-            }
-        });
-
-        window.addEventListener('resize', onWindowResize);
-        window.addEventListener('pointermove', onPointerMove);
-        window.addEventListener('pointerdown', onPointerDown);
+        talkUiSourceEl.style.display = 'flex';
+        talkUiSourceEl.setAttribute('aria-hidden', 'false');
+        uiReady = true;
         setupChatLogic();
-        renderLoop();
         return true;
     };
 
@@ -4790,11 +4625,15 @@ function initInlineTalkScene() {
             talkSceneEl.classList.add('is-visible', 'is-pre-entering');
             talkSceneEl.setAttribute('aria-hidden', 'false');
         },
-        activate() {
+        activate(options = {}) {
+            const { skipSceneIntro = false } = options;
             if (!ensureInitialized()) return;
             isActive = true;
             talkSceneEl.classList.remove('is-pre-entering', 'is-exiting');
-            talkSceneEl.classList.add('is-visible', 'is-entering');
+            talkSceneEl.classList.add('is-visible');
+            if (!skipSceneIntro) {
+                talkSceneEl.classList.add('is-entering');
+            }
             talkSceneEl.setAttribute('aria-hidden', 'false');
             window.setTimeout(() => {
                 talkSceneEl.classList.remove('is-entering');
@@ -4833,7 +4672,6 @@ function init3DChatMode(options = {}) {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const CRT_DURATION_MS = prefersReducedMotion ? 20 : 720;
     const TALK_EXIT_MS = prefersReducedMotion ? 20 : 520;
-    const TALK_ENTER_MS = prefersReducedMotion ? 20 : 720;
     let isTransitioning = false;
     let isActive = false;
     let lastTriggerEl = pillResumeBtn || topBar || device;
@@ -4881,19 +4719,16 @@ function init3DChatMode(options = {}) {
         lastTriggerEl = triggerEl || lastTriggerEl || pillResumeBtn || topBar || device;
         closeConflictingUi();
         document.body.classList.add('talk-scene-transitioning');
-        talkScene.prepare();
+        talkScene.activate();
 
         device?.classList.add('is-crt-transitioning', 'is-crt-closing');
         window.setTimeout(() => {
             hidePortfolioScene();
             document.body.classList.add('talk-scene-active');
-            talkScene.activate();
             finishCrtState();
-            window.setTimeout(() => {
-                document.body.classList.remove('talk-scene-transitioning');
-                isActive = true;
-                isTransitioning = false;
-            }, TALK_ENTER_MS);
+            document.body.classList.remove('talk-scene-transitioning');
+            isActive = true;
+            isTransitioning = false;
         }, CRT_DURATION_MS);
     };
 
@@ -4901,21 +4736,19 @@ function init3DChatMode(options = {}) {
         if (!isActive || isTransitioning) return;
         isTransitioning = true;
         document.body.classList.add('talk-scene-transitioning');
+        document.body.classList.remove('talk-scene-active');
+        showPortfolioScene();
+        device?.classList.add('is-crt-transitioning', 'is-crt-opening');
         talkScene.deactivate();
         window.setTimeout(() => {
-            document.body.classList.remove('talk-scene-active');
-            showPortfolioScene();
-            device?.classList.add('is-crt-transitioning', 'is-crt-opening');
-            window.setTimeout(() => {
-                finishCrtState();
-                document.body.classList.remove('talk-scene-transitioning');
-                isActive = false;
-                isTransitioning = false;
-                if (lastTriggerEl instanceof HTMLElement) {
-                    lastTriggerEl.focus({ preventScroll: true });
-                }
-            }, CRT_DURATION_MS);
-        }, TALK_EXIT_MS);
+            finishCrtState();
+            document.body.classList.remove('talk-scene-transitioning');
+            isActive = false;
+            isTransitioning = false;
+            if (lastTriggerEl instanceof HTMLElement) {
+                lastTriggerEl.focus({ preventScroll: true });
+            }
+        }, Math.max(CRT_DURATION_MS, TALK_EXIT_MS));
     };
 
     talkScene.setBackHandler(close);
