@@ -839,7 +839,7 @@ body.device-closing .pill-radiating-glow {
             transparent 100%);
 }
 
-body:not(.device-expanded):not(.reader-mode):not(.recruiter-mode):not(.talk-scene-active) .pill-particle-field {
+body:not(.device-expanded):not(.reader-mode):not(.recruiter-mode):not(.talk-scene-active):not(.talk-mode) .pill-particle-field {
     opacity: 1;
     visibility: visible;
 }
@@ -3507,6 +3507,14 @@ body.recruiter-mode .recruiter-cases .folder-menu {
 }
 
 .device-container.recruiter-mode #recruiter-inline {
+    display: block;
+}
+
+.device-container.talk-mode .site-content> :not(#talk-inline) {
+    display: none !important;
+}
+
+.device-container.talk-mode #talk-inline {
     display: block;
 }
 
@@ -6982,17 +6990,14 @@ body.reader-mode .wip-swinging-img {
 
 /* --- INLINE TALK SCENE --- */
 .talk-inline {
-    position: fixed;
-    inset: 0;
-    z-index: 12000;
+    position: relative;
+    min-height: 100%;
     overflow: hidden;
     opacity: 0;
-    visibility: hidden;
     pointer-events: none;
-    background: #ece7e3;
-    transition:
-        opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-        visibility 0s linear 0.5s;
+    background: transparent;
+    display: none;
+    transition: opacity 0.34s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .talk-inline::before {
@@ -7015,16 +7020,12 @@ body.reader-mode .wip-swinging-img {
 
 .talk-inline.is-visible {
     opacity: 1;
-    visibility: visible;
     pointer-events: auto;
-    transition:
-        opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-        visibility 0s linear 0s;
+    transition: opacity 0.34s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .talk-inline.is-pre-entering {
     opacity: 1;
-    visibility: visible;
     pointer-events: none;
 }
 
@@ -7172,13 +7173,13 @@ body.reader-mode .wip-swinging-img {
 }
 
 .talk-ui-source {
-    position: absolute;
-    inset: 0;
-    z-index: 3;
+    position: relative;
+    min-height: 100%;
+    z-index: 2;
     display: none;
     align-items: center;
     justify-content: center;
-    padding: 32px 18px;
+    padding: calc(var(--pill-container-h) + 22px) 18px 28px;
     pointer-events: none;
 }
 
@@ -7188,8 +7189,8 @@ body.reader-mode .wip-swinging-img {
 
 .talk-inline .chat-phone-shell {
     position: relative;
-    width: 375px;
-    height: 812px;
+    width: 370px;
+    height: 1000px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -7674,22 +7675,6 @@ body.talk-scene-active .case-window,
 body.talk-scene-active #case-external-link {
     opacity: 0;
     pointer-events: none;
-}
-
-body.talk-scene-active .device-container {
-    pointer-events: none;
-}
-
-body.talk-scene-active .device-container.is-scene-hidden,
-body.talk-scene-transitioning .device-container.is-scene-hidden {
-    visibility: hidden;
-    opacity: 0;
-    pointer-events: none;
-}
-
-body.talk-scene-active .device-container,
-body.talk-scene-active .theme-bloom {
-    visibility: hidden;
 }
 
 .device-container.is-crt-transitioning {

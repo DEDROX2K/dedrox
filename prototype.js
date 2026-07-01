@@ -1729,7 +1729,8 @@ class ClosedPillParticleField {
         return !document.body.classList.contains('device-expanded')
             && !document.body.classList.contains('reader-mode')
             && !document.body.classList.contains('recruiter-mode')
-            && !document.body.classList.contains('talk-scene-active');
+            && !document.body.classList.contains('talk-scene-active')
+            && !document.body.classList.contains('talk-mode');
     }
 
     resize() {
@@ -4669,24 +4670,8 @@ function init3DChatMode(options = {}) {
     } = options;
 
     const talkScene = initInlineTalkScene();
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const CRT_DURATION_MS = prefersReducedMotion ? 20 : 720;
-    const TALK_EXIT_MS = prefersReducedMotion ? 20 : 520;
-    let isTransitioning = false;
-    let isActive = false;
+    const scrollableContent = document.getElementById('scrollable-content');
     let lastTriggerEl = pillResumeBtn || topBar || device;
-
-    const finishCrtState = () => {
-        device?.classList.remove('is-crt-transitioning', 'is-crt-closing', 'is-crt-opening');
-    };
-
-    const hidePortfolioScene = () => {
-        device?.classList.add('is-scene-hidden');
-    };
-
-    const showPortfolioScene = () => {
-        device?.classList.remove('is-scene-hidden');
-    };
 
     const hideCaseWindow = () => {
         const overlay = window.CaseOverlayControl;
@@ -4714,41 +4699,25 @@ function init3DChatMode(options = {}) {
     };
 
     const open = (triggerEl = pillResumeBtn) => {
-        if (isActive || isTransitioning) return;
-        isTransitioning = true;
+        if (!device || device.classList.contains('talk-mode')) return;
         lastTriggerEl = triggerEl || lastTriggerEl || pillResumeBtn || topBar || device;
         closeConflictingUi();
-        document.body.classList.add('talk-scene-transitioning');
+        device.classList.add('talk-mode');
+        document.body.classList.add('talk-mode');
         talkScene.activate();
-
-        device?.classList.add('is-crt-transitioning', 'is-crt-closing');
-        window.setTimeout(() => {
-            hidePortfolioScene();
-            document.body.classList.add('talk-scene-active');
-            finishCrtState();
-            document.body.classList.remove('talk-scene-transitioning');
-            isActive = true;
-            isTransitioning = false;
-        }, CRT_DURATION_MS);
+        if (scrollableContent) {
+            scrollableContent.scrollTop = 0;
+        }
     };
 
     const close = () => {
-        if (!isActive || isTransitioning) return;
-        isTransitioning = true;
-        document.body.classList.add('talk-scene-transitioning');
-        document.body.classList.remove('talk-scene-active');
-        showPortfolioScene();
-        device?.classList.add('is-crt-transitioning', 'is-crt-opening');
+        if (!device || !device.classList.contains('talk-mode')) return;
+        device.classList.remove('talk-mode');
+        document.body.classList.remove('talk-mode');
         talkScene.deactivate();
-        window.setTimeout(() => {
-            finishCrtState();
-            document.body.classList.remove('talk-scene-transitioning');
-            isActive = false;
-            isTransitioning = false;
-            if (lastTriggerEl instanceof HTMLElement) {
-                lastTriggerEl.focus({ preventScroll: true });
-            }
-        }, Math.max(CRT_DURATION_MS, TALK_EXIT_MS));
+        if (lastTriggerEl instanceof HTMLElement) {
+            lastTriggerEl.focus({ preventScroll: true });
+        }
     };
 
     talkScene.setBackHandler(close);
@@ -4756,7 +4725,7 @@ function init3DChatMode(options = {}) {
     return {
         open,
         close,
-        isActive: () => isActive
+        isActive: () => !!device?.classList.contains('talk-mode')
     };
 }
 
