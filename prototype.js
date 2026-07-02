@@ -211,6 +211,9 @@ const SITE_CONFIG = {
         const escapeAttr = (value) => String(value || '').replace(/"/g, '&quot;');
 
         const setCaseLayout = (isOpen) => {
+            if (isOpen && window.ExperiencePanelControl?.isVisible?.()) {
+                window.ExperiencePanelControl.closeImmediate();
+            }
             document.body.classList.toggle('case-open', isOpen);
         };
 
@@ -614,6 +617,176 @@ const SITE_CONFIG = {
     }
 };
 
+function setupExperienceOverlay() {
+    const experienceWindow = document.getElementById('experience-window');
+    const launchBtn = document.getElementById('experience-launch-btn');
+    const closeBtn = document.getElementById('experience-close');
+    const minBtn = document.getElementById('experience-min');
+    const expandBtn = document.getElementById('experience-expand');
+    if (!experienceWindow || !launchBtn) return;
+
+    const PANEL_ANIM_MS = 280;
+    let panelTimer = null;
+
+    const clearPanelMotion = () => {
+        if (panelTimer) {
+            window.clearTimeout(panelTimer);
+            panelTimer = null;
+        }
+        experienceWindow.classList.remove('is-opening', 'is-closing');
+    };
+
+    const syncA11y = (isOpen) => {
+        launchBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        experienceWindow.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+    };
+
+    const setExperienceLayout = (isOpen) => {
+        if (isOpen && window.CaseOverlayControl?.isVisible?.()) {
+            window.CaseOverlayControl.closeImmediate();
+        }
+        document.body.classList.toggle('experience-open', isOpen);
+        syncA11y(isOpen);
+    };
+
+    const finalizeClose = () => {
+        clearPanelMotion();
+        experienceWindow.classList.remove('visible', 'minimized', 'expanded-height');
+        setExperienceLayout(false);
+    };
+
+    const closePanel = ({ immediate = false } = {}) => {
+        if (!experienceWindow.classList.contains('visible') && !experienceWindow.classList.contains('is-closing')) return;
+        clearPanelMotion();
+        experienceWindow.classList.remove('minimized');
+        if (immediate) {
+            finalizeClose();
+            return;
+        }
+        experienceWindow.classList.remove('visible');
+        experienceWindow.classList.add('is-closing');
+        panelTimer = window.setTimeout(finalizeClose, PANEL_ANIM_MS);
+    };
+
+    const openPanel = () => {
+        clearPanelMotion();
+        setExperienceLayout(true);
+        experienceWindow.classList.remove('minimized');
+        experienceWindow.classList.add('visible', 'is-opening');
+        panelTimer = window.setTimeout(() => {
+            clearPanelMotion();
+        }, PANEL_ANIM_MS);
+    };
+
+    const toggleFullscreen = () => {
+        if (!experienceWindow.classList.contains('visible')) return;
+        experienceWindow.classList.toggle('expanded-height');
+    };
+
+    launchBtn.addEventListener('click', () => {
+        if (experienceWindow.classList.contains('visible')) {
+            closePanel();
+            return;
+        }
+        openPanel();
+    });
+
+    closeBtn?.addEventListener('click', () => closePanel());
+    minBtn?.addEventListener('click', () => {
+        if (!experienceWindow.classList.contains('visible')) return;
+        experienceWindow.classList.remove('expanded-height');
+        experienceWindow.classList.toggle('minimized');
+    });
+    expandBtn?.addEventListener('click', toggleFullscreen);
+
+    window.ExperiencePanelControl = {
+        open: openPanel,
+        close: () => closePanel(),
+        closeImmediate: () => closePanel({ immediate: true }),
+        isVisible: () => experienceWindow.classList.contains('visible') || experienceWindow.classList.contains('is-closing')
+    };
+
+    syncA11y(false);
+}
+
+class CollapsibleTimeline {
+    constructor(selector) {
+        this.el = document.querySelector(selector);
+        this.scope = this.el?.closest('.experience-panel-shell') || this.el;
+        this.animation = null;
+        this.init();
+    }
+
+    init() {
+        this.scope?.addEventListener('click', this.itemAction.bind(this));
+    }
+
+    animateItemAction(button, controlledEl, contentHeight, shouldCollapse) {
+        if (!button || !controlledEl || !Number.isFinite(contentHeight)) return;
+
+        const expandedClass = 'timeline__item-body--expanded';
+        const animationOptions = {
+            duration: shouldCollapse ? 420 : 300,
+            easing: 'cubic-bezier(0.65,0,0.35,1)',
+            fill: 'forwards'
+        };
+
+        this.animation?.cancel?.();
+
+        if (shouldCollapse) {
+            button.setAttribute('aria-expanded', 'false');
+            controlledEl.setAttribute('aria-hidden', 'true');
+            controlledEl.classList.remove(expandedClass);
+            this.animation = controlledEl.animate([
+                { height: `${contentHeight}px` },
+                { height: `${contentHeight}px`, offset: 0.38 },
+                { height: '0px' }
+            ], animationOptions);
+        } else {
+            button.setAttribute('aria-expanded', 'true');
+            controlledEl.setAttribute('aria-hidden', 'false');
+            controlledEl.classList.add(expandedClass);
+            this.animation = controlledEl.animate([
+                { height: '0px' },
+                { height: `${contentHeight}px` }
+            ], animationOptions);
+        }
+    }
+
+    itemAction(event) {
+        const target = event.target instanceof Element ? event.target.closest('[data-action], [data-item]') : null;
+        if (!target || !this.el) return;
+
+        const action = target.getAttribute('data-action');
+        const item = target.getAttribute('data-item');
+
+        if (action) {
+            const targetExpanded = action === 'expand' ? 'false' : 'true';
+            const buttons = Array.from(this.el.querySelectorAll(`.timeline__arrow[aria-expanded="${targetExpanded}"]`));
+            const shouldCollapse = action === 'collapse';
+
+            buttons.forEach((button) => {
+                const buttonId = button.getAttribute('data-item');
+                const controlledEl = buttonId ? this.el.querySelector(`#item${buttonId}-ctrld`) : null;
+                const contentHeight = controlledEl?.firstElementChild?.offsetHeight ?? 0;
+                this.animateItemAction(button, controlledEl, contentHeight, shouldCollapse);
+            });
+            return;
+        }
+
+        if (!item) return;
+
+        const button = this.el.querySelector(`.timeline__arrow[data-item="${item}"]`);
+        const expanded = button?.getAttribute('aria-expanded');
+        if (!button || expanded === null) return;
+
+        const shouldCollapse = expanded === 'true';
+        const controlledEl = this.el.querySelector(`#item${item}-ctrld`);
+        const contentHeight = controlledEl?.firstElementChild?.offsetHeight ?? 0;
+        this.animateItemAction(button, controlledEl, contentHeight, shouldCollapse);
+    }
+}
+
 function applyBlurMaskSettings() {
     const cfg = SITE_CONFIG.blurMask;
     if (!cfg) return;
@@ -678,6 +851,7 @@ const matrixToggleBtn = document.getElementById('matrix-toggle-btn');
 const matrixToggleHint = document.getElementById('matrix-toggle-hint');
 const orbResumeBtn = document.getElementById('orb-resume-btn');
 const caseWindowEl = document.getElementById('case-window');
+const experienceWindowEl = document.getElementById('experience-window');
 const stickyNoteEl = document.getElementById('sticky-note');
 const pillNotesBtn = document.getElementById('pill-notes-btn');
 const pillResumeBtn = document.getElementById('pill-resume-btn');
@@ -2477,7 +2651,7 @@ function initFeaturedCardHoverMotion() {
     };
 
     const showHalo = (card, pointerEvent = null) => {
-        if (document.body.classList.contains('case-open')) return;
+        if (document.body.classList.contains('case-open') || document.body.classList.contains('experience-open')) return;
         activeCard = card;
         positionHalo(card, pointerEvent);
         haloEl.classList.add('is-active');
@@ -2664,7 +2838,8 @@ function initDeviceWindowNudge() {
         device.classList.contains('expanded') &&
         device.classList.contains('recruiter-mode') &&
         !device.classList.contains('maximized') &&
-        !document.body.classList.contains('case-open')
+        !document.body.classList.contains('case-open') &&
+        !document.body.classList.contains('experience-open')
     );
 
     const isNearDeviceEdge = (event) => {
@@ -2817,7 +2992,7 @@ function initDeviceWindowNudge() {
 
     if (caseWindowEl) {
         const caseObserver = new MutationObserver(() => {
-            if (document.body.classList.contains('case-open')) {
+            if (document.body.classList.contains('case-open') || document.body.classList.contains('experience-open')) {
                 clearVisibleHandles();
                 clearPreview();
             }
@@ -3734,7 +3909,8 @@ function initSmoothWheelScrolling() {
     const targets = [
         document.scrollingElement,
         document.getElementById('scrollable-content'),
-        document.getElementById('case-content-area')
+        document.getElementById('case-content-area'),
+        document.querySelector('.experience-window-content')
     ].filter(Boolean);
     const uniqueTargets = Array.from(new Set(targets));
 
@@ -4685,6 +4861,18 @@ function init3DChatMode(options = {}) {
         }
     };
 
+    const hideExperienceWindow = () => {
+        const overlay = window.ExperiencePanelControl;
+        if (overlay?.isVisible?.()) {
+            overlay.close();
+            return;
+        }
+        if (experienceWindowEl) {
+            experienceWindowEl.classList.remove('visible', 'minimized', 'expanded-height', 'is-opening', 'is-closing');
+            document.body.classList.remove('experience-open');
+        }
+    };
+
     const closeConflictingUi = () => {
         readerMode?.close?.();
         recruiterMode?.close?.();
@@ -4696,6 +4884,7 @@ function init3DChatMode(options = {}) {
         resumeDockSystem?.hide?.();
         idCardSystem?.hide?.();
         hideCaseWindow();
+        hideExperienceWindow();
     };
 
     const open = (triggerEl = pillResumeBtn) => {
@@ -5013,10 +5202,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const caseOverlayControl = window.CaseOverlayControl;
+        const experienceOverlayControl = window.ExperiencePanelControl;
         const caseIsOpen = caseOverlayControl
             ? caseOverlayControl.isVisible()
             : (caseWindowEl && caseWindowEl.classList.contains('visible'));
+        const experienceIsOpen = experienceOverlayControl
+            ? experienceOverlayControl.isVisible()
+            : (experienceWindowEl && experienceWindowEl.classList.contains('visible'));
         const clickedInsideCase = caseWindowEl && caseWindowEl.contains(e.target);
+        const clickedInsideExperience = experienceWindowEl && experienceWindowEl.contains(e.target);
         const clickedInsideDevice = device && device.contains(e.target);
         const clickedInsideSticky = stickyNoteEl && stickyNoteEl.contains(e.target);
         const clickedInsideResume = resumePopoutEl && resumePopoutEl.contains(e.target);
@@ -5029,7 +5223,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        if (resumeDockSystem.isPanelOpen() && !clickedInsideCase && !clickedInsideResumeDock && !(showResumeBtn && showResumeBtn.contains(e.target))) {
+        if (resumeDockSystem.isPanelOpen() && !clickedInsideCase && !clickedInsideExperience && !clickedInsideResumeDock && !(showResumeBtn && showResumeBtn.contains(e.target))) {
             resumeDockSystem.closeToPeek();
             return;
         }
@@ -5045,7 +5239,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Priority close order:
         // 1) Close the side case window first.
         // 2) Only after that, allow closing the mini portfolio on a later outside click.
-        if (caseIsOpen && !clickedInsideCase && !clickedInsideDevice && !clickedInsideSticky && !clickedInsideResume && !clickedInsideResumeDock && !clickedInsideIdCard) {
+        if (caseIsOpen && !clickedInsideCase && !clickedInsideExperience && !clickedInsideDevice && !clickedInsideSticky && !clickedInsideResume && !clickedInsideResumeDock && !clickedInsideIdCard) {
             if (caseOverlayControl) {
                 caseOverlayControl.close();
             } else if (caseWindowEl) {
@@ -5056,10 +5250,21 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        if (experienceIsOpen && !clickedInsideExperience && !clickedInsideCase && !clickedInsideDevice && !clickedInsideSticky && !clickedInsideResume && !clickedInsideResumeDock && !clickedInsideIdCard) {
+            if (experienceOverlayControl) {
+                experienceOverlayControl.close();
+            } else if (experienceWindowEl) {
+                experienceWindowEl.classList.remove('visible', 'minimized');
+                document.body.classList.remove('experience-open');
+            }
+            return;
+        }
+
         if (
             device.classList.contains('expanded') &&
             !clickedInsideDevice &&
             !clickedInsideCase &&
+            !clickedInsideExperience &&
             !clickedInsideSticky &&
             !clickedInsideResume &&
             !clickedInsideResumeDock &&
@@ -5094,6 +5299,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initCompanyDock();
     buildPalette();
     clearPixelCanvas();
+    setupExperienceOverlay();
+    new CollapsibleTimeline('#experience-timeline');
     SITE_CONFIG.setupCaseOverlays();
     initIndexGrid();
     initFeaturedCardHoverMotion();

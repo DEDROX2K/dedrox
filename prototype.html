@@ -452,6 +452,13 @@ I would love to connect and discuss how my unique blend of client-facing R&D, te
 Best,<br>
 Raghav Prasanna
                     </p>
+                    <div class="hero-bio-actions">
+                        <button class="experience-launch-btn" id="experience-launch-btn" type="button"
+                            data-cursor="link">
+                            <span>Experience</span>
+                            <span class="pill-arrow" aria-hidden="true">←</span>
+                        </button>
+                    </div>
                 </div>
             </section>
 
@@ -847,7 +854,7 @@ Raghav Prasanna
 
 
     <!-- Case Study Window (Side Overlay) -->
-    <div id="case-window" class="case-window">
+    <div id="case-window" class="side-panel side-panel-right case-window">
         <div class="case-window-header">
             <div class="header-blur-bg"></div>
             <div class="floating-controls">
@@ -903,6 +910,130 @@ Raghav Prasanna
         </div>
         <div class="case-window-content" id="case-content-area">
             <!-- Dynamic Images Loaded Here -->
+        </div>
+    </div>
+
+    <div id="experience-window" class="side-panel side-panel-left experience-window" aria-hidden="true">
+        <div class="case-window-header">
+            <div class="header-blur-bg"></div>
+            <div class="floating-controls">
+                <button class="f-ctrl f-close" id="experience-close" title="Close" data-cursor="link">
+                    <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round">
+                        <path d="M2 2l8 8M10 2l-8 8" />
+                    </svg>
+                </button>
+                <button class="f-ctrl f-min" id="experience-min" title="Minimize" data-cursor="link">
+                    <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round">
+                        <path d="M2 6h8" />
+                    </svg>
+                </button>
+                <button class="f-ctrl f-expand" id="experience-expand" title="Expand" data-cursor="link">
+                    <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M1 7v4h4M11 5V1H7M1 11l4.5-4.5M11 1L6.5 5.5" />
+                    </svg>
+                </button>
+            </div>
+            <div class="floating-controls floating-controls-center experience-window-label">
+                <span>Experience panel</span>
+            </div>
+        </div>
+        <div class="experience-window-content">
+            <div class="experience-panel-shell">
+                <p class="experience-panel-kicker">Left panel</p>
+                <h2 class="experience-panel-title">Work experience</h2>
+                <p class="experience-panel-summary">
+                    A collapsible timeline for the text-first side of the portfolio. Open each role for the details,
+                    travel, delivery context, and hands-on responsibilities behind the work.
+                </p>
+
+                <div class="experience-toolbar" aria-label="Timeline controls">
+                    <button class="experience-toolbar-btn" type="button" data-action="expand">Expand all</button>
+                    <button class="experience-toolbar-btn" type="button" data-action="collapse">Collapse all</button>
+                </div>
+
+                <div class="timeline experience-timeline" id="experience-timeline">
+                    <article class="timeline__item">
+                        <div class="timeline__item-header">
+                            <button class="timeline__arrow" type="button" aria-expanded="true" aria-controls="item1-ctrld"
+                                data-item="1" data-cursor="link">
+                                <svg class="timeline__arrow-icon" viewBox="0 0 24 24" aria-hidden="true">
+                                    <polyline points="7 10 12 15 17 10" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </button>
+                            <span class="timeline__dot" aria-hidden="true"></span>
+                            <div class="timeline__meta">
+                                <p class="timeline__date">Mar 2025 - Present</p>
+                                <h3 class="timeline__title">Product Development Assistant / Creative Technologist</h3>
+                                <p class="timeline__company">Aircards</p>
+                            </div>
+                        </div>
+                        <div class="timeline__item-body timeline__item-body--expanded" id="item1-ctrld" aria-hidden="false">
+                            <div class="timeline__item-body-content">
+                                <p>Developing immersive spatial experiences, interactive installations, and AI-assisted
+                                    workflows for public-facing products and environments.</p>
+                                <p>Working directly with product leadership across discovery, technical framing, client
+                                    communication, and production-ready prototyping.</p>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="timeline__item">
+                        <div class="timeline__item-header">
+                            <button class="timeline__arrow" type="button" aria-expanded="false" aria-controls="item2-ctrld"
+                                data-item="2" data-cursor="link">
+                                <svg class="timeline__arrow-icon" viewBox="0 0 24 24" aria-hidden="true">
+                                    <polyline points="7 10 12 15 17 10" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </button>
+                            <span class="timeline__dot" aria-hidden="true"></span>
+                            <div class="timeline__meta">
+                                <p class="timeline__date">Jan 2025 - Mar 2025</p>
+                                <h3 class="timeline__title">Gamified UX Designer</h3>
+                                <p class="timeline__company">Studio Nefce</p>
+                            </div>
+                        </div>
+                        <div class="timeline__item-body" id="item2-ctrld" aria-hidden="true">
+                            <div class="timeline__item-body-content">
+                                <p>Built playful product flows and interaction systems that turned abstract service ideas
+                                    into clearer, more engaging user journeys.</p>
+                                <p>Focused on information framing, feedback loops, and interface pacing so the product felt
+                                    lighter and easier to understand.</p>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="timeline__item">
+                        <div class="timeline__item-header">
+                            <button class="timeline__arrow" type="button" aria-expanded="false" aria-controls="item3-ctrld"
+                                data-item="3" data-cursor="link">
+                                <svg class="timeline__arrow-icon" viewBox="0 0 24 24" aria-hidden="true">
+                                    <polyline points="7 10 12 15 17 10" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </button>
+                            <span class="timeline__dot" aria-hidden="true"></span>
+                            <div class="timeline__meta">
+                                <p class="timeline__date">2024 - 2025</p>
+                                <h3 class="timeline__title">R&amp;D, prototyping, and delivery</h3>
+                                <p class="timeline__company">Client-facing multidisciplinary work</p>
+                            </div>
+                        </div>
+                        <div class="timeline__item-body" id="item3-ctrld" aria-hidden="true">
+                            <div class="timeline__item-body-content">
+                                <p>Worked across stakeholder pitches, on-site discovery, rapid prototyping, and production
+                                    handoff for complex multidisciplinary briefs.</p>
+                                <p>Travelled across London, Scotland, and Ireland for field research and technical
+                                    discovery with global brands and live environments.</p>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
         </div>
     </div>
 
