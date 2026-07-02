@@ -1,12 +1,520 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="refresh" content="0; url=home.html" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Redirecting to Home</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Raghav Prasanna | Linktree</title>
+  <style>
+    @font-face {
+      font-family: "Bros";
+      src: url("./Fonts/ZTBrosOskon90s-ExtraLight.ttf") format("truetype");
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "Google Sans Local";
+      src: url("./Fonts/GoogleSans-VariableFont_GRAD,opsz,wght.ttf") format("truetype");
+      font-display: swap;
+    }
+
+    :root {
+      --bg: #ffffff;
+      --panel: rgba(255, 255, 255, 0.96);
+      --text: #0f0f0f;
+      --muted: #5d5d5d;
+      --border: rgba(15, 15, 15, 0.1);
+      --shadow-soft: 0 16px 40px rgba(0, 0, 0, 0.08);
+      --shadow-strong: 0 28px 72px rgba(0, 0, 0, 0.15);
+      --radius: 32px;
+      --stage-height: min(47vh, 470px);
+      --card-width: clamp(150px, 15vw, 220px);
+      --card-height: min(100%, clamp(280px, 42vh, 430px));
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background: var(--bg);
+    }
+
+    body {
+      font-family: "Google Sans Local", "Segoe UI", sans-serif;
+      color: var(--text);
+    }
+
+    .page {
+      height: 100%;
+      max-width: 1420px;
+      margin: 0 auto;
+      padding: clamp(16px, 2vw, 28px) clamp(16px, 2.2vw, 32px) clamp(12px, 1.8vw, 24px);
+      display: grid;
+      grid-template-rows: auto auto 1fr;
+      gap: clamp(10px, 1.5vh, 18px);
+    }
+
+    .hero {
+      width: min(100%, 860px);
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-family: "Bros", "Arial Black", sans-serif;
+      font-size: clamp(3rem, 7vw, 6.9rem);
+      line-height: 0.87;
+      letter-spacing: -0.08em;
+      text-transform: lowercase;
+    }
+
+    .hero p {
+      margin: clamp(10px, 1.2vh, 16px) auto 0;
+      max-width: 740px;
+      font-size: clamp(1rem, 2vw, 1.75rem);
+      line-height: 0.96;
+      letter-spacing: -0.05em;
+    }
+
+    .stage-wrap {
+      position: relative;
+      min-height: 0;
+      display: grid;
+      place-items: center;
+      perspective: 1600px;
+      isolation: isolate;
+    }
+
+    .stage {
+      position: relative;
+      width: min(100%, 1180px);
+      height: var(--stage-height);
+      transform-style: preserve-3d;
+    }
+
+    .card {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: var(--card-width);
+      height: var(--card-height);
+      display: grid;
+      grid-template-rows: 30% 1fr;
+      border-radius: var(--radius);
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      box-shadow: var(--shadow-soft);
+      transform-origin: 50% 78%;
+      transform-style: preserve-3d;
+      transform:
+        translate3d(
+          calc(-50% + var(--x, 0px) + var(--shift-x, 0px)),
+          calc(-50% + var(--y, 0px) + var(--lift, 0px)),
+          calc(var(--z, 0px) + var(--hover-z, 0px) + var(--depth-push, 0px))
+        )
+        rotate(calc(var(--r, 0deg) + var(--swing, 0deg)))
+        rotateX(var(--rx, 0deg))
+        rotateY(var(--ry, 0deg))
+        scale(var(--scale, 1));
+      transition: transform 520ms cubic-bezier(0.19, 1, 0.22, 1), box-shadow 220ms ease, border-color 220ms ease, filter 220ms ease;
+      will-change: transform;
+    }
+
+    .card::after {
+      content: "";
+      position: absolute;
+      inset: auto 18px 14px 18px;
+      height: 28px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(0, 0, 0, 0.14), transparent 72%);
+      filter: blur(10px);
+      opacity: 0.36;
+      transform: translateZ(-40px);
+      pointer-events: none;
+    }
+
+    .card:hover,
+    .card:focus-visible {
+      --lift: -46px;
+      --hover-z: 180px;
+      --scale: 1.045;
+      --swing: 0deg;
+      box-shadow: var(--shadow-strong);
+      border-color: rgba(15, 15, 15, 0.18);
+      filter: saturate(1.04);
+      outline: none;
+      z-index: 100;
+    }
+
+    .card-media {
+      position: relative;
+      overflow: hidden;
+      background: #f2f2f2;
+    }
+
+    .card-media img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .card-media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, rgba(0, 0, 0, 0.2) 100%);
+    }
+
+    .card-copy {
+      display: grid;
+      grid-template-rows: auto auto 1fr auto;
+      gap: 10px;
+      padding: 14px 14px 16px;
+      transform: translateZ(30px);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), #ffffff);
+    }
+
+    .eyebrow {
+      width: fit-content;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #111111;
+      color: #ffffff;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .card h2 {
+      margin: 0;
+      font-size: clamp(1.1rem, 1.45vw, 1.45rem);
+      line-height: 0.92;
+      letter-spacing: -0.05em;
+      text-transform: lowercase;
+    }
+
+    .card p {
+      margin: 0;
+      font-size: clamp(0.84rem, 0.95vw, 0.96rem);
+      line-height: 1.1;
+      color: var(--muted);
+    }
+
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      width: 100%;
+      padding: 11px 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(15, 15, 15, 0.1);
+      background: #fafafa;
+      font-size: 0.86rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+    }
+
+    .cta span:last-child {
+      font-size: 1rem;
+    }
+
+    .card-placeholder .card-media {
+      background:
+        linear-gradient(135deg, rgba(0, 0, 0, 0.03), rgba(0, 0, 0, 0.01)),
+        repeating-linear-gradient(
+          -45deg,
+          rgba(0, 0, 0, 0.035) 0,
+          rgba(0, 0, 0, 0.035) 12px,
+          rgba(255, 255, 255, 0.8) 12px,
+          rgba(255, 255, 255, 0.8) 24px
+        );
+    }
+
+    .card-placeholder .eyebrow {
+      background: #d9d9d9;
+      color: #606060;
+    }
+
+    .card-placeholder .cta {
+      color: #777777;
+    }
+
+    .stage:hover .card {
+      filter: saturate(0.96);
+    }
+
+    .stage .card:hover,
+    .stage .card:focus-visible {
+      filter: saturate(1.04);
+    }
+
+    .card:hover + .card,
+    .card:focus-visible + .card {
+      --shift-x: 46px;
+      --lift: 10px;
+      --swing: 6deg;
+      --depth-push: -120px;
+    }
+
+    .card:hover + .card + .card,
+    .card:focus-visible + .card + .card {
+      --shift-x: 28px;
+      --lift: 16px;
+      --swing: 4deg;
+      --depth-push: -72px;
+    }
+
+    .card:hover + .card + .card + .card,
+    .card:focus-visible + .card + .card + .card {
+      --shift-x: 16px;
+      --lift: 20px;
+      --swing: 2deg;
+      --depth-push: -36px;
+    }
+
+    .card:has(+ .card:hover),
+    .card:has(+ .card:focus-visible) {
+      --shift-x: -46px;
+      --lift: 10px;
+      --swing: -6deg;
+      --depth-push: -120px;
+    }
+
+    .card:has(+ .card + .card:hover),
+    .card:has(+ .card + .card:focus-visible) {
+      --shift-x: -28px;
+      --lift: 16px;
+      --swing: -4deg;
+      --depth-push: -72px;
+    }
+
+    .card:has(+ .card + .card + .card:hover),
+    .card:has(+ .card + .card + .card:focus-visible) {
+      --shift-x: -16px;
+      --lift: 20px;
+      --swing: -2deg;
+      --depth-push: -36px;
+    }
+
+    .card-1 { --x: -386px; --y: 36px; --z: -170px; --r: -14deg; --rx: -1deg; --ry: -12deg; z-index: 3; }
+    .card-2 { --x: -224px; --y: -12px; --z: -54px; --r: -7deg; --rx: -1deg; --ry: -7deg; z-index: 4; }
+    .card-3 { --x: -44px; --y: -24px; --z: 88px; --r: -1deg; --rx: -1deg; --ry: -1deg; z-index: 6; }
+    .card-4 { --x: 150px; --y: 18px; --z: 8px; --r: 9deg; --rx: 1deg; --ry: 7deg; z-index: 5; }
+    .card-5 { --x: 322px; --y: 54px; --z: -110px; --r: 16deg; --rx: 2deg; --ry: 12deg; z-index: 2; }
+    .card-6 { --x: -528px; --y: 94px; --z: -270px; --r: -22deg; --rx: 3deg; --ry: -16deg; z-index: 1; }
+    .card-7 { --x: 486px; --y: 102px; --z: -290px; --r: 22deg; --rx: 3deg; --ry: 16deg; z-index: 1; }
+
+    @media (max-width: 1100px) {
+      :root {
+        --stage-height: min(44vh, 430px);
+        --card-width: clamp(136px, 18vw, 190px);
+      }
+
+      .card-1 { --x: -316px; --y: 42px; }
+      .card-2 { --x: -176px; --y: -6px; }
+      .card-3 { --x: -14px; --y: -18px; }
+      .card-4 { --x: 152px; --y: 18px; }
+      .card-5 { --x: 306px; --y: 58px; }
+      .card-6 { --x: -440px; --y: 94px; }
+      .card-7 { --x: 422px; --y: 96px; }
+    }
+
+    @media (max-width: 820px) {
+      :root {
+        --stage-height: min(42vh, 360px);
+        --card-width: clamp(112px, 19vw, 150px);
+        --radius: 24px;
+      }
+
+      .hero h1 {
+        font-size: clamp(2.4rem, 10vw, 4.3rem);
+      }
+
+      .hero p {
+        font-size: clamp(0.95rem, 3.4vw, 1.15rem);
+      }
+
+      .card-copy {
+        gap: 8px;
+        padding: 10px 10px 12px;
+      }
+
+      .eyebrow {
+        font-size: 0.55rem;
+        padding: 5px 8px;
+      }
+
+      .card h2 {
+        font-size: 0.9rem;
+      }
+
+      .card p,
+      .cta {
+        font-size: 0.72rem;
+      }
+
+      .card-1 { --x: -236px; --y: 34px; }
+      .card-2 { --x: -118px; --y: 8px; }
+      .card-3 { --x: 0px; --y: -12px; }
+      .card-4 { --x: 118px; --y: 12px; }
+      .card-5 { --x: 236px; --y: 44px; }
+      .card-6 { --x: -328px; --y: 68px; }
+      .card-7 { --x: 328px; --y: 70px; }
+    }
+
+    @media (max-width: 560px) {
+      :root {
+        --stage-height: min(38vh, 280px);
+        --card-width: clamp(92px, 18vw, 112px);
+        --radius: 20px;
+      }
+
+      .page {
+        padding: 14px 12px 10px;
+      }
+
+      .hero {
+        width: 100%;
+      }
+
+      .hero p {
+        max-width: 320px;
+        line-height: 1.02;
+      }
+
+      .card-copy {
+        gap: 6px;
+        padding: 8px;
+      }
+
+      .eyebrow {
+        font-size: 0.5rem;
+        letter-spacing: 0.06em;
+      }
+
+      .card h2 {
+        font-size: 0.78rem;
+      }
+
+      .card p {
+        display: none;
+      }
+
+      .cta {
+        padding: 8px 9px;
+        font-size: 0.64rem;
+      }
+
+      .card-1 { --x: -162px; --y: 24px; }
+      .card-2 { --x: -82px; --y: 0px; }
+      .card-3 { --x: 0px; --y: -10px; }
+      .card-4 { --x: 82px; --y: 6px; }
+      .card-5 { --x: 162px; --y: 30px; }
+      .card-6 { --x: -220px; --y: 60px; }
+      .card-7 { --x: 220px; --y: 62px; }
+    }
+  </style>
 </head>
 <body>
-  <p>Redirecting to <a href="home.html">home.html</a>...</p>
+  <main class="page">
+    <section class="hero" aria-labelledby="page-title">
+      <h1 id="page-title">7 stacked<br>link cards</h1>
+      <p>the active links sit up front, the extra slots are already in the pile, and the whole stack leans with the pointer.</p>
+    </section>
+
+    <section class="stage-wrap" aria-label="Link card stack">
+      <div class="stage" id="card-stage">
+        <a class="card card-1" href="https://www.artstation.com/raghavprasanna" target="_blank" rel="noreferrer">
+          <div class="card-media">
+            <img src="./images/port4.jpg" alt="Preview for ArtStation portfolio">
+          </div>
+          <div class="card-copy">
+            <span class="eyebrow">ArtStation</span>
+            <h2>3d portfolio</h2>
+            <p>Finished renders, experiments, and the visual workbench behind my 3D practice.</p>
+            <div class="cta"><span>Go to the site</span><span>&rarr;</span></div>
+          </div>
+        </a>
+
+        <a class="card card-2" href="https://www.behance.net/raghavprasanna" target="_blank" rel="noreferrer">
+          <div class="card-media">
+            <img src="./images/ui3.png" alt="Preview for Behance UX design work">
+          </div>
+          <div class="card-copy">
+            <span class="eyebrow">Behance</span>
+            <h2>ux design stuff</h2>
+            <p>Case studies, flows, interface systems, and the thinking behind the interaction work.</p>
+            <div class="cta"><span>Go to the site</span><span>&rarr;</span></div>
+          </div>
+        </a>
+
+        <a class="card card-3" href="https://sketchfab.com/Raghavprasanna" target="_blank" rel="noreferrer">
+          <div class="card-media">
+            <img src="./images/port3.jpg" alt="Preview for Sketchfab free models">
+          </div>
+          <div class="card-copy">
+            <span class="eyebrow">Sketchfab</span>
+            <h2>free models</h2>
+            <p>Download-ready 3D assets, viewable in-browser and built to be explored from every angle.</p>
+            <div class="cta"><span>Go to the site</span><span>&rarr;</span></div>
+          </div>
+        </a>
+
+        <a class="card card-4" href="https://www.youtube.com/watch?v=q9wd3L9_Gfo&amp;t=12s&amp;ab_channel=RaghavPrasanna" target="_blank" rel="noreferrer">
+          <div class="card-media">
+            <img src="./images/ui1.png" alt="Preview for YouTube link">
+          </div>
+          <div class="card-copy">
+            <span class="eyebrow">YouTube</span>
+            <h2>my fav model</h2>
+            <p>A direct jump to the model video pick you called out, kept in the stack as the wildcard card.</p>
+            <div class="cta"><span>Go to the site</span><span>&rarr;</span></div>
+          </div>
+        </a>
+
+        <div class="card card-5 card-placeholder" aria-label="Empty card slot">
+          <div class="card-media"></div>
+          <div class="card-copy">
+            <span class="eyebrow">Empty</span>
+            <h2>coming soon</h2>
+            <p>Reserved slot for the next link, project, or social destination you want to add later.</p>
+            <div class="cta"><span>Waiting for content</span><span>+</span></div>
+          </div>
+        </div>
+
+        <div class="card card-6 card-placeholder" aria-label="Empty card slot">
+          <div class="card-media"></div>
+          <div class="card-copy">
+            <span class="eyebrow">Empty</span>
+            <h2>future drop</h2>
+            <p>Built into the pile already so the stage keeps its layered shape as you expand it.</p>
+            <div class="cta"><span>Waiting for content</span><span>+</span></div>
+          </div>
+        </div>
+
+        <div class="card card-7 card-placeholder" aria-label="Empty card slot">
+          <div class="card-media"></div>
+          <div class="card-copy">
+            <span class="eyebrow">Empty</span>
+            <h2>next link</h2>
+            <p>Another placeholder card ready for whatever you decide to plug into the stack next.</p>
+            <div class="cta"><span>Waiting for content</span><span>+</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
 </body>
 </html>
