@@ -4511,10 +4511,7 @@ function initInlineTalkScene() {
     ];
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const contactNameEl = document.getElementById('talk-chat-contact-name');
     const inputArea = talkSceneEl.querySelector('.chat-input-area');
-    const btnBack = document.getElementById('talk-chat-btn-back');
-    const btnClear = document.getElementById('talk-chat-btn-clear');
     const messagesArea = document.getElementById('talk-chat-messages-area');
     const inputText = document.getElementById('talk-chat-input-text');
     const btnSend = document.getElementById('talk-chat-btn-send');
@@ -4528,7 +4525,6 @@ function initInlineTalkScene() {
     let pendingTimeoutId = null;
     let initialized = false;
     let isActive = false;
-    let onBack = () => { };
     let uiReady = false;
 
     const clearPendingStep = () => {
@@ -4768,25 +4764,14 @@ function initInlineTalkScene() {
     };
 
     const setupChatLogic = () => {
-        if (!contactNameEl || !inputArea || !btnBack || !btnClear || !messagesArea || !inputText || !btnSend) return;
+        if (!inputArea || !messagesArea || !inputText || !btnSend) return;
         enableSmoothWheelOn(messagesArea);
-        contactNameEl.textContent = CHAT_SETTINGS.contactName;
 
         btnSend.addEventListener('click', (event) => {
             event.preventDefault();
             event.stopPropagation();
             if (isTyping || isSending || isDraftTyping || !activeExchange || !btnSend.classList.contains('active')) return;
             playExchange(activeExchange);
-        });
-
-        btnBack.addEventListener('click', (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            onBack();
-        });
-
-        btnClear.addEventListener('click', () => {
-            resetConversation(true);
         });
 
         resetConversation(false);
@@ -4822,7 +4807,7 @@ function initInlineTalkScene() {
                 talkSceneEl.classList.remove('is-entering');
             }, prefersReducedMotion ? 10 : 720);
             resetConversation(true);
-            btnBack?.focus({ preventScroll: true });
+            inputText?.focus?.({ preventScroll: true });
         },
         deactivate() {
             isActive = false;
@@ -4834,9 +4819,7 @@ function initInlineTalkScene() {
                 talkSceneEl.setAttribute('aria-hidden', 'true');
             }, prefersReducedMotion ? 10 : 520);
         },
-        setBackHandler(handler) {
-            onBack = typeof handler === 'function' ? handler : () => { };
-        },
+        setBackHandler() { },
         isActive: () => isActive
     };
 }
@@ -4914,8 +4897,6 @@ function init3DChatMode(options = {}) {
             lastTriggerEl.focus({ preventScroll: true });
         }
     };
-
-    talkScene.setBackHandler(close);
 
     return {
         open,
