@@ -2158,6 +2158,46 @@ body.device-maximized .expand-fab .icon-expand {
     transform: translate3d(calc(-1 * var(--resume-peek-hover-slide)), -50%, 0) rotate(var(--resume-peek-rotation)) scale(var(--resume-peek-scale));
 }
 
+/* Jumping-with-joy loop for peeked images.
+   Starts from the edge outward: left for resume, right for id. */
+@keyframes jump-joy-left {
+    0% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
+    12% { transform: translate3d(-6px, -4px, 0) rotate(-3deg) scale(1.02); }
+    28% { transform: translate3d(14px, -18px, 0) rotate(6deg) scale(1.08); }
+    44% { transform: translate3d(-8px, -6px, 0) rotate(-4deg) scale(1.03); }
+    64% { transform: translate3d(8px, -12px, 0) rotate(3deg) scale(1.06); }
+    88% { transform: translate3d(-4px, -2px, 0) rotate(-1deg) scale(1.02); }
+    100% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
+}
+
+@keyframes jump-joy-right {
+    0% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
+    12% { transform: translate3d(6px, -4px, 0) rotate(3deg) scale(1.02); }
+    28% { transform: translate3d(-14px, -18px, 0) rotate(-6deg) scale(1.08); }
+    44% { transform: translate3d(8px, -6px, 0) rotate(4deg) scale(1.03); }
+    64% { transform: translate3d(-8px, -12px, 0) rotate(-3deg) scale(1.06); }
+    88% { transform: translate3d(4px, -2px, 0) rotate(1deg) scale(1.02); }
+    100% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
+}
+
+/* Apply animation only while peeking (visible but not open) */
+.resume-card-dock.visible:not(.is-open) img {
+    transform-origin: left center;
+    animation: jump-joy-left 1.6s cubic-bezier(.22,1,.36,1) infinite;
+}
+
+.id-card-dock.visible:not(.is-open) img {
+    transform-origin: right center;
+    animation: jump-joy-right 1.6s cubic-bezier(.22,1,.36,1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .resume-card-dock.visible:not(.is-open) img,
+    .id-card-dock.visible:not(.is-open) img {
+        animation: none !important;
+    }
+}
+
 @media (max-width: 1024px) {
     :root {
         --id-peek-width: clamp(204px, 26vw, 280px);
