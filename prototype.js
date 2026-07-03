@@ -210,6 +210,10 @@ const SITE_CONFIG = {
 
         const escapeAttr = (value) => String(value || '').replace(/"/g, '&quot;');
 
+        // Interaction note:
+        // Right panel = visual viewer for case studies / resume pages.
+        // Left panel = text-first supporting info.
+        // Keep their behaviors distinct so future UI changes do not mirror them accidentally.
         const setCaseLayout = (isOpen) => {
             if (isOpen && window.ExperiencePanelControl?.isVisible?.()) {
                 window.ExperiencePanelControl.closeImmediate();
@@ -641,6 +645,7 @@ function setupExperienceOverlay() {
         experienceWindow.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
     };
 
+    // Left panel stays text-led; it should not inherit the right panel's "shrink mini site for visual viewing" behavior.
     const setExperienceLayout = (isOpen) => {
         if (isOpen && window.CaseOverlayControl?.isVisible?.()) {
             window.CaseOverlayControl.closeImmediate();
@@ -872,6 +877,8 @@ const showIdBtn = document.getElementById('show-id-btn');
 const resumeCardDock = document.getElementById('resume-card-dock');
 const idCardDock = document.getElementById('id-card-dock');
 const scrollableContentEl = document.getElementById('scrollable-content');
+const sectionContextHintEl = document.getElementById('section-context-hint');
+const sectionContextHintTextEl = document.getElementById('section-context-hint-text');
 
 function initManagedCarousel(miniCarousel) {
     if (!miniCarousel || miniCarousel.dataset.carouselInitialized === 'true') return;
@@ -3909,8 +3916,7 @@ function initSmoothWheelScrolling() {
     const targets = [
         document.scrollingElement,
         document.getElementById('scrollable-content'),
-        document.getElementById('case-content-area'),
-        document.querySelector('.experience-window-content')
+        document.getElementById('case-content-area')
     ].filter(Boolean);
     const uniqueTargets = Array.from(new Set(targets));
 
@@ -4925,6 +4931,7 @@ document.addEventListener('DOMContentLoaded', () => {
     applyMarqueeSettings();
     initNodeGraph();
     initSmoothWheelScrolling();
+    let sectionContextHintTimer = 0;
     const onboardingFlow = initOnboardingHeader();
     const expandFabAnchor = initExpandButtonAnchor();
     const leftOrbControls = initLeftOrbControls();
@@ -4962,6 +4969,28 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 120);
     };
 
+    // Standard pattern: one transient context chip that announces section changes,
+    // then fades away, instead of duplicating permanent labels across each view.
+    const showSectionContextHint = (label) => {
+        if (!sectionContextHintEl || !sectionContextHintTextEl || !label) return;
+
+        sectionContextHintTextEl.textContent = label;
+        sectionContextHintEl.setAttribute('aria-hidden', 'false');
+        sectionContextHintEl.classList.remove('is-visible');
+        void sectionContextHintEl.offsetWidth;
+        sectionContextHintEl.classList.add('is-visible');
+
+        if (sectionContextHintTimer) {
+            window.clearTimeout(sectionContextHintTimer);
+        }
+
+        sectionContextHintTimer = window.setTimeout(() => {
+            sectionContextHintEl.classList.remove('is-visible');
+            sectionContextHintEl.setAttribute('aria-hidden', 'true');
+            sectionContextHintTimer = 0;
+        }, 1600);
+    };
+
     const expandDeviceShell = (autoOpenNotes = true) => {
         if (!device || device.classList.contains('expanded')) return;
 
@@ -4994,6 +5023,59 @@ document.addEventListener('DOMContentLoaded', () => {
             leftOrbControls.updateScrollPosition();
             if (typeof fitty !== 'undefined') fitty.fitAll();
         }, 500);
+    };
+
+    const syncTopPillSelection = () => {
+        const pillButtons = [pillFifthBtn, pillResumeBtn, pillThirdBtn, pillFourthBtn, pillNotesBtn]
+            .filter((btn) => btn instanceof HTMLElement);
+
+        pillButtons.forEach((btn) => {
+            btn.classList.remove('is-selected');
+            btn.setAttribute('aria-pressed', 'false');
+        });
+
+        let activeBtn = pillThirdBtn;
+
+        if (document.body.classList.contains('talk-mode') || document.body.classList.contains('talk-scene-active')) {
+            activeBtn = pillResumeBtn;
+        } else if (document.body.classList.contains('notes-active')) {
+            activeBtn = pillNotesBtn;
+        } else if (document.body.classList.contains('recruiter-mode')) {
+            activeBtn = pillFifthBtn;
+        } else if (document.body.classList.contains('reader-mode')) {
+            activeBtn = pillFourthBtn;
+        }
+
+        if (activeBtn instanceof HTMLElement) {
+            activeBtn.classList.add('is-selected');
+            activeBtn.setAttribute('aria-pressed', 'true');
+        }
+    };
+
+    const goToHomeScreen = () => {
+        expandDeviceShell(false);
+
+        if (chatMode.isActive()) {
+            chatMode.close();
+        }
+
+        readerMode.close();
+        recruiterMode.close();
+        stickyNote.close();
+        resumePopout.close();
+
+        if (resumeDockSystem.isPanelOpen()) {
+            resumeDockSystem.closeToPeek();
+        }
+
+        resumeDockSystem.hide();
+        idCardSystem.hide();
+
+        if (scrollableContentEl) {
+            scrollableContentEl.scrollTop = 0;
+        }
+
+        syncTopPillSelection();
     };
 
     // Config based UI updates
@@ -5082,29 +5164,29 @@ document.addEventListener('DOMContentLoaded', () => {
         e.stopPropagation();
         if (!device.classList.contains('expanded')) {
             expandDeviceShell(true);
+            showSectionContextHint('Notes');
         } else {
             if (resumePopout.isVisible()) resumePopout.closeToPill(pillResumeBtn);
             // Notes shouldn't close the reader mode window
             stickyNote.toggleFromPill(pillNotesBtn);
+            showSectionContextHint('Notes');
         }
+        syncTopPillSelection();
     });
 
     pillResumeBtn?.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
         chatMode.open(pillResumeBtn);
+        showSectionContextHint('Talk to me');
+        syncTopPillSelection();
     });
 
     pillThirdBtn?.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
-        expandDeviceShell(false);
-        if (resumePopout.isVisible()) resumePopout.closeToPill(pillResumeBtn);
-        if (recruiterMode.isActive()) recruiterMode.close();
-        readerMode.toggle();
-        if (readerMode.isActive() && typeof blogSystem !== 'undefined') {
-            blogSystem.loadBlogs();
-        }
+        goToHomeScreen();
+        showSectionContextHint('Home');
     });
 
     // Footer Blog Link
@@ -5114,6 +5196,8 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             expandDeviceShell(false);
             readerMode.open();
+            showSectionContextHint('Blogs');
+            syncTopPillSelection();
             if (typeof blogSystem !== 'undefined') {
                 blogSystem.loadBlogs();
             }
@@ -5123,19 +5207,16 @@ document.addEventListener('DOMContentLoaded', () => {
     pillFourthBtn?.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
-        const email = 'raghavprasanna2000@gmail.com';
-        navigator.clipboard.writeText(email).then(() => {
-            const tooltip = pillFourthBtn.querySelector('.pill-tooltip');
-            if (tooltip) {
-                const originalText = tooltip.textContent;
-                tooltip.textContent = 'copied email ID';
-                setTimeout(() => {
-                    tooltip.textContent = originalText;
-                }, 2000);
-            }
-        }).catch(err => {
-            console.error('Failed to copy email: ', err);
-        });
+        expandDeviceShell(false);
+        if (resumePopout.isVisible()) resumePopout.closeToPill(pillResumeBtn);
+        if (recruiterMode.isActive()) recruiterMode.close();
+        if (chatMode.isActive()) chatMode.close();
+        readerMode.open();
+        showSectionContextHint('Blogs');
+        if (typeof blogSystem !== 'undefined') {
+            blogSystem.loadBlogs();
+        }
+        syncTopPillSelection();
     });
 
     pillFifthBtn?.addEventListener('click', (e) => {
@@ -5143,8 +5224,11 @@ document.addEventListener('DOMContentLoaded', () => {
         e.stopPropagation();
         expandDeviceShell(false);
         if (resumePopout.isVisible()) resumePopout.closeToPill(pillResumeBtn);
+        if (chatMode.isActive()) chatMode.close();
         if (readerMode.isActive()) readerMode.close();
         recruiterMode.toggle();
+        showSectionContextHint('Recruiter mode');
+        syncTopPillSelection();
     });
 
     showResumeBtn?.addEventListener('click', (e) => {
@@ -5193,6 +5277,17 @@ document.addEventListener('DOMContentLoaded', () => {
             resumeDockSystem.hide();
         }
     }, { passive: true });
+
+    if (typeof MutationObserver !== 'undefined') {
+        const bodyClassObserver = new MutationObserver(syncTopPillSelection);
+        bodyClassObserver.observe(document.body, {
+            attributes: true,
+            attributeFilter: ['class']
+        });
+    }
+
+    syncTopPillSelection();
+
     document.body.addEventListener('click', (e) => {
         if (chatMode.isActive()) {
             return;
