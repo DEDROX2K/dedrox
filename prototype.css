@@ -201,8 +201,8 @@ body {
     transform-origin: center;
     background:
         radial-gradient(circle at var(--bloom-x, 50%) var(--bloom-y, 50%),
-            var(--bloom-color, rgba(255, 255, 255, 0.96)) 0%,
-            var(--bloom-color, rgba(255, 255, 255, 0.96)) 16%,
+            var(--bloom-color, #fffffff5) 0%,
+            var(--bloom-color, #fffffff5) 16%,
             rgba(255, 255, 255, 0) 64%);
     transition:
         transform 0.34s cubic-bezier(0.16, 1, 0.3, 1),
@@ -7403,30 +7403,16 @@ body.reader-mode .wip-swinging-img {
 .talk-inline {
     position: relative;
     min-height: 100%;
-    overflow: hidden;
+    overflow: visible;
     opacity: 0;
     pointer-events: none;
-    background: transparent;
+    background: var(--bg);
     display: none;
     transition: opacity 0.34s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .talk-inline::before {
-    content: '';
-    position: absolute;
-    inset: -8%;
-    z-index: 1;
-    pointer-events: none;
-    opacity: 0;
-    background:
-        radial-gradient(circle at center,
-            rgba(236, 231, 227, 0) 0%,
-            rgba(236, 231, 227, 0) 44%,
-            rgba(236, 231, 227, 0.2) 58%,
-            rgba(236, 231, 227, 0.72) 74%,
-            rgba(236, 231, 227, 0.96) 88%,
-            rgba(236, 231, 227, 1) 100%);
-    transform: scale(1.08);
+    content: none;
 }
 
 .talk-inline.is-visible {
@@ -7441,16 +7427,16 @@ body.reader-mode .wip-swinging-img {
 }
 
 .talk-inline.is-pre-entering::before {
-    animation: talkEdgeBloomIn 0.72s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: none;
 }
 
 .talk-inline.is-pre-entering .talk-hero-layers {
-    opacity: 0.58;
+    opacity: 0;
 }
 
 .talk-inline.is-pre-entering .talk-ui-source {
-    opacity: 0;
-    visibility: hidden;
+    opacity: 1;
+    visibility: visible;
 }
 
 .talk-inline.is-entering {
@@ -7461,137 +7447,15 @@ body.reader-mode .wip-swinging-img {
     animation: talkSceneOut 0.52s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.talk-inline.is-entering .chat-phone-shell {
-    animation: talkPhoneIn 0.78s cubic-bezier(0.16, 1, 0.3, 1);
-    transform-origin: 50% 50%;
-}
-
-.talk-inline.is-visible:not(.is-pre-entering):not(.is-exiting) .chat-phone-shell {
-    animation: talkPhoneIn 0.78s cubic-bezier(0.16, 1, 0.3, 1);
-    transform-origin: 50% 50%;
-}
-
-.talk-inline.is-exiting .chat-phone-shell {
-    animation: talkPhoneOut 0.46s cubic-bezier(0.4, 0, 0.2, 1);
-    transform-origin: 50% 50%;
-}
-
-.talk-hero-layers {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    pointer-events: none;
-    z-index: 0;
-    transition: opacity 0.28s ease;
-}
-
-.talk-inline .layer {
-    position: absolute;
-    will-change: transform, background-color;
-    animation: cycleColors 18s infinite linear;
-}
-
-.talk-inline .layer-1 {
-    width: 44vh;
-    height: 88vh;
-    border-radius: 5vh;
-    filter: blur(0.99vw);
-    margin-top: 0.93vh;
-    z-index: 7;
-    animation-delay: 0s;
-}
-
-.talk-inline .layer-2 {
-    width: 42.52vw;
-    height: 90vh;
-    border-radius: 25vh;
-    filter: blur(2.56vw);
-    z-index: 6;
-    animation-delay: -1.7s;
-}
-
-.talk-inline .layer-3 {
-    width: 62.85vw;
-    height: 93vh;
-    border-radius: 46.88vw;
-    filter: blur(2.6vw);
-    z-index: 5;
-    animation-delay: -3.4s;
-}
-
-.talk-inline .layer-4 {
-    width: 55.75vw;
-    height: 91.41vh;
-    border-radius: 46.88vw;
-    filter: blur(2.6vw);
-    z-index: 4;
-    animation-delay: -5.1s;
-}
-
-.talk-inline .layer-5 {
-    width: 170vh;
-    height: 95vh;
-    border-radius: 30vh;
-    filter: blur(3.13vw);
-    z-index: 3;
-    animation-delay: -6.8s;
-}
-
-.talk-inline .layer-6 {
-    width: 95.52vw;
-    height: 113vh;
-    border-radius: 30vh;
-    filter: blur(3.13vw);
-    z-index: 2;
-    animation-delay: -8.5s;
-}
-
-.talk-inline .layer-7 {
-    width: 137.58vw;
-    height: 130vh;
-    border-radius: 46.88vw;
-    filter: blur(3.13vw);
-    z-index: 1;
-    animation-delay: -10.2s;
-}
-
-@keyframes cycleColors {
-    0% {
-        background-color: #f8f4ef;
-    }
-
-    20% {
-        background-color: #f1e6d7;
-    }
-
-    40% {
-        background-color: #ffd9b2;
-    }
-
-    60% {
-        background-color: #f0bf8d;
-    }
-
-    80% {
-        background-color: #e6ddd4;
-    }
-
-    100% {
-        background-color: #f8f4ef;
-    }
-}
-
 .talk-ui-source {
     position: relative;
     min-height: 100%;
-    z-index: 2;
+    z-index: 1;
     display: none;
-    align-items: center;
-    justify-content: center;
-    padding: calc(var(--pill-container-h) + 22px) 18px 28px;
-    pointer-events: none;
+    align-items: stretch;
+    justify-content: flex-start;
+    padding: calc(var(--pill-container-h) + 24px) var(--site-padding-x) 32px;
+    pointer-events: auto;
 }
 
 .talk-inline.is-visible .talk-ui-source {
@@ -7600,24 +7464,21 @@ body.reader-mode .wip-swinging-img {
 
 .talk-inline .chat-phone-shell {
     position: relative;
-    width: min(100%, 420px);
-    min-height: 620px;
-    max-height: calc(100vh - 180px);
+    width: 100%;
+    min-height: 100%;
+    max-height: none;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
-    border-radius: var(--content-card-radius);
-    background: var(--bg);
+    overflow: visible;
+    border-radius: 0;
+    background: transparent;
     user-select: none;
     -webkit-user-select: none;
     pointer-events: auto;
     touch-action: manipulation;
     opacity: 1 !important;
-    box-shadow:
-        0 18px 42px rgba(0, 0, 0, 0.08),
-        0 8px 20px rgba(0, 0, 0, 0.04),
-        inset 0 1px 0 rgba(255, 255, 255, 0.9);
-    border: 1px solid rgba(17, 17, 17, 0.08);
+    box-shadow: none;
+    border: 0;
 }
 
 .talk-inline .chat-messages-area {
@@ -7626,9 +7487,8 @@ body.reader-mode .wip-swinging-img {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    padding: 22px 14px 14px;
-    background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.12) 100%);
+    padding: 0 0 18px;
+    background: transparent;
     pointer-events: auto;
     touch-action: pan-y;
     -webkit-overflow-scrolling: touch;
@@ -7767,10 +7627,10 @@ body.reader-mode .wip-swinging-img {
     grid-template-columns: 1fr auto;
     align-items: center;
     gap: 8px;
-    padding: 9px 8px;
-    background: rgba(255, 255, 255, 0.58);
+    padding: 12px 0 0;
+    background: transparent;
     border-top: 1px solid rgba(17, 17, 17, 0.08);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+    box-shadow: none;
 }
 
 .talk-inline .chat-input-area.is-sending {
