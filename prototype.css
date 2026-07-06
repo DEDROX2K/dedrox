@@ -1339,6 +1339,29 @@ body.recruiter-mode .pill-icon-btn.is-selected {
     backface-visibility: hidden;
 }
 
+/* Disabled pill buttons: greyed icons, muted background, no pointer/hover interactions */
+.pill-icon-btn:disabled,
+.pill-icon-btn[aria-disabled="true"],
+.pill-icon-btn.disabled {
+    cursor: default;
+    pointer-events: none;
+    opacity: 0.72;
+}
+
+.pill-icon-btn:disabled img,
+.pill-icon-btn[aria-disabled="true"] img,
+.pill-icon-btn.disabled img {
+    filter: grayscale(100%) brightness(0.85) !important;
+    opacity: 0.6 !important;
+    transform: translate3d(-50%, -50%, 0) translateY(0) scale(0.9) rotate(0deg) !important;
+}
+
+.pill-icon-btn:disabled .pill-tooltip,
+.pill-icon-btn[aria-disabled="true"] .pill-tooltip,
+.pill-icon-btn.disabled .pill-tooltip {
+    display: none;
+}
+
 .pill-icon-image {
     mix-blend-mode: difference;
 }
@@ -1369,6 +1392,33 @@ body.recruiter-mode .pill-icon-btn.is-selected {
     opacity: 0.9;
     transform: translate3d(-50%, -50%, 0) scale(1) rotate(0deg);
     filter: blur(0);
+}
+
+/* If a pill is auto-disabled or aria-disabled, ensure its icon remains hidden and hover has no effect */
+.pill-icon-btn[data-auto-disabled] {
+    pointer-events: none;
+    opacity: 0.85;
+}
+.pill-icon-btn[data-auto-disabled] img {
+    opacity: 0 !important;
+    transform: translate3d(-50%, -50%, 0) translateY(12px) scale(0.6) rotate(-15deg) !important;
+    filter: blur(4px) !important;
+}
+
+/* Prevent hover grow/tooltip/visuals for auto-disabled pills even when container is expanded */
+.device-container.expanded .pill-icon-btn[data-auto-disabled]:hover {
+    width: auto !important;
+    transform: none !important;
+}
+
+.device-container.expanded .pill-icon-btn[data-auto-disabled]:hover::before,
+.device-container.expanded .pill-icon-btn[data-auto-disabled]:hover::after {
+    opacity: 0 !important;
+    transform: none !important;
+}
+
+.device-container.expanded .pill-icon-btn[data-auto-disabled] .pill-tooltip {
+    display: none !important;
 }
 
 .device-container.expanded #pill-notes-btn img {
@@ -2208,6 +2258,106 @@ body.device-maximized .expand-fab .icon-expand {
         --resume-peek-exposed: clamp(40px, 4.6vw, 68px);
         --resume-peek-hover-slide: 12px;
     }
+}
+
+/* Contact Pocket (bottom-left) */
+.contact-pocket {
+    position: fixed;
+    left: 16px;
+    bottom: 16px;
+    z-index: 1200;
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    background: linear-gradient(180deg, rgba(12,12,14,0.86), rgba(6,6,8,0.72));
+    box-shadow: 0 8px 24px rgba(0,0,0,0.52);
+    color: #e8eef8;
+    backdrop-filter: blur(6px) saturate(120%);
+    -webkit-backdrop-filter: blur(6px) saturate(120%);
+    transition: width 320ms cubic-bezier(.22,1,.36,1), height 320ms cubic-bezier(.22,1,.36,1), transform 280ms ease, opacity 180ms ease;
+    overflow: visible;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.contact-pocket.collapsed {
+    width: 56px;
+    height: 56px;
+}
+
+.contact-pocket .contact-pocket-toggle {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: transparent;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    cursor: pointer;
+}
+
+.contact-pocket .contact-pocket-toggle img {
+    width: 28px;
+    height: 28px;
+    display: block;
+    filter: drop-shadow(0 6px 10px rgba(0,0,0,0.4));
+}
+
+.contact-pocket .contact-pocket-body {
+    position: absolute;
+    left: 0;
+    bottom: 64px;
+    width: 320px;
+    max-width: calc(100vw - 32px);
+    background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+    border-radius: 12px;
+    padding: 12px;
+    box-shadow: 0 18px 40px rgba(0,0,0,0.36);
+    backdrop-filter: blur(10px) saturate(120%);
+    opacity: 0;
+    transform-origin: left bottom;
+    transform: translateY(6px) scale(0.98);
+    pointer-events: none;
+    transition: opacity 260ms ease, transform 300ms cubic-bezier(.22,1,.36,1);
+}
+
+.contact-pocket:not(.collapsed) {
+    width: 320px;
+    height: auto;
+}
+
+.contact-pocket:not(.collapsed) .contact-pocket-body {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+}
+
+.contact-pocket-inner { display:block; }
+.contact-item { margin-bottom: 8px; }
+.contact-item .contact-copy {
+    width: 100%;
+    display: inline-block;
+    text-align: left;
+    border: none;
+    background: transparent;
+    color: #fff;
+    font-weight: 600;
+    padding: 6px 8px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+.contact-item .contact-copy:active { transform: translateY(1px); }
+.contact-copy-confirm { margin-left: 8px; font-size: 12px; color: #aaf; opacity: 0; transition: opacity 180ms ease; }
+.contact-copy-confirm.show { opacity: 1; }
+.contact-link { color: #cfe9ff; font-weight: 600; text-decoration: none; }
+.contact-links-list { display:flex; flex-direction:column; gap:6px; margin-top:8px; }
+.contact-links-list a { color: #ddd; text-decoration: none; font-size: 14px; padding:6px 8px; border-radius:6px; }
+.contact-links-list a:hover { background: rgba(255,255,255,0.02); }
+
+@media (prefers-reduced-motion: reduce) {
+    .contact-pocket, .contact-pocket .contact-pocket-body { transition: none !important; }
 }
 
 @media (min-width: 1800px) {

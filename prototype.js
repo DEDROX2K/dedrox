@@ -3149,6 +3149,117 @@ function initHeroLanguageLoop() {
         });
     }, intervalMs);
 }
+/* Contact pocket interactivity: toggle, copy, and small copy confirmation */
+function initContactPocket() {
+    const pocket = document.getElementById('contact-pocket');
+    if (!pocket) return;
+    const toggle = document.getElementById('contact-pocket-toggle');
+    const body = document.getElementById('contact-pocket-body');
+    const copyButtons = Array.from(pocket.querySelectorAll('.contact-copy'));
+
+    const setCollapsed = (collapsed) => {
+        pocket.classList.toggle('collapsed', collapsed);
+        toggle.setAttribute('aria-expanded', String(!collapsed));
+    };
+
+    toggle.addEventListener('click', (e) => {
+        e.preventDefault();
+        const collapsed = pocket.classList.contains('collapsed');
+        setCollapsed(!collapsed);
+    });
+
+    copyButtons.forEach((btn) => {
+        btn.addEventListener('click', async (e) => {
+            const value = btn.getAttribute('data-value') || btn.textContent || '';
+            if (!navigator.clipboard) {
+                try { document.execCommand('copy'); } catch (err) { /* ignore */ }
+            } else {
+                try { await navigator.clipboard.writeText(value); } catch (err) { /* ignore */ }
+            }
+            const conf = btn.parentElement.querySelector('.contact-copy-confirm');
+            if (conf) {
+                conf.textContent = 'Copied!';
+                conf.classList.add('show');
+                window.setTimeout(() => { conf.classList.remove('show'); conf.textContent = ''; }, 1400);
+            }
+        });
+    });
+
+    // Close when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!(e.target instanceof Element)) return;
+        if (!pocket.contains(e.target) && !pocket.classList.contains('collapsed')) {
+            setCollapsed(true);
+        }
+    }, { passive: true });
+
+    // Respect reduced-motion preference for opening
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        pocket.style.transition = 'none';
+    }
+}
+
+initContactPocket();
+
+// Ensure contact pocket only visible when device is expanded
+(function syncContactPocketVisibility() {
+    const pocket = document.getElementById('contact-pocket');
+    if (!pocket) return;
+    const update = () => {
+        const expanded = (typeof device !== 'undefined' && device?.classList?.contains('expanded')) || document.body.classList.contains('device-expanded');
+        if (!expanded) {
+            pocket.classList.add('collapsed');
+            pocket.style.display = 'none';
+        } else {
+            pocket.style.display = '';
+        }
+    };
+    update();
+    const observer = new MutationObserver(update);
+    const target = device || document.body;
+    observer.observe(target, { attributes: true, attributeFilter: ['class'] });
+})();
+
+/* Manage pill button enabled state: when device is closed, auto-disable pills (except those manually disabled). */
+function initPillAutoDisable() {
+    const pills = Array.from(document.querySelectorAll('.pill-icon-btn'));
+    if (!pills.length) return;
+
+    // Mark manually-disabled pills so we don't toggle them
+    pills.forEach((p) => {
+        if (p.getAttribute('aria-disabled') === 'true' || p.disabled) {
+            p.dataset.manualDisabled = 'true';
+        }
+    });
+
+    const applyState = () => {
+        const expanded = (typeof device !== 'undefined' && device?.classList?.contains('expanded')) || document.body.classList.contains('device-expanded');
+        pills.forEach((p) => {
+            if (p.dataset.manualDisabled === 'true') return; // skip manual disabled
+            if (!expanded) {
+                p.disabled = true;
+                p.setAttribute('aria-disabled', 'true');
+                p.setAttribute('data-auto-disabled', 'true');
+            } else {
+                // Only remove auto-disabled state; don't touch manual-disabled
+                if (p.hasAttribute('data-auto-disabled')) {
+                    p.removeAttribute('data-auto-disabled');
+                    p.disabled = false;
+                    p.removeAttribute('aria-disabled');
+                }
+            }
+        });
+    };
+
+    // Initial apply
+    applyState();
+
+    // Observe body class changes to re-apply when device expands/collapses
+    const bodyObserver = new MutationObserver(() => applyState());
+    bodyObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+}
+
+initPillAutoDisable();
 function initOnboardingHeader() {
     const lineEl = document.getElementById('onboarding-line');
     if (!lineEl) {
