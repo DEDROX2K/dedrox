@@ -1356,6 +1356,15 @@ body.recruiter-mode .pill-icon-btn.is-selected {
     transform: translate3d(-50%, -50%, 0) translateY(0) scale(0.9) rotate(0deg) !important;
 }
 
+body:not(.device-expanded):not(.reader-mode):not(.recruiter-mode) .pill-icon-btn:disabled img,
+body:not(.device-expanded):not(.reader-mode):not(.recruiter-mode) .pill-icon-btn[aria-disabled="true"] img,
+body:not(.device-expanded):not(.reader-mode):not(.recruiter-mode) .pill-icon-btn.disabled img,
+.pill-icon-btn[data-auto-disabled] img {
+    opacity: 0 !important;
+    transform: translate3d(-50%, -50%, 0) translateY(12px) scale(0.6) rotate(-15deg) !important;
+    filter: blur(4px) !important;
+}
+
 .pill-icon-btn:disabled .pill-tooltip,
 .pill-icon-btn[aria-disabled="true"] .pill-tooltip,
 .pill-icon-btn.disabled .pill-tooltip {
@@ -1500,6 +1509,30 @@ body.pill-controls-revealed .device-container.expanded #pill-notes-btn img {
 
 body.pill-controls-revealed .device-container.expanded #pill-fourth-btn img {
     transition-delay: 0.18s;
+}
+
+body.pill-controls-revealed .device-container.expanded #pill-fourth-btn:disabled,
+body.pill-controls-revealed .device-container.expanded #pill-fourth-btn[aria-disabled="true"],
+body.pill-controls-revealed .device-container.expanded #pill-fourth-btn.disabled {
+    pointer-events: none;
+}
+
+@media (hover: hover) {
+    .device-container.expanded #pill-fourth-btn:disabled:hover,
+    .device-container.expanded #pill-fourth-btn[aria-disabled="true"]:hover,
+    .device-container.expanded #pill-fourth-btn.disabled:hover {
+        width: var(--pill-6-w) !important;
+        transform: none !important;
+    }
+
+    .device-container.expanded #pill-fourth-btn:disabled:hover::before,
+    .device-container.expanded #pill-fourth-btn:disabled:hover::after,
+    .device-container.expanded #pill-fourth-btn[aria-disabled="true"]:hover::before,
+    .device-container.expanded #pill-fourth-btn[aria-disabled="true"]:hover::after,
+    .device-container.expanded #pill-fourth-btn.disabled:hover::before,
+    .device-container.expanded #pill-fourth-btn.disabled:hover::after {
+        opacity: 0 !important;
+    }
 }
 
 .pill-icon-btn::before {
