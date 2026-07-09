@@ -1377,7 +1377,7 @@ body:not(.device-expanded):not(.reader-mode):not(.recruiter-mode) .pill-icon-btn
 
 .device-container.expanded .pill-icon-btn.is-selected {
     border-radius: 14px !important;
-    background: #080808 !important;
+    background: #353535  !important;
     box-shadow:
         inset 0 1px 0 rgba(255, 255, 255, 0.08),
         0 8px 18px rgba(0, 0, 0, 0.22);
