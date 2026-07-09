@@ -5044,7 +5044,57 @@ document.addEventListener('DOMContentLoaded', () => {
     initDeviceWindowNudge();
     let fittyRefreshTimer = null;
     let pillControlsRevealTimerId = 0;
+    let pillTooltipPromptStartTimerId = 0;
+    let pillTooltipPromptStepTimerIds = [];
     const PILL_CONTROLS_REVEAL_DELAY_MS = 2000;
+    const PILL_TOOLTIP_PROMPT_DELAY_MS = 10000;
+    const PILL_TOOLTIP_PROMPT_STEP_MS = 700;
+    const PILL_TOOLTIP_PROMPT_VISIBLE_MS = 1100;
+
+    const getPillTooltipPromptButtons = () => [pillFifthBtn, pillResumeBtn, pillThirdBtn, pillFourthBtn, pillNotesBtn]
+        .filter((btn) => btn instanceof HTMLElement)
+        .filter((btn) => !btn.disabled && btn.getAttribute('aria-disabled') !== 'true')
+        .filter((btn) => btn.offsetParent !== null);
+
+    const clearPillTooltipPrompt = () => {
+        if (pillTooltipPromptStartTimerId) {
+            window.clearTimeout(pillTooltipPromptStartTimerId);
+            pillTooltipPromptStartTimerId = 0;
+        }
+
+        pillTooltipPromptStepTimerIds.forEach((timerId) => {
+            window.clearTimeout(timerId);
+        });
+        pillTooltipPromptStepTimerIds = [];
+
+        getPillTooltipPromptButtons().forEach((btn) => {
+            btn.classList.remove('is-guided-tooltip-visible');
+        });
+    };
+
+    const schedulePillTooltipPrompt = () => {
+        clearPillTooltipPrompt();
+
+        pillTooltipPromptStartTimerId = window.setTimeout(() => {
+            if (!device || !device.classList.contains('expanded')) return;
+
+            const promptButtons = getPillTooltipPromptButtons();
+            promptButtons.forEach((btn, index) => {
+                const showTimerId = window.setTimeout(() => {
+                    if (!device || !device.classList.contains('expanded')) return;
+                    btn.classList.add('is-guided-tooltip-visible');
+                }, index * PILL_TOOLTIP_PROMPT_STEP_MS);
+
+                const hideTimerId = window.setTimeout(() => {
+                    btn.classList.remove('is-guided-tooltip-visible');
+                }, index * PILL_TOOLTIP_PROMPT_STEP_MS + PILL_TOOLTIP_PROMPT_VISIBLE_MS);
+
+                pillTooltipPromptStepTimerIds.push(showTimerId, hideTimerId);
+            });
+
+            pillTooltipPromptStartTimerId = 0;
+        }, PILL_TOOLTIP_PROMPT_DELAY_MS);
+    };
 
     const scheduleFittyRefresh = () => {
         if (typeof fitty === 'undefined') return;
@@ -5090,6 +5140,7 @@ document.addEventListener('DOMContentLoaded', () => {
             window.clearTimeout(pillControlsRevealTimerId);
             pillControlsRevealTimerId = 0;
         }
+        clearPillTooltipPrompt();
         document.body.classList.remove('pill-controls-revealed');
 
         withTemporaryDeviceTransition(() => {
@@ -5107,6 +5158,8 @@ document.addEventListener('DOMContentLoaded', () => {
             document.body.classList.add('pill-controls-revealed');
             pillControlsRevealTimerId = 0;
         }, PILL_CONTROLS_REVEAL_DELAY_MS);
+
+        schedulePillTooltipPrompt();
 
         setTimeout(() => {
             if (miniMatrixInstance) miniMatrixInstance.resize();
@@ -5468,6 +5521,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     window.clearTimeout(pillControlsRevealTimerId);
                     pillControlsRevealTimerId = 0;
                 }
+                clearPillTooltipPrompt();
                 document.body.classList.remove('pill-controls-revealed');
                 readerMode.close();
                 recruiterMode.close();
