@@ -4708,6 +4708,14 @@ function initInlineTalkScene() {
         updateSendState();
     };
 
+    const scrollMessagesToBottom = (behavior = 'smooth') => {
+        if (!messagesArea) return;
+        messagesArea.scrollTo({
+            top: messagesArea.scrollHeight,
+            behavior: prefersReducedMotion ? 'auto' : behavior
+        });
+    };
+
     const resetMessages = () => {
         if (!messagesArea) return;
         messagesArea.innerHTML = '';
@@ -4777,9 +4785,7 @@ function initInlineTalkScene() {
             const nextVisibleChars = Math.max(1, Math.ceil(draft.length * progress));
             visibleChars = Math.max(visibleChars, nextVisibleChars);
             setDraft(draft.slice(0, visibleChars));
-            if (messagesArea) {
-                messagesArea.scrollTop = messagesArea.scrollHeight;
-            }
+            scrollMessagesToBottom('auto');
 
             if (visibleChars >= draft.length) {
                 isDraftTyping = false;
@@ -4799,7 +4805,7 @@ function initInlineTalkScene() {
         bubble.className = `chat-bubble chat-bubble-${sender === 'viewer' ? 'send' : 'recv'}`;
         bubble.innerText = text;
         messagesArea.appendChild(bubble);
-        messagesArea.scrollTop = messagesArea.scrollHeight;
+        scrollMessagesToBottom();
     };
 
     const showTypingIndicator = () => {
@@ -4807,9 +4813,7 @@ function initInlineTalkScene() {
         typing.className = 'chat-typing active';
         typing.innerHTML = '<span></span><span></span><span></span>';
         messagesArea?.appendChild(typing);
-        if (messagesArea) {
-            messagesArea.scrollTop = messagesArea.scrollHeight;
-        }
+        scrollMessagesToBottom();
         return typing;
     };
 
