@@ -1011,6 +1011,86 @@ function initModelViewerPerformance() {
 
 initModelViewerPerformance();
 
+function initHomeTocPanel() {
+    const tocPanel = document.querySelector('.home-toc-panel');
+    if (!tocPanel || !scrollableContentEl) return;
+
+    const tocLinks = Array.from(tocPanel.querySelectorAll('a[href^="#"]'));
+    const tocItems = tocLinks
+        .map((link) => {
+            const id = link.getAttribute('href')?.slice(1);
+            const section = id ? document.getElementById(id) : null;
+            return section ? { link, section } : null;
+        })
+        .filter(Boolean);
+
+    if (!tocItems.length) return;
+
+    let activeId = '';
+    let rafId = 0;
+
+    const setActive = (id) => {
+        if (!id || activeId === id) return;
+        activeId = id;
+
+        tocItems.forEach(({ link, section }) => {
+            const isActive = section.id === id;
+            link.classList.toggle('is-active', isActive);
+            if (isActive) link.setAttribute('aria-current', 'true');
+            else link.removeAttribute('aria-current');
+        });
+    };
+
+    const syncActiveFromScroll = () => {
+        rafId = 0;
+        const rootRect = scrollableContentEl.getBoundingClientRect();
+        const anchorY = rootRect.top + (rootRect.height * 0.34);
+        let current = tocItems[0];
+
+        for (const item of tocItems) {
+            const rect = item.section.getBoundingClientRect();
+            if (rect.top <= anchorY) {
+                current = item;
+            } else {
+                break;
+            }
+        }
+
+        setActive(current.section.id);
+    };
+
+    const scheduleSync = () => {
+        if (rafId) return;
+        rafId = window.requestAnimationFrame(syncActiveFromScroll);
+    };
+
+    tocLinks.forEach((link) => {
+        link.addEventListener('click', (event) => {
+            const id = link.getAttribute('href')?.slice(1);
+            const section = id ? document.getElementById(id) : null;
+            if (!section) return;
+
+            event.preventDefault();
+            section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            setActive(section.id);
+        });
+    });
+
+    if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver(scheduleSync, {
+            root: scrollableContentEl,
+            rootMargin: '-24% 0px -62% 0px',
+            threshold: [0, 0.1, 0.35, 0.7]
+        });
+
+        tocItems.forEach(({ section }) => observer.observe(section));
+    }
+
+    scrollableContentEl.addEventListener('scroll', scheduleSync, { passive: true });
+    window.addEventListener('resize', scheduleSync);
+    scheduleSync();
+}
+
 function initExpandButtonAnchor() {
     if (!device || !leftControlsEl) {
         return {
@@ -5059,6 +5139,7 @@ document.addEventListener('DOMContentLoaded', () => {
     applyMarqueeSettings();
     initNodeGraph();
     initSmoothWheelScrolling();
+    initHomeTocPanel();
     let sectionContextHintTimer = 0;
     const onboardingFlow = initOnboardingHeader();
     const expandFabAnchor = initExpandButtonAnchor();
