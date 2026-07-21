@@ -32,7 +32,7 @@
     --split-panel-height: min(var(--device-expanded-height), var(--device-expanded-max-height));
     --split-view-gap: 18px;
     --case-window-width: 70vw ;
-    --experience-window-width: min(33vw, 470px);
+    --experience-window-width: min(33vw, 500px);
     --case-window-gap: 30px;
     --case-pair-shift: calc((var(--case-window-width) + var(--case-window-gap)) / 2);
     --experience-pair-shift: calc((var(--experience-window-width) + var(--case-window-gap)) / 2);
@@ -524,11 +524,8 @@ summary {
     overflow: visible;
 }
 
-.home-toc-panel {
+.home-side-panel {
     position: absolute;
-    top: calc(var(--pill-container-h) + 16px);
-    right: calc(100% + 18px);
-    width: 154px;
     padding: 12px;
     border: 1px solid rgba(17, 17, 17, 0.09);
     border-radius: 18px;
@@ -543,42 +540,121 @@ summary {
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-    transform: translate3d(10px, 0, 0) scale(0.98);
-    transform-origin: right top;
+    filter: blur(0);
+    clip-path: inset(0 0 0 0 round 18px);
     transition:
-        opacity 0.34s cubic-bezier(0.16, 1, 0.3, 1),
-        visibility 0.34s cubic-bezier(0.16, 1, 0.3, 1),
+        opacity 0.38s cubic-bezier(0.16, 1, 0.3, 1),
+        visibility 0.38s cubic-bezier(0.16, 1, 0.3, 1),
         background-color 0.26s ease,
         border-color 0.26s ease,
-        box-shadow 0.34s cubic-bezier(0.16, 1, 0.3, 1),
-        transform 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+        box-shadow 0.38s cubic-bezier(0.16, 1, 0.3, 1),
+        filter 0.42s cubic-bezier(0.16, 1, 0.3, 1),
+        clip-path 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.device-container.expanded .home-toc-panel {
+.home-toc-panel {
+    top: calc(var(--pill-container-h) + 16px);
+    right: calc(100% + 18px);
+    width: 154px;
+    transform: translate3d(10px, 0, 0) scale(0.98);
+    transform-origin: right top;
+}
+
+.home-links-panel {
+    right: calc(-1 * (154px + 18px));
+    bottom: 20px;
+    width: 154px;
+    transform: translate3d(-10px, 0, 0) scale(0.98);
+    transform-origin: left bottom;
+}
+
+.home-links-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.home-links-panel a {
+    min-height: 30px;
+    padding: 0 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.48);
+    border: 1px solid rgba(17, 17, 17, 0.08);
+    color: rgba(17, 17, 17, 0.82);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Google Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    text-decoration: none;
+    transition:
+        background-color 0.24s ease,
+        border-color 0.24s ease,
+        color 0.24s ease,
+        transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.home-links-panel a:hover,
+.home-links-panel a:focus-visible {
+    background: rgba(17, 17, 17, 0.08);
+    border-color: rgba(17, 17, 17, 0.14);
+    color: #111111;
+    outline: none;
+    transform: translateY(-2px);
+}
+
+.device-container.expanded .home-toc-panel,
+.device-container.expanded .home-links-panel.is-active {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
     transform: translate3d(0, 0, 0) scale(1);
 }
 
-.device-container.expanded .home-toc-panel:hover,
-.device-container.expanded .home-toc-panel:focus-within {
-    background: rgba(238, 238, 238, 0.9);
+.device-container.expanded .home-side-panel:hover,
+.device-container.expanded .home-side-panel:focus-within {
     border-color: rgba(17, 17, 17, 0.12);
     box-shadow: 0 20px 52px rgba(17, 17, 17, 0.16);
+}
+
+.device-container.expanded .home-toc-panel:hover,
+.device-container.expanded .home-toc-panel:focus-within {
     transform: translate3d(-7px, 0, 0) scale(1);
 }
 
-body.reader-mode .home-toc-panel,
-body.recruiter-mode .home-toc-panel,
-body.talk-mode .home-toc-panel,
-body.talk-scene-active .home-toc-panel,
-body.notes-active .home-toc-panel,
-body.case-open .home-toc-panel,
-body.experience-open .home-toc-panel,
-.device-container.reader-mode .home-toc-panel,
-.device-container.recruiter-mode .home-toc-panel,
-.device-container.talk-mode .home-toc-panel {
+.device-container.expanded .home-links-panel.is-active:hover,
+.device-container.expanded .home-links-panel.is-active:focus-within {
+    transform: translate3d(7px, 0, 0) scale(1);
+}
+
+.home-side-panel.is-collapsed {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    filter: blur(10px) saturate(0.92);
+    box-shadow: 0 8px 22px rgba(17, 17, 17, 0.08);
+}
+
+.home-toc-panel.is-collapsed {
+    clip-path: inset(34% 12% 34% 12% round 22px);
+    transform: translate3d(12px, -6px, 0) scale(0.84, 0.72);
+}
+
+.home-links-panel.is-collapsed {
+    clip-path: inset(34% 12% 34% 12% round 22px);
+    transform: translate3d(-12px, 6px, 0) scale(0.84, 0.72);
+}
+
+body.reader-mode .home-side-panel,
+body.recruiter-mode .home-side-panel,
+body.talk-mode .home-side-panel,
+body.talk-scene-active .home-side-panel,
+.device-container.reader-mode .home-side-panel,
+.device-container.recruiter-mode .home-side-panel,
+.device-container.talk-mode .home-side-panel {
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
@@ -653,7 +729,8 @@ body.experience-open .home-toc-panel,
 }
 
 @media (max-width: 900px) {
-    .home-toc-panel {
+    .home-toc-panel,
+    .home-links-panel {
         display: none;
     }
 }
@@ -1463,7 +1540,7 @@ body.recruiter-mode .pill-icon-btn.is-selected {
     overflow: visible;
     -webkit-tap-highlight-color: transparent;
     cursor: pointer;
-
+    touch-action: manipulation;
 }
 
 .pill-icon-btn img {
@@ -1482,6 +1559,7 @@ body.recruiter-mode .pill-icon-btn.is-selected {
     transition: opacity 0.8s var(--ease-lux), transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.8s var(--ease-lux);
     will-change: opacity, transform, filter;
     backface-visibility: hidden;
+    pointer-events: none;
 }
 
 /* Disabled pill buttons: greyed icons, muted background, no pointer/hover interactions */
@@ -1639,6 +1717,8 @@ body:not(.pill-controls-revealed) .device-container.expanded #pill-fourth-btn im
 
 body.pill-controls-revealed .device-container.expanded #pill-notes-btn,
 body.pill-controls-revealed .device-container.expanded #pill-fourth-btn {
+    width: var(--base-w) !important;
+    min-width: var(--base-w);
     opacity: 1;
     transform: scaleX(1) translateY(0);
     filter: blur(0);
@@ -1793,6 +1873,13 @@ body.pill-controls-revealed .device-container.expanded #pill-fourth-btn.disabled
 @media (hover: hover) {
     .device-container.expanded .pill-icon-btn:hover {
         width: calc(var(--base-w) + var(--pill-hover-grow)) !important;
+    }
+
+    .device-container.expanded .pill-icon-btn:hover img,
+    .device-container.expanded .pill-icon-btn:focus-visible img {
+        opacity: 1;
+        filter: blur(0) brightness(0.92);
+        transform: translate3d(-50%, -50%, 0) scale(1.08);
     }
 
     .device-container.expanded .pill-icon-btn:hover::before {
@@ -2392,32 +2479,29 @@ body.device-maximized .expand-fab .icon-expand {
     transform: translate3d(calc(-1 * var(--resume-peek-hover-slide)), -50%, 0) rotate(var(--resume-peek-rotation)) scale(var(--resume-peek-scale));
 }
 
-/* Jumping-with-joy loop for peeked images.
-   Starts from the edge outward: left for resume, right for id. */
+/* Peeked cards now jump from center with a calmer glassy bounce. */
 @keyframes jump-joy-left {
     0% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
-    12% { transform: translate3d(-6px, -4px, 0) rotate(-3deg) scale(1.02); }
-    28% { transform: translate3d(14px, -18px, 0) rotate(6deg) scale(1.08); }
-    44% { transform: translate3d(-8px, -6px, 0) rotate(-4deg) scale(1.03); }
-    64% { transform: translate3d(8px, -12px, 0) rotate(3deg) scale(1.06); }
-    88% { transform: translate3d(-4px, -2px, 0) rotate(-1deg) scale(1.02); }
+    18% { transform: translate3d(-2px, -10px, 0) rotate(-1.2deg) scale(1.025); }
+    36% { transform: translate3d(3px, -18px, 0) rotate(1.8deg) scale(1.045); }
+    58% { transform: translate3d(-1px, -8px, 0) rotate(-0.8deg) scale(1.02); }
+    78% { transform: translate3d(1px, -4px, 0) rotate(0.45deg) scale(1.01); }
     100% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
 }
 
 @keyframes jump-joy-right {
     0% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
-    12% { transform: translate3d(6px, -4px, 0) rotate(3deg) scale(1.02); }
-    28% { transform: translate3d(-14px, -18px, 0) rotate(-6deg) scale(1.08); }
-    44% { transform: translate3d(8px, -6px, 0) rotate(4deg) scale(1.03); }
-    64% { transform: translate3d(-8px, -12px, 0) rotate(-3deg) scale(1.06); }
-    88% { transform: translate3d(4px, -2px, 0) rotate(1deg) scale(1.02); }
+    18% { transform: translate3d(2px, -10px, 0) rotate(1.2deg) scale(1.025); }
+    36% { transform: translate3d(-3px, -18px, 0) rotate(-1.8deg) scale(1.045); }
+    58% { transform: translate3d(1px, -8px, 0) rotate(0.8deg) scale(1.02); }
+    78% { transform: translate3d(-1px, -4px, 0) rotate(-0.45deg) scale(1.01); }
     100% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
 }
 
 /* Apply animation only while peeking (visible but not open) */
 .resume-card-dock.visible:not(.is-open) img {
-    transform-origin: left center;
-    animation: jump-joy-left 1.6s cubic-bezier(.22,1,.36,1) infinite;
+    transform-origin: center center;
+    animation: jump-joy-left 1.9s cubic-bezier(.22,1,.36,1) infinite;
 }
 
 .id-card-dock.visible:not(.is-open) img {
@@ -4474,7 +4558,7 @@ body.recruiter-mode .recruiter-cases .folder-menu {
     padding: 12px 24px;
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 99px;
-    background: transparent;
+    /* background: transparent; */
     color: #111;
     font: inherit;
     font-size: 0.95rem;

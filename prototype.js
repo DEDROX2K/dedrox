@@ -1091,6 +1091,79 @@ function initHomeTocPanel() {
     scheduleSync();
 }
 
+function initHomeSidePanels() {
+    const panels = Array.from(document.querySelectorAll('.home-side-panel'));
+    const linksPanel = document.querySelector('.home-links-panel');
+    const pixelSection = document.getElementById('pixel-lab');
+    if (!panels.length || !linksPanel || !pixelSection || !scrollableContentEl || !device) return;
+
+    let pixelLabActive = false;
+    let rafId = 0;
+
+    const panelOpenClasses = [
+        'reader-mode',
+        'recruiter-mode',
+        'talk-mode',
+        'talk-scene-active',
+        'notes-active',
+        'case-open',
+        'experience-open'
+    ];
+
+    const hasBlockingPanelOpen = () => (
+        !device.classList.contains('expanded') ||
+        panelOpenClasses.some((className) => document.body.classList.contains(className))
+    );
+
+    const syncPanels = () => {
+        rafId = 0;
+        const shouldCollapse = hasBlockingPanelOpen();
+        panels.forEach((panel) => {
+            panel.classList.toggle('is-collapsed', shouldCollapse);
+        });
+        linksPanel.classList.toggle('is-active', pixelLabActive && !shouldCollapse);
+    };
+
+    const scheduleSync = () => {
+        if (rafId) return;
+        rafId = window.requestAnimationFrame(syncPanels);
+    };
+
+    const syncPixelSection = () => {
+        const rootRect = scrollableContentEl.getBoundingClientRect();
+        const rect = pixelSection.getBoundingClientRect();
+        const anchorTop = rootRect.top + (rootRect.height * 0.46);
+        const anchorBottom = rootRect.top + (rootRect.height * 0.9);
+        pixelLabActive = rect.top <= anchorBottom && rect.bottom >= anchorTop;
+        scheduleSync();
+    };
+
+    if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver(syncPixelSection, {
+            root: scrollableContentEl,
+            rootMargin: '-18% 0px -18% 0px',
+            threshold: [0, 0.2, 0.45, 0.7]
+        });
+        observer.observe(pixelSection);
+    }
+
+    const bodyClassObserver = new MutationObserver(scheduleSync);
+    bodyClassObserver.observe(document.body, {
+        attributes: true,
+        attributeFilter: ['class']
+    });
+
+    const deviceClassObserver = new MutationObserver(scheduleSync);
+    deviceClassObserver.observe(device, {
+        attributes: true,
+        attributeFilter: ['class']
+    });
+
+    scrollableContentEl.addEventListener('scroll', syncPixelSection, { passive: true });
+    window.addEventListener('resize', syncPixelSection);
+    syncPixelSection();
+}
+
 function initExpandButtonAnchor() {
     if (!device || !leftControlsEl) {
         return {
@@ -5140,6 +5213,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initNodeGraph();
     initSmoothWheelScrolling();
     initHomeTocPanel();
+    initHomeSidePanels();
     let sectionContextHintTimer = 0;
     const onboardingFlow = initOnboardingHeader();
     const expandFabAnchor = initExpandButtonAnchor();
