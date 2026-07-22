@@ -1,0 +1,215 @@
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - navigation "Home table of contents":
+      - paragraph: Contents
+      - link "Intro":
+        - /url: "#home-intro"
+      - link "About":
+        - /url: "#about-summary"
+      - link "Links":
+        - /url: "#social-links"
+      - link "Playground":
+        - /url: "#creative-controls"
+      - link "Work":
+        - /url: "#portfolio-work"
+      - link "Pixel Lab":
+        - /url: "#pixel-lab"
+      - link "Contact":
+        - /url: "#contact-footer"
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - button "Recruiter mode" [ref=e37] [cursor=pointer]
+        - button "Open chat" [ref=e38] [cursor=pointer]:
+          - generic: Talk to me now!
+        - button "Go to home screen" [ref=e39] [cursor=pointer]:
+          - generic: Home
+        - button "Open blogs" [active] [pressed] [ref=e52] [cursor=pointer]:
+          - generic: Blogs
+        - button "Open notes" [ref=e53] [cursor=pointer]:
+          - generic: Notes
+      - generic: PORTFOLIO
+    - generic [ref=e54]:
+      - generic [ref=e236]:
+        - article [ref=e237]:
+          - paragraph [ref=e238]: 19 Jun 2026
+          - link "Dwell" [ref=e239] [cursor=pointer]:
+            - /url: blog.html?post=dwell.md
+          - list [ref=e240]:
+            - listitem [ref=e241]: uncategorized
+        - article [ref=e242]:
+          - paragraph [ref=e243]: 19 Jun 2026
+          - link "Smooth Button" [ref=e244] [cursor=pointer]:
+            - /url: blog.html?post=smooth-button.md
+          - list [ref=e245]:
+            - listitem [ref=e246]: uncategorized
+        - article [ref=e247]:
+          - paragraph [ref=e248]: 19 Jun 2026
+          - link "Stuff Todo App" [ref=e249] [cursor=pointer]:
+            - /url: blog.html?post=stuff-todo-app.md
+          - list [ref=e250]:
+            - listitem [ref=e251]: uncategorized
+        - article [ref=e252]:
+          - paragraph [ref=e253]: 19 Jun 2026
+          - link "Tile Behavior" [ref=e254] [cursor=pointer]:
+            - /url: blog.html?post=tile-behavior.md
+          - list [ref=e255]:
+            - listitem [ref=e256]: uncategorized
+        - article [ref=e257]:
+          - paragraph [ref=e258]: 30 Mar 2026
+          - link "Designing Calm Interfaces in Noisy Systems" [ref=e259] [cursor=pointer]:
+            - /url: blog.html?post=post-1.md
+          - list [ref=e260]:
+            - listitem [ref=e261]: ux
+            - listitem [ref=e262]: systems
+            - listitem [ref=e263]: product-design
+        - article [ref=e264]:
+          - paragraph [ref=e265]: 15 Mar 2026
+          - link "From Idea to Prototype in One Weekend" [ref=e266] [cursor=pointer]:
+            - /url: blog.html?post=post-2.md
+          - list [ref=e267]:
+            - listitem [ref=e268]: workflow
+            - listitem [ref=e269]: prototyping
+            - listitem [ref=e270]: obsidian
+      - text: ↗ ↗ ↗ ↗
+  - generic:
+    - button
+  - generic:
+    - button
+  - generic [ref=e40]:
+    - button "Open contacts" [ref=e41] [cursor=pointer]:
+      - img "Open contacts" [ref=e42]
+    - dialog "Contact details":
+      - generic:
+        - generic:
+          - button "raghavprasanna2000@gmail.com"
+        - generic:
+          - button "+44 75534 3333"
+        - generic:
+          - link "LinkedIn":
+            - /url: https://www.linkedin.com/in/raghavprasanna
+        - separator
+        - generic:
+          - link "Airpaste":
+            - /url: airpaste.html
+          - link "Clear Breath CBT":
+            - /url: Case1.html
+          - link "Air Buddy Navigation":
+            - /url: Case2.html
+          - link "Research Phase":
+            - /url: case3.html
+          - link "Blog":
+            - /url: blog.html
+  - generic [ref=e10]:
+    - generic [ref=e11]:
+      - button "Close" [ref=e12] [cursor=pointer]
+      - button "Minimize" [ref=e15] [cursor=pointer]
+      - button "Expand" [ref=e17] [cursor=pointer]
+    - button "Toggle full screen" [ref=e20] [cursor=pointer]:
+      - generic [ref=e21]: Full screen
+    - link "View on Behance":
+      - /url: "#"
+      - generic: Behance
+  - generic:
+    - generic [ref=e25]:
+      - generic [ref=e26]:
+        - button [ref=e27] [cursor=pointer]
+        - button [ref=e30] [cursor=pointer]
+        - button [ref=e32] [cursor=pointer]
+      - generic [ref=e35]: Experience panel
+    - generic:
+      - generic:
+        - generic:
+          - paragraph: Career timeline
+          - heading [level=2]: Work experience
+          - generic:
+            - button: Expand all
+            - button: Collapse all
+        - generic:
+          - article:
+            - generic:
+              - button [expanded]
+              - generic:
+                - paragraph: March 2025 - Present
+                - heading [level=3]: Product Development Assistant & Creative Technologist
+                - paragraph: Aircards
+            - generic:
+              - generic:
+                - paragraph: I work right alongside the executive team to bridge the gap between experimental R&D and actual operational delivery.
+                - paragraph: Day-to-day, I manage the end-to-end lifecycles for major brands like Lenovo and Red Bull, handling everything from on-site client discovery across the UK and Ireland to final technical QA.
+                - paragraph: "I'm also super hands-on with the tech: prototyping immersive spatial experiences, building AI-assisted visualization workflows with ComfyUI, and figuring out gesture-based environments using computer vision."
+          - article:
+            - generic:
+              - button [expanded]
+              - generic:
+                - paragraph: January 2025 - March 2025
+                - heading [level=3]: Gamified UX Designer & Researcher
+                - paragraph: Studio Nefce
+            - generic:
+              - generic:
+                - paragraph: I led the UX foundation for a gamified digital platform by mixing behavioral design with game psychology.
+                - paragraph: "My focus was on creating the product's architecture from scratch: mapping out user journeys, setting up level designs, and defining the core motivation loops."
+                - paragraph: I worked directly with the founders and dev teams to make sure these concepts actually translated well into production environments like Flutter and SwiftUI.
+          - article:
+            - generic:
+              - button [expanded]
+              - generic:
+                - paragraph: August 2024 - January 2025
+                - heading [level=3]: Product Designer & Technical Sales
+                - paragraph: Opendatabay
+            - generic:
+              - generic:
+                - paragraph: My main goal here was to improve the usability and accessibility of a data platform.
+                - paragraph: I spent my time translating raw business requirements from stakeholders into solid technical plans for the devs, while also designing wireframes and high-fidelity mockups for data visualization tools.
+                - paragraph: I set up reusable design components and ran user testing to make sure everything felt consistent and easy to use.
+          - article:
+            - generic:
+              - button [expanded]
+              - generic:
+                - paragraph: April 2024 - June 2024
+                - heading [level=3]: Designer
+                - paragraph: Noun Town
+            - generic:
+              - generic:
+                - paragraph: I hopped on board part-time for a few months as a remote designer, helping the team out with creative design tasks and mobile application workflows.
+          - article:
+            - generic:
+              - button [expanded]
+              - generic:
+                - paragraph: February 2024 - March 2024
+                - heading [level=3]: Dishwasher
+                - paragraph: Pizza Hut
+            - generic:
+              - generic:
+                - paragraph: A quick, character-building stint working on-site in Birmingham.
+                - paragraph: It was one of those grounding experiences that taught me the value of rolling up my sleeves and staying humble.
+          - article:
+            - generic:
+              - button [expanded]
+              - generic:
+                - paragraph: June 2022 - November 2023
+                - heading [level=3]: Technical Sales & Product Design
+                - paragraph: LeagueX
+            - generic:
+              - generic:
+                - paragraph: I spent about a year and a half full-time in Bengaluru, juggling a mix of technical sales, product design, and technical support to keep things running smoothly for our clients.
+          - article:
+            - generic:
+              - button [expanded]
+              - generic:
+                - paragraph: February 2022 - June 2022
+                - heading [level=3]: Junior 3D Artist & Generalist Intern
+                - paragraph: Do. Creative Labs
+            - generic:
+              - generic:
+                - paragraph: This was a five-month internship in Bengaluru where I got to dive deep into 3D modeling, interface design, and generalist art duties for various game design and creative projects.
+          - article:
+            - generic:
+              - button [expanded]
+              - generic:
+                - paragraph: March 2018 - October 2023
+                - heading [level=3]: 3D Artist, UI Designer & Mentor
+                - paragraph: Freelance & Fiverr
+            - generic:
+              - generic:
+                - paragraph: For over five years, I ran my own freelance business taking on all sorts of creative gigs.
+                - paragraph: I focused heavily on user interface design and usability, while also doing 3D work and mentoring others using the Adobe Creative Suite.

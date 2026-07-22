@@ -1130,11 +1130,8 @@ function initHomeSidePanels() {
     };
 
     const syncPixelSection = () => {
-        const rootRect = scrollableContentEl.getBoundingClientRect();
-        const rect = pixelSection.getBoundingClientRect();
-        const anchorTop = rootRect.top + (rootRect.height * 0.46);
-        const anchorBottom = rootRect.top + (rootRect.height * 0.9);
-        pixelLabActive = rect.top <= anchorBottom && rect.bottom >= anchorTop;
+        const viewportAnchor = scrollableContentEl.scrollTop + (scrollableContentEl.clientHeight * 0.52);
+        pixelLabActive = viewportAnchor >= pixelSection.offsetTop;
         scheduleSync();
     };
 
@@ -5237,10 +5234,22 @@ document.addEventListener('DOMContentLoaded', () => {
     let pillControlsRevealTimerId = 0;
     let pillTooltipPromptStartTimerId = 0;
     let pillTooltipPromptStepTimerIds = [];
-    const PILL_CONTROLS_REVEAL_DELAY_MS = 2000;
+    const PILL_CONTROLS_REVEAL_DELAY_MS = 280;
     const PILL_TOOLTIP_PROMPT_DELAY_MS = 10000;
     const PILL_TOOLTIP_PROMPT_STEP_MS = 700;
     const PILL_TOOLTIP_PROMPT_VISIBLE_MS = 1100;
+
+    const syncExpandedPillInteractivity = () => {
+        if (!device?.classList.contains('expanded')) return;
+        [pillFifthBtn, pillResumeBtn, pillThirdBtn, pillFourthBtn, pillNotesBtn]
+            .filter((btn) => btn instanceof HTMLElement)
+            .forEach((btn) => {
+                if (!btn.hasAttribute('data-auto-disabled')) return;
+                btn.disabled = false;
+                btn.removeAttribute('aria-disabled');
+                btn.removeAttribute('data-auto-disabled');
+            });
+    };
 
     const getPillTooltipPromptButtons = () => [pillFifthBtn, pillResumeBtn, pillThirdBtn, pillFourthBtn, pillNotesBtn]
         .filter((btn) => btn instanceof HTMLElement)
@@ -5362,6 +5371,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const syncTopPillSelection = () => {
+        syncExpandedPillInteractivity();
+
         const pillButtons = [pillFifthBtn, pillResumeBtn, pillThirdBtn, pillFourthBtn, pillNotesBtn]
             .filter((btn) => btn instanceof HTMLElement);
 

@@ -1,0 +1,331 @@
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - navigation "Home table of contents" [ref=e43]:
+      - paragraph [ref=e44]: Contents
+      - link "Intro" [ref=e45] [cursor=pointer]:
+        - /url: "#home-intro"
+      - link "About" [ref=e46] [cursor=pointer]:
+        - /url: "#about-summary"
+      - link "Links" [ref=e47] [cursor=pointer]:
+        - /url: "#social-links"
+      - link "Playground" [ref=e48] [cursor=pointer]:
+        - /url: "#creative-controls"
+      - link "Work" [ref=e49] [cursor=pointer]:
+        - /url: "#portfolio-work"
+      - link "Pixel Lab" [ref=e50] [cursor=pointer]:
+        - /url: "#pixel-lab"
+      - link "Contact" [ref=e51] [cursor=pointer]:
+        - /url: "#contact-footer"
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - button "Recruiter mode" [ref=e37] [cursor=pointer]
+        - button "Open chat" [ref=e38] [cursor=pointer]:
+          - generic: Talk to me now!
+        - button "Go to home screen" [pressed] [ref=e39] [cursor=pointer]:
+          - generic: Home
+        - button "Open blogs" [ref=e52] [cursor=pointer]:
+          - generic: Blogs
+        - button "Open notes" [ref=e53] [cursor=pointer]:
+          - generic: Notes
+      - generic: PORTFOLIO
+    - generic [ref=e54]:
+      - generic [ref=e55]:
+        - generic [ref=e56]:
+          - heading "Raghav. รากาฟ" [level=1] [ref=e233]:
+            - generic [ref=e58]: Raghav.
+            - generic [ref=e59]: รากาฟ
+          - paragraph [ref=e62]:
+            - text: Mid level
+            - strong [ref=e63]: Product designer engineer
+            - text: based in London. I am currently looking for my next big adventure and am entirely open to
+            - strong [ref=e64]: sponsored roles in any country or region.
+          - generic [ref=e65]:
+            - link "Show Resume" [ref=e66] [cursor=pointer]:
+              - /url: "#"
+            - link "Show ID" [ref=e68] [cursor=pointer]:
+              - /url: "#"
+        - region "3D Interactive character model" [ref=e70]:
+          - generic [ref=e71]:
+            - img "3D character of Raghav. Use mouse, touch or arrow keys to move." [ref=e73]
+            - region "Live announcements":
+              - status
+        - region "Companies worked with" [ref=e78]:
+          - paragraph [ref=e79]: Companies I've worked with
+          - generic [ref=e80]:
+            - generic "AIR CARDS" [ref=e81]:
+              - generic:
+                - img "AIR CARDS"
+            - generic "Studio Nefce" [ref=e83]:
+              - generic:
+                - img "Studio Nefce"
+            - generic "Opendatabay" [ref=e84]:
+              - generic:
+                - img "Opendatabay"
+            - generic "Noun Town VR Language Learning" [ref=e85]:
+              - generic:
+                - img "Noun Town VR Language Learning"
+            - generic "Birmingham city university" [ref=e86]:
+              - generic:
+                - img "Birmingham city university"
+            - generic "Do. Creative Labs" [ref=e87]:
+              - generic:
+                - img "Do. Creative Labs"
+      - region "About me summary" [ref=e88]:
+        - generic [ref=e89]:
+          - paragraph [ref=e90]: A summary about me
+          - paragraph [ref=e91]:
+            - text: Hi, I’m Raghav. I’m currently a
+            - strong [ref=e92]: Product Development Assistant
+            - text: at Aircards, working directly with the Head of Product. As an immigrant, this role has been incredibly eye-opening—it’s given me a front-row seat to corporate management and the real ins and outs of how products are actually shipped. My day-to-day involves blending AI workflows with UX design, which ties perfectly into my background. I originally came to the UK to get my Master's in Birmingham, but I eventually made beautiful Newcastle my second home. Since arriving, I’ve ventured into a few different spaces to find exactly where I thrive. I’ve been a 3D designer for a gaming company partnered with Facebook, a Principal Product Designer at OpenDataBay, and I’ve tackled over 50 freelance projects before landing at Aircards. Right now, I am keeping my eyes wide open for *sponsored opportunities*, anywhere in the world. I’m excited to see where my next journey takes me. If my background resonates with your team, I’d love to connect. Best, Raghav Prasanna
+          - button "Show Experience Tab" [ref=e94] [cursor=pointer]
+      - region "Social Links" [ref=e97]:
+        - generic [ref=e100]:
+          - img "Companies worked with"
+          - img "Companies worked with"
+      - region "Creative Controls" [ref=e102]:
+        - generic [ref=e103]:
+          - generic [ref=e105]:
+            - button "Reset" [disabled]
+          - generic [ref=e124]:
+            - img "Portfolio Preview 1" [ref=e125]
+            - img "Portfolio Preview 2" [ref=e126]
+            - img "Portfolio Preview 3" [ref=e127]
+            - img "Portfolio Preview 0" [ref=e128]
+            - img "Portfolio Preview 4" [ref=e129]
+            - img "Portfolio Preview 5" [ref=e130]
+            - img "Portfolio Preview 6" [ref=e131]
+            - img "Portfolio Preview 7" [ref=e132]
+            - img "Portfolio Preview 8" [ref=e133]
+      - region "Portfolio case studies" [ref=e145]:
+        - heading "Portfolio case studies" [level=2] [ref=e147]
+        - generic [ref=e148]:
+          - link [active] [ref=e149] [cursor=pointer]:
+            - /url: Case1.html
+            - img "Clear Breath App" [ref=e151]
+            - generic [ref=e152]:
+              - generic [ref=e153]:
+                - paragraph [ref=e155]: App with behavioral therapy for people with cigarette addiction
+                - generic [ref=e156]: "2024"
+              - paragraph [ref=e157]: UX case study
+          - link [ref=e158] [cursor=pointer]:
+            - /url: case3.html
+            - img "Air Buddy Navigation" [ref=e160]
+            - generic [ref=e161]:
+              - generic [ref=e162]:
+                - paragraph [ref=e164]: This is how I would work with a client from day one
+                - generic [ref=e165]: "2025"
+              - paragraph [ref=e166]: Open case study
+          - link [ref=e167] [cursor=pointer]:
+            - /url: Case2.html
+            - img "Research Process" [ref=e169]
+            - generic [ref=e170]:
+              - generic [ref=e171]:
+                - paragraph [ref=e173]: Made specifically for heathrow airport!!!
+                - generic [ref=e174]: "2023"
+              - paragraph [ref=e175]: Open case study
+          - link [ref=e176] [cursor=pointer]:
+            - /url: "#"
+            - img "AIRPASTE" [ref=e178]
+            - generic [ref=e179]:
+              - generic [ref=e180]:
+                - paragraph [ref=e182]: designing a white-label Remote Patient Monitoring (RPM) dashboard for an IoT healthcare
+                - generic [ref=e183]: "2026"
+              - paragraph [ref=e184]: A UX Journey
+      - region "Isolated content block":
+        - generic [ref=e185]:
+          - heading "Draw Pixel Art" [level=2] [ref=e186]
+          - generic [ref=e188]:
+            - button "Select color 1" [ref=e189] [cursor=pointer]
+            - button "Select color 2" [ref=e190] [cursor=pointer]
+            - button "Select color 3" [ref=e191] [cursor=pointer]
+            - button "Select color 4" [ref=e192] [cursor=pointer]
+            - button "Select color 5" [ref=e193] [cursor=pointer]
+            - button "Select color 6" [ref=e194] [cursor=pointer]
+          - generic "Pixel drawing canvas" [ref=e196]
+          - button "Clear" [ref=e197] [cursor=pointer]
+      - generic [ref=e199]:
+        - generic [ref=e200]:
+          - generic [ref=e201]:
+            - heading "DEDROX" [level=5] [ref=e202]
+            - paragraph [ref=e203]: 1 person with an all-in-one production ability. Building sanctuaries for the digital nomad.
+          - link "Let's talk" [ref=e205] [cursor=pointer]:
+            - /url: mailto:hello@dedrox.com
+        - generic [ref=e209]:
+          - navigation [ref=e211]:
+            - link "Behance ↗" [ref=e212] [cursor=pointer]:
+              - /url: https://www.behance.net/raghavprasanna
+            - link "Dribbble ↗" [ref=e213] [cursor=pointer]:
+              - /url: https://dribbble.com/DEDROX2K
+            - link "Instagram ↗" [ref=e214] [cursor=pointer]:
+              - /url: https://www.instagram.com/dedrox__/
+            - link "LinkedIn ↗" [ref=e215] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/raghav-prasanna-b530621b0/
+          - generic [ref=e216]:
+            - heading "Status" [level=4] [ref=e217]
+            - generic [ref=e218]:
+              - generic [ref=e219]: Open to new projects
+              - generic [ref=e221]: Newcastle upon Tyne, UK
+              - generic [ref=e222]: Best via email or LinkedIn
+        - generic [ref=e223]:
+          - generic [ref=e224]: © 2026 DEDROX. All rights reserved.
+          - generic [ref=e225]:
+            - link "Privacy" [ref=e226] [cursor=pointer]:
+              - /url: "#"
+            - link "Terms" [ref=e227] [cursor=pointer]:
+              - /url: "#"
+            - button "Back to top" [ref=e228] [cursor=pointer]
+  - generic:
+    - button
+  - generic:
+    - button
+  - generic [ref=e40]:
+    - button "Open contacts" [ref=e41] [cursor=pointer]:
+      - img "Open contacts" [ref=e42]
+    - dialog "Contact details":
+      - generic:
+        - generic:
+          - button "raghavprasanna2000@gmail.com"
+        - generic:
+          - button "+44 75534 3333"
+        - generic:
+          - link "LinkedIn":
+            - /url: https://www.linkedin.com/in/raghavprasanna
+        - separator
+        - generic:
+          - link "Airpaste":
+            - /url: airpaste.html
+          - link "Clear Breath CBT":
+            - /url: Case1.html
+          - link "Air Buddy Navigation":
+            - /url: Case2.html
+          - link "Research Phase":
+            - /url: case3.html
+          - link "Blog":
+            - /url: blog.html
+  - generic [ref=e235]:
+    - generic [ref=e10]:
+      - generic [ref=e11]:
+        - button "Close" [ref=e12] [cursor=pointer]
+        - button "Minimize" [ref=e15] [cursor=pointer]
+        - button "Expand" [ref=e17] [cursor=pointer]
+      - button "Toggle full screen" [ref=e20] [cursor=pointer]:
+        - generic [ref=e21]: Full screen
+      - link "View on Behance" [ref=e236] [cursor=pointer]:
+        - /url: https://www.behance.net/gallery/200529521/CLEAR-BREATH-case-study-No-smoking-app
+        - generic [ref=e237]: Behance
+    - generic [ref=e241]:
+      - img "Case Image" [ref=e242]
+      - img "Case Image" [ref=e243]
+      - img "Case Image" [ref=e244]
+      - img "Case Image" [ref=e245]
+      - img "Case Image" [ref=e246]
+      - img "Case Image" [ref=e247]
+      - img "Case Image" [ref=e248]
+      - img "Case Image" [ref=e249]
+      - img "Case Image"
+      - img "Case Image"
+      - img "Case Image"
+  - generic:
+    - generic [ref=e25]:
+      - generic [ref=e26]:
+        - button [ref=e27] [cursor=pointer]
+        - button [ref=e30] [cursor=pointer]
+        - button [ref=e32] [cursor=pointer]
+      - generic [ref=e35]: Experience panel
+    - generic:
+      - generic:
+        - generic:
+          - paragraph: Career timeline
+          - heading [level=2]: Work experience
+          - generic:
+            - button: Expand all
+            - button: Collapse all
+        - generic:
+          - article:
+            - generic:
+              - button [expanded]
+              - generic:
+                - paragraph: March 2025 - Present
+                - heading [level=3]: Product Development Assistant & Creative Technologist
+                - paragraph: Aircards
+            - generic:
+              - generic:
+                - paragraph: I work right alongside the executive team to bridge the gap between experimental R&D and actual operational delivery.
+                - paragraph: Day-to-day, I manage the end-to-end lifecycles for major brands like Lenovo and Red Bull, handling everything from on-site client discovery across the UK and Ireland to final technical QA.
+                - paragraph: "I'm also super hands-on with the tech: prototyping immersive spatial experiences, building AI-assisted visualization workflows with ComfyUI, and figuring out gesture-based environments using computer vision."
+          - article:
+            - generic:
+              - button [expanded]
+              - generic:
+                - paragraph: January 2025 - March 2025
+                - heading [level=3]: Gamified UX Designer & Researcher
+                - paragraph: Studio Nefce
+            - generic:
+              - generic:
+                - paragraph: I led the UX foundation for a gamified digital platform by mixing behavioral design with game psychology.
+                - paragraph: "My focus was on creating the product's architecture from scratch: mapping out user journeys, setting up level designs, and defining the core motivation loops."
+                - paragraph: I worked directly with the founders and dev teams to make sure these concepts actually translated well into production environments like Flutter and SwiftUI.
+          - article:
+            - generic:
+              - button [expanded]
+              - generic:
+                - paragraph: August 2024 - January 2025
+                - heading [level=3]: Product Designer & Technical Sales
+                - paragraph: Opendatabay
+            - generic:
+              - generic:
+                - paragraph: My main goal here was to improve the usability and accessibility of a data platform.
+                - paragraph: I spent my time translating raw business requirements from stakeholders into solid technical plans for the devs, while also designing wireframes and high-fidelity mockups for data visualization tools.
+                - paragraph: I set up reusable design components and ran user testing to make sure everything felt consistent and easy to use.
+          - article:
+            - generic:
+              - button [expanded]
+              - generic:
+                - paragraph: April 2024 - June 2024
+                - heading [level=3]: Designer
+                - paragraph: Noun Town
+            - generic:
+              - generic:
+                - paragraph: I hopped on board part-time for a few months as a remote designer, helping the team out with creative design tasks and mobile application workflows.
+          - article:
+            - generic:
+              - button [expanded]
+              - generic:
+                - paragraph: February 2024 - March 2024
+                - heading [level=3]: Dishwasher
+                - paragraph: Pizza Hut
+            - generic:
+              - generic:
+                - paragraph: A quick, character-building stint working on-site in Birmingham.
+                - paragraph: It was one of those grounding experiences that taught me the value of rolling up my sleeves and staying humble.
+          - article:
+            - generic:
+              - button [expanded]
+              - generic:
+                - paragraph: June 2022 - November 2023
+                - heading [level=3]: Technical Sales & Product Design
+                - paragraph: LeagueX
+            - generic:
+              - generic:
+                - paragraph: I spent about a year and a half full-time in Bengaluru, juggling a mix of technical sales, product design, and technical support to keep things running smoothly for our clients.
+          - article:
+            - generic:
+              - button [expanded]
+              - generic:
+                - paragraph: February 2022 - June 2022
+                - heading [level=3]: Junior 3D Artist & Generalist Intern
+                - paragraph: Do. Creative Labs
+            - generic:
+              - generic:
+                - paragraph: This was a five-month internship in Bengaluru where I got to dive deep into 3D modeling, interface design, and generalist art duties for various game design and creative projects.
+          - article:
+            - generic:
+              - button [expanded]
+              - generic:
+                - paragraph: March 2018 - October 2023
+                - heading [level=3]: 3D Artist, UI Designer & Mentor
+                - paragraph: Freelance & Fiverr
+            - generic:
+              - generic:
+                - paragraph: For over five years, I ran my own freelance business taking on all sorts of creative gigs.
+                - paragraph: I focused heavily on user interface design and usability, while also doing 3D work and mentoring others using the Adobe Creative Suite.

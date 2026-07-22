@@ -1376,6 +1376,8 @@ body:not(.device-expanded):not(.reader-mode):not(.recruiter-mode) .pill-greeting
     padding: 0;
     clip-path: inset(-100px -60px -100px -60px);
     transition: padding 0.52s var(--ease-genie), gap 0.52s var(--ease-genie);
+    position: relative;
+    z-index: 2;
 }
 
 .device-container.reader-mode .pill-buttons-unified {
@@ -1486,46 +1488,10 @@ body:not(.device-expanded):not(.reader-mode):not(.recruiter-mode) .pill-greeting
     background-color: var(--pill-7-c, #e7e7e7);
 }
 
-body.notes-active .device-container.expanded #pill-notes-btn.is-selected {
-    background-color: #333334 !important;
-    border-radius: 14px !important;
-}
-
-body.reader-mode .device-container.expanded #pill-fourth-btn.is-selected {
-    background-color: #333334 !important;
-    border-radius: 14px !important;
-}
-
-body.reader-mode .device-container.expanded #pill-fourth-btn.is-selected img {
-    filter: invert(1);
-    opacity: 0.95;
-}
-
-body.reader-mode .device-container.expanded #pill-fourth-btn.is-selected .pill-icon-slot {
-    border-color: rgba(255, 255, 255, 0.4);
-}
-
-/* Recruiter mode: green glowing active pill */
 body.recruiter-mode #pill-fifth-btn {
     position: relative;
     isolation: isolate;
     overflow: visible;
-    background: #000000 !important;
-    /* border: 1px solid rgba(0, 0, 0, 0.12);
-    box-shadow:
-        0 0 0 1px rgba(42, 102, 255, 0.35),
-        0 0 18px rgba(42, 102, 255, 0.22),
-        0 10px 22px rgba(0, 0, 0, 0.14); */
-}
-
-body.recruiter-mode #pill-fifth-btn img {
-    filter: none;
-    opacity: 0.95;
-    mix-blend-mode: normal !important;
-}
-
-body.recruiter-mode .pill-icon-btn.is-selected {
-    background: #080808 !important;
 }
 
 .pill-icon-btn {
@@ -1541,6 +1507,7 @@ body.recruiter-mode .pill-icon-btn.is-selected {
     -webkit-tap-highlight-color: transparent;
     cursor: pointer;
     touch-action: manipulation;
+    z-index: 1;
 }
 
 .pill-icon-btn img {
@@ -1600,7 +1567,7 @@ body:not(.device-expanded):not(.reader-mode):not(.recruiter-mode) .pill-icon-btn
 
 .device-container.expanded .pill-icon-btn.is-selected {
     border-radius: 14px !important;
-    background: #ffffffeb !important;
+    background: rgba(255, 255, 255, 0.92) !important;
     /* box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 8px 18px rgba(0, 0, 0, 0.22); */
     transform: translateY(0) scale(1);
 }
@@ -1614,7 +1581,6 @@ body:not(.device-expanded):not(.reader-mode):not(.recruiter-mode) .pill-icon-btn
 }
 
 .device-container.expanded .pill-icon-btn.is-selected .pill-icon-image {
-    /* mix-blend-mode: normal; */
     opacity: 0.95;
 }
 
@@ -1980,6 +1946,8 @@ body.pill-controls-revealed .device-container.expanded #pill-fourth-btn.disabled
     position: relative;
     box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.02);
     transform-origin: center;
+    pointer-events: none;
+    z-index: 0;
 }
 
 
@@ -2000,7 +1968,7 @@ body.pill-controls-revealed .device-container.expanded #pill-fourth-btn.disabled
     padding: 0 40px;
     margin-left: 0;
     opacity: 1;
-    pointer-events: auto;
+    pointer-events: none;
     transform: translateY(0) scale(1);
     background: #eeeeee;
     box-shadow: none;
@@ -2912,16 +2880,6 @@ body.recruiter-mode .pill-portfolio-text {
 body.recruiter-mode .pill-text {
     color: rgba(48, 48, 48, 0.78);
     text-shadow: none;
-}
-
-/* Recruiter mode icon treatment */
-body.recruiter-mode #pill-resume-btn img,
-body.recruiter-mode #pill-third-btn img,
-body.recruiter-mode #pill-fourth-btn img,
-body.recruiter-mode #pill-notes-btn img {
-    filter: brightness(0) saturate(0%);
-    mix-blend-mode: normal !important;
-    opacity: 0.78;
 }
 
 body.recruiter-mode .pill-icon-btn:hover img {
@@ -6422,7 +6380,7 @@ body.experience-open .experience-window {
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 100;
+    z-index: 1100;
     isolation: isolate;
     box-sizing: border-box;
     height: 80px;
@@ -6469,7 +6427,7 @@ body.experience-open .experience-window {
     transform-origin: left center;
     pointer-events: auto;
     position: relative;
-    z-index: 120;
+    z-index: 1101;
 }
 
 .case-window-header>.floating-controls:not(.floating-controls-left):not(.floating-controls-center):not(.floating-controls-right) {
@@ -6678,8 +6636,8 @@ body.experience-open .experience-window {
 }
 
 .f-ctrl {
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     border: none;
     display: flex;
@@ -6692,7 +6650,8 @@ body.experience-open .experience-window {
     padding: 0;
     pointer-events: auto;
     position: relative;
-    z-index: 121;
+    z-index: 1102;
+    touch-action: manipulation;
 }
 
 .f-ctrl svg {
@@ -6786,6 +6745,8 @@ body.experience-open .experience-window {
     box-sizing: border-box;
     scrollbar-width: thin;
     scrollbar-color: rgba(16, 18, 24, 0.16) transparent;
+    position: relative;
+    z-index: 1;
 }
 
 .experience-window-content {

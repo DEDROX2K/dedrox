@@ -1,0 +1,104 @@
+::ffff:127.0.0.1 - - [22/Jul/2026 15:02:20] "GET /prototype.html HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:02:26] "GET /prototype.html HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:02:26] "GET /prototype.css HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:02:26] "GET /iconset/interactions.png HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:02:26] "GET /iconset/conversation.png HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:02:26] "GET /iconset/Home.png HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:02:26] "GET /iconset/blog.png HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:02:26] "GET /iconset/sticky_note_2.png HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:02:26] "GET /threeD/CV_RESUME-RAGHAV.pdf HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:02:26] "GET /iconset/Badge.png HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:02:26] "GET /iconset/summarize.png HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:02:26] "GET /iconset/resume.png HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:02:26] "GET /images/DEDROX.DSGN/Company-strip.png HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:02:26] "GET /iconset/eraser-variant.png HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:02:26] "GET /images/resume-peek-card.png HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:02:26] "GET /images/id-peek-card.png HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:02:26] "GET /iconset/nest_secure_alarm.png HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:02:26] "GET /images/Screenshot%202026-07-03%20120359.png HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:02:26] "GET /prototype.js HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:02:26] "GET /introvid.mp4 HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:02:26] "GET /threeD/me.glb HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:02:26] "GET /images/c5.png HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:02:26] "GET /images/c4.png HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:02:26] "GET /images/c6.png HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:02:26] "GET /images/c2.png HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:02:26] "GET /images/c3.png HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:02:26] "GET /images/c1.png HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:02:26] "GET /logo.png HTTP/1.1" 200 -
+----------------------------------------
+Exception occurred during processing of request from ('::ffff:127.0.0.1', 59837, 0, 0)
+Traceback (most recent call last):
+  File "C:\Python310\lib\socketserver.py", line 683, in process_request_thread
+    self.finish_request(request, client_address)
+  File "C:\Python310\lib\socketserver.py", line 360, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "C:\Python310\lib\http\server.py", line 653, in __init__
+    super().__init__(*args, **kwargs)
+  File "C:\Python310\lib\socketserver.py", line 747, in __init__
+    self.handle()
+  File "C:\Python310\lib\http\server.py", line 427, in handle
+    self.handle_one_request()
+  File "C:\Python310\lib\http\server.py", line 415, in handle_one_request
+    method()
+  File "C:\Python310\lib\http\server.py", line 660, in do_GET
+    self.copyfile(f, self.wfile)
+  File "C:\Python310\lib\http\server.py", line 860, in copyfile
+    shutil.copyfileobj(source, outputfile)
+  File "C:\Python310\lib\shutil.py", line 198, in copyfileobj
+    fdst_write(buf)
+  File "C:\Python310\lib\socketserver.py", line 826, in write
+    self._sock.sendall(b)
+ConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host
+----------------------------------------
+::ffff:127.0.0.1 - - [22/Jul/2026 15:03:07] "GET /images/mg1.jpg HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:03:07] "GET /images/mg2.jpg HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:03:07] "GET /images/mg3.jpg HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:03:07] "GET /images/mg0.png HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:04:00] "GET /posts.json HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:06:38] "GET /introvid.mp4 HTTP/1.1" 200 -
+----------------------------------------
+Exception occurred during processing of request from ('::ffff:127.0.0.1', 65313, 0, 0)
+Traceback (most recent call last):
+  File "C:\Python310\lib\socketserver.py", line 683, in process_request_thread
+    self.finish_request(request, client_address)
+  File "C:\Python310\lib\socketserver.py", line 360, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "C:\Python310\lib\http\server.py", line 653, in __init__
+    super().__init__(*args, **kwargs)
+  File "C:\Python310\lib\socketserver.py", line 747, in __init__
+    self.handle()
+  File "C:\Python310\lib\http\server.py", line 427, in handle
+    self.handle_one_request()
+  File "C:\Python310\lib\http\server.py", line 415, in handle_one_request
+    method()
+  File "C:\Python310\lib\http\server.py", line 660, in do_GET
+    self.copyfile(f, self.wfile)
+  File "C:\Python310\lib\http\server.py", line 860, in copyfile
+    shutil.copyfileobj(source, outputfile)
+  File "C:\Python310\lib\shutil.py", line 198, in copyfileobj
+    fdst_write(buf)
+  File "C:\Python310\lib\socketserver.py", line 826, in write
+    self._sock.sendall(b)
+ConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host
+----------------------------------------
+::ffff:127.0.0.1 - - [22/Jul/2026 15:07:32] "GET /images/DEDROX.DSGN/CB1.jpg HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:07:33] "GET /images/port1.jpg HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:07:33] "GET /images/port3.jpg HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:07:33] "GET /images/port2.jpg HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:07:33] "GET /images/port4.jpg HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:07:33] "GET /images/DEDROX.DSGN/CB2.jpg HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:07:33] "GET /images/DEDROX.DSGN/CB3.jpg HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:07:33] "GET /images/DEDROX.DSGN/CB4.jpg HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:07:33] "GET /images/DEDROX.DSGN/CB5.jpg HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:07:33] "GET /images/DEDROX.DSGN/CB6.jpg HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:07:33] "GET /images/DEDROX.DSGN/CB7.jpg HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:07:33] "GET /images/DEDROX.DSGN/CB8.jpg HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:07:33] "GET /images/DEDROX.DSGN/CB9.jpg HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:07:33] "GET /images/DEDROX.DSGN/CB10.jpg HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:07:33] "GET /images/DEDROX.DSGN/CB11.jpg HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:07:37] "GET /images/mg4.jpg HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:07:37] "GET /images/mg5.jpg HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:07:40] "GET /images/mg6.png HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:07:43] "GET /images/mg7.jpg HTTP/1.1" 200 -
+::ffff:127.0.0.1 - - [22/Jul/2026 15:07:43] "GET /images/mg8.jpg HTTP/1.1" 200 -

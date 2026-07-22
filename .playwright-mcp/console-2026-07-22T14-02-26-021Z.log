@@ -1,0 +1,14 @@
+[     413ms] [WARNING] THREE.WARNING: Multiple instances of Three.js being imported. @ https://unpkg.com/@google/model-viewer@4.3.1/dist/model-viewer.min.js:47
+[     581ms] [LOG] [$updateSource] called! 
+src: threeD/me.glb
+extraUrls: 
+loaded: false @ https://unpkg.com/@google/model-viewer@4.3.1/dist/model-viewer.min.js:1035
+[     584ms] [LOG] [$updateSource] called! 
+src: threeD/me.glb
+extraUrls: 
+loaded: false @ https://unpkg.com/@google/model-viewer@4.3.1/dist/model-viewer.min.js:1035
+[     584ms] [LOG] [$updateSource] BAILING OUT EARLY! @ https://unpkg.com/@google/model-viewer@4.3.1/dist/model-viewer.min.js:1035
+[    1277ms] [WARNING] rAF timed out in updateSource @ https://unpkg.com/@google/model-viewer@4.3.1/dist/model-viewer.min.js:1035
+[    2230ms] [LOG] IntersectionObserver fired! isIntersecting: false @ https://unpkg.com/@google/model-viewer@4.3.1/dist/model-viewer.min.js:1035
+[   41583ms] [LOG] IntersectionObserver fired! isIntersecting: true @ https://unpkg.com/@google/model-viewer@4.3.1/dist/model-viewer.min.js:1035
+[   95084ms] [LOG] IntersectionObserver fired! isIntersecting: false @ https://unpkg.com/@google/model-viewer@4.3.1/dist/model-viewer.min.js:1035
