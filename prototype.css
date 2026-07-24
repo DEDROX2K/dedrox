@@ -9509,16 +9509,6 @@ body.talk-mode .top-bar-pill {
    older stronger shrink for genuinely short viewports.
    -------------------------------------------------------- */
 @media screen and (max-height: 940px) and (min-width: 900px) {
-    html {
-        zoom: 0.82;
-    }
-
-    .case-window.visible.expanded-height,
-    .experience-window.visible.expanded-height,
-    .talk-inline {
-        zoom: 1.2195122 !important;
-    }
-
     #portfolio-device.expanded {
         height: 115vh;
     }
@@ -9530,16 +9520,6 @@ body.talk-mode .top-bar-pill {
 }
 
 @media screen and (max-height: 860px) and (min-width: 900px) {
-    html {
-        zoom: 0.75;
-    }
-
-    .case-window.visible.expanded-height,
-    .experience-window.visible.expanded-height,
-    .talk-inline {
-        zoom: 1.3333333 !important;
-    }
-
     #portfolio-device.expanded {
         height: 115vh;
     }
