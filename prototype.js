@@ -5234,8 +5234,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let pillControlsRevealTimerId = 0;
     let pillTooltipPromptStartTimerId = 0;
     let pillTooltipPromptStepTimerIds = [];
-    const PILL_CONTROLS_REVEAL_DELAY_MS = 280;
-    const PILL_TOOLTIP_PROMPT_DELAY_MS = 10000;
+    const PILL_CONTROLS_REVEAL_DELAY_MS = 12000;
+    const PILL_TOOLTIP_PROMPT_DELAY_MS = 20000;
     const PILL_TOOLTIP_PROMPT_STEP_MS = 700;
     const PILL_TOOLTIP_PROMPT_VISIBLE_MS = 1100;
 
