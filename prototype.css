@@ -9508,7 +9508,11 @@ body.talk-mode .top-bar-pill {
    scale. This uses a gentler compact mode first, then the
    older stronger shrink for genuinely short viewports.
    -------------------------------------------------------- */
-@media screen and (max-height: 940px) and (min-width: 900px) {
+@media screen and (max-height: 1080px) and (min-width: 900px) {
+    html {
+        zoom: 0.8;
+    }
+
     #portfolio-device.expanded {
         height: 115vh;
     }
@@ -9519,7 +9523,11 @@ body.talk-mode .top-bar-pill {
     }
 }
 
-@media screen and (max-height: 860px) and (min-width: 900px) {
+@media screen and (max-height: 820px) and (min-width: 900px) {
+    html {
+        zoom: 0.75;
+    }
+
     #portfolio-device.expanded {
         height: 115vh;
     }
