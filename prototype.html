@@ -1424,19 +1424,6 @@ Raghav Prasanna
                     pendulumTrigger.style.setProperty('--shine-y', `${shineY}%`);
                 });
             }
-
-
-
-            // Minimize Case Window Logic
-            const minBtn = document.getElementById('case-min');
-            if (minBtn) {
-                minBtn.addEventListener('click', () => {
-                    if (window.CaseOverlayControl) {
-                        window.CaseOverlayControl.close();
-                    }
-                });
-            }
-
             // Hyper Realistic Button Logic
             const hBtns = document.querySelectorAll('.h-btn');
             hBtns.forEach(btn => {
