@@ -93,14 +93,18 @@
             <div class="device-edge-handle device-edge-handle-bottom-left" data-resize-handle="bottom-left"></div>
         </div>
 
-        <nav class="home-toc-panel home-side-panel" aria-label="Home table of contents">
-            <p class="home-toc-kicker">Contents</p>
+        <nav class="home-toc-panel home-side-panel is-tucked" aria-label="Home table of contents">
+            <div class="home-toc-header">
+                <p class="home-toc-kicker">Contents</p>
+                <button class="home-toc-toggle" type="button" aria-expanded="false" aria-label="Show contents" data-cursor="link">
+                    <span aria-hidden="true">&#8592;</span>
+                </button>
+            </div>
             <a href="#home-intro" data-cursor="link">Intro</a>
             <a href="#about-summary" data-cursor="link">About</a>
             <a href="#social-links" data-cursor="link">Links</a>
             <a href="#creative-controls" data-cursor="link">Playground</a>
             <a href="#portfolio-work" data-cursor="link">Work</a>
-            <a href="#pixel-lab" data-cursor="link">Pixel Lab</a>
             <a href="#contact-footer" data-cursor="link">Contact</a>
         </nav>
         <nav class="home-links-panel home-side-panel" aria-label="Home quick links">
@@ -130,43 +134,23 @@
                         <span>SITE</span>
                     </h2>
                 </div> -->
-                <div class="pill-buttons-unified">
-                    <button class="pill-dark-block pill-icon-btn" id="pill-fifth-btn" type="button"
-                        aria-label="Recruiter mode" data-cursor="link">
-                        <img src="iconset/interactions.png" alt="" class="pill-icon-image">
-                        <span class="pill-tooltip">Recruiter mode</span>
+                <div class="floating-controls nav-window-controls" aria-label="Portfolio window controls">
+                    <button class="f-ctrl f-close" type="button" aria-label="Close" tabindex="-1">
+                        <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 2l8 8M10 2l-8 8" /></svg>
                     </button>
-                    <div class="pill-plain-circle" id="pill-circle2"></div>
-                    <button class="pill-square pill-icon-btn hidden-mobile" id="pill-resume-btn" type="button"
-                        aria-label="Open chat" data-cursor="link">
-                        <img src="iconset/conversation.png" alt="" class="pill-icon-image">
-                        <span class="pill-tooltip">Talk to me now!</span>
+                    <button class="f-ctrl f-min" type="button" aria-label="Minimize" tabindex="-1">
+                        <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 6h8" /></svg>
                     </button>
-                    <button class="pill-dark-block pill-icon-btn" id="pill-third-btn" type="button"
-                        aria-label="Go to home screen" data-cursor="link">
-                        <img src="iconset/Home.png" alt="" class="pill-icon-image">
-                        <span class="pill-tooltip">Home</span>
-                    </button>
-                    <div class="pill-plain-circle" id="pill-circle3"></div>
-                    <button class="pill-dark-block pill-icon-btn" id="pill-fourth-btn" type="button"
-                        aria-label="Open blogs" data-cursor="link">
-                        <img src="iconset/blog.png" alt="" class="pill-icon-image">
-                        <span class="pill-tooltip">Blogs</span>
-                    </button>
-                    <button class="pill-plain-circle pill-icon-btn" id="pill-notes-btn" type="button"
-                        aria-label="Open notes" data-cursor="link">
-                        <img src="iconset/sticky_note_2.png" alt="" class="pill-icon-image">
-                        <span class="pill-tooltip">Notes</span>
+                    <button class="f-ctrl f-expand" type="button" aria-label="Expand" tabindex="-1">
+                        <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 7v4h4M11 5V1H7M1 11l4.5-4.5M11 1L6.5 5" /></svg>
                     </button>
                 </div>
 
                 <div class="pill-portfolio-text">
-                    <span class="pill-text">PORTFOLIO</span>
+                    <button class="portfolio-view-toggle" id="portfolio-home-toggle" type="button" aria-pressed="true" data-cursor="link">Home</button>
+                    <button class="portfolio-view-toggle" id="portfolio-writing-toggle" type="button" aria-pressed="false" data-cursor="link">Writings</button>
+                    <span class="pill-open-prompt">click open</span>
                 </div>
-            </div>
-            <div id="section-context-hint" class="floating-controls floating-controls-center section-context-hint"
-                role="status" aria-live="polite" aria-atomic="true" aria-hidden="true">
-                <span id="section-context-hint-text">Home</span>
             </div>
         </div>
 
@@ -405,6 +389,8 @@
             </div>
             <div class="content-panel content-panel-hero" id="home-intro">
 
+               
+                
                 <section class="hero-section reveal delay-1">
                     <h1 class="hero-section-title">
                         <div class="hero-title-line"><span class="hero-title-text">Raghav.</span></div>
@@ -413,46 +399,29 @@
                         </div>
                     </h1>
                     <p class="hero-section-subtitle">
-                        Mid level <strong>Product designer engineer</strong> based in London. I am currently looking for my next big adventure and am entirely open to <strong>sponsored roles in any country or region.</strong> 
+                        Product specialist <strong> Swiss Army knife </strong> who leverages AI, UX, PM and deep technical chops to turn chaotic stakeholder scenarios into shipping proper products <strong>before the engineering team even has time to panic.</strong> Based in London.
                     </p>
-                    <div class="hero-section-actions">
-                        <a href="#" class="btn-primary" id="show-resume-btn" data-cursor="link">
-                            Show Resume <img src="iconset/summarize.png" alt="" class="resume-icon" aria-hidden="true">
-                        </a>
-                        <a href="#" class="btn-secondary" id="show-id-btn" data-cursor="link">
-                            Show ID <img src="iconset/Badge.png" alt="" class="show-id-icon" aria-hidden="true">
-                        </a>
-                    </div>
                 </section>
 
-                <section class="hero-model reveal delay-2" aria-label="3D Interactive character model">
-                    <model-viewer data-cursor="grab" data-auto-rotate-managed="true" src="threeD/me.glb" loading="eager"
-                        alt="3D character of Raghav" auto-rotate camera-controls interaction-prompt="none" disable-zoom
-                        rotation-per-second="40deg" shadow-intensity="1" min-camera-orbit="auto auto 3.5m"
-                        max-camera-orbit="auto auto 3.5m" environment-image="neutral" tabindex="0">
-                        <div class="model-fallback" slot="poster">Loading my 3D model...</div>
-                    </model-viewer>
-                </section>
+                
 
                 <section class="partners-section reveal delay-2" aria-label="Companies worked with">
                     <p class="dock-kicker">Companies I've worked with</p>
                     <div class="company-dock" id="company-dock"></div>
                 </section>
+
+                 <!-- <section class="hero-model hero-map reveal delay-2" aria-label="Map of Newcastle upon Tyne, United Kingdom">
+                    <img id="newcastle-map" src="images/GBmap.png" alt="Map of Great Britain showing Newcastle upon Tyne">
+                </section> -->
+
             </div>
 
 
-            <section class="content-section content-section--bleed" id="about-summary" aria-label="About me summary">
+            <!-- <section class="content-section content-section--bleed" id="about-summary" aria-label="About me summary">
                 <div class="content-card">
                     <p class="dock-kicker" style="padding-top: 30px;">A summary about me</p>
                     <p class="hero-section-subtitle">
-                        Hi, I’m Raghav. I’m currently a <strong>Product Development Assistant</strong> at Aircards, working directly with the Head of Product. As an immigrant, this role has been incredibly eye-opening—it’s given me a front-row seat to corporate management and the real ins and outs of how products are actually shipped.<br><br>
-
-My day-to-day involves blending AI workflows with UX design, which ties perfectly into my background. I originally came to the UK to get my Master's in Birmingham, but I eventually made beautiful Newcastle my second home.<br><br>
-
-Since arriving, I’ve ventured into a few different spaces to find exactly where I thrive. I’ve been a 3D designer for a gaming company partnered with Facebook, a Principal Product Designer at OpenDataBay, and I’ve tackled over 50 freelance projects before landing at Aircards.<br><br>
-
-Right now, I am keeping my eyes wide open for *sponsored opportunities*, anywhere in the world. I’m excited to see where my next journey takes me. If my background resonates with your team, I’d love to connect.<br>
-<br>
+                        
 Best,<br>
 Raghav Prasanna
                     </p>
@@ -464,7 +433,7 @@ Raghav Prasanna
                         </button>
                     </div>
                 </div>
-            </section>
+            </section> -->
 
             <!-- Links Section -->
             <section class="content-section social-links-section content-section--bleed" id="social-links" aria-label="Social Links">
@@ -665,23 +634,6 @@ Raghav Prasanna
             </section> -->
 
 
-            <section class="content-section content-section--bleed perf-deferred-section" id="pixel-lab"
-                aria-label="Isolated content block">
-                <div class="content-card">
-                    <section class="pixel-section reveal delay-4">
-                        <h2 class="pixel-title">Draw Pixel Art</h2>
-                        <div class="pixel-tools">
-                            <div id="pixel-palette"></div>
-                        </div>
-                        <div class="pixel-canvas-wrap">
-                            <canvas id="pixel-canvas" width="40" height="40" aria-label="Pixel drawing canvas"></canvas>
-                        </div>
-                        <button id="pixel-clear-btn" class="clear-pixel" type="button" data-cursor="link">Clear</button>
-
-                    </section>
-                </div>
-            </section>
-
             <!-- <section class="content-section model-showcase-section content-section--bleed perf-deferred-section"
                 aria-label="3D Interactive character model">
                 <div class="toy-model-container">
@@ -839,6 +791,14 @@ Raghav Prasanna
         <div class="device-bottom-blur"></div>
     </div> <!-- End device-container -->
 
+    <nav class="site-bottom-links" aria-label="External links">
+        <a href="threeD/CV_RESUME-RAGHAV.pdf" target="_blank" rel="noopener noreferrer" data-cursor="link">RESUME</a><span>/</span>
+                <a href="https://www.linkedin.com/in/raghav-prasanna-b530621b0/" target="_blank" rel="noopener noreferrer" data-cursor="link">LINKEDIN</a><span>/</span>
+        <a href="https://github.com/dedrox2k" target="_blank" rel="noopener noreferrer" data-cursor="link">GITHUB</a><span>/</span>
+        <a href="https://www.instagram.com/dedrox__/" target="_blank" rel="noopener noreferrer" data-cursor="link">PHOTOS</a><span>/</span>
+        <a href="https://x.com/dedrox2k" target="_blank" rel="noopener noreferrer" data-cursor="link">TWITTER</a><span>/</span>
+    </nav>
+
     <!-- Resume Peek Dock -->
     <div class="resume-card-wrap" aria-hidden="true">
         <button class="resume-card-dock" id="resume-card-dock" type="button" aria-expanded="false"
@@ -854,37 +814,10 @@ Raghav Prasanna
         </button>
     </div>
 
-    <!-- Contact Pocket (bottom-left) -->
-    <div class="contact-pocket collapsed" id="contact-pocket" aria-hidden="false">
-        <button class="contact-pocket-toggle" id="contact-pocket-toggle" aria-expanded="false" aria-label="Open contacts">
-            <img src="iconset/nest_secure_alarm.png" alt="Open contacts">
-        </button>
-
-        <div class="contact-pocket-body" id="contact-pocket-body" role="dialog" aria-label="Contact details">
-            <div class="contact-pocket-inner">
-                <div class="contact-item">
-                    <button type="button" class="contact-copy" data-value="raghavprasanna2000@gmail.com">raghavprasanna2000@gmail.com</button>
-                    <span class="contact-copy-confirm" aria-hidden="true"></span>
-                </div>
-                <div class="contact-item">
-                    <button type="button" class="contact-copy" data-value="+447553433333">+44 75534 3333</button>
-                    <span class="contact-copy-confirm" aria-hidden="true"></span>
-                </div>
-                <div class="contact-item">
-                    <a class="contact-link" href="https://www.linkedin.com/in/raghavprasanna" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-                </div>
-
-                <hr class="contact-sep">
-
-                <div class="contact-links-list">
-                    <a href="airpaste.html">Airpaste</a>
-                    <a href="case3.html">Research Phase</a>
-                    <a href="Case1.html">Clear Breath CBT</a>
-                    <a href="Case2.html">Air Buddy Navigation</a>
-                    <a href="blog.html">Blog</a>
-                </div>
-            </div>
-        </div>
+    <!-- Site actions (top-right) -->
+    <div class="contact-pocket" id="contact-pocket" role="group" aria-label="Site actions">
+        <button class="contact-pocket-action" id="contact-notes-btn" type="button" data-cursor="link">Notes</button>
+        <button class="contact-pocket-action" id="contact-blogs-btn" type="button" data-cursor="link">Blogs</button>
     </div>
 
 

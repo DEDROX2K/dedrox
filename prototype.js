@@ -858,11 +858,13 @@ const orbResumeBtn = document.getElementById('orb-resume-btn');
 const caseWindowEl = document.getElementById('case-window');
 const experienceWindowEl = document.getElementById('experience-window');
 const stickyNoteEl = document.getElementById('sticky-note');
-const pillNotesBtn = document.getElementById('pill-notes-btn');
 const pillResumeBtn = document.getElementById('pill-resume-btn');
 const pillThirdBtn = document.getElementById('pill-third-btn');
-const pillFourthBtn = document.getElementById('pill-fourth-btn');
 const pillFifthBtn = document.getElementById('pill-fifth-btn');
+const contactNotesBtn = document.getElementById('contact-notes-btn');
+const contactBlogsBtn = document.getElementById('contact-blogs-btn');
+const portfolioHomeToggle = document.getElementById('portfolio-home-toggle');
+const portfolioWritingToggle = document.getElementById('portfolio-writing-toggle');
 const resumePopoutEl = document.getElementById('resume-popout');
 const readerInlineEl = document.getElementById('reader-inline');
 const recruiterInlineEl = document.getElementById('recruiter-inline');
@@ -877,8 +879,6 @@ const showIdBtn = document.getElementById('show-id-btn');
 const resumeCardDock = document.getElementById('resume-card-dock');
 const idCardDock = document.getElementById('id-card-dock');
 const scrollableContentEl = document.getElementById('scrollable-content');
-const sectionContextHintEl = document.getElementById('section-context-hint');
-const sectionContextHintTextEl = document.getElementById('section-context-hint-text');
 
 function initManagedCarousel(miniCarousel) {
     if (!miniCarousel || miniCarousel.dataset.carouselInitialized === 'true') return;
@@ -1091,11 +1091,50 @@ function initHomeTocPanel() {
     scheduleSync();
 }
 
+function initCollapsibleHomeToc() {
+    const tocPanel = document.querySelector('.home-toc-panel');
+    const toggle = tocPanel?.querySelector('.home-toc-toggle');
+    if (!tocPanel || !toggle || !device) return;
+
+    let openTimer = 0;
+
+    const setTucked = (isTucked) => {
+        tocPanel.classList.toggle('is-tucked', isTucked);
+        toggle.setAttribute('aria-expanded', String(!isTucked));
+        toggle.setAttribute('aria-label', isTucked ? 'Show contents' : 'Hide contents');
+    };
+
+    const syncForPortfolio = () => {
+        window.clearTimeout(openTimer);
+        if (!device.classList.contains('expanded')) {
+            setTucked(true);
+            return;
+        }
+
+        setTucked(true);
+        openTimer = window.setTimeout(() => {
+            if (device.classList.contains('expanded')) setTucked(false);
+        }, 8000);
+    };
+
+    toggle.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        setTucked(!tocPanel.classList.contains('is-tucked'));
+    });
+
+    new MutationObserver(syncForPortfolio).observe(device, {
+        attributes: true,
+        attributeFilter: ['class']
+    });
+    syncForPortfolio();
+}
+
 function initHomeSidePanels() {
     const panels = Array.from(document.querySelectorAll('.home-side-panel'));
     const linksPanel = document.querySelector('.home-links-panel');
     const pixelSection = document.getElementById('pixel-lab');
-    if (!panels.length || !linksPanel || !pixelSection || !scrollableContentEl || !device) return;
+    if (!panels.length || !scrollableContentEl || !device) return;
 
     let pixelLabActive = false;
     let rafId = 0;
@@ -1121,7 +1160,7 @@ function initHomeSidePanels() {
         panels.forEach((panel) => {
             panel.classList.toggle('is-collapsed', shouldCollapse);
         });
-        linksPanel.classList.toggle('is-active', pixelLabActive && !shouldCollapse);
+        linksPanel?.classList.toggle('is-active', pixelLabActive && !shouldCollapse);
     };
 
     const scheduleSync = () => {
@@ -1130,12 +1169,17 @@ function initHomeSidePanels() {
     };
 
     const syncPixelSection = () => {
+        if (!pixelSection) {
+            pixelLabActive = false;
+            scheduleSync();
+            return;
+        }
         const viewportAnchor = scrollableContentEl.scrollTop + (scrollableContentEl.clientHeight * 0.52);
         pixelLabActive = viewportAnchor >= pixelSection.offsetTop;
         scheduleSync();
     };
 
-    if ('IntersectionObserver' in window) {
+    if (pixelSection && 'IntersectionObserver' in window) {
         const observer = new IntersectionObserver(syncPixelSection, {
             root: scrollableContentEl,
             rootMargin: '-18% 0px -18% 0px',
@@ -3299,66 +3343,13 @@ function initHeroLanguageLoop() {
         });
     }, intervalMs);
 }
-/* Contact pocket interactivity: toggle, copy, and small copy confirmation */
-function initContactPocket() {
-    const pocket = document.getElementById('contact-pocket');
-    if (!pocket) return;
-    const toggle = document.getElementById('contact-pocket-toggle');
-    const body = document.getElementById('contact-pocket-body');
-    const copyButtons = Array.from(pocket.querySelectorAll('.contact-copy'));
-
-    const setCollapsed = (collapsed) => {
-        pocket.classList.toggle('collapsed', collapsed);
-        toggle.setAttribute('aria-expanded', String(!collapsed));
-    };
-
-    toggle.addEventListener('click', (e) => {
-        e.preventDefault();
-        const collapsed = pocket.classList.contains('collapsed');
-        setCollapsed(!collapsed);
-    });
-
-    copyButtons.forEach((btn) => {
-        btn.addEventListener('click', async (e) => {
-            const value = btn.getAttribute('data-value') || btn.textContent || '';
-            if (!navigator.clipboard) {
-                try { document.execCommand('copy'); } catch (err) { /* ignore */ }
-            } else {
-                try { await navigator.clipboard.writeText(value); } catch (err) { /* ignore */ }
-            }
-            const conf = btn.parentElement.querySelector('.contact-copy-confirm');
-            if (conf) {
-                conf.textContent = 'Copied!';
-                conf.classList.add('show');
-                window.setTimeout(() => { conf.classList.remove('show'); conf.textContent = ''; }, 1400);
-            }
-        });
-    });
-
-    // Close when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!(e.target instanceof Element)) return;
-        if (!pocket.contains(e.target) && !pocket.classList.contains('collapsed')) {
-            setCollapsed(true);
-        }
-    }, { passive: true });
-
-    // Respect reduced-motion preference for opening
-    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        pocket.style.transition = 'none';
-    }
-}
-
-initContactPocket();
-
-// Ensure contact pocket only visible when device is expanded
+// Keep the top-right site actions visible only while the portfolio is open.
 (function syncContactPocketVisibility() {
     const pocket = document.getElementById('contact-pocket');
     if (!pocket) return;
     const update = () => {
         const expanded = (typeof device !== 'undefined' && device?.classList?.contains('expanded')) || document.body.classList.contains('device-expanded');
         if (!expanded) {
-            pocket.classList.add('collapsed');
             pocket.style.display = 'none';
         } else {
             pocket.style.display = '';
@@ -4278,7 +4269,7 @@ function initStickyNote() {
     let dragOffsetY = 0;
     let activePointerId = null;
     let motionTimer = null;
-    let lastSourceEl = pillNotesBtn || topBar || device;
+    let lastSourceEl = topBar || device;
 
     const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
@@ -4334,7 +4325,7 @@ function initStickyNote() {
     };
 
     const openFromPill = (sourceEl = topBar) => {
-        lastSourceEl = sourceEl || lastSourceEl || pillNotesBtn || topBar || device;
+        lastSourceEl = sourceEl || lastSourceEl || topBar || device;
         clearMotionState();
 
         if (!stickyNoteEl.classList.contains('visible')) {
@@ -4380,7 +4371,7 @@ function initStickyNote() {
     const closeToPill = (sourceEl = lastSourceEl) => {
         if (!stickyNoteEl.classList.contains('visible')) return;
         document.body.classList.remove('notes-active');
-        lastSourceEl = sourceEl || lastSourceEl || pillNotesBtn || topBar || device;
+        lastSourceEl = sourceEl || lastSourceEl || topBar || device;
 
         const sourceRect = (lastSourceEl || topBar || device).getBoundingClientRect();
         const targetRect = stickyNoteEl.getBoundingClientRect();
@@ -5210,8 +5201,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initNodeGraph();
     initSmoothWheelScrolling();
     initHomeTocPanel();
+    initCollapsibleHomeToc();
     initHomeSidePanels();
-    let sectionContextHintTimer = 0;
     const onboardingFlow = initOnboardingHeader();
     const expandFabAnchor = initExpandButtonAnchor();
     const leftOrbControls = initLeftOrbControls();
@@ -5231,17 +5222,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     initDeviceWindowNudge();
     let fittyRefreshTimer = null;
-    let pillControlsRevealTimerId = 0;
     let pillTooltipPromptStartTimerId = 0;
     let pillTooltipPromptStepTimerIds = [];
-    const PILL_CONTROLS_REVEAL_DELAY_MS = 12000;
     const PILL_TOOLTIP_PROMPT_DELAY_MS = 20000;
     const PILL_TOOLTIP_PROMPT_STEP_MS = 700;
     const PILL_TOOLTIP_PROMPT_VISIBLE_MS = 1100;
 
     const syncExpandedPillInteractivity = () => {
         if (!device?.classList.contains('expanded')) return;
-        [pillFifthBtn, pillResumeBtn, pillThirdBtn, pillFourthBtn, pillNotesBtn]
+        [pillFifthBtn, pillResumeBtn, pillThirdBtn]
             .filter((btn) => btn instanceof HTMLElement)
             .forEach((btn) => {
                 if (!btn.hasAttribute('data-auto-disabled')) return;
@@ -5251,7 +5240,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     };
 
-    const getPillTooltipPromptButtons = () => [pillFifthBtn, pillResumeBtn, pillThirdBtn, pillFourthBtn, pillNotesBtn]
+    const getPillTooltipPromptButtons = () => [pillFifthBtn, pillResumeBtn, pillThirdBtn]
         .filter((btn) => btn instanceof HTMLElement)
         .filter((btn) => !btn.disabled && btn.getAttribute('aria-disabled') !== 'true')
         .filter((btn) => btn.offsetParent !== null);
@@ -5311,37 +5300,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 120);
     };
 
-    // Standard pattern: one transient context chip that announces section changes,
-    // then fades away, instead of duplicating permanent labels across each view.
-    const showSectionContextHint = (label) => {
-        if (!sectionContextHintEl || !sectionContextHintTextEl || !label) return;
-
-        sectionContextHintTextEl.textContent = label;
-        sectionContextHintEl.setAttribute('aria-hidden', 'false');
-        sectionContextHintEl.classList.remove('is-visible');
-        void sectionContextHintEl.offsetWidth;
-        sectionContextHintEl.classList.add('is-visible');
-
-        if (sectionContextHintTimer) {
-            window.clearTimeout(sectionContextHintTimer);
-        }
-
-        sectionContextHintTimer = window.setTimeout(() => {
-            sectionContextHintEl.classList.remove('is-visible');
-            sectionContextHintEl.setAttribute('aria-hidden', 'true');
-            sectionContextHintTimer = 0;
-        }, 1600);
-    };
+    const showSectionContextHint = () => { };
 
     const expandDeviceShell = (autoOpenNotes = true) => {
         if (!device || device.classList.contains('expanded')) return;
 
-        if (pillControlsRevealTimerId) {
-            window.clearTimeout(pillControlsRevealTimerId);
-            pillControlsRevealTimerId = 0;
-        }
         clearPillTooltipPrompt();
-        document.body.classList.remove('pill-controls-revealed');
 
         withTemporaryDeviceTransition(() => {
             device.style.backgroundColor = '#ebeae6';
@@ -5352,12 +5316,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         ensureBackgroundsReady();
         window.hasMatrixStarted = true;
-
-        pillControlsRevealTimerId = window.setTimeout(() => {
-            if (!device || !device.classList.contains('expanded')) return;
-            document.body.classList.add('pill-controls-revealed');
-            pillControlsRevealTimerId = 0;
-        }, PILL_CONTROLS_REVEAL_DELAY_MS);
 
         schedulePillTooltipPrompt();
 
@@ -5373,7 +5331,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const syncTopPillSelection = () => {
         syncExpandedPillInteractivity();
 
-        const pillButtons = [pillFifthBtn, pillResumeBtn, pillThirdBtn, pillFourthBtn, pillNotesBtn]
+        const pillButtons = [pillFifthBtn, pillResumeBtn, pillThirdBtn]
             .filter((btn) => btn instanceof HTMLElement);
 
         pillButtons.forEach((btn) => {
@@ -5385,12 +5343,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (document.body.classList.contains('talk-mode') || document.body.classList.contains('talk-scene-active')) {
             activeBtn = pillResumeBtn;
-        } else if (document.body.classList.contains('notes-active')) {
-            activeBtn = pillNotesBtn;
         } else if (document.body.classList.contains('recruiter-mode')) {
             activeBtn = pillFifthBtn;
         } else if (document.body.classList.contains('reader-mode')) {
-            activeBtn = pillFourthBtn;
+            activeBtn = null;
         }
 
         if (activeBtn instanceof HTMLElement) {
@@ -5423,6 +5379,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         syncTopPillSelection();
+        syncPortfolioViewToggle();
+    };
+
+    const syncPortfolioViewToggle = () => {
+        const writingIsActive = readerMode.isActive();
+        portfolioHomeToggle?.setAttribute('aria-pressed', String(!writingIsActive));
+        portfolioWritingToggle?.setAttribute('aria-pressed', String(writingIsActive));
     };
 
     // Config based UI updates
@@ -5500,26 +5463,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (topBar) {
         topBar.addEventListener('click', (e) => {
-            if (e.target instanceof Element && e.target.closest('.pill-icon-btn')) return;
+            if (e.target instanceof Element && e.target.closest('.pill-icon-btn, .portfolio-view-toggle')) return;
             expandDeviceShell(true);
             e.stopPropagation();
         });
     }
-
-    pillNotesBtn?.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        if (!device.classList.contains('expanded')) {
-            expandDeviceShell(true);
-            showSectionContextHint('Notes');
-        } else {
-            if (resumePopout.isVisible()) resumePopout.closeToPill(pillResumeBtn);
-            // Notes shouldn't close the reader mode window
-            stickyNote.toggleFromPill(pillNotesBtn);
-            showSectionContextHint('Notes');
-        }
-        syncTopPillSelection();
-    });
 
     pillResumeBtn?.addEventListener('click', (e) => {
         e.preventDefault();
@@ -5536,6 +5484,50 @@ document.addEventListener('DOMContentLoaded', () => {
         showSectionContextHint('Home');
     });
 
+    portfolioHomeToggle?.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        goToHomeScreen();
+        showSectionContextHint('Home');
+    });
+
+    portfolioWritingToggle?.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        expandDeviceShell(false);
+        if (recruiterMode.isActive()) recruiterMode.close();
+        if (chatMode.isActive()) chatMode.close();
+        readerMode.open();
+        showSectionContextHint('Writings');
+        if (typeof blogSystem !== 'undefined') blogSystem.loadBlogs();
+        syncTopPillSelection();
+        syncPortfolioViewToggle();
+    });
+
+    contactNotesBtn?.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        expandDeviceShell(false);
+        if (resumePopout.isVisible()) resumePopout.closeToPill(pillResumeBtn);
+        if (readerMode.isActive()) readerMode.close();
+        if (recruiterMode.isActive()) recruiterMode.close();
+        stickyNote.toggleFromPill(contactNotesBtn);
+        showSectionContextHint('Notes');
+        syncTopPillSelection();
+    });
+
+    contactBlogsBtn?.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        expandDeviceShell(false);
+        if (recruiterMode.isActive()) recruiterMode.close();
+        if (chatMode.isActive()) chatMode.close();
+        readerMode.open();
+        showSectionContextHint('Writing');
+        if (typeof blogSystem !== 'undefined') blogSystem.loadBlogs();
+        syncTopPillSelection();
+    });
+
     // Footer Blog Link
     const footerBlogLink = document.querySelector('[data-footer-link="blog"]');
     if (footerBlogLink) {
@@ -5543,28 +5535,13 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             expandDeviceShell(false);
             readerMode.open();
-            showSectionContextHint('Blogs');
+            showSectionContextHint('Writing');
             syncTopPillSelection();
             if (typeof blogSystem !== 'undefined') {
                 blogSystem.loadBlogs();
             }
         });
     }
-
-    pillFourthBtn?.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        expandDeviceShell(false);
-        if (resumePopout.isVisible()) resumePopout.closeToPill(pillResumeBtn);
-        if (recruiterMode.isActive()) recruiterMode.close();
-        if (chatMode.isActive()) chatMode.close();
-        readerMode.open();
-        showSectionContextHint('Blogs');
-        if (typeof blogSystem !== 'undefined') {
-            blogSystem.loadBlogs();
-        }
-        syncTopPillSelection();
-    });
 
     pillFifthBtn?.addEventListener('click', (e) => {
         e.preventDefault();
@@ -5626,7 +5603,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { passive: true });
 
     if (typeof MutationObserver !== 'undefined') {
-        const bodyClassObserver = new MutationObserver(syncTopPillSelection);
+        const bodyClassObserver = new MutationObserver(() => {
+            syncTopPillSelection();
+            syncPortfolioViewToggle();
+        });
         bodyClassObserver.observe(document.body, {
             attributes: true,
             attributeFilter: ['class']
@@ -5634,108 +5614,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     syncTopPillSelection();
-
-    document.body.addEventListener('click', (e) => {
-        if (chatMode.isActive()) {
-            return;
-        }
-        if ((window.__deviceShellSuppressCloseUntil || 0) > Date.now()) {
-            return;
-        }
-
-        const caseOverlayControl = window.CaseOverlayControl;
-        const experienceOverlayControl = window.ExperiencePanelControl;
-        const caseIsOpen = caseOverlayControl
-            ? caseOverlayControl.isVisible()
-            : (caseWindowEl && caseWindowEl.classList.contains('visible'));
-        const experienceIsOpen = experienceOverlayControl
-            ? experienceOverlayControl.isVisible()
-            : (experienceWindowEl && experienceWindowEl.classList.contains('visible'));
-        const clickedInsideCase = caseWindowEl && caseWindowEl.contains(e.target);
-        const clickedInsideExperience = experienceWindowEl && experienceWindowEl.contains(e.target);
-        const clickedInsideDevice = device && device.contains(e.target);
-        const clickedInsideSticky = stickyNoteEl && stickyNoteEl.contains(e.target);
-        const clickedInsideResume = resumePopoutEl && resumePopoutEl.contains(e.target);
-        const clickedInsideResumeDock = resumeDockSystem.isInside(e.target);
-        const clickedInsideIdCard = idCardSystem.isInside(e.target);
-
-        const idWasOpen = idCardSystem.isOpen();
-        if (idWasOpen && !clickedInsideIdCard && !(showIdBtn && showIdBtn.contains(e.target))) {
-            idCardSystem.closeToPeek();
-            return;
-        }
-
-        if (resumeDockSystem.isPanelOpen() && !clickedInsideCase && !clickedInsideExperience && !clickedInsideResumeDock && !(showResumeBtn && showResumeBtn.contains(e.target))) {
-            resumeDockSystem.closeToPeek();
-            return;
-        }
-
-        // Clear orb stickiness on outside click
-        if (orbCursorHandle?.classList.contains('is-sticky')) {
-            const clickedInsideOrb = leftControlsEl && leftControlsEl.contains(e.target);
-            if (!clickedInsideOrb) {
-                orbCursorHandle.classList.remove('is-sticky');
-            }
-        }
-
-        // Priority close order:
-        // 1) Close the side case window first.
-        // 2) Only after that, allow closing the mini portfolio on a later outside click.
-        if (caseIsOpen && !clickedInsideCase && !clickedInsideExperience && !clickedInsideDevice && !clickedInsideSticky && !clickedInsideResume && !clickedInsideResumeDock && !clickedInsideIdCard) {
-            if (caseOverlayControl) {
-                caseOverlayControl.close();
-            } else if (caseWindowEl) {
-                caseWindowEl.classList.remove('visible');
-                caseWindowEl.classList.remove('minimized');
-                document.body.classList.remove('case-open');
-            }
-            return;
-        }
-
-        if (experienceIsOpen && !clickedInsideExperience && !clickedInsideCase && !clickedInsideDevice && !clickedInsideSticky && !clickedInsideResume && !clickedInsideResumeDock && !clickedInsideIdCard) {
-            if (experienceOverlayControl) {
-                experienceOverlayControl.close();
-            } else if (experienceWindowEl) {
-                experienceWindowEl.classList.remove('visible', 'minimized');
-                document.body.classList.remove('experience-open');
-            }
-            return;
-        }
-
-        if (
-            device.classList.contains('expanded') &&
-            !clickedInsideDevice &&
-            !clickedInsideCase &&
-            !clickedInsideExperience &&
-            !clickedInsideSticky &&
-            !clickedInsideResume &&
-            !clickedInsideResumeDock &&
-            !clickedInsideIdCard
-        ) {
-            withTemporaryDeviceTransition(() => {
-                device.style.backgroundColor = '';
-                device.classList.remove('expanded');
-                document.body.classList.remove('device-expanded');
-                device.classList.remove('maximized');
-                document.body.classList.remove('device-maximized');
-                applyPillSizes('collapsed');
-                if (pillControlsRevealTimerId) {
-                    window.clearTimeout(pillControlsRevealTimerId);
-                    pillControlsRevealTimerId = 0;
-                }
-                clearPillTooltipPrompt();
-                document.body.classList.remove('pill-controls-revealed');
-                readerMode.close();
-                recruiterMode.close();
-                stickyNote.close();
-                resumePopout.close();
-                if (resumeDockSystem.isPanelOpen()) resumeDockSystem.closeToPeek();
-                resumeDockSystem.hide();
-                idCardSystem.hide();
-            }, { duration: 720, phase: 'closing' });
-            setTimeout(() => { if (miniMatrixInstance) miniMatrixInstance.resize(); }, 520);
-        }
-    });
+    syncPortfolioViewToggle();
 
     // Run core initializers
     buildCompanyDock();
