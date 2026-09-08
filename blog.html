@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Blog Article</title>
+  <title>Writing</title>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&family=IBM+Plex+Mono:ital,wght@0,100..700;1,100..700&display=swap');
@@ -374,8 +374,8 @@
 <body>
   <div class="article-shell">
     <header class="article-header">
-      <a class="article-back" href="./index.html">← Back to all posts</a>
-      <div class="article-kicker">Journal</div>
+      <a class="article-back" href="./prototype.html?view=writings">← Back to writings</a>
+      <div class="article-kicker">Writings</div>
     </header>
 
     <main class="article-grid" aria-live="polite">
@@ -498,7 +498,7 @@
         const title = heading ? heading.textContent.trim() : fallbackTitle;
 
         titleEl.textContent = title;
-        document.title = `${title} | Blog`;
+        document.title = `${title} | Writings`;
         renderMeta(matchedPost);
 
         if (heading) {

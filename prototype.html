@@ -135,13 +135,13 @@
                     </h2>
                 </div> -->
                 <div class="floating-controls nav-window-controls" aria-label="Portfolio window controls">
-                    <button class="f-ctrl f-close" type="button" aria-label="Close" tabindex="-1">
+                    <button class="f-ctrl f-close" id="home-window-close" type="button" aria-label="Collapse to pill" title="Collapse to pill" tabindex="-1">
                         <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 2l8 8M10 2l-8 8" /></svg>
                     </button>
-                    <button class="f-ctrl f-min" type="button" aria-label="Minimize" tabindex="-1">
+                    <button class="f-ctrl f-min" id="home-window-minimize" type="button" aria-label="Collapse to pill" title="Collapse to pill" tabindex="-1">
                         <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 6h8" /></svg>
                     </button>
-                    <button class="f-ctrl f-expand" type="button" aria-label="Expand" tabindex="-1">
+                    <button class="f-ctrl f-expand" id="home-window-fullscreen" type="button" aria-label="Enter full screen" title="Enter full screen" aria-pressed="false" tabindex="-1">
                         <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 7v4h4M11 5V1H7M1 11l4.5-4.5M11 1L6.5 5" /></svg>
                     </button>
                 </div>
@@ -178,7 +178,7 @@
             <div id="reader-inline" class="reader-inline" aria-hidden="true">
                 <section class="reader-feed-section">
                     <div id="reader-blog-list" class="reader-blog-list" aria-live="polite">
-                        <p class="reader-blog-status">Loading blog posts...</p>
+                        <p class="reader-blog-status">Loading writings...</p>
                     </div>
                 </section>
             </div>
@@ -400,6 +400,9 @@
                     </h1>
                     <p class="hero-section-subtitle">
                         Product specialist <strong> Swiss Army knife </strong> who leverages AI, UX, PM and deep technical chops to turn chaotic stakeholder scenarios into shipping proper products <strong>before the engineering team even has time to panic.</strong> Based in London.
+                    <br>
+                    <br>
+                    Returning to India, to deploy my refined skill set toward high-value, purpose-driven initiatives. Seeking a progressive environment where I can build, scale, and contribute meaningfully for the long haul.
                     </p>
                 </section>
 
@@ -472,59 +475,6 @@ Raghav Prasanna
                     </div>
                 </section> -->
 
-                <!-- Customization Section -->
-                <section class="content-section playground-section reveal delay-3" id="creative-controls" aria-label="Creative Controls">
-                    <div class="custom-layout">
-                        <div class="custom-left">
-                            <div class="color-picker-container">
-                                <div class="color-wheel-outer">
-                                    <div class="color-palette-circular" id="colorPalette" data-cursor="crosshair">
-                                        <div class="color-palette-center">
-                                            <div class="active-color-preview" id="activeColorPreview"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <button class="reset-bg-btn" id="resetBgBtn" data-cursor="link">
-                                    <img src="iconset/eraser-variant.png" alt="" class="reset-icon">
-                                    <span>Reset</span>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="custom-right">
-                            <div class="mini-carousel" id="miniCarousel">
-                                <div class="carousel-track" id="carouselTrack">
-                                    <img src="images/mg1.jpg" alt="Portfolio Preview 1" loading="lazy" decoding="async"
-                                        fetchpriority="low">
-                                    <img src="images/mg2.jpg" alt="Portfolio Preview 2" loading="lazy" decoding="async"
-                                        fetchpriority="low"><img src="images/mg3.jpg" alt="Portfolio Preview 3"
-                                        loading="lazy" decoding="async" fetchpriority="low">
-                                    <img src="images/mg0.png" alt="Portfolio Preview 0" loading="lazy" decoding="async"
-                                        fetchpriority="low">
-                                    <img src="images/mg4.jpg" alt="Portfolio Preview 4" loading="lazy" decoding="async"
-                                        fetchpriority="low">
-                                    <img src="images/mg5.jpg" alt="Portfolio Preview 5" loading="lazy" decoding="async"
-                                        fetchpriority="low">
-                                    <img src="images/mg6.png" alt="Portfolio Preview 6" loading="lazy" decoding="async"
-                                        fetchpriority="low">
-                                    <img src="images/mg7.jpg" alt="Portfolio Preview 7" loading="lazy" decoding="async"
-                                        fetchpriority="low">
-                                    <img src="images/mg8.jpg" alt="Portfolio Preview 8" loading="lazy" decoding="async"
-                                        fetchpriority="low">
-                                </div>
-                                <div class="carousel-indicators">
-                                    <span class="indicator active"></span>
-                                    <span class="indicator"></span><span class="indicator"></span>
-                                    <span class="indicator"></span>
-                                    <span class="indicator"></span>
-                                    <span class="indicator"></span>
-                                    <span class="indicator"></span>
-                                    <span class="indicator"></span>
-                                    <span class="indicator"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
             </div>
 
             <div class="content-panel content-panel-showcase">
@@ -619,6 +569,28 @@ Raghav Prasanna
                             </div>
                         </a>
 
+                    </section>
+
+                    <section class="mini-carousel-section" aria-label="Portfolio previews">
+                        <div class="mini-carousel" id="miniCarousel">
+                            <div class="carousel-track" id="carouselTrack">
+                                <img src="images/mg1.jpg" alt="Portfolio Preview 1" loading="lazy" decoding="async" fetchpriority="low">
+                                <img src="images/mg2.jpg" alt="Portfolio Preview 2" loading="lazy" decoding="async" fetchpriority="low">
+                                <img src="images/mg3.jpg" alt="Portfolio Preview 3" loading="lazy" decoding="async" fetchpriority="low">
+                                <img src="images/mg0.png" alt="Portfolio Preview 0" loading="lazy" decoding="async" fetchpriority="low">
+                                <img src="images/mg4.jpg" alt="Portfolio Preview 4" loading="lazy" decoding="async" fetchpriority="low">
+                                <img src="images/mg5.jpg" alt="Portfolio Preview 5" loading="lazy" decoding="async" fetchpriority="low">
+                                <img src="images/mg6.png" alt="Portfolio Preview 6" loading="lazy" decoding="async" fetchpriority="low">
+                                <img src="images/mg7.jpg" alt="Portfolio Preview 7" loading="lazy" decoding="async" fetchpriority="low">
+                                <img src="images/mg8.jpg" alt="Portfolio Preview 8" loading="lazy" decoding="async" fetchpriority="low">
+                            </div>
+                            <div class="carousel-indicators">
+                                <span class="indicator active"></span>
+                                <span class="indicator"></span><span class="indicator"></span><span class="indicator"></span>
+                                <span class="indicator"></span><span class="indicator"></span><span class="indicator"></span>
+                                <span class="indicator"></span><span class="indicator"></span>
+                            </div>
+                        </div>
                     </section>
                 </section>
             </div>
@@ -723,9 +695,7 @@ Raghav Prasanna
                 <section class="footer-shell reveal delay-5">
                     <div class="footer-top">
                         <div class="footer-brand-area">
-                            <h5 class="footer-big-logo">DEDROX</h5>
-                            <p class="footer-tagline">1 person with an all-in-one production ability. Building
-                                sanctuaries for the digital nomad.</p>
+                            <h5 class="footer-big-logo">RAGHAV <br> PRASANNA</h5>
                         </div>
                         <div class="footer-cta-area">
                             <a href="mailto:hello@dedrox.com" class="footer-main-btn" data-cursor="link">
@@ -739,33 +709,9 @@ Raghav Prasanna
                     </div>
 
                     <div class="footer-mid">
-                        <!-- <div class="footer-panel footer-panel-enter">
-                            <h4 class="footer-col-title">Explore</h4>
-                            <nav class="footer-nav-list">
-                                <a href="#" data-cursor="link">Selected Work</a>
-                                <a href="#" data-cursor="link">About Raghav</a>
-                                <a href="#" data-cursor="link">The Lab</a>
-                                <a href="#" data-footer-link="blog" data-cursor="link">Blog</a>
-                            </nav>
-                        </div> -->
-                        <!-- <div class="footer-panel footer-panel-signal">
-                            <nav class="footer-nav-list social-grid">
-                                <a href="https://www.behance.net/raghavprasanna" target="_blank"
-                                    data-cursor="link">Behance</a>
-                                <a href="https://dribbble.com/DEDROX2K" target="_blank" data-cursor="link">Dribbble</a>
-                                <a href="https://www.instagram.com/dedrox__/" target="_blank"
-                                    data-cursor="link">Instagram</a>
-                                <a href="https://www.linkedin.com/in/raghav-prasanna-b530621b0/" target="_blank"
-                                    data-cursor="link">LinkedIn</a>
-                            </nav>
-                        </div> -->
                         <div class="footer-panel footer-panel-status">
-                            <h4 class="footer-col-title">Status</h4>
                             <div class="footer-status-stack">
-                                <div class="footer-status-pill">
-                                    <span class="status-dot"></span>
-                                    Open to new projects
-                                </div>
+                                
                                 <div class="footer-status-note">Newcastle upon Tyne, UK</div>
                                 <div class="footer-status-note">Best via email or LinkedIn</div>
                             </div>
@@ -774,11 +720,10 @@ Raghav Prasanna
 
                     <div class="footer-bottom">
                         <div class="footer-copyright">
-                            <span>&copy; 2026 DEDROX. All rights reserved.</span>
                         </div>
                         <div class="footer-legal-links">
-                            <a href="#" data-cursor="link">Privacy</a>
-                            <a href="#" data-cursor="link">Terms</a>
+                            <a href="#" data-cursor="link">Gallary</a>
+                            <a href="#" data-cursor="link">Blogs</a>
                             <button class="back-to-top" id="footer-back-to-top" data-cursor="link">Back to top</button>
                         </div>
                     </div>
@@ -817,7 +762,7 @@ Raghav Prasanna
     <!-- Site actions (top-right) -->
     <div class="contact-pocket" id="contact-pocket" role="group" aria-label="Site actions">
         <button class="contact-pocket-action" id="contact-notes-btn" type="button" data-cursor="link">Notes</button>
-        <button class="contact-pocket-action" id="contact-blogs-btn" type="button" data-cursor="link">Blogs</button>
+        <button class="contact-pocket-action" id="contact-blogs-btn" type="button" data-cursor="link">Writings</button>
     </div>
 
 

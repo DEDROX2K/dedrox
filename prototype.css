@@ -292,7 +292,7 @@ body {
 
 
 body.reader-mode {
-    background: #f1c84b;
+    background: #1e1e1e;
     background-image: none;
 }
 
@@ -948,6 +948,31 @@ body.device-closing .device-container::after {
 .device-container.maximized {
     height: 100vh !important;
     max-height: none !important;
+}
+
+/* Home window: occupy the viewport without changing the page's internal layout. */
+.device-container.expanded.home-fullscreen {
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100dvh;
+    max-height: none;
+    transform: none;
+    border-radius: 0;
+    z-index: 10001;
+}
+
+.device-container.home-fullscreen .device-bottom-blur {
+    border-radius: 0;
+}
+
+body.device-home-fullscreen {
+    overflow: hidden;
+}
+
+body.device-home-fullscreen .global-top-bar,
+body.device-home-fullscreen .site-bottom-links {
+    display: none;
 }
 
 .device-container.maximized .bottom-bar {
@@ -2073,9 +2098,10 @@ body.pill-controls-revealed .device-container.expanded #pill-fourth-btn.disabled
 .pill-open-prompt {
     display: none;
     color: #ededed;
-    font: 700 11px/1 'IBM Plex Mono', monospace;
-    letter-spacing: 0.05em;
+    font: 400 1rem/1 'Google Sans', sans-serif;
+    letter-spacing: 0;
     text-transform: lowercase;
+    text-align: center;
     pointer-events: none;
 }
 
@@ -2857,7 +2883,7 @@ body.device-transitioning .device-container.expanded #pill-fifth-btn {
 
 .device-container.recruiter-mode {
     width: min(96vw, 1240px);
-    background: #EBEAE6 !important;
+    background: #ebeae600 !important;
     border: 1px solid rgba(0, 0, 0, 0.08);
     box-shadow:
         0 24px 72px rgba(0, 0, 0, 0.28),
@@ -6384,23 +6410,24 @@ body.matrix-paused #canvas-bg {
     transform: translate3d(-44px, -50%, 0) scale(0.992);
 }
 
-/*
-   Panel intent note:
-   The right case window is the visual viewing surface for case studies and resume pages,
-   so the mini site should scale down to give the imagery more space and emphasis.
-   The left experience window is text-first and should keep its own separate feel/interactions.
-*/
-body.case-open {
-    --device-shell-scale: var(--case-mini-site-scale);
-}
-
-body.case-open .device-container {
-    transform: translate(-50%, -50%) translateX(calc(var(--case-pair-shift) * -1)) scale(var(--device-shell-scale));
-    transform-origin: center center;
-}
-
+/* Case studies open as a simple centered window over the portfolio. */
 body.case-open .case-window {
-    left: calc(38% + (var(--device-width) / 2) + var(--case-window-gap) - var(--case-pair-shift));
+    top: 50%;
+    left: 50%;
+    width: min(92vw, 960px);
+    height: min(82dvh, 880px);
+    max-height: none;
+    border-radius: var(--site-radius);
+    transform: translate3d(-50%, calc(-50% + 12px), 0) scale(0.96);
+    z-index: 10001;
+}
+
+body.case-open .case-window.visible {
+    transform: translate3d(-50%, -50%, 0) scale(1);
+}
+
+body.case-open .case-window.is-closing {
+    transform: translate3d(-50%, calc(-50% + 12px), 0) scale(0.96);
 }
 
 body.experience-open .device-container {
@@ -7378,7 +7405,7 @@ body.experience-open .experience-window {
 .case-morph-clone {
     position: fixed;
     margin: 0;
-    z-index: 2100;
+    z-index: 10002;
     pointer-events: none;
     overflow: hidden;
     background: #ffffff;
@@ -7386,6 +7413,7 @@ body.experience-open .experience-window {
     border-radius: var(--featured-card-radius);
     box-shadow: 1px 5px 0px rgba(0, 0, 0, 0.06);
     transform: none !important;
+    will-change: top, left, width, height, opacity, filter;
 }
 
 .case-morph-clone .folder-top {
@@ -9805,17 +9833,25 @@ body.talk-mode .top-bar-pill {
 }
 
 /* Mini Carousel */
+.mini-carousel-section {
+    width: 100%;
+    margin-top: clamp(28px, 5vw, 56px);
+    padding-top: clamp(20px, 3vw, 32px);
+    border-top: 1px solid rgba(17, 17, 17, 0.08);
+}
+
 .custom-right {
     height: 100%;
 }
 
 .mini-carousel {
     position: relative;
-    width: 95%;
-    height: 280px;
+    width: min(100%, 720px);
+    height: 450px;
     /* background: #000; */
     border-radius: 20px;
     overflow: hidden;
+    margin-inline: auto;
     /* box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1); */
 }
 
@@ -10216,7 +10252,7 @@ body.device-closing .contract-shockwave {
 }
 
 .reader-blog-list::before {
-    content: 'Notes on design, technology, and making.';
+    content: 'Personal and professional notes on design, technology, and the work behind it.';
     display: block;
     margin-top: -13px;
     margin-bottom: 30px;
@@ -10400,4 +10436,34 @@ body.device-closing .contract-shockwave {
     .reader-blog-card:first-child {
         padding: 18px;
     }
+}
+
+/* Keep the home fullscreen state edge-to-edge at every viewport width. */
+.device-container.expanded.home-fullscreen {
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100dvh !important;
+    max-width: none !important;
+    max-height: none !important;
+    margin: 0 !important;
+    transform: none !important;
+}
+
+/* Keep the window centered on compact screens. */
+body.case-open .case-window:not(.expanded-height) {
+    top: 50% !important;
+    left: 50% !important;
+    width: min(92vw, 960px) !important;
+    height: min(82dvh, 880px) !important;
+    max-width: none !important;
+    max-height: none !important;
+    border-radius: var(--site-radius) !important;
+}
+
+body.case-open .case-window.visible:not(.expanded-height) {
+    transform: translate3d(-50%, -50%, 0) scale(1) !important;
+}
+
+body.case-open .case-window.is-closing:not(.expanded-height) {
+    transform: translate3d(-50%, calc(-50% + 12px), 0) scale(0.96) !important;
 }

@@ -177,8 +177,9 @@ const SITE_CONFIG = {
         let isTransitioning = false;
         let caseMotionTimer = null;
         let activeCaseHref = '';
+        let activeSourceCard = null;
         const CASE_ANIM_MS = 280;
-        const CASE_MORPH_MS = 310;
+        const CASE_MORPH_MS = 620;
         const resumePdfHref = 'threeD/CV_RESUME-RAGHAV.pdf';
         const resumePageImages = Array.from({ length: 4 }, (_, index) => `images/resume-pages/page-${String(index + 1).padStart(2, '0')}.png`);
         let activeMorphCleanup = null;
@@ -298,7 +299,7 @@ const SITE_CONFIG = {
             morphRevealTimer = window.setTimeout(() => {
                 caseWindow.classList.remove('morph-prep');
                 morphRevealTimer = null;
-            }, Math.round(CASE_MORPH_MS * 0.62));
+            }, Math.round(CASE_MORPH_MS * 0.74));
 
             const animation = clone.animate([
                 {
@@ -308,17 +309,30 @@ const SITE_CONFIG = {
                     width: `${fromRect.width}px`,
                     height: `${fromRect.height}px`,
                     borderRadius: `${Math.min(fromRect.width, fromRect.height) * 0.08}px`,
-                    boxShadow: '1px 5px 0px rgba(0, 0, 0, 0.06)'
+                    boxShadow: '1px 5px 0px rgba(0, 0, 0, 0.06)',
+                    filter: 'blur(0px)'
                 },
                 {
-                    offset: 0.78,
+                    offset: 0.46,
+                    opacity: 0.88,
+                    left: `${fromRect.left}px`,
+                    top: `${fromRect.top - 18}px`,
+                    width: `${fromRect.width}px`,
+                    height: `${fromRect.height}px`,
+                    borderRadius: `${Math.min(fromRect.width, fromRect.height) * 0.08}px`,
+                    boxShadow: '0 26px 66px rgba(0, 0, 0, 0.22)',
+                    filter: 'blur(5px)'
+                },
+                {
+                    offset: 0.76,
                     opacity: 1,
                     left: `${toRect.left}px`,
                     top: `${toRect.top}px`,
                     width: `${toRect.width}px`,
                     height: `${toRect.height}px`,
-                    borderRadius: '28px',
-                    boxShadow: '0 20px 64px rgba(0, 0, 0, 0.16)'
+                    borderRadius: '0px',
+                    boxShadow: '0 20px 64px rgba(0, 0, 0, 0.16)',
+                    filter: 'blur(8px)'
                 },
                 {
                     opacity: 0,
@@ -326,8 +340,9 @@ const SITE_CONFIG = {
                     top: `${toRect.top}px`,
                     width: `${toRect.width}px`,
                     height: `${toRect.height}px`,
-                    borderRadius: '28px',
-                    boxShadow: '0 20px 64px rgba(0, 0, 0, 0.16)'
+                    borderRadius: '0px',
+                    boxShadow: '0 20px 64px rgba(0, 0, 0, 0.16)',
+                    filter: 'blur(8px)'
                 }
             ], {
                 duration: CASE_MORPH_MS,
@@ -343,6 +358,67 @@ const SITE_CONFIG = {
             }
 
             cleanup();
+            return true;
+        };
+
+        const morphCaseWindowToCard = async (cardEl) => {
+            if (!cardEl || prefersReducedMotion) return false;
+
+            const toRect = cardEl.getBoundingClientRect();
+            const fromRect = caseWindow.getBoundingClientRect();
+            if (!toRect.width || !toRect.height || !fromRect.width || !fromRect.height) return false;
+
+            const clone = createCardMorphClone(cardEl, fromRect);
+            clone.style.borderRadius = '0px';
+            caseWindow.classList.add('morph-prep');
+            await nextFrame();
+
+            const animation = clone.animate([
+                {
+                    opacity: 1,
+                    left: `${fromRect.left}px`,
+                    top: `${fromRect.top}px`,
+                    width: `${fromRect.width}px`,
+                    height: `${fromRect.height}px`,
+                    borderRadius: '0px',
+                    boxShadow: '0 20px 64px rgba(0, 0, 0, 0.16)',
+                    filter: 'blur(8px)'
+                },
+                {
+                    offset: 0.3,
+                    opacity: 0.88,
+                    left: `${fromRect.left}px`,
+                    top: `${fromRect.top - 18}px`,
+                    width: `${fromRect.width}px`,
+                    height: `${fromRect.height}px`,
+                    borderRadius: '0px',
+                    boxShadow: '0 26px 66px rgba(0, 0, 0, 0.22)',
+                    filter: 'blur(5px)'
+                },
+                {
+                    opacity: 1,
+                    left: `${toRect.left}px`,
+                    top: `${toRect.top}px`,
+                    width: `${toRect.width}px`,
+                    height: `${toRect.height}px`,
+                    borderRadius: `${Math.min(toRect.width, toRect.height) * 0.08}px`,
+                    boxShadow: '1px 5px 0px rgba(0, 0, 0, 0.06)',
+                    filter: 'blur(0px)'
+                }
+            ], {
+                duration: CASE_MORPH_MS,
+                easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+                fill: 'forwards'
+            });
+
+            try {
+                await animation.finished;
+            } catch (error) {
+                clone.remove();
+                return false;
+            }
+
+            clone.remove();
             return true;
         };
 
@@ -382,6 +458,8 @@ const SITE_CONFIG = {
             caseWindow.classList.remove('minimized');
             caseWindow.classList.remove('expanded-height');
             caseWindow.classList.remove('is-resume-content');
+            caseWindow.classList.remove('morph-prep');
+            activeSourceCard = null;
             setBehanceUrl('');
             setDownloadLink('Download', '#', 'Download resume');
             setExternalLink('Visit', '#', 'Visit Site');
@@ -425,6 +503,8 @@ const SITE_CONFIG = {
                 data.behanceAriaLabel || 'View on Behance'
             );
 
+            activeSourceCard = null;
+
             setCaseLayout(true);
             clearCaseMotion();
             caseWindow.classList.remove('minimized');
@@ -437,6 +517,7 @@ const SITE_CONFIG = {
         };
 
         const showCaseExternal = (title, embedHref, caseHref = '') => {
+            activeSourceCard = null;
             caseWindow.classList.add('is-external-content');
             caseWindow.classList.remove('is-resume-content');
             if (titleDisp) titleDisp.textContent = title;
@@ -461,6 +542,7 @@ const SITE_CONFIG = {
         };
 
         const showResumePanel = () => {
+            activeSourceCard = null;
             caseWindow.classList.add('is-external-content', 'is-resume-content');
             if (titleDisp) titleDisp.textContent = 'Resume';
             setDownloadLink('Download', resumePdfHref, 'Download resume PDF');
@@ -849,6 +931,9 @@ const topBarArt = document.getElementById('top-bar-art');
 const githubChartImg = document.getElementById('github-chart-img');
 const secondsDot = document.getElementById('seconds-dot');
 const expandBtn = document.getElementById('expand-btn');
+const homeWindowCloseBtn = document.getElementById('home-window-close');
+const homeWindowMinimizeBtn = document.getElementById('home-window-minimize');
+const homeWindowFullscreenBtn = document.getElementById('home-window-fullscreen');
 const leftControlsEl = document.querySelector('.left-controls');
 const orbCursorHandle = document.getElementById('orb-cursor-handle');
 const orbRailTimeEl = document.getElementById('orb-rail-time');
@@ -4119,7 +4204,7 @@ function initReaderBlogs() {
 
     const renderBlogs = (posts) => {
         if (!Array.isArray(posts) || posts.length === 0) {
-            renderStatus('No blog posts yet.');
+            renderStatus('No writings yet.');
             return;
         }
 
@@ -4134,7 +4219,7 @@ function initReaderBlogs() {
         });
 
         if (visiblePosts.length === 0) {
-            renderStatus('No blog posts yet.');
+            renderStatus('No writings yet.');
             return;
         }
 
@@ -4166,7 +4251,7 @@ function initReaderBlogs() {
 
         event.preventDefault();
         const href = link.getAttribute('href') || '';
-        const title = link.getAttribute('data-blog-title') || link.textContent || 'Blog Post';
+        const title = link.getAttribute('data-blog-title') || link.textContent || 'Writing';
         overlay.openExternal({ title, href });
     });
 
@@ -4186,7 +4271,7 @@ function initReaderBlogs() {
             return posts;
         } catch (error) {
             console.error(error);
-            renderStatus('Unable to load blog posts.');
+            renderStatus('Unable to load writings.');
             return null;
         } finally {
             loadBlogs.pending = null;
@@ -5328,6 +5413,37 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 500);
     };
 
+    const syncHomeFullscreenControl = () => {
+        const isFullscreen = device?.classList.contains('home-fullscreen');
+        homeWindowFullscreenBtn?.setAttribute('aria-pressed', String(Boolean(isFullscreen)));
+        homeWindowFullscreenBtn?.setAttribute('aria-label', isFullscreen ? 'Exit full screen' : 'Enter full screen');
+        homeWindowFullscreenBtn?.setAttribute('title', isFullscreen ? 'Exit full screen' : 'Enter full screen');
+    };
+
+    const collapseDeviceShell = () => {
+        if (!device || !device.classList.contains('expanded')) return;
+
+        clearPillTooltipPrompt();
+        withTemporaryDeviceTransition(() => {
+            device.classList.remove('expanded', 'maximized', 'home-fullscreen');
+            document.body.classList.remove('device-expanded', 'device-maximized', 'device-home-fullscreen');
+            device.style.removeProperty('background-color');
+            applyPillSizes('collapsed');
+        }, { duration: 760, phase: 'closing' });
+
+        syncHomeFullscreenControl();
+    };
+
+    const toggleHomeFullscreen = () => {
+        if (!device) return;
+        if (!device.classList.contains('expanded')) expandDeviceShell(false);
+
+        const isFullscreen = device.classList.toggle('home-fullscreen');
+        document.body.classList.toggle('device-home-fullscreen', isFullscreen);
+        syncHomeFullscreenControl();
+        scheduleFittyRefresh();
+    };
+
     const syncTopPillSelection = () => {
         syncExpandedPillInteractivity();
 
@@ -5418,6 +5534,28 @@ document.addEventListener('DOMContentLoaded', () => {
             if (e.target instanceof HTMLElement) e.target.blur();
         });
     }
+
+    [homeWindowCloseBtn, homeWindowMinimizeBtn].forEach((button) => {
+        button?.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            collapseDeviceShell();
+            if (e.currentTarget instanceof HTMLElement) e.currentTarget.blur();
+        });
+    });
+
+    homeWindowFullscreenBtn?.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleHomeFullscreen();
+        if (e.currentTarget instanceof HTMLElement) e.currentTarget.blur();
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && device?.classList.contains('home-fullscreen')) {
+            toggleHomeFullscreen();
+        }
+    });
 
     applyMatrixPausedState();
     leftOrbControls.refreshTime();
@@ -5528,7 +5666,7 @@ document.addEventListener('DOMContentLoaded', () => {
         syncTopPillSelection();
     });
 
-    // Footer Blog Link
+    // Footer Writings Link
     const footerBlogLink = document.querySelector('[data-footer-link="blog"]');
     if (footerBlogLink) {
         footerBlogLink.addEventListener('click', (e) => {
@@ -5641,8 +5779,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 100);
     }
 
-    // Check if we should force expand (returning from chat/resume)
-    if (localStorage.getItem('forcePillExpanded') === 'true') {
+    const shouldRestoreWritings = new URLSearchParams(window.location.search).get('view') === 'writings';
+
+    // Restore the reader after returning from a standalone writing.
+    if (shouldRestoreWritings) {
+        expandDeviceShell(false);
+        readerMode.open();
+        blogSystem.loadBlogs();
+        syncTopPillSelection();
+        syncPortfolioViewToggle();
+        window.history.replaceState({}, '', window.location.pathname);
+    } else if (localStorage.getItem('forcePillExpanded') === 'true') {
         expandDeviceShell(true);
         localStorage.removeItem('forcePillExpanded');
     } else {
