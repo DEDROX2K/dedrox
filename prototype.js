@@ -3428,7 +3428,7 @@ function initHeroLanguageLoop() {
         });
     }, intervalMs);
 }
-// Keep the top-right site actions visible only while the portfolio is open.
+// Keep the right-side portfolio switcher visible only while the portfolio is open.
 (function syncContactPocketVisibility() {
     const pocket = document.getElementById('contact-pocket');
     if (!pocket) return;
@@ -5393,9 +5393,13 @@ document.addEventListener('DOMContentLoaded', () => {
         clearPillTooltipPrompt();
 
         withTemporaryDeviceTransition(() => {
-            device.style.backgroundColor = '#ebeae6';
+            // Let the page background show through the gaps between section cards.
+            device.style.removeProperty('background-color');
             device.classList.add('expanded');
             document.body.classList.add('device-expanded');
+            device.removeAttribute('role');
+            device.removeAttribute('tabindex');
+            device.removeAttribute('aria-label');
             applyPillSizes('expanded');
         }, { duration: 760, phase: 'opening' });
 
@@ -5428,6 +5432,9 @@ document.addEventListener('DOMContentLoaded', () => {
             device.classList.remove('expanded', 'maximized', 'home-fullscreen');
             document.body.classList.remove('device-expanded', 'device-maximized', 'device-home-fullscreen');
             device.style.removeProperty('background-color');
+            device.setAttribute('role', 'button');
+            device.setAttribute('tabindex', '0');
+            device.setAttribute('aria-label', 'Open portfolio');
             applyPillSizes('collapsed');
         }, { duration: 760, phase: 'closing' });
 
@@ -5471,7 +5478,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    let writingRevealTimerId = 0;
+
     const goToHomeScreen = () => {
+        if (writingRevealTimerId) window.clearTimeout(writingRevealTimerId);
+        writingRevealTimerId = 0;
+        device?.classList.remove('is-writing-entering');
         expandDeviceShell(false);
 
         if (chatMode.isActive()) {
@@ -5496,6 +5508,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
         syncTopPillSelection();
         syncPortfolioViewToggle();
+    };
+
+    const openWritingsScreen = () => {
+        expandDeviceShell(false);
+        if (recruiterMode.isActive()) recruiterMode.close();
+        if (chatMode.isActive()) chatMode.close();
+        readerMode.open();
+        showSectionContextHint('Writings');
+        if (typeof blogSystem !== 'undefined') blogSystem.loadBlogs();
+        syncTopPillSelection();
+        syncPortfolioViewToggle();
+
+        if (!device) return;
+        if (writingRevealTimerId) window.clearTimeout(writingRevealTimerId);
+        device.classList.remove('is-writing-entering');
+        void device.offsetWidth;
+        device.classList.add('is-writing-entering');
+        writingRevealTimerId = window.setTimeout(() => {
+            device.classList.remove('is-writing-entering');
+            writingRevealTimerId = 0;
+        }, 800);
     };
 
     const syncPortfolioViewToggle = () => {
@@ -5607,6 +5640,25 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // The compact shell remains a direct, keyboard-accessible entry point now that the top bar is gone.
+    device?.setAttribute('role', 'button');
+    device?.setAttribute('tabindex', '0');
+    device?.setAttribute('aria-label', 'Open portfolio');
+
+    const openCollapsedPill = (event) => {
+        if (!device || device.classList.contains('expanded')) return;
+        event?.preventDefault();
+        event?.stopPropagation();
+        expandDeviceShell(false);
+    };
+
+    device?.addEventListener('click', openCollapsedPill);
+    device?.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+            openCollapsedPill(event);
+        }
+    });
+
     pillResumeBtn?.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -5632,14 +5684,7 @@ document.addEventListener('DOMContentLoaded', () => {
     portfolioWritingToggle?.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
-        expandDeviceShell(false);
-        if (recruiterMode.isActive()) recruiterMode.close();
-        if (chatMode.isActive()) chatMode.close();
-        readerMode.open();
-        showSectionContextHint('Writings');
-        if (typeof blogSystem !== 'undefined') blogSystem.loadBlogs();
-        syncTopPillSelection();
-        syncPortfolioViewToggle();
+        openWritingsScreen();
     });
 
     contactNotesBtn?.addEventListener('click', (e) => {
@@ -5657,13 +5702,7 @@ document.addEventListener('DOMContentLoaded', () => {
     contactBlogsBtn?.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
-        expandDeviceShell(false);
-        if (recruiterMode.isActive()) recruiterMode.close();
-        if (chatMode.isActive()) chatMode.close();
-        readerMode.open();
-        showSectionContextHint('Writing');
-        if (typeof blogSystem !== 'undefined') blogSystem.loadBlogs();
-        syncTopPillSelection();
+        openWritingsScreen();
     });
 
     // Footer Writings Link
@@ -5671,13 +5710,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (footerBlogLink) {
         footerBlogLink.addEventListener('click', (e) => {
             e.preventDefault();
-            expandDeviceShell(false);
-            readerMode.open();
-            showSectionContextHint('Writing');
-            syncTopPillSelection();
-            if (typeof blogSystem !== 'undefined') {
-                blogSystem.loadBlogs();
-            }
+            openWritingsScreen();
         });
     }
 
@@ -5794,6 +5827,11 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.removeItem('forcePillExpanded');
     } else {
         applyPillSizes('collapsed'); // Default initial state
+        window.setTimeout(() => {
+            if (!device?.classList.contains('expanded')) {
+                expandDeviceShell(false);
+            }
+        }, 700);
     }
     applyBlurMaskSettings();
 

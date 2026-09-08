@@ -416,7 +416,7 @@
       const post = params.get('post');
       if (!post) return null;
 
-      const isValidPattern = /^[a-zA-Z0-9._-]+\.md$/.test(post);
+      const isValidPattern = /^[a-zA-Z0-9][a-zA-Z0-9 ._-]*\.md$/.test(post);
       const hasTraversal = post.includes('..') || post.includes('/') || post.includes('\\');
 
       if (!isValidPattern || hasTraversal) return null;
@@ -473,7 +473,7 @@
       try {
         const [postsResponse, markdownResponse] = await Promise.all([
           fetch('./posts.json', { cache: 'no-store' }),
-          fetch(`./posts/${fileName}`, { cache: 'no-store' })
+          fetch(`./posts/${encodeURIComponent(fileName)}`, { cache: 'no-store' })
         ]);
 
         if (markdownResponse.status === 404) {

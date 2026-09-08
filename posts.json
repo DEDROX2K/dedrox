@@ -1,62 +1,12 @@
 [
   {
-    "title": "Dwell",
-    "date": "2026-06-19",
-    "file": "dwell.md",
+    "title": "How I Designed an Alert System for a Healthcare Platform",
+    "date": "2026-09-08",
+    "file": "How I Designed an Alert System for a Healthcare Platform.md",
     "tags": [
-      "uncategorized"
-    ]
-  },
-  {
-    "title": "Smooth Button",
-    "date": "2026-06-19",
-    "file": "smooth-button.md",
-    "tags": [
-      "uncategorized"
-    ]
-  },
-  {
-    "title": "Stuff Todo App",
-    "date": "2026-06-19",
-    "file": "stuff-todo-app.md",
-    "tags": [
-      "uncategorized"
-    ]
-  },
-  {
-    "title": "Tile Behavior",
-    "date": "2026-06-19",
-    "file": "tile-behavior.md",
-    "tags": [
-      "uncategorized"
-    ]
-  },
-  {
-    "title": "[Your Catchy Title Here]",
-    "date": "2026-05-12",
-    "file": "template-post.md",
-    "tags": [
-      "uncategorized"
-    ]
-  },
-  {
-    "title": "Designing Calm Interfaces in Noisy Systems",
-    "date": "2026-03-30",
-    "file": "post-1.md",
-    "tags": [
-      "ux",
-      "systems",
-      "product-design"
-    ]
-  },
-  {
-    "title": "From Idea to Prototype in One Weekend",
-    "date": "2026-03-15",
-    "file": "post-2.md",
-    "tags": [
-      "workflow",
-      "prototyping",
-      "obsidian"
+      "healthcare",
+      "product-design",
+      "ux"
     ]
   }
 ]
