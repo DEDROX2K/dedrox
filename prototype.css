@@ -177,12 +177,12 @@
 }
 
 ::selection {
-    background: #99e24f;
+    background: #fbd727;
     color: #111111;
 }
 
 ::-moz-selection {
-    background: #99e24f;
+    background: #fbd727;
     color: #111111;
 }
 
@@ -7797,7 +7797,7 @@ body.experience-open .experience-window {
 
 .hero-section-subtitle {
 
-        border-top: 2px solid #f9f9f9;
+        /* border-top: 2px solid #f9f9f9; */
     max-width: 600px;
     padding: 25px 33px 35px 35px;
     text-align: left;
