@@ -951,6 +951,7 @@ const contactBlogsBtn = document.getElementById('contact-blogs-btn');
 const portfolioHomeToggle = document.getElementById('portfolio-home-toggle');
 const portfolioWritingToggle = document.getElementById('portfolio-writing-toggle');
 const resumePopoutEl = document.getElementById('resume-popout');
+const resumePopoutFrame = document.getElementById('resume-popout-frame');
 const readerInlineEl = document.getElementById('reader-inline');
 const recruiterInlineEl = document.getElementById('recruiter-inline');
 const recruiterHeaderEl = recruiterInlineEl?.querySelector('.recruiter-header');
@@ -3834,6 +3835,10 @@ function initResumePopout() {
         lastSourceEl = sourceEl || lastSourceEl || pillResumeBtn || topBar || device;
         clearMotionState();
 
+        if (resumePopoutFrame && !resumePopoutFrame.getAttribute('src')) {
+            resumePopoutFrame.src = resumePopoutFrame.dataset.src || '';
+        }
+
         if (!resumePopoutEl.classList.contains('visible')) {
             resumePopoutEl.classList.add('visible');
             resumePopoutEl.setAttribute('aria-hidden', 'false');
@@ -5403,7 +5408,7 @@ document.addEventListener('DOMContentLoaded', () => {
             applyPillSizes('expanded');
         }, { duration: 760, phase: 'opening' });
 
-        ensureBackgroundsReady();
+        ensureBackgroundsReady({ defer: true });
         window.hasMatrixStarted = true;
 
         schedulePillTooltipPrompt();
@@ -5594,17 +5599,6 @@ document.addEventListener('DOMContentLoaded', () => {
     leftOrbControls.refreshTime();
     window.addEventListener('resize', scheduleFittyRefresh, { passive: true });
 
-    const scheduleAssetPriming = () => {
-        if ('requestIdleCallback' in window) {
-            window.requestIdleCallback(primeExpandableAssets, { timeout: 1200 });
-        } else {
-            window.setTimeout(primeExpandableAssets, 450);
-        }
-    };
-    ensureBackgroundsReady({ defer: true });
-    scheduleAssetPriming();
-    topBar?.addEventListener('pointerenter', primeExpandableAssets, { once: true, passive: true });
-    expandBtn?.addEventListener('pointerenter', primeExpandableAssets, { once: true, passive: true });
 
     leftControlsEl?.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -5799,7 +5793,11 @@ document.addEventListener('DOMContentLoaded', () => {
     initFeaturedCardHoverMotion();
     initHeroLanguageLoop();
     const blogSystem = initReaderBlogs();
-    initClosedPillParticleField();
+    if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(initClosedPillParticleField, { timeout: 3000 });
+    } else {
+        window.setTimeout(initClosedPillParticleField, 1500);
+    }
 
     // Initialize Scramble Animations
     const resumeBtnEl = document.querySelector('.resume-fab');

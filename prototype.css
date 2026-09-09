@@ -20,7 +20,7 @@
     --ease-genie: cubic-bezier(0.42, 0, 0.2, 1);
 
     /* Layout */
-    --device-width: 450px;
+    --device-width: 550px;
     --device-collapsed-height: 56px;
     --device-expanded-height: 80vh;
     --device-expanded-max-height: 980px;
@@ -174,6 +174,16 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+}
+
+::selection {
+    background: #99e24f;
+    color: #111111;
+}
+
+::-moz-selection {
+    background: #99e24f;
+    color: #111111;
 }
 
 html,
@@ -5113,7 +5123,6 @@ body.recruiter-mode .recruiter-cases .folder-menu {
     line-height: 1.5;
     color: #484848;
     font-weight: 400;
-    letter-spacing: -0.01em;
 }
 
 .mini-editorial-copy {
@@ -7757,7 +7766,7 @@ body.experience-open .experience-window {
 .hero-section-title {
     font-size: clamp(3rem, 6vw, 4.5rem);
     font-weight: 400;
-    line-height: 1.1;
+    line-height: 1;
     letter-spacing: -0.03em;
     color: #212121;
     margin-bottom: 24px;
@@ -7787,8 +7796,10 @@ body.experience-open .experience-window {
 }
 
 .hero-section-subtitle {
+
+        border-top: 2px solid #f9f9f9;
     max-width: 600px;
-    margin: 0 32px 32px;
+    padding: 25px 33px 35px 35px;
     text-align: left;
 }
 
