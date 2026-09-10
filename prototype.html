@@ -26,9 +26,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700&display=swap"
         rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700&display=swap" rel="stylesheet"></noscript>
+    <noscript><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700&display=swap" rel="stylesheet"></noscript>
 </head>
 
 <body>
@@ -96,7 +96,6 @@
             <a href="#about-summary" data-cursor="link">About</a>
             <a href="#social-links" data-cursor="link">Links</a>
             <a href="#creative-controls" data-cursor="link">Playground</a>
-            <a href="#portfolio-work" data-cursor="link">Work</a>
             <a href="#contact-footer" data-cursor="link">Contact</a>
         </nav>
         <nav class="home-links-panel home-side-panel" aria-label="Home quick links">
@@ -355,7 +354,7 @@
                         </div>
                     </h1>
 <p class="hero-section-subtitle">
-  Hello! Hope you are doing well. <br>
+  Hello! <br>
   I'm Raghav, working as a product development assistance in Aircards. I started off as Product designer/Creative Technologist &gt; positioning myself into <strong>Product Owner/PM role</strong>. 
     <br><br>My background in product design gave me the eye opening truth on what actually the users demands are. 
     <span style="background-color: #ebebeb; color: #000; padding: 2px 7px; border-radius: 2px;">
@@ -365,7 +364,6 @@
 
     Currently based in the UK and <strong>relocating to India in few months</strong>, I will be bringing this mixture of product, UX, and technical and physical execution to teams building for scale and purpose. 
     Currently looking for a role where I can take ownership, learn from great people, and build products that are actually worth building! I don't just want to own the solution; I want to own the problem.
-
     <br><br>
 
   Over the last couple of years, I’ve worked across AI, data platforms, gamified products, and <strong>early-stage digital products</strong>. 
@@ -376,7 +374,7 @@
 
                 
 
-                <section class="partners-section reveal delay-2" aria-label="Companies worked with">
+                <section class="partners-section reveal delay-2" aria-label="Companies worked with" hidden>
                     <p class="dock-kicker">Companies I've worked with</p>
                     <div class="company-dock" id="company-dock"></div>
                 </section>
@@ -434,7 +432,7 @@ Raghav Prasanna
 
             </div>
 
-            <div class="content-panel content-panel-showcase">
+            <div class="content-panel content-panel-showcase" hidden>
 
 
 
@@ -451,7 +449,7 @@ Raghav Prasanna
 
 
 
-                <section class="projects-section" id="portfolio-work" aria-label="Portfolio case studies">
+                <section class="projects-section" id="portfolio-work" aria-label="Portfolio case studies" hidden>
                     <header class="projects-section-header reveal delay-2">
                         <h2 class="dock-kicker">Portfolio case studies
                             <!-- <span>(Click on the tiles below)</span> -->
@@ -527,30 +525,35 @@ Raghav Prasanna
                         </a> -->
 
                     </section>
-
-                    <section class="mini-carousel-section" aria-label="Portfolio previews">
-                        <div class="mini-carousel" id="miniCarousel">
-                            <div class="carousel-track" id="carouselTrack">
-                                <img src="images/mg1.jpg" alt="Portfolio Preview 1" loading="lazy" decoding="async" fetchpriority="low">
-                                <img src="images/mg2.jpg" alt="Portfolio Preview 2" loading="lazy" decoding="async" fetchpriority="low">
-                                <img src="images/mg3.jpg" alt="Portfolio Preview 3" loading="lazy" decoding="async" fetchpriority="low">
-                                <img src="images/mg0.png" alt="Portfolio Preview 0" loading="lazy" decoding="async" fetchpriority="low">
-                                <img src="images/mg4.jpg" alt="Portfolio Preview 4" loading="lazy" decoding="async" fetchpriority="low">
-                                <img src="images/mg5.jpg" alt="Portfolio Preview 5" loading="lazy" decoding="async" fetchpriority="low">
-                                <img src="images/mg6.png" alt="Portfolio Preview 6" loading="lazy" decoding="async" fetchpriority="low">
-                                <img src="images/mg7.jpg" alt="Portfolio Preview 7" loading="lazy" decoding="async" fetchpriority="low">
-                                <img src="images/mg8.jpg" alt="Portfolio Preview 8" loading="lazy" decoding="async" fetchpriority="low">
-                            </div>
-                            <div class="carousel-indicators">
-                                <span class="indicator active"></span>
-                                <span class="indicator"></span><span class="indicator"></span><span class="indicator"></span>
-                                <span class="indicator"></span><span class="indicator"></span><span class="indicator"></span>
-                                <span class="indicator"></span><span class="indicator"></span>
-                            </div>
-                        </div>
-                    </section>
                 </section>
             </div>
+
+            <section class="mini-carousel-section" aria-label="Portfolio previews">
+                <div class="mini-carousel-panel">
+                    <div class="mini-carousel" id="miniCarousel">
+                        <div class="carousel-track" id="carouselTrack">
+                            <img src="images/mg1.jpg" alt="Portfolio Preview 1" loading="lazy" decoding="async" fetchpriority="low">
+                            <img src="images/mg2.jpg" alt="Portfolio Preview 2" loading="lazy" decoding="async" fetchpriority="low">
+                            <img src="images/mg3.jpg" alt="Portfolio Preview 3" loading="lazy" decoding="async" fetchpriority="low">
+                            <img src="images/mg0.png" alt="Portfolio Preview 0" loading="lazy" decoding="async" fetchpriority="low">
+                            <img src="images/mg4.jpg" alt="Portfolio Preview 4" loading="lazy" decoding="async" fetchpriority="low">
+                            <img src="images/mg5.jpg" alt="Portfolio Preview 5" loading="lazy" decoding="async" fetchpriority="low">
+                            <img src="images/mg6.png" alt="Portfolio Preview 6" loading="lazy" decoding="async" fetchpriority="low">
+                            <img src="images/mg7.jpg" alt="Portfolio Preview 7" loading="lazy" decoding="async" fetchpriority="low">
+                            <img src="images/mg8.jpg" alt="Portfolio Preview 8" loading="lazy" decoding="async" fetchpriority="low">
+                        </div>
+                        <div class="carousel-indicators">
+                            <span class="indicator active"></span>
+                            <span class="indicator"></span><span class="indicator"></span><span class="indicator"></span>
+                            <span class="indicator"></span><span class="indicator"></span><span class="indicator"></span>
+                            <span class="indicator"></span><span class="indicator"></span>
+                        </div>
+                    </div>
+                    <div class="mini-carousel-copy">
+                        <p>Whether I’m deploying interactive physical kiosks, advocating for product vision at industry events, or guiding a cross-functional team through a complex launch, my focus is always on getting products into users' hands. My background in creative tech means I’m comfortable navigating the messy reality of hardware constraints, public deployments, and tight feedback loops to ensure what we build actually delivers value.</p>
+                    </div>
+                </div>
+            </section>
 
             <!-- ==========================================
                  🌐 360° PANORAMIC IMAGE VIEWER
@@ -644,7 +647,7 @@ Raghav Prasanna
             </section> -->
 
 
-                        <section class="content-section social-links-section content-section--bleed" id="social-links" aria-label="Social Links">
+            <section class="content-section social-links-section content-section--bleed" id="social-links" aria-label="Social Links" hidden>
                 <div class="content-card link-pill-card">
                     <div class="company-marquee">
                         <div class="marquee-track">
@@ -685,7 +688,7 @@ Raghav Prasanna
                             <div class="footer-status-stack">
                                 
                                 <div class="footer-status-note">Newcastle upon Tyne, UK</div>
-                                <div class="footer-status-note">Best via email or LinkedIn</div>
+                                <div class="footer-status-note">Best via email or <a href="https://www.linkedin.com/in/raghav-prasanna-b530621b0/" target="_blank" rel="noopener noreferrer" data-cursor="link">LinkedIn</a></div>
                             </div>
                         </div>
                     </div>

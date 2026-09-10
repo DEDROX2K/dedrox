@@ -9,7 +9,7 @@
     --accent-green: #f1f1f1;
 
     /* Typography: one reading face and one technical-label face. */
-    --font-sans: 'Google Sans', sans-serif;
+    --font-sans: 'IBM Plex Sans', sans-serif;
     --font-mono: 'IBM Plex Mono', monospace;
 
 
@@ -20,7 +20,8 @@
     --ease-genie: cubic-bezier(0.42, 0, 0.2, 1);
 
     /* Layout */
-    --device-width: 550px;
+    /* Responsive desktop frame: broad on laptops, capped on large monitors. */
+    --device-width: clamp(640px, 58vw, 800px);
     --device-collapsed-height: 56px;
     --device-expanded-height: 80vh;
     --device-expanded-max-height: 980px;
@@ -184,6 +185,10 @@
 ::-moz-selection {
     background: #fbd727;
     color: #111111;
+}
+
+.projects-section[hidden] {
+    display: none !important;
 }
 
 html,
@@ -543,7 +548,7 @@ summary {
     background: rgba(255, 255, 255, 0.72);
     color: rgba(17, 17, 17, 0.72);
     cursor: pointer;
-    font: 700 16px/1 'Google Sans', sans-serif;
+    font: 700 16px/1 var(--font-sans);
     transition: background-color 0.2s ease, color 0.2s ease, transform 0.3s ease;
 }
 
@@ -578,7 +583,7 @@ summary {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-family: 'Google Sans', sans-serif;
+    font-family: var(--font-sans);
     font-size: 12px;
     font-weight: 600;
     line-height: 1;
@@ -702,7 +707,7 @@ body.talk-scene-active .home-side-panel,
     display: flex;
     align-items: center;
     padding: 0 9px 0 20px;
-    font-family: 'Google Sans', sans-serif;
+    font-family: var(--font-sans);
     font-size: 13px;
     font-weight: 600;
     line-height: 1;
@@ -766,20 +771,6 @@ body.talk-scene-active .home-side-panel,
 #pixel-lab,
 #contact-footer {
     scroll-margin-top: calc(var(--pill-container-h) + 18px);
-}
-
-body.device-opening .device-container.expanded,
-body.device-closing .device-container {
-    overflow: hidden;
-}
-
-body.device-opening .device-container.expanded::after,
-body.device-closing .device-container::after {
-    opacity: 0.38;
-    border-color: rgba(255, 255, 255, 0.18);
-    box-shadow:
-        0 0 0 1px rgba(255, 255, 255, 0.08),
-        0 18px 42px rgba(0, 0, 0, 0.22);
 }
 
 .device-edge-handles {
@@ -2043,7 +2034,7 @@ body.pill-controls-revealed .device-container.expanded #pill-fourth-btn.disabled
     background: transparent;
     color: rgba(17, 17, 17, 0.66);
     cursor: pointer;
-    font: 1.1rem 'Google Sans';
+    font: 1.1rem var(--font-sans);
     letter-spacing: 0.02em;
     transition: background-color 0.2s ease, color 0.2s ease;
 }
@@ -2056,7 +2047,7 @@ body.pill-controls-revealed .device-container.expanded #pill-fourth-btn.disabled
 .pill-open-prompt {
     display: none;
     color: #ededed;
-    font: 400 1rem/1 'Google Sans', sans-serif;
+    font: 400 1rem/1 var(--font-sans);
     letter-spacing: 0;
     text-transform: lowercase;
     text-align: center;
@@ -2086,7 +2077,7 @@ body.pill-controls-revealed .device-container.expanded #pill-fourth-btn.disabled
     align-items: center;
     gap: 0.20em;
     color: #0e0e0f;
-    font-family: 'Google Sans', sans-serif;
+    font-family: var(--font-sans);
     font-size: 1rem;
     font-weight: 200;
     line-height: 1;
@@ -2727,27 +2718,6 @@ body.device-maximized .expand-fab .icon-expand {
     opacity: var(--blur-mask-opacity);
 }
 
-/* Keep expand/collapse smooth by disabling expensive effects during the transition window */
-body.device-transitioning .top-bar-pill,
-body.device-transitioning .content-mask,
-body.device-transitioning .device-bottom-blur {
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-}
-
-body.device-transitioning .device-container canvas,
-body.device-transitioning .device-container model-viewer {
-    visibility: hidden !important;
-}
-
-body.device-transitioning .device-container.expanded #pill-notes-btn,
-body.device-transitioning .device-container.expanded #pill-resume-btn,
-body.device-transitioning .device-container.expanded #pill-third-btn,
-body.device-transitioning .device-container.expanded #pill-fourth-btn,
-body.device-transitioning .device-container.expanded #pill-fifth-btn {
-    animation-play-state: paused;
-}
-
 .content-mask.top {
     top: 0;
     mask-image: linear-gradient(to bottom, black 0%, transparent 100%);
@@ -2959,7 +2929,7 @@ body.recruiter-mode .pill-tooltip {
     display: none;
     min-height: calc(100% - 8px);
     color: #111;
-    font-family: 'Google Sans', sans-serif;
+    font-family: var(--font-sans);
     padding-bottom: 24px;
 }
 
@@ -2967,7 +2937,7 @@ body.recruiter-mode .pill-tooltip {
     display: none;
     min-height: 100%;
     color: #000000;
-    font-family: 'Google Sans', sans-serif;
+    font-family: var(--font-sans);
     padding: 72px 0 40px;
     background: #EBEAE6;
 }
@@ -7944,7 +7914,7 @@ body.experience-open .experience-window {
     margin-left: calc(-1 * var(--site-padding-x));
     margin-right: calc(-1 * var(--site-padding-x));
     border-radius: 40px 40px 0 0;
-    font-family: 'Google Sans', sans-serif;
+    font-family: var(--font-sans);
     border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
@@ -8112,6 +8082,17 @@ body.experience-open .experience-window {
 .footer-status-note {
     font-size: 0.86rem;
     color: rgba(255, 255, 255, 0.58);
+}
+
+.footer-status-note a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 0.16em;
+    text-decoration-thickness: 1px;
+}
+
+.footer-status-note a:hover {
+    color: #ffffff;
 }
 
 .footer-bottom {
@@ -8686,7 +8667,7 @@ body.reader-mode .wip-swinging-img {
     padding: 0;
     margin: 0;
     white-space: pre-wrap;
-    font-family: 'Google Sans', sans-serif;
+    font-family: var(--font-sans);
 }
 
 .talk-inline .chat-input-text::placeholder {
@@ -9406,7 +9387,7 @@ body.talk-mode .top-bar-pill {
     letter-spacing: -0.03em;
     line-height: 1;
     padding: 4px 2px 10px;
-    font-family: 'Google Sans', sans-serif;
+    font-family: var(--font-sans);
     user-select: none;
 }
 
@@ -9458,6 +9439,15 @@ body.talk-mode .top-bar-pill {
     border-radius: var(--master-content-radius);
     padding-top: 30px;
     padding-bottom: 45px;
+}
+
+.content-panel-showcase[hidden] {
+    display: none !important;
+}
+
+.partners-section[hidden],
+.social-links-section[hidden] {
+    display: none !important;
 }
 
 .content-panel-footer {
@@ -9760,7 +9750,7 @@ body.talk-mode .top-bar-pill {
     border: none;
     padding: 16px 28px;
     border-radius: 40px;
-    font-family: 'Google Sans';
+    font-family: var(--font-sans);
     font-size: 17px;
     /* font-weight: 600; */
     color: #222;
@@ -9793,25 +9783,44 @@ body.talk-mode .top-bar-pill {
 
 /* Mini Carousel */
 .mini-carousel-section {
-    width: 100%;
-    margin-top: clamp(28px, 5vw, 56px);
-    padding-top: clamp(20px, 3vw, 32px);
-    border-top: 1px solid rgba(17, 17, 17, 0.08);
+    width: calc(100% + 2 * var(--site-padding-x));
+    margin: 0 calc(-1 * var(--site-padding-x));
+    padding-top: 0;
+    background: transparent;
+    border-top: 0;
 }
 
-.custom-right {
-    height: 100%;
+.mini-carousel-panel {
+    display: grid;
+    grid-template-columns: minmax(0, 0.65fr) minmax(220px, 0.75fr);
+    gap: clamp(16px, 2.5vw, 28px);
+    align-items: stretch;
+    padding: clamp(14px, 2vw, 22px);
+    background: #ffffff;
+    border: 1px solid rgba(17, 17, 17, 0.08);
+    border-radius: var(--content-card-radius);
 }
 
 .mini-carousel {
     position: relative;
-    width: min(100%, 720px);
-    height: 450px;
-    /* background: #000; */
-    border-radius: 20px;
+    width: 100%;
+    height: clamp(260px, 31vw, 430px);
+    border-radius: calc(var(--content-card-radius) - 2px);
     overflow: hidden;
-    margin-inline: auto;
-    /* box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1); */
+}
+
+.mini-carousel-copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+    padding: clamp(4px, 1vw, 12px);
+}
+
+.mini-carousel-copy p {
+    margin: 0;
+    color: #161616;
+    font: 400 clamp(0.95rem, 1.15vw, 1.08rem)/1.55 var(--font-sans);
 }
 
 .carousel-track {
@@ -9889,6 +9898,14 @@ body.talk-mode .top-bar-pill {
 
     .mini-carousel {
         height: 240px;
+    }
+
+    .mini-carousel-panel {
+        grid-template-columns: 1fr;
+    }
+
+    .mini-carousel-copy {
+        padding: 0;
     }
 
     .color-wheel-outer {
@@ -10206,7 +10223,7 @@ body.device-closing .contract-shockwave {
     display: block;
     margin: 2px 0 22px;
     color: #111;
-    font: 600 clamp(2.4rem, 7vw, 4.4rem)/0.94 'Google Sans', sans-serif;
+    font: 600 clamp(2.4rem, 7vw, 4.4rem)/0.94 var(--font-sans);
     letter-spacing: -0.065em;
 }
 
@@ -10216,7 +10233,7 @@ body.device-closing .contract-shockwave {
     margin-top: -13px;
     margin-bottom: 30px;
     color: rgba(17, 17, 17, 0.58);
-    font: 400 1rem/1.55 'Google Sans', sans-serif;
+    font: 400 1rem/1.55 var(--font-sans);
 }
 
 .reader-blog-list {
@@ -10242,7 +10259,7 @@ body.device-closing .contract-shockwave {
 .reader-blog-link {
     max-width: 26ch;
     color: #111;
-    font: 600 clamp(1.5rem, 3.3vw, 2.15rem)/1.03 'Google Sans', sans-serif;
+    font: 600 clamp(1.5rem, 3.3vw, 2.15rem)/1.03 var(--font-sans);
     letter-spacing: -0.045em;
 }
 
@@ -10304,14 +10321,14 @@ body.device-closing .contract-shockwave {
 }
 
 .experience-panel-title {
-    font: 600 clamp(2.2rem, 5vw, 3.4rem)/0.94 'Google Sans', sans-serif;
+    font: 600 clamp(2.2rem, 5vw, 3.4rem)/0.94 var(--font-sans);
     letter-spacing: -0.06em;
 }
 
 .experience-panel-summary,
 .timeline__item-body-content p {
     color: rgba(17, 17, 17, 0.68);
-    font: 400 0.98rem/1.58 'Google Sans', sans-serif;
+    font: 400 0.98rem/1.58 var(--font-sans);
 }
 
 .experience-panel-metrics {
@@ -10323,7 +10340,7 @@ body.device-closing .contract-shockwave {
     border-color: rgba(17, 17, 17, 0.1);
     border-radius: 999px;
     box-shadow: none;
-    font-family: 'Google Sans', sans-serif;
+    font-family: var(--font-sans);
 }
 
 .experience-toolbar-btn {
@@ -10362,13 +10379,13 @@ body.device-closing .contract-shockwave {
 }
 
 .timeline__title {
-    font: 600 1.04rem/1.17 'Google Sans', sans-serif;
+    font: 600 1.04rem/1.17 var(--font-sans);
     letter-spacing: -0.025em;
 }
 
 .timeline__company {
     margin-top: 4px;
-    font: 500 0.83rem/1.3 'Google Sans', sans-serif;
+    font: 500 0.83rem/1.3 var(--font-sans);
 }
 
 .timeline__item-body {

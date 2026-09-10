@@ -2532,7 +2532,7 @@ function primeExpandableAssets() {
 // --------------------------------------------------------
 function buildCompanyDock() {
     const dock = document.getElementById('company-dock');
-    if (!dock) return;
+    if (!dock || dock.closest('[hidden]')) return;
     dock.innerHTML = '';
 
     SITE_CONFIG.companies.forEach((company, index) => {
@@ -2576,7 +2576,7 @@ function buildCompanyDock() {
 
 function initCompanyDock() {
     const dock = document.getElementById('company-dock');
-    if (!dock) return;
+    if (!dock || dock.closest('[hidden]')) return;
     const items = Array.from(dock.querySelectorAll('.dock-item'));
     if (!items.length) return;
 
@@ -5408,11 +5408,6 @@ document.addEventListener('DOMContentLoaded', () => {
             applyPillSizes('expanded');
         }, { duration: 760, phase: 'opening' });
 
-        ensureBackgroundsReady({ defer: true });
-        window.hasMatrixStarted = true;
-
-        schedulePillTooltipPrompt();
-
         setTimeout(() => {
             if (miniMatrixInstance) miniMatrixInstance.resize();
             resumeDockSystem.updateAnchor();
@@ -5433,6 +5428,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!device || !device.classList.contains('expanded')) return;
 
         clearPillTooltipPrompt();
+        initClosedPillParticleField();
         withTemporaryDeviceTransition(() => {
             device.classList.remove('expanded', 'maximized', 'home-fullscreen');
             document.body.classList.remove('device-expanded', 'device-maximized', 'device-home-fullscreen');
@@ -5793,12 +5789,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initFeaturedCardHoverMotion();
     initHeroLanguageLoop();
     const blogSystem = initReaderBlogs();
-    if ('requestIdleCallback' in window) {
-        window.requestIdleCallback(initClosedPillParticleField, { timeout: 3000 });
-    } else {
-        window.setTimeout(initClosedPillParticleField, 1500);
-    }
-
     // Initialize Scramble Animations
     const resumeBtnEl = document.querySelector('.resume-fab');
     scrambleText(resumeBtnEl, "/-Resume", 1000);
