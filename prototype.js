@@ -3312,26 +3312,30 @@ function initHeroLanguageLoop() {
     let languageIndex = 0;
     let isTransitioning = false;
 
-    const tokenizeWords = (text) => {
-        const words = text.trim().split(/\s+/).filter(Boolean);
-        return words.length ? words : [text];
+    const tokenizeGraphemes = (text) => {
+        if (typeof Intl !== 'undefined' && typeof Intl.Segmenter === 'function') {
+            const segmenter = new Intl.Segmenter(undefined, { granularity: 'grapheme' });
+            return Array.from(segmenter.segment(text), ({ segment }) => segment);
+        }
+        return Array.from(text);
     };
 
-    const renderWords = (text) => {
+    const renderLetters = (text) => {
         lineEl.textContent = '';
-        const words = tokenizeWords(text);
+        const letters = tokenizeGraphemes(text);
         const spans = [];
 
-        words.forEach((word, index) => {
+        letters.forEach((letter) => {
+            if (/\s/.test(letter)) {
+                lineEl.appendChild(document.createTextNode(letter));
+                return;
+            }
+
             const span = document.createElement('span');
-            span.className = 'hero-language-word';
-            span.textContent = word;
+            span.className = 'hero-language-letter';
+            span.textContent = letter;
             lineEl.appendChild(span);
             spans.push(span);
-
-            if (index < words.length - 1) {
-                lineEl.appendChild(document.createTextNode(' '));
-            }
         });
 
         return spans;
@@ -3402,7 +3406,7 @@ function initHeroLanguageLoop() {
     };
 
     const setLanguage = (index) => {
-        const spans = renderWords(languages[index]);
+        const spans = renderLetters(languages[index]);
         if (!prefersReducedMotion) {
             animateIn(spans);
         }
@@ -3420,7 +3424,7 @@ function initHeroLanguageLoop() {
         }
 
         isTransitioning = true;
-        const currentSpans = Array.from(lineEl.querySelectorAll('.hero-language-word'));
+        const currentSpans = Array.from(lineEl.querySelectorAll('.hero-language-letter'));
 
         animateOut(currentSpans, () => {
             languageIndex = (languageIndex + 1) % languages.length;
@@ -5480,17 +5484,20 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     let writingRevealTimerId = 0;
+    let viewSwitchTimerId = 0;
+    let homeRevealTimerId = 0;
 
-    const goToHomeScreen = () => {
-        if (writingRevealTimerId) window.clearTimeout(writingRevealTimerId);
-        writingRevealTimerId = 0;
-        device?.classList.remove('is-writing-entering');
+    const clearViewSwitchTimers = () => {
+        if (viewSwitchTimerId) window.clearTimeout(viewSwitchTimerId);
+        if (homeRevealTimerId) window.clearTimeout(homeRevealTimerId);
+        viewSwitchTimerId = 0;
+        homeRevealTimerId = 0;
+    };
+
+    const revealHomeScreen = () => {
         expandDeviceShell(false);
 
-        if (chatMode.isActive()) {
-            chatMode.close();
-        }
-
+        if (chatMode.isActive()) chatMode.close();
         readerMode.close();
         recruiterMode.close();
         stickyNote.close();
@@ -5507,29 +5514,65 @@ document.addEventListener('DOMContentLoaded', () => {
             scrollableContentEl.scrollTop = 0;
         }
 
+        if (device) {
+            device.classList.remove('is-home-leaving', 'is-writing-leaving', 'is-writing-entering');
+            void device.offsetWidth;
+            device.classList.add('is-home-entering');
+            homeRevealTimerId = window.setTimeout(() => {
+                device.classList.remove('is-home-entering');
+                homeRevealTimerId = 0;
+            }, 760);
+        }
+
         syncTopPillSelection();
         syncPortfolioViewToggle();
     };
 
+    const goToHomeScreen = () => {
+        if (writingRevealTimerId) window.clearTimeout(writingRevealTimerId);
+        writingRevealTimerId = 0;
+        clearViewSwitchTimers();
+
+        if (!device || !readerMode.isActive()) {
+            revealHomeScreen();
+            return;
+        }
+
+        device.classList.remove('is-writing-entering');
+        device.classList.add('is-writing-leaving');
+        viewSwitchTimerId = window.setTimeout(() => {
+            viewSwitchTimerId = 0;
+            revealHomeScreen();
+        }, 320);
+    };
+
     const openWritingsScreen = () => {
         expandDeviceShell(false);
-        if (recruiterMode.isActive()) recruiterMode.close();
-        if (chatMode.isActive()) chatMode.close();
-        readerMode.open();
-        showSectionContextHint('Writings');
-        if (typeof blogSystem !== 'undefined') blogSystem.loadBlogs();
-        syncTopPillSelection();
-        syncPortfolioViewToggle();
+        if (!device || readerMode.isActive()) return;
 
-        if (!device) return;
+        clearViewSwitchTimers();
         if (writingRevealTimerId) window.clearTimeout(writingRevealTimerId);
-        device.classList.remove('is-writing-entering');
-        void device.offsetWidth;
-        device.classList.add('is-writing-entering');
-        writingRevealTimerId = window.setTimeout(() => {
-            device.classList.remove('is-writing-entering');
-            writingRevealTimerId = 0;
-        }, 800);
+        device.classList.remove('is-home-entering', 'is-writing-leaving', 'is-writing-entering');
+        device.classList.add('is-home-leaving');
+
+        viewSwitchTimerId = window.setTimeout(() => {
+            viewSwitchTimerId = 0;
+            device.classList.remove('is-home-leaving');
+            if (recruiterMode.isActive()) recruiterMode.close();
+            if (chatMode.isActive()) chatMode.close();
+            readerMode.open();
+            showSectionContextHint('Writings');
+            if (typeof blogSystem !== 'undefined') blogSystem.loadBlogs();
+            syncTopPillSelection();
+            syncPortfolioViewToggle();
+
+            void device.offsetWidth;
+            device.classList.add('is-writing-entering');
+            writingRevealTimerId = window.setTimeout(() => {
+                device.classList.remove('is-writing-entering');
+                writingRevealTimerId = 0;
+            }, 800);
+        }, 320);
     };
 
     const syncPortfolioViewToggle = () => {
@@ -5891,6 +5934,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
+            });
+        }
+
+        const footerCaseStudiesBtn = document.getElementById('footer-case-studies-btn');
+        if (footerCaseStudiesBtn) {
+            footerCaseStudiesBtn.addEventListener('click', () => {
+                const showcase = document.querySelector('.content-panel-showcase');
+                const projects = document.getElementById('portfolio-work');
+                if (!showcase || !projects) return;
+
+                showcase.hidden = false;
+                projects.hidden = false;
+                window.requestAnimationFrame(() => {
+                    projects.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                });
             });
         }
 
