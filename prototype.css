@@ -21,7 +21,7 @@
 
     /* Layout */
     /* Responsive desktop frame: broad on laptops, capped on large monitors. */
-    --device-width: clamp(640px, 58vw, 800px);
+    --device-width: clamp(640px, 58vw, 700px);
     --device-collapsed-height: 56px;
     --device-expanded-height: 80vh;
     --device-expanded-max-height: 980px;
@@ -7875,7 +7875,7 @@ body.experience-open .experience-window {
 
         /* border-top: 2px solid #f9f9f9; */
     max-width: 600px;
-    padding: 25px 33px 35px 35px;
+    padding: 25px 3px 35px 5px;
     text-align: left;
 }
 
@@ -9901,7 +9901,7 @@ body.talk-mode .top-bar-pill {
     grid-template-columns: minmax(0, 0.65fr) minmax(220px, 0.75fr);
     gap: clamp(16px, 2.5vw, 28px);
     align-items: stretch;
-    padding: clamp(14px, 2vw, 22px);
+    padding: clamp(14px, 2vw, 52px);
     background: #ffffff;
     border: 1px solid rgba(17, 17, 17, 0.08);
     border-radius: var(--content-card-radius);
