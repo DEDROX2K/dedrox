@@ -8074,11 +8074,19 @@ body.experience-open .experience-window {
     color: #000;
     padding: 13px 22px;
     border-radius: 100px;
+    border: none;
     text-decoration: none;
     font-weight: 700;
     font-size: 0.95rem;
+    font-family: inherit;
+    cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     box-shadow: none;
+}
+
+.footer-main-btn.is-email-mode {
+    font-size: 0.82rem;
+    letter-spacing: -0.01em;
 }
 
 .footer-main-btn:hover {

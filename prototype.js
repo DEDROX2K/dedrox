@@ -5952,6 +5952,38 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
+        const footerEmailCta = document.getElementById('footer-email-cta');
+        if (footerEmailCta) {
+            const email = footerEmailCta.dataset.email || 'raghavprasanna2000@gmail.com';
+            const labelEl = footerEmailCta.querySelector('.footer-main-btn-label');
+            let copiedTimerId = 0;
+
+            const showEmailMode = () => {
+                footerEmailCta.classList.add('is-email-mode');
+                if (labelEl) labelEl.textContent = email;
+                footerEmailCta.setAttribute('aria-label', `Copy email: ${email}`);
+            };
+
+            footerEmailCta.addEventListener('click', async () => {
+                try {
+                    await navigator.clipboard.writeText(email);
+                } catch (err) {
+                    console.error('Failed to copy email:', err);
+                    window.location.href = `mailto:${email}`;
+                    return;
+                }
+
+                showEmailMode();
+                if (labelEl) labelEl.textContent = 'Copied!';
+                footerEmailCta.setAttribute('aria-label', 'Email copied to clipboard');
+                window.clearTimeout(copiedTimerId);
+                copiedTimerId = window.setTimeout(() => {
+                    if (labelEl) labelEl.textContent = email;
+                    footerEmailCta.setAttribute('aria-label', `Copy email: ${email}`);
+                }, 2000);
+            });
+        }
+
         // ---- Customization Section Logic (Discrete Circular Palette) ----
         const colorPalette = document.getElementById('colorPalette');
         const colorPreview = document.getElementById('activeColorPreview');
