@@ -4,10 +4,22 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AirPaste</title>
-  <link rel="stylesheet" href="airpaste-landing.css?v=1" />
+  <link rel="stylesheet" href="airpaste-landing.css?v=2" />
 </head>
-<body class="airpaste-page airpaste-page--home">
-  <main class="airpaste-stage">
+<body class="airpaste-page airpaste-page--home airpaste-shell-collapsed">
+  <div class="airpaste-expand-shockwave" aria-hidden="true"></div>
+  <div class="airpaste-pill-radiating-glow" aria-hidden="true">
+    <div class="airpaste-radiating-ring ring-1"></div>
+    <div class="airpaste-radiating-ring ring-2"></div>
+    <div class="airpaste-radiating-ring ring-3"></div>
+    <div class="airpaste-radiating-ring ring-4"></div>
+    <div class="airpaste-radiating-ring ring-5"></div>
+  </div>
+  <div class="airpaste-page-overlay on-load" id="airpaste-page-overlay" aria-hidden="true"></div>
+  <p class="airpaste-pill-open-prompt" aria-hidden="true">click open</p>
+
+  <div id="airpaste-device" class="airpaste-device-shell">
+  <main class="airpaste-stage airpaste-shell-content">
     <section class="home-layout" aria-label="AirPaste landing card">
       <figure class="home-mockup" aria-label="AirPaste product mockup">
         <picture>
@@ -16,29 +28,47 @@
             class="home-mockup__image"
             src="images/airpaste-mockup.png"
             alt="AirPaste mockup"
+            draggable="false"
           />
         </picture>
       </figure>
 
-      <a
-        class="home-download-cta"
-        href="https://drive.google.com/uc?export=download&id=1Cv51GHgsaGfUtPdPy4s-Xb3ARbcBbXbQ"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Download AirPaste beta"
-      >
-        <span class="home-download-cta__main">Download</span>
-        <span class="home-download-cta__sub">
-          <span>Beta</span>
-          <img
-            class="home-download-cta__icon"
-            src="iconset/interactions.png"
-            alt=""
-            aria-hidden="true"
-          />
-        </span>
-      </a>
+      <div class="home-cta-stack">
+        <a
+          class="home-github-cta"
+          href="https://github.com/DEDROX2K/AirPaste"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="AirPaste open source code on GitHub"
+        >
+          <span class="home-github-cta__main">Github</span>
+          <span class="home-github-cta__sub">
+            <span>Opensource code</span>
+          </span>
+        </a>
+        <a
+          class="home-download-cta"
+          href="https://drive.google.com/uc?export=download&id=1Cv51GHgsaGfUtPdPy4s-Xb3ARbcBbXbQ"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Download AirPaste beta"
+        >
+          <span class="home-download-cta__main">Download</span>
+          <span class="home-download-cta__sub">
+            <span>Beta</span>
+            <img
+              class="home-download-cta__icon"
+              src="iconset/interactions.png"
+              alt=""
+              aria-hidden="true"
+              draggable="false"
+            />
+          </span>
+        </a>
+      </div>
     </section>
   </main>
+  </div>
+  <script src="airpaste-landing-intro.js" defer></script>
 </body>
 </html>

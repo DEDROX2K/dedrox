@@ -32,6 +32,10 @@
   --landing-accent: #c41b12;
   --cursor-default: url("Cursor/cursor_default.svg") 0 0, default;
   --cursor-pointer: url("Cursor/cursor_pointer.svg") 12 6, pointer;
+  --airpaste-shell-collapsed-w: 56px;
+  --airpaste-shell-collapsed-h: 56px;
+  --airpaste-shell-radius: 24px;
+  --airpaste-expand-ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 * {
@@ -67,6 +71,237 @@ body.airpaste-page::before {
     linear-gradient(180deg, rgba(12, 18, 40, 0.1), rgba(12, 18, 40, 0.04)),
     rgba(255, 255, 255, 0.06);
   pointer-events: none;
+  transition: opacity 0.45s var(--airpaste-expand-ease);
+}
+
+body.airpaste-shell-collapsed.airpaste-page {
+  background: #0e0e0f;
+  color: #ededed;
+}
+
+body.airpaste-shell-collapsed.airpaste-page::before {
+  opacity: 0;
+}
+
+body.airpaste-shell-expanded.airpaste-page::before {
+  opacity: 1;
+}
+
+.airpaste-page img {
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+.airpaste-device-shell {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: var(--airpaste-shell-collapsed-w);
+  height: var(--airpaste-shell-collapsed-h);
+  z-index: 1000;
+  background-color: #161618;
+  border-radius: 999px;
+  overflow: hidden;
+  cursor: var(--cursor-pointer);
+  transition:
+    width 0.45s var(--airpaste-expand-ease),
+    height 0.45s var(--airpaste-expand-ease),
+    transform 0.45s var(--airpaste-expand-ease),
+    top 0.45s var(--airpaste-expand-ease),
+    left 0.45s var(--airpaste-expand-ease),
+    border-radius 0.45s var(--airpaste-expand-ease),
+    background-color 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: width, height, transform;
+}
+
+.airpaste-device-shell.expanded {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100vw;
+  height: 100vh;
+  background-color: transparent;
+  border-radius: var(--airpaste-shell-radius);
+  overflow: visible;
+  cursor: var(--cursor-default);
+}
+
+.airpaste-shell-content {
+  opacity: 0;
+  visibility: hidden;
+  filter: blur(12px);
+  transform: translateY(8px);
+  transition:
+    opacity 0.15s ease-in,
+    visibility 0.15s,
+    filter 0.15s ease-in,
+    transform 0.15s ease-in;
+}
+
+.airpaste-device-shell.expanded .airpaste-shell-content {
+  opacity: 1;
+  visibility: visible;
+  filter: blur(0);
+  transform: translateY(0);
+  transition:
+    opacity 0.12s ease-out 0.05s,
+    visibility 0.12s 0.05s,
+    filter 0.12s ease-out 0.05s,
+    transform 0.12s ease-out 0.05s;
+}
+
+.airpaste-pill-open-prompt {
+  position: fixed;
+  top: calc(50% + (var(--airpaste-shell-collapsed-h) / 2) + 18px);
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  color: #ededed;
+  font: 400 1rem/1 "GoogleSans", Arial, Helvetica, sans-serif;
+  text-transform: lowercase;
+  text-align: center;
+  pointer-events: none;
+  z-index: 1001;
+  opacity: 1;
+  transition: opacity 0.28s ease, visibility 0.28s;
+}
+
+body.airpaste-shell-expanded .airpaste-pill-open-prompt {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.airpaste-pill-radiating-glow {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scaleX(1.15) scaleY(5.5);
+  width: var(--airpaste-shell-collapsed-w);
+  height: var(--airpaste-shell-collapsed-h);
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    transform 0.45s var(--airpaste-expand-ease),
+    opacity 0.45s var(--airpaste-expand-ease),
+    visibility 0.45s;
+}
+
+body.airpaste-shell-collapsed .airpaste-pill-radiating-glow {
+  opacity: 1;
+  visibility: visible;
+}
+
+body.airpaste-opening .airpaste-pill-radiating-glow,
+body.airpaste-shell-expanded .airpaste-pill-radiating-glow {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.airpaste-radiating-ring {
+  position: absolute;
+  inset: 0;
+  border: 0.5px solid rgba(107, 107, 107, 0.089);
+  border-radius: 999px;
+  box-sizing: border-box;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(2);
+  animation: airpaste-radiate-out 60s linear infinite;
+}
+
+.airpaste-radiating-ring.ring-1 { animation-delay: -10s; }
+.airpaste-radiating-ring.ring-2 { animation-delay: -5s; }
+.airpaste-radiating-ring.ring-3 { animation-delay: 0s; }
+.airpaste-radiating-ring.ring-4 { animation-delay: 5s; }
+.airpaste-radiating-ring.ring-5 { animation-delay: 10s; }
+
+@keyframes airpaste-radiate-out {
+  0% {
+    transform: scale(1);
+    opacity: 0.65;
+  }
+
+  100% {
+    transform: scale(20);
+    opacity: 0;
+  }
+}
+
+.airpaste-expand-shockwave {
+  position: fixed;
+  top: -100vh;
+  left: -20vw;
+  width: 140vw;
+  height: 100vh;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.3) 18%,
+    rgba(255, 255, 255, 0.72) 46%,
+    rgba(255, 255, 255, 0.88) 58%,
+    rgba(255, 255, 255, 0.26) 82%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  pointer-events: none;
+  z-index: 9999;
+  transform: translateY(0);
+  opacity: 0;
+}
+
+body.airpaste-opening .airpaste-expand-shockwave {
+  animation: airpaste-sweep-down-wave 0.62s var(--airpaste-expand-ease) forwards;
+}
+
+@keyframes airpaste-sweep-down-wave {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  80% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(170vh);
+    opacity: 0;
+  }
+}
+
+.airpaste-page-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: #ffffff;
+  z-index: 99999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.airpaste-page-overlay.on-load {
+  opacity: 1 !important;
+  pointer-events: auto;
+}
+
+@media (max-width: 640px) {
+  .airpaste-device-shell.expanded {
+    inset: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: none;
+    border-radius: 0;
+  }
 }
 
 .airpaste-stage {
@@ -137,27 +372,38 @@ body.airpaste-page::before {
   height: auto;
 }
 
-.home-download-cta {
+.home-cta-stack {
   position: absolute;
   right: -28px;
   top: 50%;
   transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  z-index: 2;
+}
+
+.home-download-cta,
+.home-github-cta {
   display: inline-flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 0;
   color: #111111;
   text-decoration: none;
-  z-index: 2;
 }
 
 .home-download-cta__main,
-.home-download-cta__sub {
+.home-download-cta__sub,
+.home-github-cta__main,
+.home-github-cta__sub {
   background: #ffffff;
   box-shadow: none;
 }
 
-.home-download-cta__main {
+.home-download-cta__main,
+.home-github-cta__main {
   padding: 10px 18px 11px;
   font-size: clamp(1.15rem, 1.6vmax, 1.72rem);
   line-height: 1;
@@ -165,7 +411,8 @@ body.airpaste-page::before {
   font-weight: 400;
 }
 
-.home-download-cta__sub {
+.home-download-cta__sub,
+.home-github-cta__sub {
   margin-left: 52px;
   margin-top: -1px;
   padding: 8px 13px 9px;
@@ -190,7 +437,11 @@ body.airpaste-page::before {
 .home-download-cta:hover .home-download-cta__main,
 .home-download-cta:hover .home-download-cta__sub,
 .home-download-cta:focus-visible .home-download-cta__main,
-.home-download-cta:focus-visible .home-download-cta__sub {
+.home-download-cta:focus-visible .home-download-cta__sub,
+.home-github-cta:hover .home-github-cta__main,
+.home-github-cta:hover .home-github-cta__sub,
+.home-github-cta:focus-visible .home-github-cta__main,
+.home-github-cta:focus-visible .home-github-cta__sub {
   transform: translateX(3px);
 }
 
@@ -204,7 +455,7 @@ body.airpaste-page::before {
     width: min(50vw, 820px);
   }
 
-  .home-download-cta {
+  .home-cta-stack {
     right: -34px;
   }
 }
@@ -388,7 +639,7 @@ body.airpaste-page::before {
     width: min(68vw, 640px);
   }
 
-  .home-download-cta {
+  .home-cta-stack {
     right: -8px;
   }
 }
@@ -437,13 +688,15 @@ body.airpaste-page::before {
     width: min(82vw, 520px);
   }
 
-  .home-download-cta {
+  .home-cta-stack {
     position: static;
     transform: none;
     align-self: flex-end;
+    gap: 12px;
   }
 
-  .home-download-cta__sub {
+  .home-download-cta__sub,
+  .home-github-cta__sub {
     margin-left: 44px;
   }
 }
