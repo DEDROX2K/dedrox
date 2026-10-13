@@ -1,24 +1,19 @@
 # How I Designed an Alert System for a Healthcare Platform
-## The Context
+### The Context
 
 The client was an IoT company looking to offer **RPM as a service** to clinics and hospitals.
-
 They had: A strong vision , clear business intent and stakeholder buy-in.
-
 What they _didn’t_ have was a usable product. There was no defined dashboard, no workflows, and no shared understanding of how doctors and nurses would actually use the system day to day.
 
 My role was to help turn an idea into something concrete something they could **sell, demo, and eventually scale**.
 
 ## The Challenge
-
 The real constraints were:
-
 **A short and fixed timeline, limited design and development resources, a strict budget, high expectations from healthcare stakeholders.**
 
 The biggest risk wasn’t under-designing ,it was **over-designing or designing without understanding the scope and system.**
 
 ## Step 1: Defining the Path Forward
-
 I started my research by asking questions.
 
 1. **_How RPM system works?_**
@@ -26,7 +21,6 @@ I started my research by asking questions.
 3. **_Who are we designing for?_**
 
 ## Understanding the system
-
 To understand users in a complex RPM ecosystem, I focused on **the decisions different stakeholders are responsible for**,I began by mapping the **end-to-end lifecycle of the process.**
 
 Insights: This is an escalation system -process where alerts are handled in 3 levels of escalation.
