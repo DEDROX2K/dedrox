@@ -950,6 +950,7 @@ const contactNotesBtn = document.getElementById('contact-notes-btn');
 const contactBlogsBtn = document.getElementById('contact-blogs-btn');
 const portfolioHomeToggle = document.getElementById('portfolio-home-toggle');
 const portfolioWritingToggle = document.getElementById('portfolio-writing-toggle');
+const portfolioToggleBall = document.getElementById('portfolio-toggle-ball');
 const resumePopoutEl = document.getElementById('resume-popout');
 const resumePopoutFrame = document.getElementById('resume-popout-frame');
 const readerInlineEl = document.getElementById('reader-inline');
@@ -5524,14 +5525,131 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 420);
         }
 
+        pendingViewTarget = null;
         syncTopPillSelection();
-        syncPortfolioViewToggle();
+        syncPortfolioViewToggle(false);
+    };
+
+    let pendingViewTarget = null;
+    let currentBallPos = null;
+    let ballAnimation = null;
+
+    const getBallPosition = (btn) => {
+        if (!btn) return { x: 0, y: 0 };
+        const ballSize = 6;
+        const gap = 8;
+        return {
+            x: Math.round(btn.offsetLeft + btn.offsetWidth + gap),
+            y: Math.round(btn.offsetTop + (btn.offsetHeight - ballSize) / 2)
+        };
+    };
+
+    const updatePortfolioBall = (animate = true, targetName = null) => {
+        if (!portfolioToggleBall) return;
+        const resolved = targetName || pendingViewTarget || (readerMode.isActive() ? 'writings' : 'home');
+        const activeBtn = resolved === 'writings' ? portfolioWritingToggle : portfolioHomeToggle;
+        if (!activeBtn) return;
+
+        const target = getBallPosition(activeBtn);
+
+        // If an animation is already heading to this exact destination, let it finish naturally
+        if (ballAnimation && ballAnimation.targetPos && ballAnimation.targetPos.x === target.x && ballAnimation.targetPos.y === target.y) {
+            return;
+        }
+
+        if (!animate || !currentBallPos) {
+            if (ballAnimation) {
+                ballAnimation.cancel();
+                ballAnimation = null;
+            }
+            portfolioToggleBall.style.transform = `translate(${target.x}px, ${target.y}px) scale(1, 1)`;
+            currentBallPos = target;
+            return;
+        }
+
+        const start = currentBallPos;
+        const end = target;
+        if (start.x === end.x && start.y === end.y) return;
+
+        const dx = end.x - start.x;
+        const dy = end.y - start.y;
+        // The ball swings outward in an arc as it jumps between buttons
+        const swingOut = 14;
+
+        if (ballAnimation) {
+            ballAnimation.cancel();
+            ballAnimation = null;
+        }
+
+        const keyframes = [
+            {
+                transform: `translate(${start.x}px, ${start.y}px) scale(1, 1)`,
+                offset: 0
+            },
+            {
+                // Launch & stretch along flight path with outward swing starting
+                transform: `translate(${start.x + dx * 0.15 + swingOut * 0.4}px, ${start.y + dy * 0.12}px) scale(0.85, 1.25)`,
+                offset: 0.18
+            },
+            {
+                // Peak of the swing arc
+                transform: `translate(${start.x + dx * 0.5 + swingOut}px, ${start.y + dy * 0.5}px) scale(1.15, 0.88)`,
+                offset: 0.5
+            },
+            {
+                // Accelerating toward landing target
+                transform: `translate(${start.x + dx * 0.82 + swingOut * 0.3}px, ${start.y + dy * 0.85}px) scale(0.88, 1.2)`,
+                offset: 0.78
+            },
+            {
+                // Impact squash on landing
+                transform: `translate(${end.x}px, ${end.y}px) scale(1.4, 0.65)`,
+                offset: 0.88
+            },
+            {
+                // Rebound bounce
+                transform: `translate(${end.x + (dx > 0 ? 1 : -1) * 2}px, ${end.y - (dy > 0 ? 3 : -3)}px) scale(0.95, 1.06)`,
+                offset: 0.94
+            },
+            {
+                // Settled
+                transform: `translate(${end.x}px, ${end.y}px) scale(1, 1)`,
+                offset: 1
+            }
+        ];
+
+        ballAnimation = portfolioToggleBall.animate(keyframes, {
+            duration: 380,
+            easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)',
+            fill: 'forwards'
+        });
+        ballAnimation.targetPos = end;
+
+        currentBallPos = end;
+
+        ballAnimation.onfinish = () => {
+            portfolioToggleBall.style.transform = `translate(${end.x}px, ${end.y}px) scale(1, 1)`;
+            ballAnimation = null;
+        };
+    };
+
+    const syncPortfolioViewToggle = (animate = false) => {
+        const resolved = pendingViewTarget || (readerMode.isActive() ? 'writings' : 'home');
+        const writingIsActive = resolved === 'writings';
+        portfolioHomeToggle?.setAttribute('aria-pressed', String(!writingIsActive));
+        portfolioWritingToggle?.setAttribute('aria-pressed', String(writingIsActive));
+        updatePortfolioBall(animate, resolved);
     };
 
     const goToHomeScreen = () => {
         if (writingRevealTimerId) window.clearTimeout(writingRevealTimerId);
         writingRevealTimerId = 0;
         clearViewSwitchTimers();
+
+        pendingViewTarget = 'home';
+        portfolioHomeToggle?.setAttribute('aria-pressed', 'true');
+        portfolioWritingToggle?.setAttribute('aria-pressed', 'false');
+        updatePortfolioBall(true, 'home');
 
         if (!device || !readerMode.isActive()) {
             revealHomeScreen();
@@ -5550,6 +5668,11 @@ document.addEventListener('DOMContentLoaded', () => {
         expandDeviceShell(false);
         if (!device || readerMode.isActive()) return;
 
+        pendingViewTarget = 'writings';
+        portfolioHomeToggle?.setAttribute('aria-pressed', 'false');
+        portfolioWritingToggle?.setAttribute('aria-pressed', 'true');
+        updatePortfolioBall(true, 'writings');
+
         clearViewSwitchTimers();
         if (writingRevealTimerId) window.clearTimeout(writingRevealTimerId);
         device.classList.remove('is-home-entering', 'is-writing-leaving', 'is-writing-entering');
@@ -5561,10 +5684,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (recruiterMode.isActive()) recruiterMode.close();
             if (chatMode.isActive()) chatMode.close();
             readerMode.open();
+            pendingViewTarget = null;
             showSectionContextHint('Writings');
             if (typeof blogSystem !== 'undefined') blogSystem.loadBlogs();
             syncTopPillSelection();
-            syncPortfolioViewToggle();
+            syncPortfolioViewToggle(false);
 
             void device.offsetWidth;
             device.classList.add('is-writing-entering');
@@ -5573,12 +5697,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 writingRevealTimerId = 0;
             }, 420);
         }, 150);
-    };
-
-    const syncPortfolioViewToggle = () => {
-        const writingIsActive = readerMode.isActive();
-        portfolioHomeToggle?.setAttribute('aria-pressed', String(!writingIsActive));
-        portfolioWritingToggle?.setAttribute('aria-pressed', String(writingIsActive));
     };
 
     // Config based UI updates
@@ -5637,6 +5755,10 @@ document.addEventListener('DOMContentLoaded', () => {
     applyMatrixPausedState();
     leftOrbControls.refreshTime();
     window.addEventListener('resize', scheduleFittyRefresh, { passive: true });
+    window.addEventListener('resize', () => updatePortfolioBall(false), { passive: true });
+    requestAnimationFrame(() => updatePortfolioBall(false));
+    document.fonts?.ready?.then?.(() => updatePortfolioBall(false));
+    setTimeout(() => updatePortfolioBall(false), 200);
 
 
     leftControlsEl?.addEventListener('click', (e) => {
