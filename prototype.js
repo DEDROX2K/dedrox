@@ -5521,7 +5521,7 @@ document.addEventListener('DOMContentLoaded', () => {
             homeRevealTimerId = window.setTimeout(() => {
                 device.classList.remove('is-home-entering');
                 homeRevealTimerId = 0;
-            }, 760);
+            }, 420);
         }
 
         syncTopPillSelection();
@@ -5543,7 +5543,7 @@ document.addEventListener('DOMContentLoaded', () => {
         viewSwitchTimerId = window.setTimeout(() => {
             viewSwitchTimerId = 0;
             revealHomeScreen();
-        }, 320);
+        }, 150);
     };
 
     const openWritingsScreen = () => {
@@ -5571,8 +5571,8 @@ document.addEventListener('DOMContentLoaded', () => {
             writingRevealTimerId = window.setTimeout(() => {
                 device.classList.remove('is-writing-entering');
                 writingRevealTimerId = 0;
-            }, 800);
-        }, 320);
+            }, 420);
+        }, 150);
     };
 
     const syncPortfolioViewToggle = () => {
@@ -5710,6 +5710,7 @@ document.addEventListener('DOMContentLoaded', () => {
     portfolioHomeToggle?.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
+        if (!readerMode.isActive() && !chatMode.isActive() && !recruiterMode.isActive()) return;
         goToHomeScreen();
         showSectionContextHint('Home');
     });

@@ -16,8 +16,8 @@
 
     /* refer this site to get more cubic references - https://joshcollinsworth.com/blog/easing-curves */
     /* Motion */
-    --ease-lux: cubic-bezier(0.42, 0, 0.2, 1);
-    --ease-genie: cubic-bezier(0.42, 0, 0.2, 1);
+    --ease-lux: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-genie: cubic-bezier(0.16, 1, 0.3, 1);
 
     /* Layout */
     /* Responsive desktop frame: broad on laptops, capped on large monitors. */
@@ -2632,6 +2632,7 @@ body.device-maximized .expand-fab .icon-expand {
     box-shadow: 0 3px 10px rgba(17, 17, 17, 0.08);
     backdrop-filter: blur(12px) saturate(120%);
     -webkit-backdrop-filter: blur(12px) saturate(120%);
+    animation: none !important;
 }
 
 #contact-pocket.pill-portfolio-text .portfolio-view-toggle {
@@ -2639,6 +2640,12 @@ body.device-maximized .expand-fab .icon-expand {
     flex: 1;
     padding: 0 8px;
     font-size: 0.9rem;
+    border-radius: 7px;
+    transition: background-color 0.16s var(--ease-lux), color 0.16s var(--ease-lux), transform 0.14s var(--ease-lux);
+}
+
+#contact-pocket.pill-portfolio-text .portfolio-view-toggle:active {
+    transform: scale(0.96);
 }
 
 #contact-pocket .pill-open-prompt {
@@ -4434,58 +4441,57 @@ body.recruiter-mode .recruiter-cases .folder-menu {
 }
 
 .device-container.expanded .reveal {
-    animation: reveal-up 0.8s var(--ease-lux) forwards;
+    animation: reveal-up 0.44s var(--ease-lux) forwards;
 }
 
 /* Writings enters with the same reveal used by the home content. */
 .device-container.reader-mode.is-writing-entering #reader-inline {
-    animation: reveal-up 0.8s var(--ease-lux) both;
+    animation: reveal-up 0.4s var(--ease-lux) both;
 }
 
 .device-container.is-home-leaving .site-content > :not(#reader-inline):not([hidden]) {
-    animation: home-section-exit 0.2s ease-in both;
+    animation: home-section-exit 0.15s cubic-bezier(0.35, 0, 0.8, 0.2) both;
 }
 
 .device-container.is-home-leaving .site-content > :not(#reader-inline):not([hidden]):nth-child(3n + 1) {
-    animation-duration: 0.17s;
+    animation-duration: 0.13s;
 }
 
 .device-container.is-home-leaving .site-content > :not(#reader-inline):not([hidden]):nth-child(3n + 2) {
-    animation-delay: 0.05s;
-    animation-duration: 0.24s;
+    animation-delay: 0.03s;
+    animation-duration: 0.15s;
 }
 
 .device-container.is-home-leaving .site-content > :not(#reader-inline):not([hidden]):nth-child(3n) {
-    animation-delay: 0.09s;
-    animation-duration: 0.21s;
+    animation-delay: 0.05s;
+    animation-duration: 0.14s;
 }
 
 .device-container.is-writing-leaving #reader-inline {
-    animation: writings-section-exit 0.22s ease-in both;
+    animation: writings-section-exit 0.15s cubic-bezier(0.35, 0, 0.8, 0.2) both;
 }
 
 .device-container.is-home-entering .site-content > :not(#reader-inline):not([hidden]) {
-    animation: home-section-enter 0.52s var(--ease-lux) both;
+    animation: home-section-enter 0.36s var(--ease-lux) both;
 }
 
 .device-container.is-home-entering .site-content > :not(#reader-inline):not([hidden]):nth-child(3n + 1) {
-    animation-duration: 0.42s;
+    animation-duration: 0.32s;
 }
 
 .device-container.is-home-entering .site-content > :not(#reader-inline):not([hidden]):nth-child(3n + 2) {
-    animation-delay: 0.08s;
-    animation-duration: 0.58s;
+    animation-delay: 0.04s;
+    animation-duration: 0.36s;
 }
 
 .device-container.is-home-entering .site-content > :not(#reader-inline):not([hidden]):nth-child(3n) {
-    animation-delay: 0.14s;
-    animation-duration: 0.48s;
+    animation-delay: 0.07s;
+    animation-duration: 0.34s;
 }
 
 .device-container.is-home-entering .top-bar-pill,
-.device-container.is-home-entering #contact-pocket,
 .device-container.is-home-entering .site-bottom-links {
-    animation: view-control-enter 0.44s var(--ease-lux) both;
+    animation: view-control-enter 0.32s var(--ease-lux) both;
 }
 
 @keyframes home-section-exit {
@@ -4495,7 +4501,7 @@ body.recruiter-mode .recruiter-cases .folder-menu {
     }
     to {
         opacity: 0;
-        transform: translateY(-12px);
+        transform: translateY(-8px);
     }
 }
 
@@ -4506,14 +4512,14 @@ body.recruiter-mode .recruiter-cases .folder-menu {
     }
     to {
         opacity: 0;
-        transform: translateY(-10px);
+        transform: translateY(-8px);
     }
 }
 
 @keyframes home-section-enter {
     from {
         opacity: 0;
-        transform: translateY(18px);
+        transform: translateY(16px);
     }
     to {
         opacity: 1;
@@ -4524,7 +4530,7 @@ body.recruiter-mode .recruiter-cases .folder-menu {
 @keyframes view-control-enter {
     from {
         opacity: 0;
-        transform: translateY(-7px);
+        transform: translateY(-6px);
     }
     to {
         opacity: 1;
@@ -4533,30 +4539,30 @@ body.recruiter-mode .recruiter-cases .folder-menu {
 }
 
 .delay-1 {
-    animation-delay: 0.06s;
+    animation-delay: 0.05s;
 }
 
 .delay-2 {
-    animation-delay: 0.12s;
+    animation-delay: 0.09s;
 }
 
 .delay-3 {
-    animation-delay: 0.18s;
+    animation-delay: 0.13s;
 }
 
 .delay-4 {
-    animation-delay: 0.24s;
+    animation-delay: 0.17s;
 }
 
 .delay-5 {
-    animation-delay: 0.3s;
+    animation-delay: 0.21s;
 }
 
 @keyframes reveal-up {
     from {
         opacity: 0;
-        transform: translateY(30px) scale(0.98);
-        filter: blur(10px);
+        transform: translateY(20px) scale(0.99);
+        filter: blur(5px);
     }
 
     to {
