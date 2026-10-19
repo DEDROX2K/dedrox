@@ -1,4 +1,3 @@
-# How I Designed an Alert System for a Healthcare Platform
 ### The Context
 
 The client was an IoT company looking to offer **RPM as a service** to clinics and hospitals.
