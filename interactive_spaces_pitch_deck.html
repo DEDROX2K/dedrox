@@ -10,7 +10,7 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
 
 :root {
-  --bg: #0b0c0e;
+  --bg: black;
   --bg-soft: #0f1012;
   --ink: #f3f3f1;
   --muted: #a7aaad;
@@ -40,7 +40,6 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
-  cursor: none;
 }
 a { color: inherit; text-decoration: none; }
 button, a { -webkit-tap-highlight-color: transparent; }
@@ -48,75 +47,6 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .section-anchor { scroll-margin-top: calc(var(--header-height) + 10px); }
 h1, h2, h3, h4 { font-family: 'Manrope', sans-serif; }
 h1, h2, h3, p { margin-top: 0; }
-
-/* ---------- Custom cursor ---------- */
-.cursor-dot, .cursor-ring {
-  position: fixed;
-  top: 0; left: 0;
-  pointer-events: none;
-  z-index: 9999;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  will-change: transform;
-}
-.cursor-dot {
-  width: 5px; height: 5px;
-  background: var(--ink);
-  transition: opacity .2s ease;
-}
-.cursor-ring {
-  width: 30px; height: 30px;
-  border: 1px solid rgba(255,255,255,.55);
-  background: rgba(255,255,255,.03);
-  backdrop-filter: blur(2px);
-  transition: width .25s ease, height .25s ease, border-color .25s ease, background-color .25s ease, opacity .2s ease;
-}
-.cursor-ring.is-active { width: 54px; height: 54px; border-color: rgba(255,255,255,.85); background: rgba(255,255,255,.08); }
-.cursor-ring.is-hidden, .cursor-dot.is-hidden { opacity: 0; }
-@media (hover: none), (pointer: coarse) {
-  body { cursor: auto; }
-  .cursor-dot, .cursor-ring { display: none; }
-}
-
-/* ---------- Stickers (edge rails) ---------- */
-.sticker-rail {
-  position: fixed;
-  top: 0; bottom: 0;
-  width: 128px;
-  z-index: 40;
-  pointer-events: none;
-}
-.sticker-rail.left { left: 0; }
-.sticker-rail.right { right: 0; }
-.sticker-rail.left .sticker { left: 20px; }
-.sticker-rail.right .sticker { right: 20px; }
-.sticker {
-  position: absolute;
-  width: 52px;
-  height: auto;
-  opacity: .88;
-  filter: drop-shadow(0 6px 18px rgba(0,0,0,.45));
-  pointer-events: auto;
-  cursor: grab;
-  touch-action: none;
-  user-select: none;
-  -webkit-user-drag: none;
-  animation: sticker-float 7s ease-in-out infinite;
-  will-change: transform;
-}
-.sticker:active { cursor: grabbing; animation-play-state: paused; }
-.sticker.is-dragging { opacity: 1; filter: drop-shadow(0 10px 24px rgba(0,0,0,.55)); }
-@keyframes sticker-float {
-  0%, 100% { transform: translate(var(--ox, 0px), var(--oy, 0px)) rotate(var(--rot, 0deg)); }
-  50% { transform: translate(calc(var(--ox, 0px) + 6px), calc(var(--oy, 0px) - 8px)) rotate(calc(var(--rot, 0deg) + 2deg)); }
-}
-@media (max-width: 900px) {
-  .sticker-rail { width: 64px; }
-  .sticker { width: 36px; }
-}
-@media (max-width: 640px) {
-  .sticker-rail { display: none; }
-}
 
 /* ---------- Fixed navigation: glass pill ---------- */
 .site-header {
@@ -137,7 +67,7 @@ h1, h2, h3, p { margin-top: 0; }
   align-items: center;
   gap: 30px;
 }
-.brand { display: inline-flex; align-items: center; gap: 10px; flex: 0 0 auto; color: var(--ink); font-size: 10px; font-weight: 700; letter-spacing: .14em; white-space: nowrap; }
+.brand { display: inline-flex; align-items: center; gap: 10px; flex: 0 0 auto; color: var(--ink); font-size: 20px; font-weight: 700; letter-spacing: .14em; white-space: nowrap; }
 .brand img { height: 20px; width: auto; display: block; }
 .status-dot { width: 6px; height: 6px; flex: 0 0 auto; border-radius: 50%; background: #9ea2a8; }
 .nav-scroll { min-width: 0; flex: 1; overflow-x: auto; scrollbar-width: none; }
@@ -210,16 +140,14 @@ h1, h2, h3, p { margin-top: 0; }
 .glass-toggle { position: relative; display: inline-flex; flex: 0 0 auto; align-items: center; gap: 4px; padding: 4px; overflow: hidden; border: 1px solid var(--line-strong); border-radius: 999px; background: rgba(255,255,255,.05); backdrop-filter: blur(20px) saturate(130%); -webkit-backdrop-filter: blur(20px) saturate(130%); }
 .toggle-glider { position: absolute; top: 4px; bottom: 4px; left: 4px; width: calc(50% - 2px); border: 1px solid var(--line-strong); border-radius: 999px; background: rgba(255,255,255,.14); pointer-events: none; transition: transform .35s cubic-bezier(.2,.8,.2,1); }
 .glass-toggle[data-active="solution"] .toggle-glider { transform: translateX(calc(100% + 4px)); }
-.toggle-option { position: relative; z-index: 1; display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 42px; padding: 0 16px; border: 0; border-radius: 999px; background: transparent; color: var(--quiet); font: inherit; font-size: 11px; font-weight: 600; white-space: nowrap; cursor: none; transition: color .2s ease; }
+.toggle-option { position: relative; z-index: 1; display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 42px; padding: 0 16px; border: 0; border-radius: 999px; background: transparent; color: var(--quiet); font: inherit; font-size: 11px; font-weight: 600; white-space: nowrap; cursor: pointer; transition: color .2s ease; }
 .toggle-option.is-active { color: var(--ink); }
 .toggle-option:focus-visible { outline: 2px solid var(--muted); outline-offset: 3px; }
 .toggle-panels { position: relative; min-height: 390px; }
 .toggle-panel { position: absolute; inset: 0; display: grid; grid-template-columns: 1.05fr .95fr; align-items: center; gap: clamp(34px, 6vw, 74px); opacity: 0; visibility: hidden; transform: translateY(12px); pointer-events: none; transition: opacity .35s ease, transform .35s ease, visibility .35s ease; }
 .toggle-panel.is-active { position: relative; opacity: 1; visibility: visible; transform: translateY(0); pointer-events: auto; }
-.image-placeholder { display: flex; min-height: 280px; height: min(38vw, 390px); align-items: center; justify-content: center; margin: 0; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius); background: rgba(255,255,255,.04); text-align: center; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
-.placeholder-inner { max-width: 380px; padding: 22px; }
-.placeholder-tag { display: inline-flex; margin-bottom: 11px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,.05); color: var(--muted); font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
-.placeholder-inner p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.65; }
+.panel-photo { display: block; min-height: 280px; height: min(38vw, 390px); margin: 0; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius); background: rgba(255,255,255,.04); }
+.panel-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .kicker { margin: 0 0 11px; color: var(--quiet); font-size: 10px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
 .toggle-panel-copy h3 { max-width: 570px; margin: 0; color: var(--ink); font-size: clamp(36px, 4.4vw, 58px); font-weight: 600; letter-spacing: -.05em; line-height: 1.08; }
 .section-lead { max-width: 570px; margin: 17px 0 0; color: var(--muted); font-size: 15px; line-height: 1.8; }
@@ -233,29 +161,27 @@ h1, h2, h3, p { margin-top: 0; }
 .section-label i { width: 38px; height: 1px; background: var(--line-strong); }
 .section-heading > p { max-width: 700px; margin: 0; color: var(--muted); font-size: 16px; line-height: 1.8; }
 .offering-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-.offering-card { padding: 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); transition: border-color .2s ease, background-color .2s ease, transform .2s ease; }
+.offering-card { padding: 26px 24px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); transition: border-color .2s ease, background-color .2s ease, transform .2s ease; }
 .offering-card:hover { transform: translateY(-2px); border-color: var(--line-strong); background: var(--surface-strong); }
-.card-image { display: flex; aspect-ratio: 16 / 9; align-items: center; justify-content: center; padding: 25px; border: 1px solid var(--line); border-radius: 10px; background: rgba(255,255,255,.03); text-align: center; }
-.card-image p, .technology-image p, .market-card-image p { max-width: 290px; margin: 0; color: var(--muted); font-size: 12px; line-height: 1.7; }
-.card-copy { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; padding: 17px 8px 8px; }
-.card-copy h3, .technology-title h3, .market-card h3, .revenue-card h3 { margin: 0; color: var(--ink); font-size: 16px; font-weight: 700; letter-spacing: -.025em; }
-.card-copy p, .technology-card > p, .market-card > p, .revenue-card p { max-width: 430px; margin: 7px 0 0; color: var(--muted); font-size: 12px; line-height: 1.75; }
-.card-number { color: var(--quiet); font-size: 10px; font-weight: 700; }
+.card-number { display: block; margin-bottom: 14px; color: var(--quiet); font-size: 11px; font-weight: 700; letter-spacing: .08em; }
+.offering-card h3, .technology-title h3, .market-card h3, .revenue-card h3 { margin: 0; color: var(--ink); font-size: 17px; font-weight: 700; letter-spacing: -.025em; }
+.offering-card > p, .technology-card > p, .market-card > p, .revenue-card p { max-width: 430px; margin: 9px 0 0; color: var(--muted); font-size: 13px; line-height: 1.75; }
+.spec-list { list-style: none; margin: 16px 0 0; padding: 14px 0 0; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 8px; }
+.spec-list li { position: relative; padding-left: 15px; color: var(--muted); font-size: 12px; line-height: 1.6; }
+.spec-list li::before { content: ""; position: absolute; left: 0; top: 7px; width: 4px; height: 4px; border-radius: 50%; background: var(--line-strong); }
 .technology-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
-.technology-card { padding: 12px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); }
-.technology-image { display: flex; aspect-ratio: 1; align-items: center; justify-content: center; margin-bottom: 18px; padding: 22px; border: 1px solid var(--line); border-radius: 10px; background: rgba(255,255,255,.03); text-align: center; }
-.technology-title { display: flex; align-items: center; gap: 11px; padding-top: 14px; border-top: 1px solid var(--line); }
+.technology-card { padding: 24px 22px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); }
+.technology-title { display: flex; align-items: center; gap: 11px; margin-bottom: 4px; }
 .technology-title > span { color: var(--quiet); font-size: 10px; font-weight: 700; }
-.technology-title h3 { font-size: 14px; }
-.market-overview { display: flex; min-height: 300px; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 12px; padding: 38px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); text-align: center; backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); }
-.research-label { margin-bottom: 12px; padding: 7px 11px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,.05); color: var(--muted); font-size: 9px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
-.market-overview p { max-width: 450px; margin: 0; color: var(--muted); font-size: 12px; line-height: 1.75; }
+.technology-title h3 { font-size: 15px; }
+.market-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-bottom: 12px; }
+.stat-block { padding: 24px 22px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); }
+.stat-value { display: block; margin-bottom: 10px; color: var(--ink); font-family: 'Manrope', sans-serif; font-size: clamp(26px, 3vw, 34px); font-weight: 700; letter-spacing: -.03em; }
+.stat-label { display: block; max-width: 320px; color: var(--muted); font-size: 12px; line-height: 1.7; }
 .market-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-.market-card { padding: 12px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); }
-.market-card-image { display: flex; aspect-ratio: 16 / 7; align-items: center; justify-content: center; margin-bottom: 16px; padding: 20px; border: 1px solid var(--line); border-radius: 10px; background: rgba(255,255,255,.03); text-align: center; }
-.market-card h3, .market-card > p { margin-left: 4px; margin-right: 4px; }
-.market-card h3 { font-size: 14px; }
-.market-card > p { margin-top: 7px; margin-bottom: 6px; }
+.market-card { padding: 22px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); }
+.market-card h3 { font-size: 15px; }
+.market-card > p { margin-top: 9px; }
 .revenue-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
 .revenue-card { min-height: 180px; padding: 17px 14px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); }
 .revenue-card > span { display: grid; width: 29px; height: 29px; place-items: center; margin-bottom: 27px; border: 1px solid var(--line-strong); border-radius: 8px; color: var(--muted); font-size: 9px; font-weight: 700; }
@@ -266,7 +192,16 @@ h1, h2, h3, p { margin-top: 0; }
 .roadmap-placeholder p, .roadmap-tile p { max-width: 420px; margin: 0; color: var(--muted); font-size: 12px; line-height: 1.75; }
 .roadmap-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 .roadmap-tile { display: flex; min-height: 180px; align-items: center; justify-content: center; padding: 26px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); text-align: center; backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); }
-.site-footer { padding: 30px 0 35px; border-top: 1px solid var(--line); background: var(--bg); color: var(--ink); }
+.site-footer { padding: 54px 0 35px; border-top: 1px solid var(--line); background: var(--bg); color: var(--ink); }
+.footer-collage { display: flex; align-items: center; margin-bottom: 40px; overflow-x: auto; padding: 10px 4px 18px; }
+.collage-item { position: relative; flex: 0 0 auto; width: 118px; height: 148px; margin-left: -18px; overflow: hidden; border: 1px solid var(--line-strong); border-radius: 6px; background: rgba(255,255,255,.04); box-shadow: 0 14px 28px rgba(0,0,0,.45); transition: transform .25s ease, z-index 0s; }
+.collage-item:first-child { margin-left: 0; }
+.collage-item:nth-child(odd) { transform: rotate(-4deg); }
+.collage-item:nth-child(even) { transform: rotate(3deg); }
+.collage-item:hover { transform: translateY(-10px) rotate(0deg); z-index: 5; }
+.collage-item img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.collage-item.is-empty { display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,.03); }
+.collage-item.is-empty::after { content: "+"; color: var(--quiet); font-size: 20px; }
 .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
 .footer-inner span:first-child { font-size: 10px; font-weight: 700; letter-spacing: .14em; }
 .footer-inner span:last-child { color: var(--muted); font-size: 11px; }
@@ -306,7 +241,7 @@ h1, h2, h3, p { margin-top: 0; }
   .toggle-section-heading { align-items: flex-start; flex-direction: column; }
   .toggle-panels { min-height: 0; }
   .toggle-panel { grid-template-columns: 1fr 1fr; gap: 28px; }
-  .image-placeholder { height: 34vw; }
+  .panel-photo { height: 34vw; }
   .revenue-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 @media (max-width: 640px) {
@@ -330,7 +265,7 @@ h1, h2, h3, p { margin-top: 0; }
   .toggle-panels { min-height: 0; }
   .toggle-panel, .toggle-panel.is-active { position: relative; grid-template-columns: 1fr; gap: 23px; }
   .toggle-panel:not(.is-active) { display: none; }
-  .image-placeholder { height: 55vw; min-height: 190px; max-height: 300px; }
+  .panel-photo { height: 55vw; min-height: 190px; max-height: 300px; }
   .toggle-panel-copy h3 { font-size: clamp(34px, 9vw, 46px); }
   .section-lead { font-size: 14px; }
   .page-section { padding: 82px 0; }
@@ -338,12 +273,7 @@ h1, h2, h3, p { margin-top: 0; }
   .section-heading > p { font-size: 14px; }
   .offering-grid, .market-grid, .roadmap-grid { grid-template-columns: 1fr; }
   .technology-grid { grid-template-columns: 1fr; }
-  .technology-card { display: grid; grid-template-columns: 112px 1fr; column-gap: 14px; align-items: center; }
-  .technology-image { grid-row: span 2; width: 112px; margin: 0; aspect-ratio: 1; padding: 10px; }
-  .technology-image p { font-size: 10px; }
-  .technology-title { align-self: end; padding-top: 0; border: 0; }
-  .technology-card > p { align-self: start; margin-top: 7px; }
-  .market-overview { min-height: 260px; padding: 24px; }
+  .market-stats { grid-template-columns: 1fr; }
   .revenue-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .revenue-card { min-height: 155px; padding: 15px; }
   .revenue-card > span { margin-bottom: 21px; }
@@ -362,29 +292,11 @@ h1, h2, h3, p { margin-top: 0; }
   </style>
 </head>
 <body>
-  <!-- Custom cursor -->
-  <div class="cursor-dot" aria-hidden="true"></div>
-  <div class="cursor-ring" aria-hidden="true"></div>
-
-  <!-- Edge sticker rails -->
-  <!-- <div class="sticker-rail left" aria-hidden="true">
-    <img class="sticker" data-origin-top="10" src="images/ba1.png" alt="" style="top:10%;" />
-    <img class="sticker" data-origin-top="36" src="images/ba2.png" alt="" style="top:36%;" />
-    <img class="sticker" data-origin-top="62" src="images/ba3.png" alt="" style="top:62%;" />
-    <img class="sticker" data-origin-top="86" src="images/ba4.png" alt="" style="top:86%;" />
-  </div>
-  <div class="sticker-rail right" aria-hidden="true">
-    <img class="sticker" data-origin-top="16" src="images/ba5.png" alt="" style="top:16%;" />
-    <img class="sticker" data-origin-top="42" src="images/ba6.png" alt="" style="top:42%;" />
-    <img class="sticker" data-origin-top="68" src="images/ba7.png" alt="" style="top:68%;" />
-    <img class="sticker" data-origin-top="90" src="images/ba8.png" alt="" style="top:90%;" />
-  </div> -->
-
   <header class="site-header">
     <nav class="nav-wrap" aria-label="Main navigation">
-      <a class="brand" href="#top" aria-label="Interactive Spaces, home">
+      <a class="brand" href="#top" aria-label="KURI, home">
         <img src="images/Kuri-logo.png" alt="" />
-        <span>INTERACTIVE SPACES</span>
+        <span>KURI</span>
       </a>
       <div class="nav-scroll">
         <ul class="nav-links">
@@ -404,18 +316,7 @@ h1, h2, h3, p { margin-top: 0; }
       <div class="hero-bg" aria-hidden="true"></div>
       <canvas class="hero-ascii" aria-hidden="true"></canvas>
       <div class="hero-content content-width">
-        <!-- <span class="eyebrow-pill"><span class="status-dot" aria-hidden="true"></span>Business pitch deck</span> -->
         <h1>Interactive experiences for real-world spaces.</h1>
-        <!-- <p class="hero-intro">We create interactive displays, games and brand experiences that give people a reason to stop, explore and get involved.</p> -->
-        <!-- <div class="hero-actions">
-          <a class="button button-primary" href="#problem-solution">See the idea <span aria-hidden="true">↓</span></a>
-          <a class="button button-secondary" href="#what-we-do">What we do</a>
-        </div> -->
-        <!-- <div class="hero-highlights" aria-label="What the business brings together">
-          <div class="hero-highlight"><span>01 / EXPERIENCE</span><strong>Interactive displays</strong></div>
-          <div class="hero-highlight"><span>02 / CONTENT</span><strong>Games and brand stories</strong></div>
-          <div class="hero-highlight"><span>03 / TECHNOLOGY</span><strong>Cameras and software</strong></div>
-        </div> -->
       </div>
     </section>
 
@@ -436,12 +337,9 @@ h1, h2, h3, p { margin-top: 0; }
 
         <div class="toggle-panels" aria-live="polite">
           <article class="toggle-panel is-active" data-panel="problem" aria-hidden="false">
-            <div class="image-placeholder problem-image">
-              <div class="placeholder-inner">
-                <span class="placeholder-tag">The challenge</span>
-                <p>A quiet retail, public or visitor space with a screen people are walking past</p>
-              </div>
-            </div>
+            <figure class="panel-photo">
+              <img src="images/busy kids.png" alt="A group of children distracted and disengaged near a plain screen">
+            </figure>
             <div class="toggle-panel-copy">
               <p class="kicker">01 / The problem</p>
               <h3>Most screens are easy to walk past.</h3>
@@ -450,12 +348,9 @@ h1, h2, h3, p { margin-top: 0; }
           </article>
 
           <article class="toggle-panel" data-panel="solution" aria-hidden="true" inert>
-            <div class="image-placeholder solution-image">
-              <div class="placeholder-inner">
-                <span class="placeholder-tag">The opportunity</span>
-                <p>An interactive display with people using it together</p>
-              </div>
-            </div>
+            <figure class="panel-photo">
+              <img src="images/Display kids.png" alt="Children actively engaged with an interactive display">
+            </figure>
             <div class="toggle-panel-copy">
               <p class="kicker">02 / The idea</p>
               <h3>Give people something to take part in.</h3>
@@ -475,20 +370,48 @@ h1, h2, h3, p { margin-top: 0; }
 
         <div class="offering-grid">
           <article class="offering-card">
-            <div class="card-image"><p>Image: A game being played on a large interactive display</p></div>
-            <div class="card-copy"><div><h3>Interactive games</h3><p>Simple, hands-on games that invite visitors to join in.</p></div><span class="card-number">01</span></div>
+            <span class="card-number">01</span>
+            <h3>Interactive games</h3>
+            <p>Multiplayer, motion- and touch-driven games built on Unity, Unreal or WebGL, scaling from a single kiosk to a 10m video wall.</p>
+            <ul class="spec-list">
+              <li>Skeletal and gesture tracking via depth sensors</li>
+              <li>2–40 concurrent players per installation</li>
+              <li>Sub-80ms input-to-screen latency</li>
+              <li>Live leaderboards and session analytics</li>
+            </ul>
           </article>
           <article class="offering-card">
-            <div class="card-image"><p>Image: A branded installation in a public or event space</p></div>
-            <div class="card-copy"><div><h3>Brand experiences</h3><p>Ways for brands to tell a story people can take part in.</p></div><span class="card-number">02</span></div>
+            <span class="card-number">02</span>
+            <h3>Brand experiences</h3>
+            <p>Branded touch and motion interfaces triggered by RFID, NFC or QR, with content swapped remotely through our CMS.</p>
+            <ul class="spec-list">
+              <li>RFID / NFC / QR trigger points</li>
+              <li>Remote content scheduling and A/B variants</li>
+              <li>Dwell-time and completion-rate reporting</li>
+              <li>White-labelled to brand design systems</li>
+            </ul>
           </article>
           <article class="offering-card">
-            <div class="card-image"><p>Image: A large digital product display or configurator</p></div>
-            <div class="card-copy"><div><h3>Product exploration</h3><p>Interactive demos that help people explore products and features.</p></div><span class="card-number">03</span></div>
+            <span class="card-number">03</span>
+            <h3>Product exploration</h3>
+            <p>3D product configurators rendered in WebGL or Three.js, pulling live inventory and pricing through a REST API.</p>
+            <ul class="spec-list">
+              <li>Real-time 3D configuration and material swaps</li>
+              <li>Live inventory and pricing via REST/GraphQL</li>
+              <li>Companion mobile AR preview</li>
+              <li>CRM and lead-capture integration</li>
+            </ul>
           </article>
           <article class="offering-card">
-            <div class="card-image"><p>Image: An interactive museum or learning exhibit</p></div>
-            <div class="card-copy"><div><h3>Learning and entertainment</h3><p>Exhibits and activities that make information more engaging.</p></div><span class="card-number">04</span></div>
+            <span class="card-number">04</span>
+            <h3>Learning and entertainment</h3>
+            <p>Multi-touch tables and walls with adaptive content difficulty, built for long, repeated use in museums and visitor centres.</p>
+            <ul class="spec-list">
+              <li>Up to 32-point PCAP multi-touch</li>
+              <li>Adaptive difficulty and spatial audio</li>
+              <li>High-contrast, voice-narration and switch-access modes</li>
+              <li>Usage logs for curators and exhibit teams</li>
+            </ul>
           </article>
         </div>
       </div>
@@ -503,19 +426,35 @@ h1, h2, h3, p { margin-top: 0; }
 
         <div class="technology-grid">
           <article class="technology-card">
-            <div class="technology-image"><p>Image: Commercial display or kiosk hardware</p></div>
             <div class="technology-title"><span>01</span><h3>Displays and hardware</h3></div>
             <p>The screens, kiosks and equipment that bring an installation to life.</p>
+            <ul class="spec-list">
+              <li>55"–98" commercial LED / LCD panels, 500–2500 nit</li>
+              <li>IP54-rated enclosures for outdoor and semi-outdoor sites</li>
+              <li>PoE++ powered, 24/7 duty-cycle rated</li>
+              <li>Embedded Android/Linux player with remote MDM and OTA updates</li>
+            </ul>
           </article>
           <article class="technology-card">
-            <div class="technology-image"><p>Image: Depth-sensing camera with a movement tracking view</p></div>
             <div class="technology-title"><span>02</span><h3>Depth cameras</h3></div>
             <p>Cameras that can read movement and help an experience respond to people.</p>
+            <ul class="spec-list">
+              <li>Time-of-flight and stereo depth sensing, up to 5m range</li>
+              <li>30–60fps skeletal tracking, multi-person segmentation</li>
+              <li>On-device edge inference, under 50ms response</li>
+              <li>Stable across variable ambient light conditions</li>
+            </ul>
           </article>
           <article class="technology-card">
-            <div class="technology-image"><p>Image: A view of the software platform or management dashboard</p></div>
             <div class="technology-title"><span>03</span><h3>Software platform</h3></div>
             <p>The software used to run experiences, manage content and review activity.</p>
+            <ul class="spec-list">
+              <li>Real-time engine: Unity, Unreal or WebGL</li>
+              <li>Cloud CMS for scheduling, remote deploys and content swaps</li>
+              <li>REST and WebSocket APIs for third-party integration</li>
+              <li>Analytics: dwell time, heatmaps, conversion funnels</li>
+              <li>Offline-first caching with automatic sync on reconnect</li>
+            </ul>
           </article>
         </div>
       </div>
@@ -528,20 +467,19 @@ h1, h2, h3, p { margin-top: 0; }
           <p>There are several places where interactive experiences can be useful. This section is where the market size, customer groups and competitor research should sit.</p>
         </div>
 
-        <div class="market-overview">
-          <div class="research-label">Research graphic</div>
-          <p>Add market size, growth figures and the main customer groups here. Use sourced figures and show where each number comes from.</p>
+        <div class="market-stats">
+          <div class="stat-block"><span class="stat-value">$0.0B</span><span class="stat-label">Total addressable market — add the sourced figure for digital signage / interactive display spend in your target region.</span></div>
+          <div class="stat-block"><span class="stat-value">0% CAGR</span><span class="stat-label">Expected annual growth — cite the research report you're using.</span></div>
+          <div class="stat-block"><span class="stat-value">0,000+</span><span class="stat-label">Addressable venues in your first market: retail, museums, visitor centres, events.</span></div>
         </div>
         <div class="market-grid">
           <article class="market-card">
-            <div class="market-card-image"><p>Add a competitor comparison or positioning map</p></div>
             <h3>Who else is in the market?</h3>
-            <p>Compare what other companies offer, who they sell to and how they charge.</p>
+            <p>Compare what other companies offer, who they sell to, their hardware stack and how they charge: one-off project fees, SaaS licensing, or revenue share.</p>
           </article>
           <article class="market-card">
-            <div class="market-card-image"><p>Add customer segments or early adopter research</p></div>
             <h3>Who is most likely to buy?</h3>
-            <p>Show the first customer groups to target, and the problem each group needs solved.</p>
+            <p>Show the first customer groups to target, their typical footfall and dwell time, budget bands, and the specific problem each group needs solved.</p>
           </article>
         </div>
       </div>
@@ -583,9 +521,19 @@ h1, h2, h3, p { margin-top: 0; }
   </main>
 
   <footer class="site-footer">
-    <div class="content-width footer-inner">
-      <span>INTERACTIVE SPACES</span>
-      <span>A clearer way to bring digital experiences into physical spaces.</span>
+    <div class="content-width">
+      <div class="footer-collage" aria-label="Installation photos">
+        <div class="collage-item"><img src="images/collage-1.jpg" alt="" onerror="this.style.display='none';this.parentElement.classList.add('is-empty')" /></div>
+        <div class="collage-item"><img src="images/collage-2.jpg" alt="" onerror="this.style.display='none';this.parentElement.classList.add('is-empty')" /></div>
+        <div class="collage-item"><img src="images/collage-3.jpg" alt="" onerror="this.style.display='none';this.parentElement.classList.add('is-empty')" /></div>
+        <div class="collage-item"><img src="images/collage-4.jpg" alt="" onerror="this.style.display='none';this.parentElement.classList.add('is-empty')" /></div>
+        <div class="collage-item"><img src="images/collage-5.jpg" alt="" onerror="this.style.display='none';this.parentElement.classList.add('is-empty')" /></div>
+        <div class="collage-item"><img src="images/collage-6.jpg" alt="" onerror="this.style.display='none';this.parentElement.classList.add('is-empty')" /></div>
+      </div>
+      <div class="footer-inner">
+        <span>KURI</span>
+        <span>A clearer way to bring digital experiences into physical spaces.</span>
+      </div>
     </div>
   </footer>
 
@@ -599,35 +547,6 @@ h1, h2, h3, p { margin-top: 0; }
 (() => {
   const clamp = (value, min = 0, max = 1) => Math.min(max, Math.max(min, value));
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const isFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-
-  // ---------- Custom cursor ----------
-  if (isFinePointer) {
-    const dot = document.querySelector('.cursor-dot');
-    const ring = document.querySelector('.cursor-ring');
-    let mx = window.innerWidth / 2, my = window.innerHeight / 2;
-    let rx = mx, ry = my;
-    window.addEventListener('mousemove', (e) => {
-      mx = e.clientX; my = e.clientY;
-      dot.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%)`;
-    });
-    window.addEventListener('mousedown', () => ring.classList.add('is-active'));
-    window.addEventListener('mouseup', () => ring.classList.remove('is-active'));
-    document.addEventListener('mouseleave', () => { dot.classList.add('is-hidden'); ring.classList.add('is-hidden'); });
-    document.addEventListener('mouseenter', () => { dot.classList.remove('is-hidden'); ring.classList.remove('is-hidden'); });
-    document.querySelectorAll('a, button, .sticker').forEach((el) => {
-      el.addEventListener('mouseenter', () => ring.classList.add('is-active'));
-      el.addEventListener('mouseleave', () => ring.classList.remove('is-active'));
-    });
-    function tickCursor() {
-      rx += (mx - rx) * 0;
-      ry += (my - ry) * 0;
-      ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%)`;
-      requestAnimationFrame(tickCursor);
-    }
-    tickCursor();
-  }
-
   // ---------- Hero ASCII overlay ----------
   (function heroAscii() {
     const canvas = document.querySelector('.hero-ascii');
@@ -697,48 +616,6 @@ h1, h2, h3, p { margin-top: 0; }
     if (reducedMotion) {
       // still render a single static frame, just no per-frame pointer reactivity loop cost
     }
-  })();
-
-  // ---------- Draggable edge stickers ----------
-  (function stickers() {
-    const stickers = document.querySelectorAll('.sticker');
-    const RANGE = 22; // px of allowed drag/float travel from the natural spot
-    stickers.forEach((el, idx) => {
-      el.style.setProperty('--rot', `${(idx % 2 === 0 ? -1 : 1) * (3 + idx)}deg`);
-      el.style.animationDelay = `${idx * 0.6}s`;
-      let dragging = false;
-      let startX = 0, startY = 0;
-      let ox = 0, oy = 0;
-
-      function onPointerDown(e) {
-        dragging = true;
-        el.classList.add('is-dragging');
-        el.setPointerCapture(e.pointerId);
-        startX = e.clientX; startY = e.clientY;
-      }
-      function onPointerMove(e) {
-        if (!dragging) return;
-        let dx = clamp(e.clientX - startX, -RANGE, RANGE);
-        let dy = clamp(e.clientY - startY, -RANGE, RANGE);
-        ox = dx; oy = dy;
-        el.style.setProperty('--ox', `${ox}px`);
-        el.style.setProperty('--oy', `${oy}px`);
-        el.style.animation = 'none';
-        el.style.transform = `translate(${ox}px, ${oy}px)`;
-      }
-      function onPointerUp(e) {
-        if (!dragging) return;
-        dragging = false;
-        el.classList.remove('is-dragging');
-        el.style.transform = '';
-        el.style.animation = '';
-      }
-      el.addEventListener('pointerdown', onPointerDown);
-      el.addEventListener('pointermove', onPointerMove);
-      el.addEventListener('pointerup', onPointerUp);
-      el.addEventListener('pointercancel', onPointerUp);
-      el.addEventListener('dragstart', (e) => e.preventDefault());
-    });
   })();
 
   // Keep the active navigation item in sync with the section in view.
