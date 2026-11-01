@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0b0c0e" />
+  <meta name="description" content="Interactive displays, games and brand experiences for physical spaces." />
+  <title>Interactive Spaces — Make spaces more interesting to be in</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  --bg: #0b0c0e;
+  --bg-soft: #0f1012;
+  --ink: #f3f3f1;
+  --muted: #a7aaad;
+  --quiet: #7d8085;
+  --line: rgba(255, 255, 255, .09);
+  --line-strong: rgba(255, 255, 255, .16);
+  --surface: rgba(255, 255, 255, .045);
+  --surface-strong: rgba(255, 255, 255, .08);
+  --glass-border: rgba(255, 255, 255, .14);
+  --header-height: 64px;
+  --radius: 14px;
+  --radius-sm: 10px;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-height) + 12px);
+  background: var(--bg);
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+  cursor: none;
+}
+a { color: inherit; text-decoration: none; }
+button, a { -webkit-tap-highlight-color: transparent; }
+.content-width { width: min(1120px, calc(100% - 48px)); margin-inline: auto; position: relative; z-index: 2; }
+.section-anchor { scroll-margin-top: calc(var(--header-height) + 10px); }
+h1, h2, h3, h4 { font-family: 'Manrope', sans-serif; }
+h1, h2, h3, p { margin-top: 0; }
+
+/* ---------- Custom cursor ---------- */
+.cursor-dot, .cursor-ring {
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  will-change: transform;
+}
+.cursor-dot {
+  width: 5px; height: 5px;
+  background: var(--ink);
+  transition: opacity .2s ease;
+}
+.cursor-ring {
+  width: 30px; height: 30px;
+  border: 1px solid rgba(255,255,255,.55);
+  background: rgba(255,255,255,.03);
+  backdrop-filter: blur(2px);
+  transition: width .25s ease, height .25s ease, border-color .25s ease, background-color .25s ease, opacity .2s ease;
+}
+.cursor-ring.is-active { width: 54px; height: 54px; border-color: rgba(255,255,255,.85); background: rgba(255,255,255,.08); }
+.cursor-ring.is-hidden, .cursor-dot.is-hidden { opacity: 0; }
+@media (hover: none), (pointer: coarse) {
+  body { cursor: auto; }
+  .cursor-dot, .cursor-ring { display: none; }
+}
+
+/* ---------- Stickers (edge rails) ---------- */
+.sticker-rail {
+  position: fixed;
+  top: 0; bottom: 0;
+  width: 128px;
+  z-index: 40;
+  pointer-events: none;
+}
+.sticker-rail.left { left: 0; }
+.sticker-rail.right { right: 0; }
+.sticker-rail.left .sticker { left: 20px; }
+.sticker-rail.right .sticker { right: 20px; }
+.sticker {
+  position: absolute;
+  width: 52px;
+  height: auto;
+  opacity: .88;
+  filter: drop-shadow(0 6px 18px rgba(0,0,0,.45));
+  pointer-events: auto;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  animation: sticker-float 7s ease-in-out infinite;
+  will-change: transform;
+}
+.sticker:active { cursor: grabbing; animation-play-state: paused; }
+.sticker.is-dragging { opacity: 1; filter: drop-shadow(0 10px 24px rgba(0,0,0,.55)); }
+@keyframes sticker-float {
+  0%, 100% { transform: translate(var(--ox, 0px), var(--oy, 0px)) rotate(var(--rot, 0deg)); }
+  50% { transform: translate(calc(var(--ox, 0px) + 6px), calc(var(--oy, 0px) - 8px)) rotate(calc(var(--rot, 0deg) + 2deg)); }
+}
+@media (max-width: 900px) {
+  .sticker-rail { width: 64px; }
+  .sticker { width: 36px; }
+}
+@media (max-width: 640px) {
+  .sticker-rail { display: none; }
+}
+
+/* ---------- Fixed navigation: glass pill ---------- */
+.site-header {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 50;
+  height: var(--header-height);
+  border-bottom: 1px solid var(--line);
+  background: rgba(11, 12, 14, .55);
+  backdrop-filter: blur(22px) saturate(140%);
+  -webkit-backdrop-filter: blur(22px) saturate(140%);
+}
+.nav-wrap {
+  width: min(1280px, calc(100% - 48px));
+  height: 100%;
+  margin-inline: auto;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+.brand { display: inline-flex; align-items: center; gap: 10px; flex: 0 0 auto; color: var(--ink); font-size: 10px; font-weight: 700; letter-spacing: .14em; white-space: nowrap; }
+.brand img { height: 20px; width: auto; display: block; }
+.status-dot { width: 6px; height: 6px; flex: 0 0 auto; border-radius: 50%; background: #9ea2a8; }
+.nav-scroll { min-width: 0; flex: 1; overflow-x: auto; scrollbar-width: none; }
+.nav-scroll::-webkit-scrollbar { display: none; }
+.nav-links { display: flex; width: max-content; align-items: center; gap: 4px; margin: 0; padding: 0; list-style: none; }
+.nav-links a { display: block; padding: 8px 12px; border: 1px solid transparent; border-radius: 999px; color: var(--muted); font-size: 11px; white-space: nowrap; transition: color .2s ease, background-color .2s ease, border-color .2s ease; }
+.nav-links a:hover { color: var(--ink); background: var(--surface); border-color: var(--line); }
+.nav-links a.active { color: var(--ink); background: var(--surface-strong); border-color: var(--line-strong); font-weight: 600; }
+
+/* ---------- Hero: full-bleed image, ascii overlay, progressive blur ---------- */
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  isolation: isolate;
+}
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: url("images/hero -kuri.png");
+  background-size: cover;
+  background-position: center 38%;
+  filter: saturate(1.02) contrast(1.02);
+}
+.hero-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(8,9,10,.52) 0%, rgba(8,9,10,.18) 32%, rgba(8,9,10,.3) 62%, rgba(7,8,9,.92) 100%);
+}
+.hero-ascii {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  mix-blend-mode: overlay;
+  opacity: .32;
+  pointer-events: none;
+}
+.hero-content {
+  position: relative;
+  z-index: 2;
+  padding: calc(var(--header-height) + 60px) 0 120px;
+}
+.eyebrow-pill { display: inline-flex; align-items: center; gap: 9px; padding: 7px 12px; border: 1px solid var(--line-strong); border-radius: 999px; background: rgba(255,255,255,.06); color: var(--muted); font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+.hero h1 { max-width: 760px; margin: 22px 0 0; color: var(--ink); font-size: clamp(42px, 6.2vw, 80px); font-weight: 600; letter-spacing: -.055em; line-height: 1.01; }
+.hero-intro { max-width: 540px; margin: 22px 0 0; color: var(--muted); font-size: 16px; line-height: 1.75; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+.button { display: inline-flex; align-items: center; gap: 10px; padding: 12px 18px; border: 1px solid var(--line-strong); border-radius: 999px; font-size: 13px; font-weight: 600; transition: background-color .2s ease, border-color .2s ease, transform .2s ease; }
+.button:hover { transform: translateY(-2px); }
+.button-primary { background: var(--ink); border-color: var(--ink); color: #0c0d0e; }
+.button-primary:hover { background: #d9dadb; border-color: #d9dadb; }
+.button-secondary { background: rgba(255,255,255,.06); color: var(--ink); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+.button-secondary:hover { background: rgba(255,255,255,.12); }
+.hero-highlights { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 34px; max-width: 620px; }
+.hero-highlight { min-height: 76px; padding: 11px 12px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: rgba(255,255,255,.05); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+.hero-highlight span { display: block; margin-bottom: 8px; color: var(--quiet); font-size: 9px; font-weight: 700; letter-spacing: .1em; }
+.hero-highlight strong { display: block; color: var(--ink); font-family: 'Manrope', sans-serif; font-size: 11px; font-weight: 700; line-height: 1.4; }
+
+/* ---------- Glass toggle ---------- */
+.problem-section { padding: 108px 0 116px; border-bottom: 1px solid var(--line); background: var(--bg); }
+.toggle-section-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 34px; margin-bottom: 35px; }
+.toggle-section-heading > div:first-child { max-width: 610px; }
+.toggle-heading { margin: 0; color: var(--ink); font-size: clamp(31px, 4vw, 48px); font-weight: 600; letter-spacing: -.05em; line-height: 1.08; }
+.toggle-intro { margin: 12px 0 0; color: var(--muted); font-size: 15px; line-height: 1.65; }
+.glass-toggle { position: relative; display: inline-flex; flex: 0 0 auto; align-items: center; gap: 4px; padding: 4px; overflow: hidden; border: 1px solid var(--line-strong); border-radius: 999px; background: rgba(255,255,255,.05); backdrop-filter: blur(20px) saturate(130%); -webkit-backdrop-filter: blur(20px) saturate(130%); }
+.toggle-glider { position: absolute; top: 4px; bottom: 4px; left: 4px; width: calc(50% - 2px); border: 1px solid var(--line-strong); border-radius: 999px; background: rgba(255,255,255,.14); pointer-events: none; transition: transform .35s cubic-bezier(.2,.8,.2,1); }
+.glass-toggle[data-active="solution"] .toggle-glider { transform: translateX(calc(100% + 4px)); }
+.toggle-option { position: relative; z-index: 1; display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 42px; padding: 0 16px; border: 0; border-radius: 999px; background: transparent; color: var(--quiet); font: inherit; font-size: 11px; font-weight: 600; white-space: nowrap; cursor: none; transition: color .2s ease; }
+.toggle-option.is-active { color: var(--ink); }
+.toggle-option:focus-visible { outline: 2px solid var(--muted); outline-offset: 3px; }
+.toggle-panels { position: relative; min-height: 390px; }
+.toggle-panel { position: absolute; inset: 0; display: grid; grid-template-columns: 1.05fr .95fr; align-items: center; gap: clamp(34px, 6vw, 74px); opacity: 0; visibility: hidden; transform: translateY(12px); pointer-events: none; transition: opacity .35s ease, transform .35s ease, visibility .35s ease; }
+.toggle-panel.is-active { position: relative; opacity: 1; visibility: visible; transform: translateY(0); pointer-events: auto; }
+.image-placeholder { display: flex; min-height: 280px; height: min(38vw, 390px); align-items: center; justify-content: center; margin: 0; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius); background: rgba(255,255,255,.04); text-align: center; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+.placeholder-inner { max-width: 380px; padding: 22px; }
+.placeholder-tag { display: inline-flex; margin-bottom: 11px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,.05); color: var(--muted); font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+.placeholder-inner p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.65; }
+.kicker { margin: 0 0 11px; color: var(--quiet); font-size: 10px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+.toggle-panel-copy h3 { max-width: 570px; margin: 0; color: var(--ink); font-size: clamp(36px, 4.4vw, 58px); font-weight: 600; letter-spacing: -.05em; line-height: 1.08; }
+.section-lead { max-width: 570px; margin: 17px 0 0; color: var(--muted); font-size: 15px; line-height: 1.8; }
+
+/* ---------- Main content: glass panels ---------- */
+.page-section { padding: 112px 0; border-bottom: 1px solid var(--line); background: var(--bg); }
+.section-tinted { background: var(--bg-soft); }
+.section-heading { margin-bottom: 38px; }
+.section-label { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; color: var(--quiet); font-size: 10px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+.section-label span:first-child { color: var(--ink); }
+.section-label i { width: 38px; height: 1px; background: var(--line-strong); }
+.section-heading > p { max-width: 700px; margin: 0; color: var(--muted); font-size: 16px; line-height: 1.8; }
+.offering-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.offering-card { padding: 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); transition: border-color .2s ease, background-color .2s ease, transform .2s ease; }
+.offering-card:hover { transform: translateY(-2px); border-color: var(--line-strong); background: var(--surface-strong); }
+.card-image { display: flex; aspect-ratio: 16 / 9; align-items: center; justify-content: center; padding: 25px; border: 1px solid var(--line); border-radius: 10px; background: rgba(255,255,255,.03); text-align: center; }
+.card-image p, .technology-image p, .market-card-image p { max-width: 290px; margin: 0; color: var(--muted); font-size: 12px; line-height: 1.7; }
+.card-copy { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; padding: 17px 8px 8px; }
+.card-copy h3, .technology-title h3, .market-card h3, .revenue-card h3 { margin: 0; color: var(--ink); font-size: 16px; font-weight: 700; letter-spacing: -.025em; }
+.card-copy p, .technology-card > p, .market-card > p, .revenue-card p { max-width: 430px; margin: 7px 0 0; color: var(--muted); font-size: 12px; line-height: 1.75; }
+.card-number { color: var(--quiet); font-size: 10px; font-weight: 700; }
+.technology-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.technology-card { padding: 12px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); }
+.technology-image { display: flex; aspect-ratio: 1; align-items: center; justify-content: center; margin-bottom: 18px; padding: 22px; border: 1px solid var(--line); border-radius: 10px; background: rgba(255,255,255,.03); text-align: center; }
+.technology-title { display: flex; align-items: center; gap: 11px; padding-top: 14px; border-top: 1px solid var(--line); }
+.technology-title > span { color: var(--quiet); font-size: 10px; font-weight: 700; }
+.technology-title h3 { font-size: 14px; }
+.market-overview { display: flex; min-height: 300px; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 12px; padding: 38px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); text-align: center; backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); }
+.research-label { margin-bottom: 12px; padding: 7px 11px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,.05); color: var(--muted); font-size: 9px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+.market-overview p { max-width: 450px; margin: 0; color: var(--muted); font-size: 12px; line-height: 1.75; }
+.market-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.market-card { padding: 12px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); }
+.market-card-image { display: flex; aspect-ratio: 16 / 7; align-items: center; justify-content: center; margin-bottom: 16px; padding: 20px; border: 1px solid var(--line); border-radius: 10px; background: rgba(255,255,255,.03); text-align: center; }
+.market-card h3, .market-card > p { margin-left: 4px; margin-right: 4px; }
+.market-card h3 { font-size: 14px; }
+.market-card > p { margin-top: 7px; margin-bottom: 6px; }
+.revenue-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+.revenue-card { min-height: 180px; padding: 17px 14px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); }
+.revenue-card > span { display: grid; width: 29px; height: 29px; place-items: center; margin-bottom: 27px; border: 1px solid var(--line-strong); border-radius: 8px; color: var(--muted); font-size: 9px; font-weight: 700; }
+.revenue-card h3 { font-size: 13px; }
+.revenue-card p { font-size: 11px; }
+.roadmap-section { padding-bottom: 170px; }
+.roadmap-placeholder { display: flex; min-height: 280px; align-items: center; justify-content: center; margin-bottom: 12px; padding: 36px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); text-align: center; backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); }
+.roadmap-placeholder p, .roadmap-tile p { max-width: 420px; margin: 0; color: var(--muted); font-size: 12px; line-height: 1.75; }
+.roadmap-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.roadmap-tile { display: flex; min-height: 180px; align-items: center; justify-content: center; padding: 26px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); text-align: center; backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); }
+.site-footer { padding: 30px 0 35px; border-top: 1px solid var(--line); background: var(--bg); color: var(--ink); }
+.footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+.footer-inner span:first-child { font-size: 10px; font-weight: 700; letter-spacing: .14em; }
+.footer-inner span:last-child { color: var(--muted); font-size: 11px; }
+
+/* ---------- Progressive blur (bottom of viewport, true layered technique) ---------- */
+.bottom-veil {
+  position: fixed;
+  z-index: 60;
+  inset: auto 0 0;
+  height: 140px;
+  pointer-events: none;
+}
+.bottom-veil i {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+.bottom-veil i:nth-child(1) { backdrop-filter: blur(.5px); -webkit-backdrop-filter: blur(.5px); mask-image: linear-gradient(to top, black 0%, black 12.5%, transparent 25%); -webkit-mask-image: linear-gradient(to top, black 0%, black 12.5%, transparent 25%); }
+.bottom-veil i:nth-child(2) { backdrop-filter: blur(1px); -webkit-backdrop-filter: blur(1px); mask-image: linear-gradient(to top, black 12.5%, black 25%, transparent 37.5%); -webkit-mask-image: linear-gradient(to top, black 12.5%, black 25%, transparent 37.5%); }
+.bottom-veil i:nth-child(3) { backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); mask-image: linear-gradient(to top, black 25%, black 37.5%, transparent 50%); -webkit-mask-image: linear-gradient(to top, black 25%, black 37.5%, transparent 50%); }
+.bottom-veil i:nth-child(4) { backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); mask-image: linear-gradient(to top, black 37.5%, black 50%, transparent 62.5%); -webkit-mask-image: linear-gradient(to top, black 37.5%, black 50%, transparent 62.5%); }
+.bottom-veil i:nth-child(5) { backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); mask-image: linear-gradient(to top, black 50%, black 100%); -webkit-mask-image: linear-gradient(to top, black 50%, black 100%); }
+.bottom-veil::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(8,9,10,.6), transparent); pointer-events: none; }
+
+.scroll-corner { position: fixed; z-index: 70; right: 30px; bottom: 25px; display: grid; width: 54px; height: 54px; place-items: center; pointer-events: none; opacity: 1; will-change: transform, opacity; }
+.corner-square { position: relative; display: grid; width: 40px; height: 40px; place-items: center; border: 1px solid rgba(255,255,255,.4); border-radius: 10px; background: rgba(255,255,255,.05); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+.corner-square::before, .corner-square::after { position: absolute; width: 6px; height: 6px; content: ""; border: 1px solid rgba(255,255,255,.4); border-radius: 5px; background: var(--bg); }
+.corner-square::before { top: -4px; left: -4px; }.corner-square::after { right: -4px; bottom: -4px; }
+.corner-cross { position: absolute; width: 14px; height: 1px; background: rgba(255,255,255,.55); }
+.corner-cross::after { position: absolute; width: 14px; height: 1px; content: ""; transform: rotate(90deg); background: rgba(255,255,255,.55); }
+.corner-core { width: 5px; height: 5px; border-radius: 50%; background: var(--ink); }
+
+@media (max-width: 900px) {
+  .nav-wrap { gap: 18px; }
+  .brand { font-size: 9px; }
+  .hero { min-height: 92svh; }
+  .toggle-section-heading { align-items: flex-start; flex-direction: column; }
+  .toggle-panels { min-height: 0; }
+  .toggle-panel { grid-template-columns: 1fr 1fr; gap: 28px; }
+  .image-placeholder { height: 34vw; }
+  .revenue-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+  :root { --header-height: 60px; }
+  .content-width { width: calc(100% - 36px); }
+  .nav-wrap { width: calc(100% - 32px); gap: 15px; }
+  .brand { gap: 7px; font-size: 8px; letter-spacing: .1em; }
+  .nav-links { gap: 1px; }
+  .nav-links a { padding: 8px 9px; font-size: 10px; }
+  .hero-content { padding: 112px 0 64px; }
+  .hero h1 { font-size: clamp(38px, 11vw, 54px); }
+  .hero-intro { font-size: 15px; }
+  .hero-highlights { grid-template-columns: 1fr; gap: 6px; }
+  .hero-highlight { min-height: 64px; padding: 9px; }
+  .hero-highlight strong { font-size: 10px; }
+  .problem-section { padding: 78px 0 86px; }
+  .toggle-section-heading { gap: 23px; margin-bottom: 25px; }
+  .toggle-heading { font-size: clamp(32px, 9vw, 43px); }
+  .glass-toggle { width: 100%; }
+  .toggle-option { flex: 1; gap: 6px; padding: 0 8px; font-size: 10px; }
+  .toggle-panels { min-height: 0; }
+  .toggle-panel, .toggle-panel.is-active { position: relative; grid-template-columns: 1fr; gap: 23px; }
+  .toggle-panel:not(.is-active) { display: none; }
+  .image-placeholder { height: 55vw; min-height: 190px; max-height: 300px; }
+  .toggle-panel-copy h3 { font-size: clamp(34px, 9vw, 46px); }
+  .section-lead { font-size: 14px; }
+  .page-section { padding: 82px 0; }
+  .section-heading { margin-bottom: 30px; }
+  .section-heading > p { font-size: 14px; }
+  .offering-grid, .market-grid, .roadmap-grid { grid-template-columns: 1fr; }
+  .technology-grid { grid-template-columns: 1fr; }
+  .technology-card { display: grid; grid-template-columns: 112px 1fr; column-gap: 14px; align-items: center; }
+  .technology-image { grid-row: span 2; width: 112px; margin: 0; aspect-ratio: 1; padding: 10px; }
+  .technology-image p { font-size: 10px; }
+  .technology-title { align-self: end; padding-top: 0; border: 0; }
+  .technology-card > p { align-self: start; margin-top: 7px; }
+  .market-overview { min-height: 260px; padding: 24px; }
+  .revenue-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .revenue-card { min-height: 155px; padding: 15px; }
+  .revenue-card > span { margin-bottom: 21px; }
+  .roadmap-placeholder { min-height: 230px; }
+  .footer-inner { align-items: flex-start; flex-direction: column; gap: 9px; }
+  .bottom-veil { height: 96px; }
+  .scroll-corner { right: 15px; bottom: 14px; width: 46px; height: 46px; }
+  .corner-square { width: 36px; height: 36px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
+}
+@media (max-width: 420px) { .eyebrow-pill { font-size: 8px; letter-spacing: .08em; } .toggle-option { font-size: 9px; } }
+
+  </style>
+</head>
+<body>
+  <!-- Custom cursor -->
+  <div class="cursor-dot" aria-hidden="true"></div>
+  <div class="cursor-ring" aria-hidden="true"></div>
+
+  <!-- Edge sticker rails -->
+  <!-- <div class="sticker-rail left" aria-hidden="true">
+    <img class="sticker" data-origin-top="10" src="images/ba1.png" alt="" style="top:10%;" />
+    <img class="sticker" data-origin-top="36" src="images/ba2.png" alt="" style="top:36%;" />
+    <img class="sticker" data-origin-top="62" src="images/ba3.png" alt="" style="top:62%;" />
+    <img class="sticker" data-origin-top="86" src="images/ba4.png" alt="" style="top:86%;" />
+  </div>
+  <div class="sticker-rail right" aria-hidden="true">
+    <img class="sticker" data-origin-top="16" src="images/ba5.png" alt="" style="top:16%;" />
+    <img class="sticker" data-origin-top="42" src="images/ba6.png" alt="" style="top:42%;" />
+    <img class="sticker" data-origin-top="68" src="images/ba7.png" alt="" style="top:68%;" />
+    <img class="sticker" data-origin-top="90" src="images/ba8.png" alt="" style="top:90%;" />
+  </div> -->
+
+  <header class="site-header">
+    <nav class="nav-wrap" aria-label="Main navigation">
+      <a class="brand" href="#top" aria-label="Interactive Spaces, home">
+        <img src="images/Kuri-logo.png" alt="" />
+        <span>INTERACTIVE SPACES</span>
+      </a>
+      <div class="nav-scroll">
+        <ul class="nav-links">
+          <li><a href="#problem-solution">01. Problem &amp; solution</a></li>
+          <li><a href="#what-we-do">02. What we do</a></li>
+          <li><a href="#technology">03. The technology</a></li>
+          <li><a href="#market">04. The market</a></li>
+          <li><a href="#business-model">05. Business model</a></li>
+          <li><a href="#execution">06. Roadmap</a></li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section id="top" class="hero section-anchor">
+      <div class="hero-bg" aria-hidden="true"></div>
+      <canvas class="hero-ascii" aria-hidden="true"></canvas>
+      <div class="hero-content content-width">
+        <!-- <span class="eyebrow-pill"><span class="status-dot" aria-hidden="true"></span>Business pitch deck</span> -->
+        <h1>Interactive experiences for real-world spaces.</h1>
+        <p class="hero-intro">We create interactive displays, games and brand experiences that give people a reason to stop, explore and get involved.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#problem-solution">See the idea <span aria-hidden="true">↓</span></a>
+          <a class="button button-secondary" href="#what-we-do">What we do</a>
+        </div>
+        <div class="hero-highlights" aria-label="What the business brings together">
+          <div class="hero-highlight"><span>01 / EXPERIENCE</span><strong>Interactive displays</strong></div>
+          <div class="hero-highlight"><span>02 / CONTENT</span><strong>Games and brand stories</strong></div>
+          <div class="hero-highlight"><span>03 / TECHNOLOGY</span><strong>Cameras and software</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="problem-solution" class="problem-section section-anchor" aria-label="The problem and our solution">
+      <div class="content-width">
+        <div class="toggle-section-heading">
+          <div>
+            <div class="section-label"><span>01</span><i></i><span>The problem and the idea</span></div>
+            <h2 class="toggle-heading">Why make spaces interactive?</h2>
+            <p class="toggle-intro">Use the switch to see the challenge, then how we approach it.</p>
+          </div>
+          <div class="glass-toggle" role="group" aria-label="Choose a section to view">
+            <span class="toggle-glider" aria-hidden="true"></span>
+            <button class="toggle-option is-active" type="button" data-toggle="problem" aria-pressed="true">01 <span>The problem</span></button>
+            <button class="toggle-option" type="button" data-toggle="solution" aria-pressed="false">02 <span>The idea</span></button>
+          </div>
+        </div>
+
+        <div class="toggle-panels" aria-live="polite">
+          <article class="toggle-panel is-active" data-panel="problem" aria-hidden="false">
+            <div class="image-placeholder problem-image">
+              <div class="placeholder-inner">
+                <span class="placeholder-tag">The challenge</span>
+                <p>A quiet retail, public or visitor space with a screen people are walking past</p>
+              </div>
+            </div>
+            <div class="toggle-panel-copy">
+              <p class="kicker">01 / The problem</p>
+              <h3>Most screens are easy to walk past.</h3>
+              <p class="section-lead">A display can show information, but that does not always give people a reason to stop, explore or take part.</p>
+            </div>
+          </article>
+
+          <article class="toggle-panel" data-panel="solution" aria-hidden="true" inert>
+            <div class="image-placeholder solution-image">
+              <div class="placeholder-inner">
+                <span class="placeholder-tag">The opportunity</span>
+                <p>An interactive display with people using it together</p>
+              </div>
+            </div>
+            <div class="toggle-panel-copy">
+              <p class="kicker">02 / The idea</p>
+              <h3>Give people something to take part in.</h3>
+              <p class="section-lead">We bring displays, cameras and software together to create experiences people can play with, learn from and remember.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="what-we-do" class="page-section section-anchor">
+      <div class="content-width">
+        <div class="section-heading">
+          <div class="section-label"><span>02</span><i></i><span>What we do</span></div>
+          <p>We use the same building blocks in different ways, depending on the space, the audience and what the client wants people to do.</p>
+        </div>
+
+        <div class="offering-grid">
+          <article class="offering-card">
+            <div class="card-image"><p>Image: A game being played on a large interactive display</p></div>
+            <div class="card-copy"><div><h3>Interactive games</h3><p>Simple, hands-on games that invite visitors to join in.</p></div><span class="card-number">01</span></div>
+          </article>
+          <article class="offering-card">
+            <div class="card-image"><p>Image: A branded installation in a public or event space</p></div>
+            <div class="card-copy"><div><h3>Brand experiences</h3><p>Ways for brands to tell a story people can take part in.</p></div><span class="card-number">02</span></div>
+          </article>
+          <article class="offering-card">
+            <div class="card-image"><p>Image: A large digital product display or configurator</p></div>
+            <div class="card-copy"><div><h3>Product exploration</h3><p>Interactive demos that help people explore products and features.</p></div><span class="card-number">03</span></div>
+          </article>
+          <article class="offering-card">
+            <div class="card-image"><p>Image: An interactive museum or learning exhibit</p></div>
+            <div class="card-copy"><div><h3>Learning and entertainment</h3><p>Exhibits and activities that make information more engaging.</p></div><span class="card-number">04</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="technology" class="page-section section-tinted section-anchor">
+      <div class="content-width">
+        <div class="section-heading">
+          <div class="section-label"><span>03</span><i></i><span>The technology</span></div>
+          <p>The experience is only one part of the job. It also needs reliable hardware, responsive tracking and software that is straightforward to manage.</p>
+        </div>
+
+        <div class="technology-grid">
+          <article class="technology-card">
+            <div class="technology-image"><p>Image: Commercial display or kiosk hardware</p></div>
+            <div class="technology-title"><span>01</span><h3>Displays and hardware</h3></div>
+            <p>The screens, kiosks and equipment that bring an installation to life.</p>
+          </article>
+          <article class="technology-card">
+            <div class="technology-image"><p>Image: Depth-sensing camera with a movement tracking view</p></div>
+            <div class="technology-title"><span>02</span><h3>Depth cameras</h3></div>
+            <p>Cameras that can read movement and help an experience respond to people.</p>
+          </article>
+          <article class="technology-card">
+            <div class="technology-image"><p>Image: A view of the software platform or management dashboard</p></div>
+            <div class="technology-title"><span>03</span><h3>Software platform</h3></div>
+            <p>The software used to run experiences, manage content and review activity.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="market" class="page-section section-anchor">
+      <div class="content-width">
+        <div class="section-heading">
+          <div class="section-label"><span>04</span><i></i><span>The market</span></div>
+          <p>There are several places where interactive experiences can be useful. This section is where the market size, customer groups and competitor research should sit.</p>
+        </div>
+
+        <div class="market-overview">
+          <div class="research-label">Research graphic</div>
+          <p>Add market size, growth figures and the main customer groups here. Use sourced figures and show where each number comes from.</p>
+        </div>
+        <div class="market-grid">
+          <article class="market-card">
+            <div class="market-card-image"><p>Add a competitor comparison or positioning map</p></div>
+            <h3>Who else is in the market?</h3>
+            <p>Compare what other companies offer, who they sell to and how they charge.</p>
+          </article>
+          <article class="market-card">
+            <div class="market-card-image"><p>Add customer segments or early adopter research</p></div>
+            <h3>Who is most likely to buy?</h3>
+            <p>Show the first customer groups to target, and the problem each group needs solved.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="business-model" class="page-section section-tinted section-anchor">
+      <div class="content-width">
+        <div class="section-heading">
+          <div class="section-label"><span>05</span><i></i><span>How the business makes money</span></div>
+          <p>A mix of one-off projects and repeat business can support different types of customers and budgets.</p>
+        </div>
+
+        <div class="revenue-grid">
+          <article class="revenue-card"><span>01</span><h3>Equipment sales</h3><p>Buying the hardware and installation</p></article>
+          <article class="revenue-card"><span>02</span><h3>Rentals</h3><p>Short-term hire for events and campaigns</p></article>
+          <article class="revenue-card"><span>03</span><h3>Software plans</h3><p>Ongoing access, support and updates</p></article>
+          <article class="revenue-card"><span>04</span><h3>Custom builds</h3><p>Experiences made for a specific brief</p></article>
+          <article class="revenue-card"><span>05</span><h3>Advertising</h3><p>Brand and advertising partnerships</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="execution" class="page-section section-anchor roadmap-section">
+      <div class="content-width">
+        <div class="section-heading">
+          <div class="section-label"><span>06</span><i></i><span>The roadmap</span></div>
+          <p>Show how the idea moves from early trials to a repeatable offer, with clear milestones along the way.</p>
+        </div>
+
+        <div class="roadmap-placeholder">
+          <p>Add the roadmap here: key phases, timing, milestones and what needs to be in place at each stage.</p>
+        </div>
+        <div class="roadmap-grid">
+          <div class="roadmap-tile"><p>Add a map showing target regions, delivery partners or planned expansion.</p></div>
+          <div class="roadmap-tile"><p>Add the financial plan, expected costs and funding requirements.</p></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="content-width footer-inner">
+      <span>INTERACTIVE SPACES</span>
+      <span>A clearer way to bring digital experiences into physical spaces.</span>
+    </div>
+  </footer>
+
+  <!-- Decorative bottom progressive blur and scroll marker -->
+  <div class="bottom-veil" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="scroll-corner" aria-hidden="true">
+    <div class="corner-square"><span class="corner-cross"></span><span class="corner-core"></span></div>
+  </div>
+
+  <script>
+(() => {
+  const clamp = (value, min = 0, max = 1) => Math.min(max, Math.max(min, value));
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const isFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  // ---------- Custom cursor ----------
+  if (isFinePointer) {
+    const dot = document.querySelector('.cursor-dot');
+    const ring = document.querySelector('.cursor-ring');
+    let mx = window.innerWidth / 2, my = window.innerHeight / 2;
+    let rx = mx, ry = my;
+    window.addEventListener('mousemove', (e) => {
+      mx = e.clientX; my = e.clientY;
+      dot.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%)`;
+    });
+    window.addEventListener('mousedown', () => ring.classList.add('is-active'));
+    window.addEventListener('mouseup', () => ring.classList.remove('is-active'));
+    document.addEventListener('mouseleave', () => { dot.classList.add('is-hidden'); ring.classList.add('is-hidden'); });
+    document.addEventListener('mouseenter', () => { dot.classList.remove('is-hidden'); ring.classList.remove('is-hidden'); });
+    document.querySelectorAll('a, button, .sticker').forEach((el) => {
+      el.addEventListener('mouseenter', () => ring.classList.add('is-active'));
+      el.addEventListener('mouseleave', () => ring.classList.remove('is-active'));
+    });
+    function tickCursor() {
+      rx += (mx - rx) * 0.18;
+      ry += (my - ry) * 0.18;
+      ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%)`;
+      requestAnimationFrame(tickCursor);
+    }
+    tickCursor();
+  }
+
+  // ---------- Hero ASCII overlay ----------
+  (function heroAscii() {
+    const canvas = document.querySelector('.hero-ascii');
+    const hero = document.querySelector('.hero');
+    if (!canvas || !hero) return;
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    const img = new Image();
+    img.src = "images/hero -kuri.png";
+    const CHARS = '. : - = + * # %';
+    const glyphs = CHARS.split(' ');
+    let cell = 10;
+    let W = 0, H = 0, sampleCanvas, sampleCtx;
+    let pointer = { x: -9999, y: -9999 };
+
+    function resize() {
+      W = canvas.width = hero.clientWidth;
+      H = canvas.height = hero.clientHeight;
+      cell = W < 700 ? 9 : 13;
+      sampleCanvas = document.createElement('canvas');
+      sampleCanvas.width = Math.ceil(W / cell);
+      sampleCanvas.height = Math.ceil(H / cell);
+      sampleCtx = sampleCanvas.getContext('2d', { willReadFrequently: true });
+    }
+
+    function draw() {
+      if (!W || !H || !img.complete || img.naturalWidth === 0) { requestAnimationFrame(draw); return; }
+      const scale = Math.max(W / img.naturalWidth, H / img.naturalHeight);
+      const dw = img.naturalWidth * scale, dh = img.naturalHeight * scale;
+      const dx = (W - dw) / 2, dy = (H - dh) / 2;
+      sampleCtx.clearRect(0, 0, sampleCanvas.width, sampleCanvas.height);
+      sampleCtx.drawImage(img, dx / cell, dy / cell, dw / cell, dh / cell);
+      let data;
+      try { data = sampleCtx.getImageData(0, 0, sampleCanvas.width, sampleCanvas.height).data; }
+      catch (e) { return; }
+
+      ctx.clearRect(0, 0, W, H);
+      ctx.font = `${cell}px 'JetBrains Mono', monospace`;
+      ctx.textBaseline = 'top';
+      const cols = sampleCanvas.width, rows = sampleCanvas.height;
+      for (let yI = 0; yI < rows; yI++) {
+        for (let xI = 0; xI < cols; xI++) {
+          const i = (yI * cols + xI) * 4;
+          const r = data[i], g = data[i + 1], b = data[i + 2];
+          const lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+          const px = xI * cell, py = yI * cell;
+          const distToPointer = Math.hypot(px - pointer.x, py - pointer.y);
+          const boost = distToPointer < 140 ? (1 - distToPointer / 140) * 0.35 : 0;
+          const level = clamp(lum + boost);
+          const glyphIndex = Math.min(glyphs.length - 1, Math.floor(level * glyphs.length));
+          const alpha = clamp(0.05 + level * 0.4 + boost);
+          ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+          ctx.fillText(glyphs[glyphIndex], px, py);
+        }
+      }
+      requestAnimationFrame(draw);
+    }
+
+    img.addEventListener('load', () => { resize(); draw(); });
+    window.addEventListener('resize', resize, { passive: true });
+    hero.addEventListener('mousemove', (e) => {
+      const rect = hero.getBoundingClientRect();
+      pointer.x = e.clientX - rect.left;
+      pointer.y = e.clientY - rect.top;
+    });
+    hero.addEventListener('mouseleave', () => { pointer.x = -9999; pointer.y = -9999; });
+    if (img.complete && img.naturalWidth) { resize(); draw(); }
+    if (reducedMotion) {
+      // still render a single static frame, just no per-frame pointer reactivity loop cost
+    }
+  })();
+
+  // ---------- Draggable edge stickers ----------
+  (function stickers() {
+    const stickers = document.querySelectorAll('.sticker');
+    const RANGE = 22; // px of allowed drag/float travel from the natural spot
+    stickers.forEach((el, idx) => {
+      el.style.setProperty('--rot', `${(idx % 2 === 0 ? -1 : 1) * (3 + idx)}deg`);
+      el.style.animationDelay = `${idx * 0.6}s`;
+      let dragging = false;
+      let startX = 0, startY = 0;
+      let ox = 0, oy = 0;
+
+      function onPointerDown(e) {
+        dragging = true;
+        el.classList.add('is-dragging');
+        el.setPointerCapture(e.pointerId);
+        startX = e.clientX; startY = e.clientY;
+      }
+      function onPointerMove(e) {
+        if (!dragging) return;
+        let dx = clamp(e.clientX - startX, -RANGE, RANGE);
+        let dy = clamp(e.clientY - startY, -RANGE, RANGE);
+        ox = dx; oy = dy;
+        el.style.setProperty('--ox', `${ox}px`);
+        el.style.setProperty('--oy', `${oy}px`);
+        el.style.animation = 'none';
+        el.style.transform = `translate(${ox}px, ${oy}px)`;
+      }
+      function onPointerUp(e) {
+        if (!dragging) return;
+        dragging = false;
+        el.classList.remove('is-dragging');
+        el.style.transform = '';
+        el.style.animation = '';
+      }
+      el.addEventListener('pointerdown', onPointerDown);
+      el.addEventListener('pointermove', onPointerMove);
+      el.addEventListener('pointerup', onPointerUp);
+      el.addEventListener('pointercancel', onPointerUp);
+      el.addEventListener('dragstart', (e) => e.preventDefault());
+    });
+  })();
+
+  // Keep the active navigation item in sync with the section in view.
+  const sections = document.querySelectorAll('main section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        navLinks.forEach((link) => {
+          const active = link.getAttribute('href') === `#${entry.target.id}`;
+          link.classList.toggle('active', active);
+          if (active) link.setAttribute('aria-current', 'location');
+          else link.removeAttribute('aria-current');
+        });
+      });
+    }, { rootMargin: '-25% 0px -60% 0px', threshold: 0 });
+    sections.forEach((section) => observer.observe(section));
+  }
+
+  // Accessible Problem / The idea toggle.
+  const toggle = document.querySelector('.glass-toggle');
+  const toggleButtons = document.querySelectorAll('[data-toggle]');
+  const panels = document.querySelectorAll('[data-panel]');
+
+  function setActivePanel(name, moveFocus = false) {
+    if (!toggle) return;
+    toggle.dataset.active = name;
+    toggleButtons.forEach((button) => {
+      const active = button.dataset.toggle === name;
+      button.classList.toggle('is-active', active);
+      button.setAttribute('aria-pressed', String(active));
+      if (active && moveFocus) button.focus();
+    });
+    panels.forEach((panel) => {
+      const active = panel.dataset.panel === name;
+      panel.classList.toggle('is-active', active);
+      panel.setAttribute('aria-hidden', String(!active));
+      if ('inert' in panel) panel.inert = !active;
+    });
+  }
+
+  toggleButtons.forEach((button, index) => {
+    button.addEventListener('click', () => setActivePanel(button.dataset.toggle));
+    button.addEventListener('keydown', (event) => {
+      if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+      event.preventDefault();
+      const nextIndex = event.key === 'ArrowRight' ? (index + 1) % toggleButtons.length : (index - 1 + toggleButtons.length) % toggleButtons.length;
+      setActivePanel(toggleButtons[nextIndex].dataset.toggle, true);
+    });
+  });
+  setActivePanel('problem');
+
+  // The corner mark rotates with page scroll and gently fades to 20% opacity.
+  const corner = document.querySelector('.scroll-corner');
+  let framePending = false;
+  function updateScrollMark() {
+    framePending = false;
+    if (!corner) return;
+    const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+    const progress = clamp(window.scrollY / maxScroll);
+    corner.style.transform = `rotate(${window.scrollY * 0.13}deg)`;
+    corner.style.opacity = String(1 - progress * 0.8);
+  }
+  function onScroll() {
+    if (framePending) return;
+    framePending = true;
+    window.requestAnimationFrame(updateScrollMark);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+  updateScrollMark();
+
+  if (reducedMotion) document.documentElement.style.scrollBehavior = 'auto';
+})();
+
+  </script>
+</body>
+</html>
