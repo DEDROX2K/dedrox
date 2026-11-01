@@ -406,16 +406,16 @@ h1, h2, h3, p { margin-top: 0; }
       <div class="hero-content content-width">
         <!-- <span class="eyebrow-pill"><span class="status-dot" aria-hidden="true"></span>Business pitch deck</span> -->
         <h1>Interactive experiences for real-world spaces.</h1>
-        <p class="hero-intro">We create interactive displays, games and brand experiences that give people a reason to stop, explore and get involved.</p>
-        <div class="hero-actions">
+        <!-- <p class="hero-intro">We create interactive displays, games and brand experiences that give people a reason to stop, explore and get involved.</p> -->
+        <!-- <div class="hero-actions">
           <a class="button button-primary" href="#problem-solution">See the idea <span aria-hidden="true">↓</span></a>
           <a class="button button-secondary" href="#what-we-do">What we do</a>
-        </div>
-        <div class="hero-highlights" aria-label="What the business brings together">
+        </div> -->
+        <!-- <div class="hero-highlights" aria-label="What the business brings together">
           <div class="hero-highlight"><span>01 / EXPERIENCE</span><strong>Interactive displays</strong></div>
           <div class="hero-highlight"><span>02 / CONTENT</span><strong>Games and brand stories</strong></div>
           <div class="hero-highlight"><span>03 / TECHNOLOGY</span><strong>Cameras and software</strong></div>
-        </div>
+        </div> -->
       </div>
     </section>
 
@@ -590,7 +590,7 @@ h1, h2, h3, p { margin-top: 0; }
   </footer>
 
   <!-- Decorative bottom progressive blur and scroll marker -->
-  <div class="bottom-veil" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="bottom-veil" aria-hidden="true"><i></i><i></i><i></i></div>
   <div class="scroll-corner" aria-hidden="true">
     <div class="corner-square"><span class="corner-cross"></span><span class="corner-core"></span></div>
   </div>
@@ -620,8 +620,8 @@ h1, h2, h3, p { margin-top: 0; }
       el.addEventListener('mouseleave', () => ring.classList.remove('is-active'));
     });
     function tickCursor() {
-      rx += (mx - rx) * 0.18;
-      ry += (my - ry) * 0.18;
+      rx += (mx - rx) * 0;
+      ry += (my - ry) * 0;
       ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%)`;
       requestAnimationFrame(tickCursor);
     }
