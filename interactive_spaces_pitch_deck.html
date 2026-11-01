@@ -325,7 +325,7 @@ h1, h2, h3, p { margin-top: 0; }
         <div class="toggle-section-heading">
           <div>
             <h2 class="toggle-heading">Why make your shop interactive?</h2>
-            <p class="toggle-intro">purchase decisions are often influenced by the environment and the experiences people have while shopping.</p>
+            <p class="toggle-intro">Purchase decisions are often influenced by the environment and the experiences people have while shopping.</p>
           </div>
           <div class="glass-toggle" role="group" aria-label="Choose a section to view">
             <span class="toggle-glider" aria-hidden="true"></span>
@@ -560,7 +560,7 @@ h1, h2, h3, p { margin-top: 0; }
     img.src = "images/hero -kuri.png";
     const CHARS = '. : - = + * # @';
     const glyphs = CHARS.split('    ');
-    let cell = 90;
+    let cell = 0;
     let W = 0, H = 0, sampleCanvas, sampleCtx;
     let pointer = { x: -9999, y: -9999 };
 
@@ -596,7 +596,7 @@ h1, h2, h3, p { margin-top: 0; }
           const lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
           const px = xI * cell, py = yI * cell;
           const distToPointer = Math.hypot(px - pointer.x, py - pointer.y);
-          const boost = distToPointer < 140 ? (1 - distToPointer / 140) * 0.35 : 0;
+          const boost = distToPointer < 140 ? (1 - distToPointer / 140) * 0.75 : 0;
           const level = clamp(lum + boost);
           const glyphIndex = Math.min(glyphs.length - 1, Math.floor(level * glyphs.length));
           const alpha = clamp(0.05 + level * 0.4 + boost);
