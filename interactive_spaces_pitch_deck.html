@@ -636,8 +636,8 @@ h1, h2, h3, p { margin-top: 0; }
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
     const img = new Image();
     img.src = "images/hero -kuri.png";
-    const CHARS = '. : - = + * # %';
-    const glyphs = CHARS.split(' ');
+    const CHARS = '. : - = + * > `';
+    const glyphs = CHARS.split('    ');
     let cell = 10;
     let W = 0, H = 0, sampleCanvas, sampleCtx;
     let pointer = { x: -9999, y: -9999 };
