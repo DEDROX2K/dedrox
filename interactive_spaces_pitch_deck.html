@@ -138,7 +138,7 @@ h1, h2, h3, p { margin-top: 0; }
 .toggle-heading { margin: 0; color: var(--ink); font-size: clamp(31px, 4vw, 48px); font-weight: 600; letter-spacing: -.05em; line-height: 1.08; }
 .toggle-intro { margin: 12px 0 0; color: var(--muted); font-size: 15px; line-height: 1.65; }
 .glass-toggle { position: relative; display: inline-flex; flex: 0 0 auto; align-items: center; gap: 4px; padding: 4px; overflow: hidden; border: 1px solid var(--line-strong); border-radius: 999px; background: rgba(255,255,255,.05); backdrop-filter: blur(20px) saturate(130%); -webkit-backdrop-filter: blur(20px) saturate(130%); }
-.toggle-glider { position: absolute; top: 4px; bottom: 4px; left: 4px; width: calc(50% - 2px); border: 1px solid var(--line-strong); border-radius: 999px; background: rgba(255,255,255,.14); pointer-events: none; transition: transform .35s cubic-bezier(.2,.8,.2,1); }
+.toggle-glider { position: absolute; top: 4px; bottom: 4px; left: 4px; width: calc(50% - 2px); border: 1px solid var(--line-strong); border-radius: 999px; background:rgb(190 0 255 / 76%); pointer-events: none; transition: transform .35s cubic-bezier(.2,.8,.2,1); }
 .glass-toggle[data-active="solution"] .toggle-glider { transform: translateX(calc(100% + 4px)); }
 .toggle-option { position: relative; z-index: 1; display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 42px; padding: 0 16px; border: 0; border-radius: 999px; background: transparent; color: var(--quiet); font: inherit; font-size: 11px; font-weight: 600; white-space: nowrap; cursor: pointer; transition: color .2s ease; }
 .toggle-option.is-active { color: var(--ink); }
@@ -193,8 +193,14 @@ h1, h2, h3, p { margin-top: 0; }
 .roadmap-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 .roadmap-tile { display: flex; min-height: 180px; align-items: center; justify-content: center; padding: 26px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); text-align: center; backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); }
 .site-footer { padding: 54px 0 35px; border-top: 1px solid var(--line); background: var(--bg); color: var(--ink); }
-.footer-collage { display: flex; align-items: center; margin-bottom: 40px; overflow-x: auto; padding: 10px 4px 18px; }
-.collage-item { position: relative; flex: 0 0 auto; width: 118px; height: 148px; margin-left: -18px; overflow: hidden; border: 1px solid var(--line-strong); border-radius: 6px; background: rgba(255,255,255,.04); box-shadow: 0 14px 28px rgba(0,0,0,.45); transition: transform .25s ease, z-index 0s; }
+.footer-collage {     display: flex;
+    align-items: flex-end;
+    margin-bottom: 40px;
+    overflow-x: auto;
+    padding: 10px 4px 18px;
+    align-content: center;
+    justify-content: center;}
+.collage-item { position: relative; flex: 0 0 auto; width: 15%; height: 258px; margin-left: -18px; overflow: hidden; border: 1px solid var(--line-strong); border-radius: 6px; background: rgba(255,255,255,.04); box-shadow: 0 14px 28px rgba(0,0,0,.45); transition: transform .25s ease, z-index 0s; }
 .collage-item:first-child { margin-left: 0; }
 .collage-item:nth-child(odd) { transform: rotate(-4deg); }
 .collage-item:nth-child(even) { transform: rotate(3deg); }
@@ -364,9 +370,8 @@ h1, h2, h3, p { margin-top: 0; }
         <div class="section-heading">
           <div class="section-label"><span>02</span><i></i><span>What we do</span></div>
           <p>- Reduce the time to purchase!</p>
-          <p>- Premium games that drive engagement and sales.</p>
-          <p>- Something different in a sea full of sameness!</p>
-          <p>- Interactive apps with your personal branding.</p>
+          <p>- Premium interactions that drive engagement and sales.</p>
+          <p>- Interactive way to increase visibility & stand out from your competitors.</p>
           <p>Something different in a sea full of sameness!</p>
           
         </div>
