@@ -5,6 +5,10 @@
  * stays crisp; each page's own nav script keeps moving it.
  */
 (function () {
+    // Off for now — the site uses the original pixel nav. Set to true to bring the blobs back.
+    const BLOB_NAV_ENABLED = false;
+    if (!BLOB_NAV_ENABLED) return;
+
     const SVG_NS = 'http://www.w3.org/2000/svg';
     const FILTER_ID = 'ap-nav-goo';
 
@@ -36,6 +40,7 @@
         if (!layer || !row) return;
 
         ensureFilter();
+        container.classList.add('is-blob');
 
         if (indicator && indicator.parentElement === layer) {
             container.insertBefore(indicator, row);
