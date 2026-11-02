@@ -34,6 +34,8 @@
     <script src="carousel.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.162.0/three.min.js"></script>
     <script src="navbar-logic.js" defer></script>
+    <script src="nav-blobs.js" defer></script>
+    <script src="arrow-sweep.js" defer></script>
 </head>
 
 <body>
@@ -61,7 +63,7 @@
                     <button class="nav-toggle-btn active" id="toggleHome">AirPaste</button>
                     <button class="nav-toggle-btn" id="toggleDownload">Download</button>
                     <button class="nav-toggle-btn" id="toggleShop">Shop</button>
-                    <button class="nav-toggle-btn" id="toggleNext">What's Next*</button>
+                    <button class="nav-toggle-btn" id="toggleNext">What's Next</button>
                 </div>
             </div>
         </div>
@@ -94,14 +96,14 @@
                 </div>
             </div>
         </div>
-        <div class="hero-top-left-bar">
+        <!-- <div class="hero-top-left-bar">
             <img src="images/logo.png" alt="AirPaste Logo"
-                style="height: 22px; width: auto; vertical-align: middle; margin-right: 8px; image-rendering: pixelated;">
+                style="height: 16px; width: auto; vertical-align: middle; margin-right: 8px; image-rendering: pixelated;">
             You should not spend 10£ to save bookmarks.
-        </div>
-        <div class="hero-cta-group">
-            <a href="https://github.com/DEDROX2K/dedrox/releases/download/airpaste-v1.0.0-beta.1/AirPaste-Setup-1.0.0-beta.1.exe" download class="pixel-btn-v2">Download AirPaste</a>
-        </div>
+        </div> -->
+        <!-- <div class="hero-cta-group">
+            <a href="download.html" class="pixel-btn-v2">Download AirPaste</a>
+        </div> -->
         <div class="hero-scroll-indicator">
             <div class="ascii-block-v">
                 <span class="filled"></span><span></span><span></span><span></span><span class="filled"></span>
@@ -232,85 +234,143 @@
                 <span class="word-head">Features</span>
             </h2>
 
-            <div class="features-accordion">
-                <!-- Canvas View -->
-                <div class="accordion-item active">
-                    <div class="accordion-header">
-                        <div class="accordion-icon-box">
-                            <i class="px-icon accordion-icon" style="--icon: url(icons/pixelarticons/layout.svg)"></i>
-                        </div>
-                        <span class="accordion-title">Canvas View</span>
-                        <div class="accordion-arrow">
-                            <i class="px-icon" style="--icon: url(icons/pixelarticons/chevron-down.svg)"></i>
-                        </div>
+            <div class="features-grid">
+                <article class="feature-tile feature-tile--wide">
+                    <!-- image: images/features/reading-mode.png -->
+                    <div class="feature-media">
+                        <span class="feature-media-icon"><i class="px-icon" style="--icon: url(icons/pixelarticons/book-open.svg)"></i></span>
                     </div>
-                    <div class="accordion-body">
-                        <p>Instead of endlessly scrolling through a traditional, linear page full of links, you can
-                            freely pan and zoom around an open canvas. This spatial approach allows you to organize your
-                            thoughts, projects, and resources visually. It gives you a bird's-eye view of your work,
-                            letting you map out information exactly how your brain processes it.</p>
-                    </div>
-                </div>
+                    <h3>Reading Mode</h3>
+                    <p>Read full articles and recipes right inside AirPaste &mdash; no ads, pop-ups or clutter pulling you away.</p>
+                </article>
 
-                <!-- Planning Widgets -->
-                <div class="accordion-item">
-                    <div class="accordion-header">
-                        <div class="accordion-icon-box">
-                            <i class="px-icon accordion-icon" style="--icon: url(icons/pixelarticons/calendar.svg)"></i>
-                        </div>
-                        <span class="accordion-title">Planning Widgets</span>
-                        <div class="accordion-arrow">
-                            <i class="px-icon" style="--icon: url(icons/pixelarticons/chevron-down.svg)"></i>
-                        </div>
+                <article class="feature-tile">
+                    <!-- image: images/features/article-backup.png -->
+                    <div class="feature-media">
+                        <span class="feature-media-icon"><i class="px-icon" style="--icon: url(icons/pixelarticons/archive.svg)"></i></span>
                     </div>
-                    <div class="accordion-body">
-                        <p>Inspired by tools like Figma, we are introducing built-in widgets designed to make your
-                            planning process faster and more intuitive. By integrating useful tools directly into your
-                            workspace—like quick task lists, trackers, or calendars—you can streamline your workflow.
-                            This means less time spent managing the app and more time focused on actually completing
-                            your tasks.</p>
-                    </div>
-                </div>
+                    <h3>Article backup</h3>
+                    <p>Saved articles are kept in full on your own drive, even if the original page disappears.</p>
+                </article>
 
-                <!-- Interactive Tiles -->
-                <div class="accordion-item">
-                    <div class="accordion-header">
-                        <div class="accordion-icon-box">
-                            <i class="px-icon accordion-icon" style="--icon: url(icons/pixelarticons/grid-2x2-2.svg)"></i>
-                        </div>
-                        <span class="accordion-title">Interactive Tiles</span>
-                        <div class="accordion-arrow">
-                            <i class="px-icon" style="--icon: url(icons/pixelarticons/chevron-down.svg)"></i>
-                        </div>
+                <article class="feature-tile">
+                    <!-- image: images/features/ai-tagging.png -->
+                    <div class="feature-media">
+                        <span class="feature-media-icon"><i class="px-icon" style="--icon: url(icons/pixelarticons/sparkles.svg)"></i></span>
                     </div>
-                    <div class="accordion-body">
-                        <p>Soon, we will be rolling out Interactive Tiles. These versatile building blocks can act as
-                            anything you need them to be: a quick text note, a web link with a rich preview, a folder to
-                            organize other items, or a "rack" to group related content together. This modular system
-                            means you can build out your workspace piece by piece, customizing it to perfectly fit your
-                            unique workflow.</p>
-                    </div>
-                </div>
+                    <h3>AI image tagging</h3>
+                    <p>Every image you save is tagged automatically, so a quick search brings it straight back.</p>
+                </article>
 
-                <!-- UX-Driven Application -->
-                <div class="accordion-item">
-                    <div class="accordion-header">
-                        <div class="accordion-icon-box">
-                            <i class="px-icon accordion-icon" style="--icon: url(icons/pixelarticons/user.svg)"></i>
-                        </div>
-                        <span class="accordion-title">UX-Driven Application</span>
-                        <div class="accordion-arrow">
-                            <i class="px-icon" style="--icon: url(icons/pixelarticons/chevron-down.svg)"></i>
-                        </div>
+                <article class="feature-tile">
+                    <!-- image: images/features/same-vibe.png -->
+                    <div class="feature-media">
+                        <span class="feature-media-icon"><i class="px-icon" style="--icon: url(icons/pixelarticons/colors-swatch.svg)"></i></span>
                     </div>
-                    <div class="accordion-body">
-                        <p>Because this application is being built by a UX designer, user-friendliness and accessibility
-                            are at the core of everything we do. We aren't just making it look nice; we are actively
-                            applying established UX laws and design principles. This ensures the interface is highly
-                            intuitive, reduces cognitive load, and provides a seamless, frustration-free experience for
-                            everyone who uses it.</p>
+                    <h3>Same Vibe</h3>
+                    <p>Pick an image and AirPaste surfaces the saves that share its mood &mdash; connections you didn&rsquo;t know you had.</p>
+                </article>
+
+                <article class="feature-tile">
+                    <!-- image: images/features/text-in-images.png -->
+                    <div class="feature-media">
+                        <span class="feature-media-icon"><i class="px-icon" style="--icon: url(icons/pixelarticons/search.svg)"></i></span>
                     </div>
-                </div>
+                    <h3>Text in images</h3>
+                    <p>Search the words inside your images: memes, screenshots, even handwriting.</p>
+                </article>
+
+                <article class="feature-tile">
+                    <!-- image: images/features/image-search.png -->
+                    <div class="feature-media">
+                        <span class="feature-media-icon"><i class="px-icon" style="--icon: url(icons/pixelarticons/image.svg)"></i></span>
+                    </div>
+                    <h3>Advanced image search</h3>
+                    <p>Find any image by an object, colour, detail, style or the text inside it.</p>
+                </article>
+
+                <article class="feature-tile feature-tile--wide">
+                    <!-- image: images/features/smart-spaces.png -->
+                    <div class="feature-media">
+                        <span class="feature-media-icon"><i class="px-icon" style="--icon: url(icons/pixelarticons/grid-2x2-2.svg)"></i></span>
+                    </div>
+                    <h3>Smart Spaces</h3>
+                    <p>Collections without the effort. Saves gather themselves around a search, a theme or a tag &mdash; no filing required.</p>
+                </article>
+
+                <article class="feature-tile feature-tile--wide">
+                    <!-- image: images/features/ideas-notes.png -->
+                    <div class="feature-media">
+                        <span class="feature-media-icon"><i class="px-icon" style="--icon: url(icons/pixelarticons/notes.svg)"></i></span>
+                    </div>
+                    <h3>Ideas &amp; notes</h3>
+                    <p>A sticky note that&rsquo;s always within reach. Jot ideas and to-dos as Quick Notes, or switch to Focus Mode for longer drafts.</p>
+                </article>
+
+                <article class="feature-tile">
+                    <!-- image: images/features/video.png -->
+                    <div class="feature-media">
+                        <span class="feature-media-icon"><i class="px-icon" style="--icon: url(icons/pixelarticons/video.svg)"></i></span>
+                    </div>
+                    <h3>Videos &amp; GIFs</h3>
+                    <p>Keep your favourite GIFs and clips on the canvas, right beside everything else.</p>
+                </article>
+
+                <article class="feature-tile">
+                    <!-- image: images/features/clippings.png -->
+                    <div class="feature-media">
+                        <span class="feature-media-icon"><i class="px-icon" style="--icon: url(icons/pixelarticons/scissors.svg)"></i></span>
+                    </div>
+                    <h3>Text clippings</h3>
+                    <p>Highlight a passage or quote, right-click, and it&rsquo;s saved &mdash; source and all.</p>
+                </article>
+
+                <article class="feature-tile">
+                    <!-- image: images/features/eyes-only.png -->
+                    <div class="feature-media">
+                        <span class="feature-media-icon"><i class="px-icon" style="--icon: url(icons/pixelarticons/lock.svg)"></i></span>
+                    </div>
+                    <h3>For your eyes only</h3>
+                    <p>Everything lives on your device. No ads, no audience, no algorithm watching over your shoulder.</p>
+                </article>
+
+                <article class="feature-tile">
+                    <!-- image: images/features/serendipity.png -->
+                    <div class="feature-media">
+                        <span class="feature-media-icon"><i class="px-icon" style="--icon: url(icons/pixelarticons/shuffle.svg)"></i></span>
+                    </div>
+                    <h3>Serendipity</h3>
+                    <p>A dreamy shuffle through old saves to spark ideas and jog your memory. Keep a card, or let it go.</p>
+                </article>
+
+                <article class="feature-tile">
+                    <!-- image: images/features/companion-apps.png -->
+                    <div class="feature-media">
+                        <span class="feature-media-icon"><i class="px-icon" style="--icon: url(icons/pixelarticons/phone.svg)"></i></span>
+                    </div>
+                    <span class="feature-soon">Soon</span>
+                    <h3>Companion apps</h3>
+                    <p>AirPaste beyond the desktop, so your canvas comes with you.</p>
+                </article>
+
+                <article class="feature-tile">
+                    <!-- image: images/features/night-mode.png -->
+                    <div class="feature-media">
+                        <span class="feature-media-icon"><i class="px-icon" style="--icon: url(icons/pixelarticons/moon.svg)"></i></span>
+                    </div>
+                    <span class="feature-soon">Soon</span>
+                    <h3>Night mode</h3>
+                    <p>Switch between light and dark whenever your eyes ask for it.</p>
+                </article>
+
+                <article class="feature-tile">
+                    <!-- image: images/features/indie.png -->
+                    <div class="feature-media">
+                        <span class="feature-media-icon"><i class="px-icon" style="--icon: url(icons/pixelarticons/heart.svg)"></i></span>
+                    </div>
+                    <h3>Proudly indie</h3>
+                    <p>Made by a small, independent team who use it every day. No investors to please &mdash; free, forever.</p>
+                </article>
             </div>
         </div>
     </section>
@@ -526,7 +586,7 @@
     <!-- ==========================================
          🔒 PRIVACY FIRST
          ========================================== -->
-    <section class="privacy-section">
+    <!-- <section class="privacy-section">
         <div class="privacy-frame">
             <span class="privacy-badge privacy-badge--top">
                 <i class="px-icon" style="--icon: url(icons/pixelarticons/lock.svg)"></i>
@@ -571,7 +631,7 @@
                 <i class="px-icon" style="--icon: url(icons/pixelarticons/shield.svg)"></i>
             </span>
         </div>
-    </section>
+    </section> -->
 
     <div class="footer-reveal-container">
         <footer class="main-footer">
@@ -586,7 +646,7 @@
                         local-first canvas for visual thinkers. Lives on your
                         <i class="px-inline" style="--icon: url(icons/pixelarticons/save.svg)"></i> hard drive, free
                         <i class="px-inline" style="--icon: url(icons/pixelarticons/heart.svg)"></i> forever.</p>
-                    <a href="https://github.com/DEDROX2K/dedrox/releases/download/airpaste-v1.0.0-beta.1/AirPaste-Setup-1.0.0-beta.1.exe" download class="footer-download">
+                    <a href="download.html" class="footer-download">
                         <i class="px-icon" style="--icon: url(icons/pixelarticons/download.svg)"></i>
                         Download for Windows
                     </a>
@@ -601,7 +661,7 @@
                         <h4>Product</h4>
                         <ul class="footer-list">
                             <li><a href="airpaste.html"><i class="px-icon" style="--icon: url(icons/pixelarticons/home.svg)"></i>Home</a></li>
-                            <li><a href="https://github.com/DEDROX2K/dedrox/releases/download/airpaste-v1.0.0-beta.1/AirPaste-Setup-1.0.0-beta.1.exe" download><i class="px-icon" style="--icon: url(icons/pixelarticons/download.svg)"></i>Download</a></li>
+                            <li><a href="download.html"><i class="px-icon" style="--icon: url(icons/pixelarticons/download.svg)"></i>Download</a></li>
                             <li><a href="shop.html"><i class="px-icon" style="--icon: url(icons/pixelarticons/store.svg)"></i>AirStore</a></li>
                             <li><a href="whatsnext.html"><i class="px-icon" style="--icon: url(icons/pixelarticons/flag.svg)"></i>Roadmap</a></li>
                         </ul>
@@ -733,6 +793,29 @@
                 });
             }
 
+            // One wheel tick is enough: catch it before Lenis scrolls at all
+            // (capture on window runs ahead of Lenis's own wheel listener).
+            window.addEventListener('wheel', (e) => {
+                if (snapping) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return;
+                }
+                if (!hero.offsetHeight) return; // hero hidden (mobile)
+                const heroEnd = hero.offsetTop + hero.offsetHeight;
+                const y = globalLenis.scroll;
+
+                let target = null;
+                if (e.deltaY > 0 && y < heroEnd - 1) target = heroEnd;
+                else if (e.deltaY < 0 && y > 1 && y <= heroEnd + 1) target = 0;
+                if (target === null) return;
+
+                e.preventDefault();
+                e.stopPropagation();
+                snapTo(target);
+            }, { capture: true, passive: false });
+
+            // Fallback for keyboard / scrollbar scrolling
             globalLenis.on('scroll', ({ scroll, direction }) => {
                 if (snapping) return;
                 const heroEnd = hero.offsetTop + hero.offsetHeight;
@@ -1272,31 +1355,6 @@
         }
 
         if (titleEl) initCarousel();
-
-        // ==========================================
-        // ✨ FEATURES ACCORDION LOGIC
-        // ==========================================
-        (function () {
-            const accordionItems = document.querySelectorAll('.accordion-item');
-
-            accordionItems.forEach(item => {
-                item.addEventListener('click', () => {
-                    const isActive = item.classList.contains('active');
-
-                    // Close all other items
-                    accordionItems.forEach(otherItem => {
-                        otherItem.classList.remove('active');
-                    });
-
-                    // Toggle current item
-                    if (!isActive) {
-                        item.classList.add('active');
-                    }
-                });
-            });
-        })();
-
-
 
     </script>
     <script type="module">

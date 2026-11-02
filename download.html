@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download | AirPaste</title>
+    <meta name="description" content="Download AirPaste for Windows — an infinite, local-first canvas for visual thinkers. Free forever, no account needed.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="AirPaste">
+    <meta property="og:title" content="Download AirPaste">
+    <meta property="og:description" content="An infinite, local-first canvas for visual thinkers. Free forever, no account needed.">
+    <meta property="og:url" content="https://dedrox2k.github.io/dedrox/download.html">
+    <meta property="og:image" content="https://dedrox2k.github.io/dedrox/images/preview-airpaste%20image.png">
+    <meta property="og:image:width" content="1172">
+    <meta property="og:image:height" content="715">
+    <meta property="og:image:alt" content="AirPaste">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Download AirPaste">
+    <meta name="twitter:description" content="An infinite, local-first canvas for visual thinkers. Free forever, no account needed.">
+    <meta name="twitter:image" content="https://dedrox2k.github.io/dedrox/images/preview-airpaste%20image.png">
+    <link rel="icon" type="image/png" href="images/logo.png">
+    <link rel="stylesheet" href="airpaste.css">
+
+    <style>
+        body {
+            background-color: var(--bg);
+        }
+
+        .dl-page {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 22vh 5vw 10vh;
+            color: #1a1a1a;
+        }
+
+        /* Hero */
+        .dl-hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 6rem;
+        }
+
+        .dl-logo {
+            width: 86px;
+            height: 86px;
+            image-rendering: pixelated;
+            margin: 1.5rem 0 1.25rem;
+        }
+
+        .dl-hero h1 {
+            margin: 0 0 1rem;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            line-height: 1.05;
+        }
+
+        .dl-hero > p {
+            max-width: 520px;
+            margin: 0 0 2.5rem;
+            font-size: var(--fs-body);
+            line-height: 1.6;
+            color: rgba(0, 0, 0, 0.6);
+        }
+
+        .dl-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.85rem;
+            padding: 1.1rem 2rem 1.1rem 1.6rem;
+            border-radius: 999px;
+            background: #111;
+            color: #fff;
+            font-size: 1.125rem;
+            font-weight: 600;
+            text-decoration: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+            transition: background-color 0.2s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .dl-button:hover {
+            background: #0047FF;
+            transform: translateY(-2px);
+        }
+
+        .dl-button .px-icon {
+            width: 24px;
+            height: 24px;
+        }
+
+        .dl-meta {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .dl-meta span {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.4rem 0.8rem;
+            border-radius: 999px;
+            background: rgba(0, 0, 0, 0.06);
+            font-size: var(--fs-small);
+            font-weight: 500;
+        }
+
+        .dl-meta .px-icon {
+            width: 12px;
+            height: 12px;
+        }
+
+        .dl-hero .dl-other {
+            margin: 1.5rem 0 0;
+            font-size: var(--fs-small);
+            color: rgba(0, 0, 0, 0.5);
+        }
+
+        .dl-other a {
+            color: inherit;
+        }
+
+        /* Install steps — same dotted cards as the home page mini sections */
+        .dl-steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .dl-steps .about-card p strong {
+            color: #1a1a1a;
+            font-weight: 600;
+        }
+
+        .dl-foot {
+            margin-top: 4rem;
+            text-align: center;
+        }
+
+        @media (max-width: 900px) {
+            .dl-steps {
+                grid-template-columns: 1fr;
+            }
+
+            .dl-steps .about-card + .about-card {
+                border-left: 0;
+            }
+        }
+    </style>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+    <script src="cube-trail.js" defer></script>
+    <script src="navbar-logic.js" defer></script>
+    <script src="nav-blobs.js" defer></script>
+    <script src="arrow-sweep.js" defer></script>
+</head>
+
+<body>
+    <canvas id="cubeCanvas"></canvas>
+
+    <nav class="top-nav">
+        <div class="nav-toggle-wrapper">
+            <div class="nav-toggle-container">
+                <div class="nav-toggle-gooey-layer">
+                    <div class="nav-toggle-indicator"></div>
+                </div>
+                <div class="nav-toggle-buttons">
+                    <button class="nav-toggle-btn" id="toggleHome">AirPaste</button>
+                    <button class="nav-toggle-btn active" id="toggleDownload">Download</button>
+                    <button class="nav-toggle-btn" id="toggleShop">Shop</button>
+                    <button class="nav-toggle-btn" id="toggleNext">What's Next</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="dl-page">
+        <header class="dl-hero">
+            <span class="rm-eyebrow privacy-pill" style="padding: 0.4rem 0.9rem;"><i class="privacy-dot"></i>Public beta &middot; v1.0.0-beta.1</span>
+            <img src="images/logo.png" alt="" class="dl-logo">
+            <h1>Download AirPaste</h1>
+            <p>An <i class="px-inline" style="--icon: url(icons/pixelarticons/infinity.svg)"></i> infinite, local-first
+                canvas for visual thinkers. Free forever, no account, nothing to sign up for.</p>
+
+            <a href="https://github.com/DEDROX2K/dedrox/releases/download/airpaste-v1.0.0-beta.1/AirPaste-Setup-1.0.0-beta.1.exe"
+                download class="dl-button">
+                <i class="px-icon" style="--icon: url(icons/pixelarticons/download.svg)"></i>
+                Download for Windows
+            </a>
+
+            <div class="dl-meta">
+                <span><i class="px-icon" style="--icon: url(icons/pixelarticons/window-frame.svg)"></i>Windows 10 and above</span>
+                <span><i class="px-icon" style="--icon: url(icons/pixelarticons/save.svg)"></i>191 MB</span>
+                <span><i class="px-icon" style="--icon: url(icons/pixelarticons/lock.svg)"></i>Runs fully offline</span>
+            </div>
+
+            <p class="dl-other">Windows only for now &mdash; other platforms are on the
+                <a href="whatsnext.html">roadmap</a>.</p>
+        </header>
+
+        <section class="dl-steps">
+            <article class="about-card">
+                <div class="about-card-top">
+                    <span class="about-icon"><i class="px-icon" style="--icon: url(icons/pixelarticons/download.svg)"></i></span>
+                    <span class="about-num">01</span>
+                </div>
+                <h3>Download</h3>
+                <p>Grab the installer above. It's a single <strong>.exe</strong> file &mdash; no account or email needed.</p>
+            </article>
+
+            <article class="about-card">
+                <div class="about-card-top">
+                    <span class="about-icon"><i class="px-icon" style="--icon: url(icons/pixelarticons/window-frame.svg)"></i></span>
+                    <span class="about-num">02</span>
+                </div>
+                <h3>Install</h3>
+                <p>Open the file and follow the setup. If Windows SmartScreen shows a warning, click
+                    <strong>More info</strong> then <strong>Run anyway</strong> &mdash; that's normal for a new beta.</p>
+            </article>
+
+            <article class="about-card">
+                <div class="about-card-top">
+                    <span class="about-icon"><i class="px-icon" style="--icon: url(icons/pixelarticons/clipboard.svg)"></i></span>
+                    <span class="about-num">03</span>
+                </div>
+                <h3>Paste your first link</h3>
+                <p>Copy any link, paste it onto the canvas and watch it turn into an interactive tile. Everything stays
+                    on your drive.</p>
+            </article>
+        </section>
+
+        <div class="dl-foot">
+            <a href="https://github.com/DEDROX2K/dedrox/releases" target="_blank" rel="noopener" class="privacy-cta">
+                All releases on GitHub
+                <i class="px-icon" style="--icon: url(icons/pixelarticons/external-link.svg); width: 12px; height: 12px"></i>
+            </a>
+        </div>
+    </main>
+
+    <footer class="main-footer" style="background: transparent; border-radius: 0; padding-top: 10vh;">
+        <div class="footer-bottom">
+            <div class="footer-copyright">©2026 AirPaste</div>
+        </div>
+    </footer>
+
+    <script>
+        const lenis = new Lenis();
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+    </script>
+</body>
+
+</html>

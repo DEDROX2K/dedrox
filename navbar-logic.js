@@ -3,18 +3,6 @@
  * Standardizes navigation pill behavior, active states, and page transitions.
  */
 
-// Windows installer — every "Download" on the site points here.
-const INSTALLER_URL = 'https://github.com/DEDROX2K/dedrox/releases/download/airpaste-v1.0.0-beta.1/AirPaste-Setup-1.0.0-beta.1.exe';
-
-function downloadInstaller() {
-    const a = document.createElement('a');
-    a.href = INSTALLER_URL;
-    a.download = '';
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-}
-
 // ==========================================
 // 😇 PAGE TRANSITIONS — fade to white, fade back from white
 // The fade-in runs from CSS (body::after in airpaste.css);
@@ -95,12 +83,6 @@ class NavBar {
         // Click handlers
         this.btns.forEach(btn => {
             btn.addEventListener('click', (e) => {
-                // Download grabs the installer and stays on the page
-                if (btn.id === 'toggleDownload') {
-                    downloadInstaller();
-                    return;
-                }
-
                 const targetUrl = this.navMap[btn.id];
                 if (!targetUrl) return;
 
@@ -111,63 +93,9 @@ class NavBar {
             });
         });
 
-        // Initialize Scramble / Arrow Sweep
-        this.initArrowSweep('.nav-toggle-btn, .footer-link, .nav-shop img, .pixel-btn-v2, .carousel-btn, .accordion-title');
-
         window.addEventListener('resize', () => {
             const currentActive = document.querySelector('.nav-toggle-btn.active');
             this.updatePosition(currentActive, true);
-        });
-    }
-
-    initArrowSweep(selector) {
-        const elements = document.querySelectorAll(selector);
-        elements.forEach(el => {
-            // Only prepare text elements
-            if (el.tagName === 'IMG' || el.dataset.scramblePrepared) return;
-            
-            const originalText = el.textContent.trim();
-            if (!originalText) return;
-
-            // Prepare structure: Ghost span holds width, Display span shows animation
-            el.style.display = 'inline-grid';
-            el.style.placeItems = 'center';
-            el.style.verticalAlign = 'middle';
-            
-            el.innerHTML = `
-                <span class="scramble-ghost" style="grid-area: 1/1; visibility: hidden; pointer-events: none;">${originalText}</span>
-                <span class="scramble-display" style="grid-area: 1/1; white-space: nowrap;">${originalText}</span>
-            `;
-
-            el.dataset.text = originalText;
-            el.dataset.scramblePrepared = 'true';
-
-            const display = el.querySelector('.scramble-display');
-            let sweepInterval = null;
-
-            el.addEventListener('mouseenter', () => {
-                let iteration = 0;
-                clearInterval(sweepInterval);
-
-                sweepInterval = setInterval(() => {
-                    const len = originalText.length;
-                    let displayArray = originalText.split("");
-                    for (let i = 0; i < len; i++) {
-                        if (iteration < len) {
-                            if (i <= iteration) displayArray[i] = ">";
-                        } else {
-                            const restoreIndex = iteration - len;
-                            displayArray[i] = (i <= restoreIndex) ? originalText[i] : ">";
-                        }
-                    }
-                    display.textContent = displayArray.join("");
-                    if (iteration >= len * 2) {
-                        clearInterval(sweepInterval);
-                        display.textContent = originalText;
-                    }
-                    iteration++;
-                }, 40);
-            });
         });
     }
 

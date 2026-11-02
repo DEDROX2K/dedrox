@@ -234,11 +234,11 @@ html {
     z-index: 100;
     display: inline-flex;
     align-items: center;
-    padding: 16px 28px;
+    padding: 6px 8px;
     background: #000;
     color: #fff;
     font-family: 'GoogleSans', sans-serif;
-    font-size: 1.8rem;
+    font-size: 0.8rem;
     font-weight: 700;
     letter-spacing: 0.01em;
     pointer-events: none;
@@ -1842,126 +1842,120 @@ html {
     font-weight: 400;
 }
 
-.features-accordion {
+/* ==========================================
+   🧩 FEATURE TILES
+   Drop an <img> into .feature-media to replace the placeholder.
+   ========================================== */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.feature-tile {
+    position: relative;
     display: flex;
     flex-direction: column;
-    border-top: 2px solid #000;
+    gap: 0.5rem;
+    padding: 12px 12px 22px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.6);
+    transition: background-color 0.3s ease, transform 0.3s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
-.accordion-item {
-    background: transparent;
-    border-bottom: 2px solid #000;
-    border-radius: 0;
-    padding: 1.5rem 0;
-    transition: background-color 0.3s ease;
-    cursor: var(--ap-cursor-pointer);
+.feature-tile--wide {
+    grid-column: span 2;
 }
 
-.accordion-item:hover {
-    background: rgba(0, 0, 0, 0.03);
-}
-
-.accordion-item.active {
+.feature-tile:hover {
     background: #fff;
-    padding-bottom: 2rem;
+    transform: translateY(-3px);
 }
 
-.accordion-header {
+.feature-media {
+    position: relative;
     display: flex;
     align-items: center;
-    gap: 1.5rem;
-    padding: 0 1rem;
-    font-family: 'GoogleSans', sans-serif;
-    font-size: var(--fs-title);
+    justify-content: center;
+    height: 220px;
+    margin-bottom: 0.75rem;
+    border-radius: 9px;
+    overflow: hidden;
+    /* faint dot grid until a real image goes in */
+    background:
+        radial-gradient(rgba(0, 0, 0, 0.12) 1px, transparent 1px) 0 0 / 14px 14px,
+        #dedede;
 }
 
-.accordion-icon-box {
+.feature-media img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.feature-media-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 48px;
     height: 48px;
     background: #000;
-    border-radius: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     color: #fff;
-    flex-shrink: 0;
-    transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+    transition: background-color 0.3s ease;
 }
 
-.accordion-item.active .accordion-icon-box {
+.feature-tile:hover .feature-media-icon {
     background: #0047FF;
 }
 
-.accordion-icon {
-    width: 24px;
-    height: 24px;
-}
-
-.accordion-title {
-    font-family: 'GoogleSans', sans-serif;
-    font-size: var(--fs-title);
-    font-weight: 600;
-    color: #000;
-    flex: 1;
-    text-transform: uppercase;
-    line-height: 1;
-}
-
-.accordion-arrow {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #000;
-    transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-}
-
-.accordion-arrow .px-icon {
-    width: 24px;
-    height: 24px;
-}
-
-.accordion-item.active .accordion-arrow {
-    transform: rotate(180deg);
-}
-
-.accordion-body {
-    max-height: 0;
-    overflow: hidden;
-    transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-    opacity: 0;
-}
-
-.accordion-item.active .accordion-body {
-    max-height: 300px;
-    margin-top: 1.25rem;
-    opacity: 1;
-}
-
-.accordion-body p {
-    font-family: 'GoogleSans', sans-serif;
-    font-size: var(--fs-body);
-    line-height: 1.6;
-    color: rgba(0, 0, 0, 0.7);
+.feature-tile h3,
+.feature-tile p {
     margin: 0;
-    padding-left: calc(48px + 1.5rem + 1rem);
-    /* Icon box + gap + header padding */
-    max-width: 800px;
+    padding: 0 8px;
 }
 
-@media (max-width: 768px) {
-    .accordion-header {
-        gap: 1rem;
+.feature-tile h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.feature-tile p {
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.feature-soon {
+    position: absolute;
+    top: 22px;
+    right: 22px;
+    padding: 0.3rem 0.65rem;
+    border-radius: 999px;
+    background: #fff;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+@media (max-width: 900px) {
+    .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .features-grid {
+        grid-template-columns: 1fr;
     }
 
-    .accordion-icon-box {
-        width: 40px;
-        height: 40px;
+    .feature-tile--wide {
+        grid-column: auto;
     }
 
-    .accordion-body p {
-        padding-left: 1rem;
+    .feature-media {
+        height: 180px;
     }
 }
 
@@ -2280,7 +2274,7 @@ html {
     top: 0;
     left: 0;
     width: 100%;
-    height: 6vw;
+    height: max(6vw, 84px);
     /* Defined height for vertical alignment */
     display: flex;
     justify-content: center;
@@ -2457,71 +2451,89 @@ html {
 }
 
 .nav-toggle-container {
-    background: #222;
-    padding: 4px;
-    display: flex;
+    --blob-overlap: 0px;
     position: relative;
-
-    /* Pixelated corner cutouts */
-    clip-path: polygon(0 6px, 2px 6px, 2px 4px, 4px 4px, 4px 2px, 6px 2px, 6px 0,
-            calc(100% - 6px) 0, calc(100% - 6px) 2px, calc(100% - 4px) 2px, calc(100% - 4px) 4px, calc(100% - 2px) 4px, calc(100% - 2px) 6px, 100% 6px,
-            100% calc(100% - 6px), calc(100% - 2px) calc(100% - 6px), calc(100% - 2px) calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) calc(100% - 2px), calc(100% - 6px) calc(100% - 2px), calc(100% - 6px) 100%,
-            6px 100%, 6px calc(100% - 2px), 4px calc(100% - 2px), 4px calc(100% - 4px), 2px calc(100% - 4px), 2px calc(100% - 6px), 0 calc(100% - 6px));
+    display: flex;
+    padding: 4px;
 }
 
-/* Morphing indicator background */
+/* Grey blobs, one per button (built by nav-blobs.js), merged by the goo filter */
 .nav-toggle-gooey-layer {
     position: absolute;
     inset: 4px;
     pointer-events: none;
     z-index: 1;
-    filter: none !important;
-    /* Remove gooey effect */
+    filter: url(#ap-nav-goo) drop-shadow(0 6px 14px rgba(0, 0, 0, 0.18));
 }
 
+.nav-blob {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    border-radius: 999px;
+    background: #111;
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.nav-blob.is-hover {
+    transform: scale(1.06, 1.1);
+}
+
+/* White pill for the current page, inset inside its blob */
 .nav-toggle-indicator {
     position: absolute;
-    height: 100%;
+    top: 4px;
+    bottom: 4px;
+    left: 4px;
     width: 60px;
-    background: #dcdcdc;
-    /* Light grey from reference */
-    border-radius: 0;
-    /* Snap transition */
-    transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1),
-        width 0.4s cubic-bezier(0.19, 1, 0.22, 1);
-    top: 0;
-    left: 0;
+    z-index: 2;
+    pointer-events: none;
+    transition: transform 0.45s cubic-bezier(0.34, 1.3, 0.64, 1),
+        width 0.45s cubic-bezier(0.34, 1.3, 0.64, 1);
+}
 
-    /* Pixel corners for the indicator box */
-    clip-path: polygon(0 6px, 2px 6px, 2px 4px, 4px 4px, 4px 2px, 6px 2px, 6px 0,
-            calc(100% - 6px) 0, calc(100% - 6px) 2px, calc(100% - 4px) 2px, calc(100% - 4px) 4px, calc(100% - 2px) 4px, calc(100% - 2px) 6px, 100% 6px,
-            100% calc(100% - 6px), calc(100% - 2px) calc(100% - 6px), calc(100% - 2px) calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) calc(100% - 2px), calc(100% - 6px) calc(100% - 2px), calc(100% - 6px) 100%,
-            6px 100%, 6px calc(100% - 2px), 4px calc(100% - 2px), 4px calc(100% - 4px), 2px calc(100% - 4px), 2px calc(100% - 6px), 0 calc(100% - 6px));
+.nav-toggle-indicator::before {
+    content: '';
+    position: absolute;
+    inset: 6px;
+    border-radius: 999px;
+    background: #fff;
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
 }
 
 .nav-toggle-buttons {
     display: flex;
     position: relative;
-    z-index: 2;
+    z-index: 3;
 }
 
 .nav-toggle-btn {
+    position: relative;
     border: none;
     background: transparent;
     padding: 10px 24px;
     font-family: 'GoogleSans', sans-serif;
     font-weight: 700;
     font-size: 1.5rem;
-    color: #ffffff;
-    cursor: var(--ap-cursor-pointer);
+    color: #fff;
     transition: color 0.3s ease;
+    cursor: var(--ap-cursor-pointer);
     white-space: nowrap;
-    text-transform: uppercase;
 }
 
+/* Grey asterisk on What's Next — a pseudo-element so the hover scramble can't wipe it */
+#toggleNext::after {
+    content: '*';
+    position: absolute;
+    top: 6px;
+    right: 12px;
+    font-size: 0.7em;
+    color: #8a8a8a;
+}
+
+/* Black text on the white active pill */
 .nav-toggle-btn.active {
     color: #000;
-    /* Black text on grey background */
 }
 
 @keyframes asciiJitter {
@@ -4265,9 +4277,22 @@ html.is-leaving body::after {
         padding: 0 12px;
     }
 
+    .nav-toggle-container {
+        --blob-overlap: 3px;
+    }
+
     .nav-toggle-btn {
         padding: 7px 9px;
         font-size: 0.75rem;
+    }
+
+    #toggleNext::after {
+        top: 3px;
+        right: 2px;
+    }
+
+    .nav-toggle-indicator::before {
+        inset: 4px;
     }
 
     .manifesto-section {
@@ -4280,10 +4305,6 @@ html.is-leaving body::after {
 
     .features-section {
         padding: 8vh 16px;
-    }
-
-    .accordion-header {
-        padding: 0 0.5rem;
     }
 
     .about-trio {
@@ -4309,4 +4330,12 @@ html.is-leaving body::after {
         flex-wrap: wrap;
         justify-content: center;
     }
+}
+
+/* ">>>>" hover sweep (arrow-sweep.js): letters are pinned to their own width
+   while the sweep runs, so the label never shifts */
+.is-sweeping .sweep-char {
+    display: inline-block;
+    text-align: center;
+    overflow: visible;
 }
