@@ -4,7 +4,7 @@
  */
 
 // Windows installer — every "Download" on the site points here.
-const INSTALLER_URL = 'AirPaste%20Setup%201.0.0-beta.1.exe';
+const INSTALLER_URL = 'https://github.com/DEDROX2K/dedrox/releases/download/airpaste-v1.0.0-beta.1/AirPaste-Setup-1.0.0-beta.1.exe';
 
 function downloadInstaller() {
     const a = document.createElement('a');

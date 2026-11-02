@@ -5,7 +5,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AirPaste | Local-First Bookmarks</title>
-    <link rel="icon" type="image/gif" href="images/logovar/browserlogo.gif">
+    <meta name="description" content="An infinite, local-first canvas for visual thinkers. Save links forever, no cloud, no paywall — free forever.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="AirPaste">
+    <meta property="og:title" content="AirPaste | Local-First Bookmarks">
+    <meta property="og:description" content="An infinite, local-first canvas for visual thinkers. Save links forever, no cloud, no paywall — free forever.">
+    <meta property="og:url" content="https://dedrox2k.github.io/dedrox/airpaste.html">
+    <meta property="og:image" content="https://dedrox2k.github.io/dedrox/images/preview-airpaste%20image.png">
+    <meta property="og:image:width" content="1172">
+    <meta property="og:image:height" content="715">
+    <meta property="og:image:alt" content="AirPaste">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="AirPaste | Local-First Bookmarks">
+    <meta name="twitter:description" content="An infinite, local-first canvas for visual thinkers. Save links forever, no cloud, no paywall — free forever.">
+    <meta name="twitter:image" content="https://dedrox2k.github.io/dedrox/images/preview-airpaste%20image.png">
+    <link rel="icon" type="image/png" href="images/logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Mansalva&family=Playfair+Display:wght@700&display=swap">
@@ -81,12 +95,12 @@
             </div>
         </div>
         <div class="hero-top-left-bar">
-            <img src="images/Vector/airpaste-logo.svg" alt="AirPaste Logo"
-                style="height: 18px; width: auto; vertical-align: middle; margin-right: 8px; opacity: 0.85;">
+            <img src="images/logo.png" alt="AirPaste Logo"
+                style="height: 22px; width: auto; vertical-align: middle; margin-right: 8px; image-rendering: pixelated;">
             You should not spend 10£ to save bookmarks.
         </div>
         <div class="hero-cta-group">
-            <a href="AirPaste%20Setup%201.0.0-beta.1.exe" download class="pixel-btn-v2">Download AirPaste</a>
+            <a href="https://github.com/DEDROX2K/dedrox/releases/download/airpaste-v1.0.0-beta.1/AirPaste-Setup-1.0.0-beta.1.exe" download class="pixel-btn-v2">Download AirPaste</a>
         </div>
         <div class="hero-scroll-indicator">
             <div class="ascii-block-v">
@@ -134,7 +148,7 @@
                 <div class="scrubber-divider" id="scrubberDivider"></div>
             </div>
         </div>
-        <p class="scrubber-hint">← Move cursor to reveal →</p>
+        <p class="scrubber-hint"><span class="hint-pointer">← Move cursor to reveal →</span><span class="hint-touch">← Drag to reveal →</span></p>
     </section>
 
     <!-- ==========================================
@@ -565,14 +579,14 @@
                 <!-- Brand + download -->
                 <div class="footer-brand">
                     <a href="airpaste.html" class="footer-logo">
-                        <i class="px-icon footer-logo-mark" style="--icon: url(images/Vector/airpaste-logo.svg)"></i>
+                        <img src="images/logo.png" alt="" class="footer-logo-mark">
                         <span>AirPaste</span>
                     </a>
                     <p>An <i class="px-inline" style="--icon: url(icons/pixelarticons/infinity.svg)"></i> infinite,
                         local-first canvas for visual thinkers. Lives on your
                         <i class="px-inline" style="--icon: url(icons/pixelarticons/save.svg)"></i> hard drive, free
                         <i class="px-inline" style="--icon: url(icons/pixelarticons/heart.svg)"></i> forever.</p>
-                    <a href="AirPaste%20Setup%201.0.0-beta.1.exe" download class="footer-download">
+                    <a href="https://github.com/DEDROX2K/dedrox/releases/download/airpaste-v1.0.0-beta.1/AirPaste-Setup-1.0.0-beta.1.exe" download class="footer-download">
                         <i class="px-icon" style="--icon: url(icons/pixelarticons/download.svg)"></i>
                         Download for Windows
                     </a>
@@ -587,7 +601,7 @@
                         <h4>Product</h4>
                         <ul class="footer-list">
                             <li><a href="airpaste.html"><i class="px-icon" style="--icon: url(icons/pixelarticons/home.svg)"></i>Home</a></li>
-                            <li><a href="AirPaste%20Setup%201.0.0-beta.1.exe" download><i class="px-icon" style="--icon: url(icons/pixelarticons/download.svg)"></i>Download</a></li>
+                            <li><a href="https://github.com/DEDROX2K/dedrox/releases/download/airpaste-v1.0.0-beta.1/AirPaste-Setup-1.0.0-beta.1.exe" download><i class="px-icon" style="--icon: url(icons/pixelarticons/download.svg)"></i>Download</a></li>
                             <li><a href="shop.html"><i class="px-icon" style="--icon: url(icons/pixelarticons/store.svg)"></i>AirStore</a></li>
                             <li><a href="whatsnext.html"><i class="px-icon" style="--icon: url(icons/pixelarticons/flag.svg)"></i>Roadmap</a></li>
                         </ul>
@@ -1047,7 +1061,8 @@
 
             const TILT_MAX = 8;
 
-            card.addEventListener('mousemove', (e) => {
+            // pointer events so a finger drag scrubs on touch screens too
+            card.addEventListener('pointermove', (e) => {
                 const rect = card.getBoundingClientRect();
                 const x = (e.clientX - rect.left) / rect.width;
                 const y = (e.clientY - rect.top) / rect.height;
@@ -1066,7 +1081,7 @@
                 });
             });
 
-            card.addEventListener('mouseleave', () => {
+            card.addEventListener('pointerleave', () => {
                 gsap.to(card, { rotateY: 0, rotateX: 0, duration: 0.8, ease: "elastic.out(1, 0.5)" });
             });
         })();

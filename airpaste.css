@@ -3211,6 +3211,7 @@ html {
 
 .scrubber-card {
     position: relative;
+    container-type: inline-size;
     width: 100%;
     border-radius: 5px;
     overflow: hidden;
@@ -3252,8 +3253,8 @@ html {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100vw;
-    /* Full original width so clip reveals it */
+    /* Same width as the card (container query unit) so it lines up with the after image */
+    width: 100cqw;
     max-width: 900px;
     height: auto;
 }
@@ -3378,9 +3379,9 @@ html {
 }
 
 .footer-logo-mark {
-    /* logo SVG is white; masking it lets it take the text colour */
-    width: 31px;
-    height: 26px;
+    width: 32px;
+    height: 32px;
+    image-rendering: pixelated;
 }
 
 .footer-brand p {
@@ -4228,5 +4229,84 @@ html.is-leaving body::after {
 
     .about-card {
         padding: 2rem 0.5rem;
+    }
+}
+
+/* ==========================================
+   📱 MOBILE
+   ========================================== */
+.hint-touch {
+    display: none;
+}
+
+/* Touch screens: drag the before/after slider instead of hovering */
+@media (hover: none) {
+    .scrubber-card {
+        touch-action: pan-y;
+    }
+
+    .hint-pointer {
+        display: none;
+    }
+
+    .hint-touch {
+        display: inline;
+    }
+}
+
+@media (max-width: 768px) {
+    /* The hover-reveal hero is a desktop thing — phones start at the content */
+    .hero-section {
+        display: none;
+    }
+
+    .top-nav {
+        height: 64px;
+        padding: 0 12px;
+    }
+
+    .nav-toggle-btn {
+        padding: 7px 9px;
+        font-size: 0.75rem;
+    }
+
+    .manifesto-section {
+        padding: 96px 20px 24px !important;
+    }
+
+    .scrubber-section {
+        padding: 0 16px 8vh;
+    }
+
+    .features-section {
+        padding: 8vh 16px;
+    }
+
+    .accordion-header {
+        padding: 0 0.5rem;
+    }
+
+    .about-trio {
+        padding: 0 16px 8vh;
+    }
+
+    .privacy-section {
+        padding: 8vh 16px 12vh;
+    }
+
+    .privacy-frame {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .main-footer {
+        padding: 56px 20px 32px;
+        border-bottom-left-radius: 28px;
+        border-bottom-right-radius: 28px;
+    }
+
+    .footer-legal-links {
+        flex-wrap: wrap;
+        justify-content: center;
     }
 }
