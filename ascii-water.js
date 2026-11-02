@@ -11,15 +11,15 @@
 
     // --- 🎛️ SETTINGS ---
     const SETTINGS = {
-        gridSize: 40,
-        viscosity: 0.94,
-        diffusion: 0.98,
-        mouseForce: 0.3,
-        residueStrength: 80,
-        fontSize: 22,
-        blue: '#1a1a1a',
-        white: 'transparent', // Transparent background
-        coverImgSrc: ''      // No background image
+        gridSize: 40,       // Smaller cells for more detail
+        viscosity: 0.93,    // How much velocity is kept (0.9-0.99)
+        diffusion: 0.99,    // How much 'residue' is kept (0.9-0.99)
+        mouseForce: 0.4,    // Pushing strength
+        residueStrength: 99, // Added density per move
+        fontSize: 28,
+        blue: 'rgb(157, 143, 113)',    // AirPaste Blue
+        white: '#ffffffff',
+        coverImgSrc: 'images/bg19.jpg'
     };
 
     let w, h, cols, rows;
@@ -51,14 +51,14 @@
         }
     }
 
-    const glyphs = ['.', ',', ':', ';', '!', '/', '\\', '#', '%', '&', '$', 'X', '0', '*'];
-
-    function getGlyph(vx, vy, density) {
+    function getArrow(vx, vy) {
         const mag = Math.hypot(vx, vy);
-        if (density < 0.5 && mag < 0.06) return '.';
-        const energy = Math.min(1, (density / 10) * 0.7 + mag * 0.6);
-        const idx = Math.floor(energy * (glyphs.length - 1));
-        return glyphs[Math.max(0, Math.min(glyphs.length - 1, idx))];
+        if (mag < 0.05) return '·';
+
+        const angle = Math.atan2(vy, vx) * (180 / Math.PI);
+        const norm = (angle + 360 + 22.5) % 360;
+        const arrows = ['→', '↘', '↓', '↙', '←', '↖', '↑', '↗'];
+        return arrows[Math.floor(norm / 45) % 8];
     }
 
     let mx = 0, my = 0, pmx = 0, pmy = 0;
@@ -189,10 +189,50 @@
     function draw() {
         const isMobile = window.innerWidth <= 800;
 
-        // 1. Clear previous frame
+        // 1. Fill/Draw the cover image as the mask
         ctx.globalCompositeOperation = 'source-over';
-        ctx.clearRect(0, 0, w, h); 
+        ctx.clearRect(0, 0, w, h); // Clear previous frame
 
+        if (!isMobile) {
+            if (coverImg.complete) {
+                // "Cover" scaling logic for drawing image on canvas
+                const imgAspect = coverImg.width / coverImg.height;
+                const canvasAspect = w / h;
+                let renderW, renderH, offsetX, offsetY;
+
+                if (canvasAspect > imgAspect) {
+                    renderW = w;
+                    renderH = w / imgAspect;
+                    offsetX = 0;
+                    offsetY = -(renderH - h) / 2;
+                } else {
+                    renderW = h * imgAspect;
+                    renderH = h;
+                    offsetX = -(renderW - w) / 2;
+                    offsetY = 0;
+                }
+                ctx.drawImage(coverImg, offsetX, offsetY, renderW, renderH);
+            } else {
+                // Fallback while loading
+                ctx.fillStyle = SETTINGS.white;
+                ctx.fillRect(0, 0, w, h);
+            }
+        }
+
+        // 2. Punch holes where the density is high
+        if (!isMobile) {
+            ctx.globalCompositeOperation = 'destination-out';
+            for (let y = 0; y < rows; y++) {
+                for (let x = 0; x < cols; x++) {
+                    const cell = grid[y * cols + x];
+                    if (cell.density > 2) {
+                        const sx = x * SETTINGS.gridSize;
+                        const sy = y * SETTINGS.gridSize;
+                        ctx.fillRect(sx, sy, SETTINGS.gridSize, SETTINGS.gridSize);
+                    }
+                }
+            }
+        }
 
         // 3. Draw the arrows on top
         ctx.globalCompositeOperation = 'source-over';
@@ -205,12 +245,12 @@
                 const cell = grid[y * cols + x];
                 const d = Math.min(cell.density, 10) / 10;
 
-                const char = getGlyph(cell.vx, cell.vy, cell.density);
+                const char = getArrow(cell.vx, cell.vy);
                 const sx = x * SETTINGS.gridSize + SETTINGS.gridSize / 2;
                 const sy = y * SETTINGS.gridSize + SETTINGS.gridSize / 2;
 
                 ctx.fillStyle = SETTINGS.blue;
-                ctx.globalAlpha = cell.density > 2 ? 0.32 : (0.04 + d * 0.22);
+                ctx.globalAlpha = cell.density > 2 ? 1.0 : (0.1 + d * 0.9);
                 ctx.fillText(char, sx, sy);
                 ctx.globalAlpha = 1.0;
             }
@@ -218,11 +258,6 @@
     }
 
     function loop() {
-        if (window.scrollY > window.innerHeight) {
-            ctx.clearRect(0, 0, w, h);
-            requestAnimationFrame(loop);
-            return;
-        }
         update();
         draw();
         requestAnimationFrame(loop);
@@ -232,4 +267,3 @@
     init();
     loop();
 })();
-

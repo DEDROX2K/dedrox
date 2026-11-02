@@ -3,6 +3,53 @@
  * Standardizes navigation pill behavior, active states, and page transitions.
  */
 
+// Windows installer — every "Download" on the site points here.
+const INSTALLER_URL = 'AirPaste%20Setup%201.0.0-beta.1.exe';
+
+function downloadInstaller() {
+    const a = document.createElement('a');
+    a.href = INSTALLER_URL;
+    a.download = '';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+}
+
+// ==========================================
+// 😇 PAGE TRANSITIONS — fade to white, fade back from white
+// The fade-in runs from CSS (body::after in airpaste.css);
+// leaving a page adds .is-leaving, then navigates once it's white.
+// ==========================================
+const PAGE_FADE_OUT_MS = 500;
+
+function fadeToPage(url) {
+    const root = document.documentElement;
+    if (root.classList.contains('is-leaving')) return;
+    root.classList.add('is-leaving');
+    setTimeout(() => { window.location.href = url; }, PAGE_FADE_OUT_MS);
+}
+
+document.addEventListener('click', (e) => {
+    const link = e.target.closest('a[href]');
+    if (!link || e.defaultPrevented) return;
+    if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    if (link.target === '_blank' || link.hasAttribute('download')) return;
+
+    const url = new URL(link.href, window.location.href);
+    if (url.origin !== window.location.origin) return;
+    // Same-page hash links scroll, they don't transition
+    if (url.pathname === window.location.pathname && url.hash) return;
+    if (link.getAttribute('href') === '#') return;
+
+    e.preventDefault();
+    fadeToPage(url.href);
+});
+
+// Coming back via the back button restores the page from cache still white
+window.addEventListener('pageshow', (e) => {
+    if (e.persisted) document.documentElement.classList.remove('is-leaving');
+});
+
 class NavBar {
     constructor() {
         this.container = document.querySelector('.nav-toggle-container');
@@ -15,7 +62,6 @@ class NavBar {
             'toggleHome': 'airpaste.html',
             'toggleDownload': 'download.html',
             'toggleShop': 'shop.html',
-            'toggleFree': 'forfree.html',
             'toggleNext': 'whatsnext.html'
         };
 
@@ -49,19 +95,24 @@ class NavBar {
         // Click handlers
         this.btns.forEach(btn => {
             btn.addEventListener('click', (e) => {
+                // Download grabs the installer and stays on the page
+                if (btn.id === 'toggleDownload') {
+                    downloadInstaller();
+                    return;
+                }
+
                 const targetUrl = this.navMap[btn.id];
                 if (!targetUrl) return;
 
                 // Update UI position
                 this.updatePosition(btn);
 
-                // Navigate directly
-                window.location.href = targetUrl;
+                fadeToPage(targetUrl);
             });
         });
 
         // Initialize Scramble / Arrow Sweep
-        this.initArrowSweep('.nav-toggle-btn, .footer-link, .nav-shop img, .pixel-btn-v2, .carousel-btn, .accordion-title, .accordion-header');
+        this.initArrowSweep('.nav-toggle-btn, .footer-link, .nav-shop img, .pixel-btn-v2, .carousel-btn, .accordion-title');
 
         window.addEventListener('resize', () => {
             const currentActive = document.querySelector('.nav-toggle-btn.active');

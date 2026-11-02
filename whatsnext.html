@@ -14,7 +14,222 @@
     <style>
         body {
             background-color: var(--bg);
-            cursor: none !important;
+        }
+
+        .roadmap {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 22vh 5vw 12vh;
+            color: #1a1a1a;
+        }
+
+        /* Hero */
+        .rm-hero {
+            text-align: center;
+            max-width: 640px;
+            margin: 0 auto 3rem;
+        }
+
+        .rm-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 0.9rem;
+            border-radius: 999px;
+            background: rgba(0, 0, 0, 0.06);
+            font-size: var(--fs-small);
+            font-weight: 500;
+        }
+
+        .rm-hero h1 {
+            margin: 1.25rem 0 1rem;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            line-height: 1.05;
+        }
+
+        .rm-hero h1 sup {
+            font-size: 0.45em;
+            color: #0047FF;
+        }
+
+        .rm-hero p {
+            margin: 0;
+            font-size: var(--fs-body);
+            line-height: 1.6;
+            color: rgba(0, 0, 0, 0.6);
+        }
+
+        /* Filter chips */
+        .rm-filters {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .rm-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.6rem 0.5rem 1rem;
+            border: 0;
+            border-radius: 999px;
+            background: rgba(0, 0, 0, 0.06);
+            color: #1a1a1a;
+            font: 500 var(--fs-small) / 1 'GoogleSans', sans-serif;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .rm-chip span {
+            padding: 0.2rem 0.45rem;
+            border-radius: 4px;
+            background: #fff;
+            font-size: 0.75rem;
+        }
+
+        .rm-chip:hover {
+            background: rgba(0, 0, 0, 0.12);
+        }
+
+        .rm-chip.is-active {
+            background: #1a1a1a;
+            color: #fff;
+        }
+
+        .rm-chip.is-active span {
+            background: #0047FF;
+            color: #fff;
+        }
+
+        /* Theme groups */
+        .rm-group {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 3rem;
+            padding: 3rem 0;
+            border-top: 2px dotted rgba(0, 0, 0, 0.4);
+        }
+
+        .rm-group[hidden] {
+            display: none;
+        }
+
+        .rm-group-head {
+            position: sticky;
+            top: 110px;
+            align-self: start;
+            display: grid;
+            grid-template-columns: 48px 1fr;
+            column-gap: 1rem;
+            align-items: center;
+        }
+
+        .rm-icon {
+            grid-row: span 2;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+            color: #fff;
+            transition: background-color 0.3s ease;
+        }
+
+        .rm-group:hover .rm-icon {
+            background: #0047FF;
+        }
+
+        .rm-group-head h2 {
+            margin: 0;
+            font-size: var(--fs-title);
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .rm-count {
+            font-size: 0.8125rem;
+            color: rgba(0, 0, 0, 0.5);
+        }
+
+        .rm-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .rm-item {
+            display: grid;
+            grid-template-columns: 2.5rem 1fr;
+            gap: 1rem;
+            padding: 1.1rem 1rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            transition: background-color 0.2s ease;
+        }
+
+        .rm-item:last-child {
+            border-bottom: 0;
+        }
+
+        .rm-item:hover {
+            background: #fff;
+        }
+
+        .rm-num {
+            padding-top: 0.15rem;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            color: rgba(0, 0, 0, 0.4);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .rm-item h3 {
+            margin: 0 0 0.25rem;
+            font-size: 1.0625rem;
+            font-weight: 600;
+            line-height: 1.35;
+        }
+
+        .rm-item p {
+            margin: 0;
+            font-size: 0.9375rem;
+            line-height: 1.55;
+            color: rgba(0, 0, 0, 0.6);
+        }
+
+        /* Closing CTA */
+        .rm-cta {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            padding-top: 4rem;
+            border-top: 2px dotted rgba(0, 0, 0, 0.4);
+            text-align: center;
+        }
+
+        .rm-cta p {
+            margin: 0;
+            font-size: var(--fs-body);
+            color: rgba(0, 0, 0, 0.6);
+        }
+
+        @media (max-width: 768px) {
+            .rm-group {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .rm-group-head {
+                position: static;
+            }
+
+            .rm-item {
+                padding: 1rem 0.25rem;
+            }
         }
     </style>
     <!-- Scripts for Cube Trail & Transitions -->
@@ -44,28 +259,472 @@
                     <button class="nav-toggle-btn" id="toggleHome">AirPaste</button>
                     <button class="nav-toggle-btn" id="toggleDownload">Download</button>
                     <button class="nav-toggle-btn" id="toggleShop">Shop</button>
-                    <button class="nav-toggle-btn" id="toggleFree">For Free?</button>
                     <button class="nav-toggle-btn active" id="toggleNext">What's Next*</button>
                 </div>
             </div>
         </div>
     </nav>
 
-    <section class="manifesto-section" style="margin-top: 15vh;">
-        <div class="manifesto-content">
-            <h2 class="manifesto-subtitle">
-                <span class="word-head">The Future of Spatial Organization</span>
-            </h2>
-            <p class="manifesto-text">
-                We're just getting started. Our roadmap includes mobile synchronization (via secure local network),
-                advanced AI-driven tagging, collaborative workspaces, and deep integration with your favorite developer
-                tools.
-            </p>
-            <p class="manifesto-text highlight">
-                The canvas is infinite, and so are the possibilities.
-            </p>
+    <main class="roadmap">
+        <header class="rm-hero">
+            <span class="rm-eyebrow"><i class="px-icon" style="--icon: url(icons/pixelarticons/flag.svg); width: 12px; height: 12px"></i> Roadmap &middot; 50 ideas</span>
+            <h1>What’s next<sup>*</sup></h1>
+            <p>Everything we’re working toward, grouped by theme. No dates, no hype &mdash; just honest direction
+                for where AirPaste is heading.</p>
+        </header>
+
+        <nav class="rm-filters" aria-label="Filter roadmap by theme">
+            <button class="rm-chip is-active" data-filter="all" aria-pressed="true">All <span>50</span></button>
+            <button class="rm-chip" data-filter="product" aria-pressed="false">Product & features <span>5</span></button>
+            <button class="rm-chip" data-filter="ux" aria-pressed="false">UX &amp; interaction <span>5</span></button>
+            <button class="rm-chip" data-filter="design" aria-pressed="false">Visual design <span>10</span></button>
+            <button class="rm-chip" data-filter="performance" aria-pressed="false">Performance &amp; under the hood <span>10</span></button>
+            <button class="rm-chip" data-filter="stability" aria-pressed="false">Stability &amp; testing <span>10</span></button>
+            <button class="rm-chip" data-filter="onboarding" aria-pressed="false">Onboarding <span>5</span></button>
+            <button class="rm-chip" data-filter="delight" aria-pressed="false">Personality &amp; delight <span>3</span></button>
+            <button class="rm-chip" data-filter="a11y" aria-pressed="false">Accessibility <span>2</span></button>
+        </nav>
+
+        <div class="rm-groups">
+            <section class="rm-group" data-group="product">
+                <header class="rm-group-head">
+                    <span class="rm-icon"><i class="px-icon" style="--icon: url(icons/pixelarticons/zap.svg)"></i></span>
+                    <h2>Product & features</h2>
+                    <span class="rm-count">05 items</span>
+                </header>
+                <ol class="rm-list">
+                    <li class="rm-item">
+                        <span class="rm-num">01</span>
+                        <div>
+                            <h3>Search across every tile</h3>
+                            <p>A Spotlight-style search to find any tile, even on the biggest canvas.</p>
+                        </div>
+                    </li>
+                    <li class="rm-item">
+                        <span class="rm-num">02</span>
+                        <div>
+                            <h3>Command palette (Ctrl+K)</h3>
+                            <p>One quick place to create text, sticky notes, paper notes, checklists, racks and more.</p>
+                        </div>
+                    </li>
+                    <li class="rm-item">
+                        <span class="rm-num">03</span>
+                        <div>
+                            <h3>Linked notes &amp; backlinks</h3>
+                            <p>Tethers go beyond visuals, so notes can reference each other.</p>
+                        </div>
+                    </li>
+                    <li class="rm-item">
+                        <span class="rm-num">04</span>
+                        <div>
+                            <h3>Auto-arrange</h3>
+                            <p>Align and evenly distribute selected tiles in one click.</p>
+                        </div>
+                    </li>
+                    <li class="rm-item">
+                        <span class="rm-num">05</span>
+                        <div>
+                            <h3>Export to PDF or image</h3>
+                            <p>Share a whole canvas or a tethered group as a file.</p>
+                        </div>
+                    </li>
+                </ol>
+            </section>
+
+            <section class="rm-group" data-group="ux">
+                <header class="rm-group-head">
+                    <span class="rm-icon"><i class="px-icon" style="--icon: url(icons/pixelarticons/mouse.svg)"></i></span>
+                    <h2>UX &amp; interaction</h2>
+                    <span class="rm-count">05 items</span>
+                </header>
+                <ol class="rm-list">
+                    <li class="rm-item">
+                        <span class="rm-num">06</span>
+                        <div>
+                            <h3>One editing feel for every text tile</h3>
+                            <p>The Quick Text formatting toolbar comes to Sticky and Paper notes.</p>
+                        </div>
+                    </li>
+                    <li class="rm-item">
+                        <span class="rm-num">07</span>
+                        <div>
+                            <h3>Smarter group dragging</h3>
+                            <p>Shift-click, marquee and Figma-style selection for tethered groups.</p>
+                        </div>
+                    </li>
+                    <li class="rm-item">
+                        <span class="rm-num">08</span>
+                        <div>
+                            <h3>Shortcut cheat sheet</h3>
+                            <p>Press ? to see every keyboard shortcut.</p>
+                        </div>
+                    </li>
+                    <li class="rm-item">
+                        <span class="rm-num">09</span>
+                        <div>
+                            <h3>Rename from recent files</h3>
+                            <p>Rename a file straight from the recent-files list.</p>
+                        </div>
+                    </li>
+                    <li class="rm-item">
+                        <span class="rm-num">10</span>
+                        <div>
+                            <h3>Visible autosave</h3>
+                            <p>A clear sign every time your work is safely saved.</p>
+                        </div>
+                    </li>
+                </ol>
+            </section>
+
+            <section class="rm-group" data-group="design">
+                <header class="rm-group-head">
+                    <span class="rm-icon"><i class="px-icon" style="--icon: url(icons/pixelarticons/colors-swatch.svg)"></i></span>
+                    <h2>Visual design</h2>
+                    <span class="rm-count">10 items</span>
+                </header>
+                <ol class="rm-list">
+                    <li class="rm-item">
+                        <span class="rm-num">11</span>
+                        <div>
+                            <h3>Consistent tile styling</h3>
+                            <p>Tables, progress bars, counters and deadlines get the same clean look as text tiles.</p>
+                        </div>
+                    </li>
+                    <li class="rm-item">
+                        <span class="rm-num">12</span>
+                        <div>
+                            <h3>Retiring old note code</h3>
+                            <p>One sticky-note code path, so every update lands in one place.</p>
+                        </div>
+                    </li>
+                    <li class="rm-item">
+                        <span class="rm-num">13</span>
+                        <div>
+                            <h3>Finishing the redesign sweep</h3>
+                            <p>Hunting down the last of the old “ticket stub” styling.</p>
+                        </div>
+                    </li>
+                    <li class="rm-item">
+                        <span class="rm-num">14</span>
+                        <div>
+                            <h3>Design tokens reference</h3>
+                            <p>A single source of truth for colour, spacing and type.</p>
+                        </div>
+                    </li>
+                    <li class="rm-item">
+                        <span class="rm-num">15</span>
+                        <div>
+                            <h3>Dark mode</h3>
+                            <p>The groundwork is built &mdash; now it ships.</p>
+                        </div>
+                    </li>
+                    <li class="rm-item">
+                        <span class="rm-num">16</span>
+                        <div>
+                            <h3>Complete pixel cursor set</h3>
+                            <p>Finished grab and text cursors, so every state feels like AirPaste.</p>
+                        </div>
+                    </li>
+                    <li class="rm-item">
+                        <span class="rm-num">17</span>
+                        <div>
+                            <h3>One icon set everywhere</h3>
+                            <p>Pixel icons across every menu, no more mixed styles.</p>
+                        </div>
+                    </li>
+                    <li class="rm-item">
+                        <span class="rm-num">18</span>
+                        <div>
+                            <h3>Friendly empty states</h3>
+                            <p>Illustrations for an empty canvas or no recent files.</p>
+                        </div>
+                    </li>
+                    <li class="rm-item">
+                        <span class="rm-num">19</span>
+                        <div>
+                            <h3>Unified motion</h3>
+                            <p>One shared easing, so every animation moves the same way.</p>
+                        </div>
+                    </li>
+                    <li class="rm-item">
+                        <span class="rm-num">20</span>
+                        <div>
+                            <h3>A livelier splash screen</h3>
+                            <p>A subtle animated keycap on launch, plus the real photo.</p>
+                        </div>
+                    </li>
+                </ol>
+            </section>
+
+            <section class="rm-group" data-group="performance">
+                <header class="rm-group-head">
+                    <span class="rm-icon"><i class="px-icon" style="--icon: url(icons/pixelarticons/speed-fast.svg)"></i></span>
+                    <h2>Performance &amp; under the hood</h2>
+                    <span class="rm-count">10 items</span>
+                </header>
+                <ol class="rm-list">
+                    <li class="rm-item">
+                        <span class="rm-num">21</span>
+                        <div>
+                            <h3>Lighter workspace code</h3>
+                            <p>Removing unused workspace modes.</p>
+                        </div>
+                    </li>
+                    <li class="rm-item">
+                        <span class="rm-num">22</span>
+                        <div>
+                            <h3>Faster canvas loading</h3>
+                            <p>The canvas splits into smaller pieces that load on demand.</p>
+                        </div>
+                    </li>
+                    <li class="rm-item">
+                        <span class="rm-num">23</span>
+                        <div>
+                            <h3>Style guardrails</h3>
+                            <p>Automated checks so new tile styles never ship half-finished.</p>
+                        </div>
+                    </li>
+                    <li class="rm-item">
+                        <span class="rm-num">24</span>
+                        <div>
+                            <h3>Fewer re-renders</h3>
+                            <p>Tighter tile updates for a smoother canvas.</p>
+                        </div>
+                    </li>
+                    <li class="rm-item">
+                        <span class="rm-num">25</span>
+                        <div>
+                            <h3>Fixing a rare crash loop</h3>
+                            <p>Tracking down an occasional “maximum update depth” error.</p>
+                        </div>
+                    </li>
+                    <li class="rm-item">
+                        <span class="rm-num">26</span>
+                        <div>
+                            <h3>More reliable builds</h3>
+                            <p>A steadier development setup means fewer surprises in releases.</p>
+                        </div>
+                    </li>
+                    <li class="rm-item">
+                        <span class="rm-num">27</span>
+                        <div>
+                            <h3>Visual regression tests</h3>
+                            <p>Catching “that looks different” bugs automatically.</p>
+                        </div>
+                    </li>
+                    <li class="rm-item">
+                        <span class="rm-num">28</span>
+                        <div>
+                            <h3>Simpler stylesheets</h3>
+                            <p>Untangling layered tile-style overrides.</p>
+                        </div>
+                    </li>
+                    <li class="rm-item">
+                        <span class="rm-num">29</span>
+                        <div>
+                            <h3>Type checks before release</h3>
+                            <p>Catching mismatched data before it ever reaches you.</p>
+                        </div>
+                    </li>
+                    <li class="rm-item">
+                        <span class="rm-num">30</span>
+                        <div>
+                            <h3>Documented style order</h3>
+                            <p>Writing down how styles layer, so they stay easy to maintain.</p>
+                        </div>
+                    </li>
+                </ol>
+            </section>
+
+            <section class="rm-group" data-group="stability">
+                <header class="rm-group-head">
+                    <span class="rm-icon"><i class="px-icon" style="--icon: url(icons/pixelarticons/shield.svg)"></i></span>
+                    <h2>Stability &amp; testing</h2>
+                    <span class="rm-count">10 items</span>
+                </header>
+                <ol class="rm-list">
+                    <li class="rm-item">
+                        <span class="rm-num">31</span>
+                        <div>
+                            <h3>Round-trip tests for every tile</h3>
+                            <p>Create, edit, save, reload &mdash; verified for each tile type.</p>
+                        </div>
+                    </li>
+                    <li class="rm-item">
+                        <span class="rm-num">32</span>
+                        <div>
+                            <h3>Edit-mode guard</h3>
+                            <p>Double-clicking inside a note will never kick you out of editing.</p>
+                        </div>
+                    </li>
+                    <li class="rm-item">
+                        <span class="rm-num">33</span>
+                        <div>
+                            <h3>Tile routing snapshot</h3>
+                            <p>How each tile type is chosen can’t quietly change.</p>
+                        </div>
+                    </li>
+                    <li class="rm-item">
+                        <span class="rm-num">34</span>
+                        <div>
+                            <h3>Render check for every tile</h3>
+                            <p>A quick test that every tile type still appears.</p>
+                        </div>
+                    </li>
+                    <li class="rm-item">
+                        <span class="rm-num">35</span>
+                        <div>
+                            <h3>Clearer error messages</h3>
+                            <p>When a canvas can’t load, AirPaste tells you exactly where.</p>
+                        </div>
+                    </li>
+                    <li class="rm-item">
+                        <span class="rm-num">36</span>
+                        <div>
+                            <h3>Stress testing</h3>
+                            <p>Fast typing, dragging and zooming at once, to keep autosave rock solid.</p>
+                        </div>
+                    </li>
+                    <li class="rm-item">
+                        <span class="rm-num">37</span>
+                        <div>
+                            <h3>Safer concurrent sessions</h3>
+                            <p>The same file open in two places without conflicts.</p>
+                        </div>
+                    </li>
+                    <li class="rm-item">
+                        <span class="rm-num">38</span>
+                        <div>
+                            <h3>Format routing tests</h3>
+                            <p>Plain, markdown and sticky notes always stay distinct.</p>
+                        </div>
+                    </li>
+                    <li class="rm-item">
+                        <span class="rm-num">39</span>
+                        <div>
+                            <h3>End-to-end tests for notes</h3>
+                            <p>Sticky, paper and quick-text notes covered start to finish.</p>
+                        </div>
+                    </li>
+                    <li class="rm-item">
+                        <span class="rm-num">40</span>
+                        <div>
+                            <h3>“Someone else is editing” warning</h3>
+                            <p>A heads-up before two sessions collide.</p>
+                        </div>
+                    </li>
+                </ol>
+            </section>
+
+            <section class="rm-group" data-group="onboarding">
+                <header class="rm-group-head">
+                    <span class="rm-icon"><i class="px-icon" style="--icon: url(icons/pixelarticons/map.svg)"></i></span>
+                    <h2>Onboarding</h2>
+                    <span class="rm-count">05 items</span>
+                </header>
+                <ol class="rm-list">
+                    <li class="rm-item">
+                        <span class="rm-num">41</span>
+                        <div>
+                            <h3>A short first-run tour</h3>
+                            <p>Meet the eye, tethers and paper notes.</p>
+                        </div>
+                    </li>
+                    <li class="rm-item">
+                        <span class="rm-num">42</span>
+                        <div>
+                            <h3>Working “What’s cooking?” &amp; “Donate”</h3>
+                            <p>Real destinations for both links.</p>
+                        </div>
+                    </li>
+                    <li class="rm-item">
+                        <span class="rm-num">43</span>
+                        <div>
+                            <h3>Demo canvas</h3>
+                            <p>A ready-made canvas on first launch showing tethers and tile types.</p>
+                        </div>
+                    </li>
+                    <li class="rm-item">
+                        <span class="rm-num">44</span>
+                        <div>
+                            <h3>“New” badges</h3>
+                            <p>Spot racks, tethers and density zones the first time they appear.</p>
+                        </div>
+                    </li>
+                    <li class="rm-item">
+                        <span class="rm-num">45</span>
+                        <div>
+                            <h3>Shortcuts toast</h3>
+                            <p>Space to pan, Ctrl+K and more, shown on your first run.</p>
+                        </div>
+                    </li>
+                </ol>
+            </section>
+
+            <section class="rm-group" data-group="delight">
+                <header class="rm-group-head">
+                    <span class="rm-icon"><i class="px-icon" style="--icon: url(icons/pixelarticons/heart.svg)"></i></span>
+                    <h2>Personality &amp; delight</h2>
+                    <span class="rm-count">03 items</span>
+                </header>
+                <ol class="rm-list">
+                    <li class="rm-item">
+                        <span class="rm-num">46</span>
+                        <div>
+                            <h3>A chattier eye</h3>
+                            <p>New quips when you tether a group, open the paper editor or hit a dense cluster.</p>
+                        </div>
+                    </li>
+                    <li class="rm-item">
+                        <span class="rm-num">47</span>
+                        <div>
+                            <h3>Materials for density zones</h3>
+                            <p>The next step: density zones grow into a full materials system.</p>
+                        </div>
+                    </li>
+                    <li class="rm-item">
+                        <span class="rm-num">48</span>
+                        <div>
+                            <h3>What’s new</h3>
+                            <p>A changelog tied to the version number on the splash screen.</p>
+                        </div>
+                    </li>
+                </ol>
+            </section>
+
+            <section class="rm-group" data-group="a11y">
+                <header class="rm-group-head">
+                    <span class="rm-icon"><i class="px-icon" style="--icon: url(icons/pixelarticons/eye.svg)"></i></span>
+                    <h2>Accessibility</h2>
+                    <span class="rm-count">02 items</span>
+                </header>
+                <ol class="rm-list">
+                    <li class="rm-item">
+                        <span class="rm-num">49</span>
+                        <div>
+                            <h3>Screen-reader announcements</h3>
+                            <p>Everything the eye shows, also announced for assistive tech.</p>
+                        </div>
+                    </li>
+                    <li class="rm-item">
+                        <span class="rm-num">50</span>
+                        <div>
+                            <h3>Contrast &amp; touch targets</h3>
+                            <p>Bigger hit areas and stronger contrast wherever minimal went too far.</p>
+                        </div>
+                    </li>
+                </ol>
+            </section>
         </div>
-    </section>
+
+        <aside class="rm-cta">
+            <p>* Got an idea that isn’t here?</p>
+            <a href="mailto:hello@airpaste.io" class="privacy-cta">
+                Suggest something
+                <i class="px-icon" style="--icon: url(icons/pixelarticons/arrow-right.svg); width: 12px; height: 12px"></i>
+            </a>
+        </aside>
+    </main>
 
     <footer class="main-footer" style="background: transparent; border-radius: 0; padding-top: 10vh;">
         <div class="footer-bottom">
@@ -80,6 +739,26 @@
             requestAnimationFrame(raf);
         }
         requestAnimationFrame(raf);
+
+        // Theme filter chips
+        (function () {
+            const chips = document.querySelectorAll('.rm-chip');
+            const groups = document.querySelectorAll('.rm-group');
+            chips.forEach(chip => {
+                chip.addEventListener('click', () => {
+                    const filter = chip.dataset.filter;
+                    chips.forEach(c => {
+                        const on = c === chip;
+                        c.classList.toggle('is-active', on);
+                        c.setAttribute('aria-pressed', on);
+                    });
+                    groups.forEach(g => {
+                        g.hidden = filter !== 'all' && g.dataset.group !== filter;
+                    });
+                    lenis.resize();
+                });
+            });
+        })();
     </script>
 </body>
 

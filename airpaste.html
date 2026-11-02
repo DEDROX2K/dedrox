@@ -1,63 +1,1410 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AirPaste</title>
-  <link rel="stylesheet" href="airpaste-landing.css?v=3" />
-</head>
-<body class="airpaste-page airpaste-page--home airpaste-shell-collapsed">
-  <div id="airpaste-device" class="airpaste-device-shell">
-  <main class="airpaste-stage airpaste-shell-content">
-    <section class="home-layout" aria-label="AirPaste landing card">
-      <figure class="home-mockup" aria-label="AirPaste product mockup">
-        <picture>
-          <source media="(max-width: 640px)" srcset="images/airpaste-mobile.png" />
-          <img
-            class="home-mockup__image"
-            src="images/airpaste-mockup.png"
-            alt="AirPaste mockup"
-            draggable="false"
-          />
-        </picture>
-      </figure>
 
-      <div class="home-cta-stack">
-        <a
-          class="home-github-cta"
-          href="https://github.com/DEDROX2K/AirPaste"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="AirPaste open source code on GitHub"
-        >
-          <span class="home-github-cta__main">Github</span>
-          <span class="home-github-cta__sub">
-            <span>Opensource code</span>
-          </span>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AirPaste | Local-First Bookmarks</title>
+    <link rel="icon" type="image/gif" href="images/logovar/browserlogo.gif">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Mansalva&family=Playfair+Display:wght@700&display=swap">
+    <link rel="stylesheet" href="airpaste.css">
+    <!-- Scripts for Endless Motion -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+    <!-- 🧊 Locked Core Engines -->
+    <script src="cube-trail.js" defer></script>
+    <script src="ascii-water.js" defer></script>
+    <script src="carousel.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.162.0/three.min.js"></script>
+    <script src="navbar-logic.js" defer></script>
+</head>
+
+<body>
+
+
+    <canvas id="cubeCanvas"></canvas>
+    <!-- <div class="nav-logo">
+        <a href="airpaste.html" style="display: block;">
+            <img src="images/logovar/browserlogo.gif" alt="AirPaste Logo">
         </a>
-        <!-- <a
-          class="home-download-cta"
-          href="https://drive.google.com/uc?export=download&id=1Cv51GHgsaGfUtPdPy4s-Xb3ARbcBbXbQ"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Download AirPaste beta"
-        >
-          <span class="home-download-cta__main">Download</span>
-          <span class="home-download-cta__sub">
-            <span>Beta</span>
-            <img
-              class="home-download-cta__icon"
-              src="iconset/interactions.png"
-              alt=""
-              aria-hidden="true"
-              draggable="false"
-            />
-          </span>
+    </div> -->
+
+
+
+    <nav class="top-nav">
+        <div class="nav-toggle-wrapper">
+            <div class="nav-toggle-container">
+                <!-- Filtered Layer (for gooey morphing only) -->
+                <div class="nav-toggle-gooey-layer">
+                    <div class="nav-toggle-indicator"></div>
+                </div>
+
+                <!-- Crisp Layer (for text visibility) -->
+                <div class="nav-toggle-buttons">
+                    <button class="nav-toggle-btn active" id="toggleHome">AirPaste</button>
+                    <button class="nav-toggle-btn" id="toggleDownload">Download</button>
+                    <button class="nav-toggle-btn" id="toggleShop">Shop</button>
+                    <button class="nav-toggle-btn" id="toggleNext">What's Next*</button>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Download button with corner-dots effect -->
+        <!-- <a href="#" class="nav-download-btn" id="navDownloadBtn">
+            Download AirPaste
+            <div class="corner-dots top-left"><i></i><i></i><i></i><i></i></div>
+            <div class="corner-dots top-right"><i></i><i></i><i></i><i></i></div>
+            <div class="corner-dots bottom-left"><i></i><i></i><i></i><i></i></div>
+            <div class="corner-dots bottom-right"><i></i><i></i><i></i><i></i></div>
         </a> -->
-      </div>
+    </nav>
+
+    <section class="hero-section" id="hero">
+        <canvas id="pixelCanvas"></canvas>
+        <div class="hero-reveal-layer">
+            <img src="images/bg10.jpg" class="hero-bg-img" alt="Background">
+            <div class="reactive-container">
+                <!-- <div class="hero-top-left-text">
+                    Local first -Free and Open-Source <br>
+                    <br>
+                    In our opinion... <br>
+                    It should not cost 10£ monthly to save your bookmarks. <br>
+                    | - Raghav
+                </div> -->
+                <div class="title-stack-wrapper">
+                    <!-- Hero logo removed for cleaner aesthetic -->
+                </div>
+            </div>
+        </div>
+        <div class="hero-top-left-bar">
+            <img src="images/Vector/airpaste-logo.svg" alt="AirPaste Logo"
+                style="height: 18px; width: auto; vertical-align: middle; margin-right: 8px; opacity: 0.85;">
+            You should not spend 10£ to save bookmarks.
+        </div>
+        <div class="hero-cta-group">
+            <a href="AirPaste%20Setup%201.0.0-beta.1.exe" download class="pixel-btn-v2">Download AirPaste</a>
+        </div>
+        <div class="hero-scroll-indicator">
+            <div class="ascii-block-v">
+                <span class="filled"></span><span></span><span></span><span></span><span class="filled"></span>
+                <span></span><span class="filled"></span><span></span><span class="filled"></span><span></span>
+                <span></span><span></span><span class="filled"></span><span></span><span></span>
+            </div>
+        </div>
     </section>
-  </main>
-  </div>
-  <script src="airpaste-landing-intro.js" defer></script>
+
+    <!-- Drag ghost pill — positioned by JS -->
+    <div id="dragGhost">
+        <i class="px-icon" style="--icon: url(icons/pixelarticons/arrow-right.svg); width: 12px; height: 12px;"></i>
+        <span id="dragGhostLabel">www.spotify.com/...</span>
+    </div>
+
+
+    <section class="manifesto-section" style="padding: 14vh 5vw 2vh 5vw;">
+        <div class="manifesto-content">
+            <h2 class="manifesto-subtitle">
+                <span class="word-head">Turn boring links into Interactive Tiles</span>
+            </h2>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         🖼️ BEFORE / AFTER SCRUBBER
+         ========================================== -->
+    <section class="scrubber-section">
+        <div class="scrubber-label-row">
+            <span class="scrubber-label">Before</span>
+            <span class="scrubber-label">After</span>
+        </div>
+        <div class="scrubber-stage" id="scrubberStage">
+            <div class="scrubber-card" id="scrubberCard">
+                <!-- AFTER: shown underneath, full width -->
+                <img src="images/afterzip.png" class="scrubber-img scrubber-after" alt="AirPaste After"
+                    draggable="false">
+                <!-- BEFORE: clipped on the left by cursor position -->
+                <div class="scrubber-before-wrap" id="scrubberBefore">
+                    <img src="images/beforezip.png" class="scrubber-img scrubber-before-img" alt="AirPaste Before"
+                        draggable="false">
+                </div>
+                <!-- Divider line -->
+                <div class="scrubber-divider" id="scrubberDivider"></div>
+            </div>
+        </div>
+        <p class="scrubber-hint">← Move cursor to reveal →</p>
+    </section>
+
+    <!-- ==========================================
+         💡 WHAT / WHY / FREE — three mini sections
+         ========================================== -->
+    <section class="about-trio">
+        <article class="about-card">
+            <div class="about-card-top">
+                <span class="about-icon"><i class="px-icon" style="--icon: url(icons/pixelarticons/layout.svg)"></i></span>
+                <span class="about-num">01</span>
+            </div>
+            <h3>What it is</h3>
+            <p>AirPaste is an <i class="px-inline" style="--icon: url(icons/pixelarticons/infinity.svg)"></i> infinite,
+                local-first canvas built for visual thinkers to map out ideas and
+                <i class="px-inline" style="--icon: url(icons/pixelarticons/link.svg)"></i> save links forever.
+                Instead of paying for cloud subscriptions or hitting artificial storage limits, everything lives
+                directly on your <i class="px-inline" style="--icon: url(icons/pixelarticons/save.svg)"></i> hard drive,
+                completely under your control.</p>
+            <p>It's a living, visual workspace designed so you can understand your thoughts
+                <i class="px-inline" style="--icon: url(icons/pixelarticons/eye.svg)"></i> at a single glance &mdash;
+                without the maintenance or paywalls of server-based apps.</p>
+            <span class="about-tag"><i class="privacy-dot"></i>Local-first</span>
+        </article>
+
+        <article class="about-card">
+            <div class="about-card-top">
+                <span class="about-icon"><i class="px-icon" style="--icon: url(icons/pixelarticons/lightbulb.svg)"></i></span>
+                <span class="about-num">02</span>
+            </div>
+            <h3>Why we built it</h3>
+            <p>Traditional note-taking tools like Obsidian force you into
+                <i class="px-inline" style="--icon: url(icons/pixelarticons/file-text.svg)"></i> linear, text-heavy
+                formats. Linking nodes is useful, but visual thinkers need more than plain text and folders to see the
+                big picture.</p>
+            <p>AirPaste breaks that mold with a vibrant,
+                <i class="px-inline" style="--icon: url(icons/pixelarticons/grid-2x2-2.svg)"></i> spatial canvas where
+                every button, animation and element is crafted with
+                <i class="px-inline" style="--icon: url(icons/pixelarticons/heart.svg)"></i> care and fun. It isn't
+                another boring productivity tool &mdash; it's a space built for how your brain actually connects ideas.
+            </p>
+            <span class="about-tag"><i class="privacy-dot"></i>Made for visual thinkers</span>
+        </article>
+
+        <article class="about-card">
+            <div class="about-card-top">
+                <span class="about-icon"><i class="px-icon" style="--icon: url(icons/pixelarticons/gift.svg)"></i></span>
+                <span class="about-num">03</span>
+            </div>
+            <h3>Why it's free forever</h3>
+            <p>AirPaste will <i class="px-inline" style="--icon: url(icons/pixelarticons/lock.svg)"></i> never have a
+                paywall. Because AI is essentially a
+                <i class="px-inline" style="--icon: url(icons/pixelarticons/users.svg)"></i> collective human mind, we
+                believe the tools built alongside it should be given back to the community without a price tag.</p>
+            <p>No premium tiers, server fees or hidden costs &mdash; just a powerful, open-ended canvas that
+                <i class="px-inline" style="--icon: url(icons/pixelarticons/home.svg)"></i> belongs entirely to you.</p>
+            <span class="about-tag"><i class="privacy-dot"></i>&pound;0, forever</span>
+        </article>
+    </section>
+
+    <!-- ==========================================
+         🃏 FAN CARD GALLERY
+         Swap src="" values with your own images.
+         ========================================== -->
+    <!-- Hidden for now — bring back later
+    <section class="fan-section">
+        <div class="wrapper">
+            <div><img src="images/DEDROX.DSGN/pi1.png" alt=""></div>
+            <div><img src="images/DEDROX.DSGN/pic2.png" alt=""></div>
+            <div><img src="images/DEDROX.DSGN/pic3.png" alt=""></div>
+            <div><img src="images/DEDROX.DSGN/pic4.png" alt=""></div>
+            <div><img src="images/DEDROX.DSGN/pic5.png" alt=""></div>
+            <div><img src="images/DEDROX.DSGN/pic6.png" alt=""></div>
+            <div><img src="images/DEDROX.DSGN/pic7.png" alt=""></div>
+        </div>
+    </section>
+    -->
+
+    <section class="features-section">
+        <div class="features-content">
+            <h2 class="features-subtitle">
+                <span class="word-head">Features</span>
+            </h2>
+
+            <div class="features-accordion">
+                <!-- Canvas View -->
+                <div class="accordion-item active">
+                    <div class="accordion-header">
+                        <div class="accordion-icon-box">
+                            <i class="px-icon accordion-icon" style="--icon: url(icons/pixelarticons/layout.svg)"></i>
+                        </div>
+                        <span class="accordion-title">Canvas View</span>
+                        <div class="accordion-arrow">
+                            <i class="px-icon" style="--icon: url(icons/pixelarticons/chevron-down.svg)"></i>
+                        </div>
+                    </div>
+                    <div class="accordion-body">
+                        <p>Instead of endlessly scrolling through a traditional, linear page full of links, you can
+                            freely pan and zoom around an open canvas. This spatial approach allows you to organize your
+                            thoughts, projects, and resources visually. It gives you a bird's-eye view of your work,
+                            letting you map out information exactly how your brain processes it.</p>
+                    </div>
+                </div>
+
+                <!-- Planning Widgets -->
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <div class="accordion-icon-box">
+                            <i class="px-icon accordion-icon" style="--icon: url(icons/pixelarticons/calendar.svg)"></i>
+                        </div>
+                        <span class="accordion-title">Planning Widgets</span>
+                        <div class="accordion-arrow">
+                            <i class="px-icon" style="--icon: url(icons/pixelarticons/chevron-down.svg)"></i>
+                        </div>
+                    </div>
+                    <div class="accordion-body">
+                        <p>Inspired by tools like Figma, we are introducing built-in widgets designed to make your
+                            planning process faster and more intuitive. By integrating useful tools directly into your
+                            workspace—like quick task lists, trackers, or calendars—you can streamline your workflow.
+                            This means less time spent managing the app and more time focused on actually completing
+                            your tasks.</p>
+                    </div>
+                </div>
+
+                <!-- Interactive Tiles -->
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <div class="accordion-icon-box">
+                            <i class="px-icon accordion-icon" style="--icon: url(icons/pixelarticons/grid-2x2-2.svg)"></i>
+                        </div>
+                        <span class="accordion-title">Interactive Tiles</span>
+                        <div class="accordion-arrow">
+                            <i class="px-icon" style="--icon: url(icons/pixelarticons/chevron-down.svg)"></i>
+                        </div>
+                    </div>
+                    <div class="accordion-body">
+                        <p>Soon, we will be rolling out Interactive Tiles. These versatile building blocks can act as
+                            anything you need them to be: a quick text note, a web link with a rich preview, a folder to
+                            organize other items, or a "rack" to group related content together. This modular system
+                            means you can build out your workspace piece by piece, customizing it to perfectly fit your
+                            unique workflow.</p>
+                    </div>
+                </div>
+
+                <!-- UX-Driven Application -->
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <div class="accordion-icon-box">
+                            <i class="px-icon accordion-icon" style="--icon: url(icons/pixelarticons/user.svg)"></i>
+                        </div>
+                        <span class="accordion-title">UX-Driven Application</span>
+                        <div class="accordion-arrow">
+                            <i class="px-icon" style="--icon: url(icons/pixelarticons/chevron-down.svg)"></i>
+                        </div>
+                    </div>
+                    <div class="accordion-body">
+                        <p>Because this application is being built by a UX designer, user-friendliness and accessibility
+                            are at the core of everything we do. We aren't just making it look nice; we are actively
+                            applying established UX laws and design principles. This ensures the interface is highly
+                            intuitive, reduces cognitive load, and provides a seamless, frustration-free experience for
+                            everyone who uses it.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- <section class="dot-matrix-section">
+        <div class="board-container">
+            <div class="rivets">
+                <div class="rivet"></div>
+                <div class="rivet"></div>
+                <div class="rivet"></div>
+                <div class="rivet"></div>
+            </div>
+            <div class="board">
+                <div class="board__content">
+                    <div class="text-track">
+                        <div class="text">Only for WINDOWS </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section> -->
+
+
+
+
+    <!-- Empty section here -->
+    <!-- Empty section here -->
+    <!-- Empty section here -->
+    <!-- Empty section here -->
+    <!-- <section class="manifesto-section">
+        <div class="manifesto-content">
+            <h2 class="manifesto-subtitle">
+                <span class="word-head">We made a decision</span>
+            </h2>
+
+            <p class="manifesto-text">
+                We have stripped away the 'features' that modern tech uses to colonize your mind—the streaks, the
+                badges, and the social validation. What remains is a pure environment where you can exist without
+                being tracked, analyzed, or nudged. We are not a platform; we are a vault, a workshop, and a
+                sanctuary for the digital self.
+            </p>
+
+            <p class="manifesto-text highlight">
+                Our minds have been taken captive –<br>
+                by social approval systems, by newsfeeds and timelines, by advertisements and corporate agendas.
+            </p>
+
+        </div>
+    </section> -->
+
+
+
+
+
+
+
+
+    <!--             
+        <p class="manifesto-text">
+                Long are those days with links and plain text that fill our bookmarks tab. When you paste it in AirPaste
+                it turns into an interactive tile with the content of the link. Soon we will get AI generated Summaries
+                for tese tiles.
+
+                <br> <strong>Hover below to see links turn into Interactive Tiles</strong>
+            </p>
+
+
+        <div class="book-list-container">
+                        
+            <ul class="book-list">
+                <li class="book-item">
+                    <a href="#" class="book-link" data-number="Music Albums -">
+                        <img src="images/f3.png" alt="Book cover" class="book-preview" />
+                        https://open.spotify.com/artist/4V8LLVI7PbaPR0K2TGSxFF
+                    </a>
+                </li>
+                <li class="book-item">
+                    <a href="#" class="book-link" data-number="Github links -">
+                        <img src="images/f10.png" alt="Book cover" class="book-preview" />
+                        https://github.com/meodai/pro-color-harmonies
+                    </a>
+                </li>
+                <li class="book-item">
+                    <a href="#" class="book-link" data-number="Pintrest Gifs -">
+                        <img src="images/f6.png" alt="Book cover" class="book-preview" />
+                        https://uk.pinterest.com/pin/36099234508063848/
+                    </a>
+                </li>
+                <li class="book-item">
+                    <a href="#" class="book-link" data-number="Youtube links -">
+                        <img src="images/f4.png" alt="Book cover" class="book-preview" />
+                        https://www.youtube.com/=michael+jackson+thriller
+                    </a>
+                </li>
+                <li class="book-item">
+                    <a href="#" class="book-link" data-number="Twitter Links -">
+                        <img src="images/f11.png" alt="Book cover" class="book-preview" />
+                        https://x.com/jiratickets/status/2036
+                    </a>
+                </li>
+                <li class="book-item">
+                    <a href="#" class="book-link" data-number="Website link -">
+                        <img src="images/f9.png" alt="Book cover" class="book-preview" />
+                        https://www.theverge.com/-copyright-copyright
+                    </a>
+                </li>
+                <li class="book-item">
+                    <a href="#" class="book-link" data-number="Copying a quote -">
+                        <img src="images/f8.png" alt="Book cover" class="book-preview" />
+                        [Markets are never wrong - opinions often are.]
+                    </a>
+                </li>
+
+            </ul>
+        </div> -->
+    </section>
+
+
+    <!-- ==========================================
+         🍱 PORTFOLIO BENTO GRID
+         ========================================== -->
+    <!-- <section class="portfolio-bento-section">
+        <div class="bento-grid">
+            <div class="bento-card blue folder">
+                <div class="card-content">
+                    <span class="badge">About me</span>
+                </div>
+            </div>
+
+            <div class="bento-card white">
+                <div class="card-content">
+                    <h3>Head of Brand + Creative at Plumb</h3>
+                    <div class="card-footer">
+                        <span>Current role</span>
+                        <img src="images/DEDROX.DSGN/NRML.svg" alt="icon" class="brand-icon">
+                    </div>
+                </div>
+            </div>
+
+            <div class="bento-card orange">
+                <div class="card-content">
+                    <p>In 2020 I designed Mango, a reverse contrast text typeface, in Latin and Gujarati script. I
+                        released it on Future Fonts in 2024. You're reading it at 16px.</p>
+                    <a href="#" class="card-link">I made a font ↗</a>
+                </div>
+            </div>
+
+            <div class="bento-card red span-row-3">
+                <div class="card-content">
+                    <img src="images/DEDROX.DSGN/AN1.jpg" alt="illustration" class="full-img">
+                    <p class="small-text">I recently contributed a design to the Letterform Archive's 10th anniversary
+                        campaign, 10x10x10.</p>
+                </div>
+            </div>
+
+            <div class="bento-card illustration-card span-row-2">
+                <img src="images/DEDROX.DSGN/AN2.jpg" alt="procreate drawing" class="full-img">
+                <span class="badge bottom">Sometimes I draw in Procreate.</span>
+            </div>
+            <div class="bento-card green">
+                <div class="card-content centered">
+                    <h2 class="goopy-text">keya</h2>
+                    <a href="#" class="card-link white-link">I like making goopy letters ↗</a>
+                </div>
+            </div>
+
+            <div class="bento-card yellow">
+                <div class="card-content">
+                    <img src="images/DEDROX.DSGN/IT.svg" alt="icon" class="top-icon">
+                    <h3>Rendering complex scripts in digital spaces:</h3>
+                    <p>The development of layout and shaping technologies for complex script and language representation
+                        and consequent approaches to type design.</p>
+                    <a href="#" class="card-link">I wrote a dissertation in 2020 ↗</a>
+                </div>
+            </div>
+
+            <div class="bento-card dark-green span-col-2">
+                <div class="card-content">
+                    <h3>I always come back to letterforms</h3>
+                    <p>When I was 20 years old I became obsessed with learning everything about designing typefaces,
+                        especially for South Asian scripts. Typography has always been a way for me to connect with
+                        culture. And letterforms are something I always come back to in my work.</p>
+                    <a href="#" class="card-link">Scroll through my personal type archive ↗</a>
+                </div>
+            </div>
+
+            <div class="bento-card light-green">
+                <div class="card-content centered">
+                    <div class="circular-logo">
+                        <img src="images/DEDROX.DSGN/CONS.svg" alt="logo">
+                    </div>
+                    <a href="#" class="card-link">The Malee Scholarship 2020 Women of Typographic Excellence ↗</a>
+                </div>
+            </div>
+
+            <div class="bento-card white">
+                <div class="card-content">
+                    <img src="images/DEDROX.DSGN/PIX.svg" alt="icon" class="top-icon">
+                    <h3>I write Type of Culture</h3>
+                    <p>A newsletter where I write about typography, design, and culture.</p>
+                    <a href="#" class="card-link">Read my publication ↗</a>
+                </div>
+            </div>
+        </div>
+    </section> -->
+
+
+
+
+
+
+    <!-- ==========================================
+         🔒 PRIVACY FIRST
+         ========================================== -->
+    <section class="privacy-section">
+        <div class="privacy-frame">
+            <span class="privacy-badge privacy-badge--top">
+                <i class="px-icon" style="--icon: url(icons/pixelarticons/lock.svg)"></i>
+            </span>
+
+            <h2 class="privacy-title">
+                <span>Privacy first</span>
+                <span class="privacy-marquee" aria-hidden="true">
+                    <span class="privacy-track">
+                        <span class="privacy-pill"><i class="privacy-dot"></i>No account<b>Off</b></span>
+                        <span class="privacy-pill"><i class="privacy-dot"></i>Tracking<b>Off</b></span>
+                        <span class="privacy-pill"><i class="privacy-dot"></i>Ads<b>Off</b></span>
+                        <span class="privacy-pill"><i class="privacy-dot"></i>Selling your data<b>Off</b></span>
+                        <span class="privacy-pill"><i class="privacy-dot"></i>Telemetry<b>Off</b></span>
+                        <span class="privacy-pill"><i class="privacy-dot"></i>Monthly fee<b>Off</b></span>
+                        <span class="privacy-pill"><i class="privacy-dot"></i>Social feeds<b>Off</b></span>
+                        <span class="privacy-pill"><i class="privacy-dot"></i>No account<b>Off</b></span>
+                        <span class="privacy-pill"><i class="privacy-dot"></i>Tracking<b>Off</b></span>
+                        <span class="privacy-pill"><i class="privacy-dot"></i>Ads<b>Off</b></span>
+                        <span class="privacy-pill"><i class="privacy-dot"></i>Selling your data<b>Off</b></span>
+                        <span class="privacy-pill"><i class="privacy-dot"></i>Telemetry<b>Off</b></span>
+                        <span class="privacy-pill"><i class="privacy-dot"></i>Monthly fee<b>Off</b></span>
+                        <span class="privacy-pill"><i class="privacy-dot"></i>Social feeds<b>Off</b></span>
+                    </span>
+                </span>
+                <span>with you in control</span>
+            </h2>
+
+            <div class="privacy-copy">
+                <p>AirPaste is local-first. Your links, tiles and canvases live on your device &mdash; no account, no
+                    cloud copy, nothing leaves unless you choose to. Your data is never sold or used to build ad
+                    profiles.</p>
+                <p>No streaks, badges or feeds nudging you back in. Just a quiet place to keep what matters to you.</p>
+            </div>
+
+            <a href="why.html" class="privacy-cta">
+                Read our privacy manifesto
+                <i class="px-icon" style="--icon: url(icons/pixelarticons/arrow-right.svg); width: 12px; height: 12px;"></i>
+            </a>
+
+            <span class="privacy-badge privacy-badge--bottom">
+                <i class="px-icon" style="--icon: url(icons/pixelarticons/shield.svg)"></i>
+            </span>
+        </div>
+    </section>
+
+    <div class="footer-reveal-container">
+        <footer class="main-footer">
+            <div class="footer-top">
+                <!-- Brand + download -->
+                <div class="footer-brand">
+                    <a href="airpaste.html" class="footer-logo">
+                        <i class="px-icon footer-logo-mark" style="--icon: url(images/Vector/airpaste-logo.svg)"></i>
+                        <span>AirPaste</span>
+                    </a>
+                    <p>An <i class="px-inline" style="--icon: url(icons/pixelarticons/infinity.svg)"></i> infinite,
+                        local-first canvas for visual thinkers. Lives on your
+                        <i class="px-inline" style="--icon: url(icons/pixelarticons/save.svg)"></i> hard drive, free
+                        <i class="px-inline" style="--icon: url(icons/pixelarticons/heart.svg)"></i> forever.</p>
+                    <a href="AirPaste%20Setup%201.0.0-beta.1.exe" download class="footer-download">
+                        <i class="px-icon" style="--icon: url(icons/pixelarticons/download.svg)"></i>
+                        Download for Windows
+                    </a>
+                    <span class="footer-meta">
+                        <i class="px-icon" style="--icon: url(icons/pixelarticons/window-frame.svg)"></i>
+                        v1.0.0-beta.1 &middot; Windows 10 and above
+                    </span>
+                </div>
+
+                <div class="footer-grid">
+                    <div class="footer-col">
+                        <h4>Product</h4>
+                        <ul class="footer-list">
+                            <li><a href="airpaste.html"><i class="px-icon" style="--icon: url(icons/pixelarticons/home.svg)"></i>Home</a></li>
+                            <li><a href="AirPaste%20Setup%201.0.0-beta.1.exe" download><i class="px-icon" style="--icon: url(icons/pixelarticons/download.svg)"></i>Download</a></li>
+                            <li><a href="shop.html"><i class="px-icon" style="--icon: url(icons/pixelarticons/store.svg)"></i>AirStore</a></li>
+                            <li><a href="whatsnext.html"><i class="px-icon" style="--icon: url(icons/pixelarticons/flag.svg)"></i>Roadmap</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-col">
+                        <h4>Core values</h4>
+                        <ul class="footer-list">
+                            <li><a href="why.html"><i class="px-icon" style="--icon: url(icons/pixelarticons/shield.svg)"></i>Privacy manifesto</a></li>
+                            <li><a href="what.html"><i class="px-icon" style="--icon: url(icons/pixelarticons/code.svg)"></i>Local-first code</a></li>
+                            <li><a href="ethos.html"><i class="px-icon" style="--icon: url(icons/pixelarticons/heart.svg)"></i>Our ethos</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-col">
+                        <h4>Community</h4>
+                        <ul class="footer-list">
+                            <li><a href="#"><i class="px-icon" style="--icon: url(icons/pixelarticons/x.svg)"></i>X / Twitter</a></li>
+                            <li><a href="#"><i class="px-icon" style="--icon: url(icons/pixelarticons/github.svg)"></i>GitHub</a></li>
+                            <li><a href="#"><i class="px-icon" style="--icon: url(icons/pixelarticons/discord.svg)"></i>Discord</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-col">
+                        <h4>Say hello</h4>
+                        <ul class="footer-list">
+                            <li><a href="mailto:hello@airpaste.io"><i class="px-icon" style="--icon: url(icons/pixelarticons/mail.svg)"></i>hello@airpaste.io</a></li>
+                            <li><span><i class="px-icon" style="--icon: url(icons/pixelarticons/globe.svg)"></i>Distributed globally</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div class="footer-legal-links">
+                    <a href="#"><i class="px-icon" style="--icon: url(icons/pixelarticons/lock.svg)"></i>Security</a>
+                    <a href="#"><i class="px-icon" style="--icon: url(icons/pixelarticons/file-text.svg)"></i>Terms</a>
+                    <a href="#"><i class="px-icon" style="--icon: url(icons/pixelarticons/eye.svg)"></i>Privacy</a>
+                </div>
+                <div class="footer-made">
+                    Made with <i class="px-inline" style="--icon: url(icons/pixelarticons/heart.svg)"></i> for visual thinkers
+                </div>
+                <div class="footer-copyright">
+                    &copy;2026 AirPaste&reg;
+                </div>
+            </div>
+        </footer>
+
+        <div class="footer-void">
+            <div class="lines" aria-hidden="true">
+                <div class="lines-group">
+                    <section class="line-block"><span class="line-text">Download Airpaste Today</span></section>
+                    <section class="line-block"><span class="line-text">Download Airpaste Today</span></section>
+                    <section class="line-block"><span class="line-text">Download Airpaste Today</span></section>
+                    <section class="line-block"><span class="line-text">Download Airpaste Today</span></section>
+                    <section class="line-block"><span class="line-text">Download Airpaste Today</span></section>
+                </div>
+
+                <div class="lines-group">
+                    <section class="line-block"><span class="line-text">Download Airpaste Today</span></section>
+                    <section class="line-block"><span class="line-text">Download Airpaste Today</span></section>
+                    <section class="line-block"><span class="line-text">Download Airpaste Today</span></section>
+                    <section class="line-block"><span class="line-text">Download Airpaste Today</span></section>
+                    <section class="line-block"><span class="line-text">Download Airpaste Today</span></section>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gooey Filter for Liquid Nav -->
+    <svg style="visibility: hidden; position: absolute;" width="0" height="0" xmlns="http://www.w3.org/2000/svg"
+        version="1.1">
+        <defs>
+            <filter id="goo">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
+                    result="goo" />
+            </filter>
+        </defs>
+    </svg>
+
+
+    <script>
+        // Force scroll to top on every page load (prevents ScrollTrigger.refresh drift)
+        history.scrollRestoration = 'manual';
+        window.scrollTo(0, 0);
+
+        // --- Core Engines Extracted to cube-trail.js ---
+
+        // Initialize Global Smooth Scroll (Lenis)
+        const globalLenis = new Lenis();
+        function raf(time) {
+            globalLenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+        globalLenis.on('scroll', ScrollTrigger.update);
+
+        // ==========================================
+        // 🧲 HERO MAGNET SNAP
+        // A small scroll inside the hero pulls the page the rest of the way:
+        // down past the hero, or back up to the top.
+        // ==========================================
+        (function () {
+            const HERO_SNAP = {
+                threshold: 0.12,  // fraction of hero height scrolled before the pull kicks in
+                duration: 1.3,    // seconds — the slow magnet glide
+                easing: t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2,
+            };
+
+            const hero = document.getElementById('hero');
+            if (!hero) return;
+
+            let snapping = false;
+            let snapTimer = null;
+
+            function snapTo(y) {
+                snapping = true;
+                const done = () => { snapping = false; clearTimeout(snapTimer); };
+                // Fallback in case the glide is interrupted and onComplete never fires
+                clearTimeout(snapTimer);
+                snapTimer = setTimeout(done, HERO_SNAP.duration * 1000 + 300);
+                globalLenis.scrollTo(y, {
+                    duration: HERO_SNAP.duration,
+                    easing: HERO_SNAP.easing,
+                    lock: true,
+                    force: true,
+                    onComplete: done,
+                });
+            }
+
+            globalLenis.on('scroll', ({ scroll, direction }) => {
+                if (snapping) return;
+                const heroEnd = hero.offsetTop + hero.offsetHeight;
+                const pull = hero.offsetHeight * HERO_SNAP.threshold;
+
+                if (direction === 1 && scroll > pull && scroll < heroEnd - 1) {
+                    snapTo(heroEnd);
+                } else if (direction === -1 && scroll > 1 && scroll < heroEnd - pull) {
+                    snapTo(0);
+                }
+            });
+        })();
+
+        // ==========================================
+        // 🪟 SHOWCASE WINDOW TILT
+        // ==========================================
+        (function () {
+            const TILT = 6;    // max degrees
+            const EASE = 0.07;
+            const windows = [
+                document.getElementById('showcaseAirpaste'),
+                document.getElementById('bwSpotify'),
+                document.getElementById('bwYoutube'),
+                document.getElementById('bwPinterest'),
+            ];
+
+            windows.forEach(el => {
+                if (!el) return;
+                let tx = 0, ty = 0, cx = 0, cy = 0, raf;
+
+                el.addEventListener('mouseenter', () => {
+                    function loop() {
+                        cx += (tx - cx) * EASE;
+                        cy += (ty - cy) * EASE;
+                        el.style.transform = `${el.dataset.baseTransform || ''} perspective(600px) rotateY(${cx}deg) rotateX(${-cy}deg) scale(1.015)`;
+                        el.style.boxShadow = `0 30px 80px rgba(0,0,0,0.22), 0 6px 18px rgba(0,0,0,0.1)`;
+                        raf = requestAnimationFrame(loop);
+                    }
+                    loop();
+                });
+
+                el.addEventListener('mousemove', e => {
+                    const r = el.getBoundingClientRect();
+                    tx = ((e.clientX - r.left) / r.width - 0.5) * 2 * TILT;
+                    ty = ((e.clientY - r.top) / r.height - 0.5) * 2 * TILT;
+                });
+
+                el.addEventListener('mouseleave', () => {
+                    cancelAnimationFrame(raf);
+                    tx = 0; ty = 0;
+                    let f = 0;
+                    function settle() {
+                        cx += (0 - cx) * 0.07;
+                        cy += (0 - cy) * 0.07;
+                        el.style.transform = `${el.dataset.baseTransform || ''} perspective(600px) rotateY(${cx}deg) rotateX(${-cy}deg) scale(1)`;
+                        if (++f < 50) requestAnimationFrame(settle);
+                        else { el.style.transform = el.dataset.baseTransform || ''; el.style.boxShadow = ''; }
+                    }
+                    settle();
+                });
+            });
+
+            // No base transforms needed — positioning is purely via CSS top/left
+        })();
+
+        // ==========================================
+        // 🎯 DRAG-TO-AIRPASTE INTERACTION
+        // ==========================================
+        (function () {
+            const ghost = document.getElementById('dragGhost');
+            const ghostLabel = document.getElementById('dragGhostLabel');
+            const apWin = document.getElementById('showcaseAirpaste');
+            const canvas = apWin ? apWin.querySelector('.sw-canvas') : null;
+            const browsers = document.querySelectorAll('.browser-window');
+
+            if (!ghost || !canvas) return;
+
+            let dragging = null;   // the browser-window el being dragged
+            let isDragging = false;
+
+            // Tile counter for random placement
+            let tileCount = 5;
+
+            // Colours / thumb configs per source
+            const TILE_CONFIGS = {
+                spotify: { label: 'Spotify playlist', bg: 'linear-gradient(135deg,#1db954,#191414)' },
+                youtube: { label: 'YouTube video', bg: 'linear-gradient(135deg,#cc0000,#282828)' },
+                twitter: { label: 'x.com/ui8/...', bg: 'linear-gradient(135deg,#000000,#1d9bf0)' },
+            };
+
+            // ---- Move ghost with mouse ----
+            function onMouseMove(e) {
+                if (!isDragging) return;
+                ghost.style.left = e.clientX + 'px';
+                ghost.style.top = e.clientY + 'px';
+
+                // Highlight AirPaste window when cursor is over it
+                const apRect = apWin.getBoundingClientRect();
+                const over = e.clientX >= apRect.left && e.clientX <= apRect.right &&
+                    e.clientY >= apRect.top && e.clientY <= apRect.bottom;
+                apWin.classList.toggle('drop-active', over);
+            }
+
+            // ---- Drop ----
+            function onMouseUp(e) {
+                if (!isDragging || !dragging) return;
+                isDragging = false;
+
+                ghost.classList.remove('visible');
+                dragging.classList.remove('is-dragging');
+
+                const apRect = apWin.getBoundingClientRect();
+                const dropped = e.clientX >= apRect.left && e.clientX <= apRect.right &&
+                    e.clientY >= apRect.top && e.clientY <= apRect.bottom;
+
+                apWin.classList.remove('drop-active');
+
+                if (dropped) {
+                    const id = dragging.dataset.dragId;
+                    const cfg = TILE_CONFIGS[id] || { label: dragging.dataset.dragLabel, bg: '#ccc' };
+
+                    // Calculate drop position relative to canvas
+                    const canvasRect = canvas.getBoundingClientRect();
+                    const relX = Math.max(4, Math.min(e.clientX - canvasRect.left - 40, canvasRect.width - 140));
+                    const relY = Math.max(4, Math.min(e.clientY - canvasRect.top - 20, canvasRect.height - 60));
+
+                    const tile = document.createElement('div');
+                    tile.className = 'sw-tile sw-dropped';
+                    tile.style.cssText = `left:${relX}px; top:${relY}px; animation-delay:0s;`;
+                    tile.innerHTML = `
+                        <div class="sw-tile-thumb" style="background:${cfg.bg}"></div>
+                        <span>${cfg.label}</span>`;
+                    canvas.appendChild(tile);
+                }
+
+                dragging = null;
+                window.removeEventListener('mousemove', onMouseMove);
+                window.removeEventListener('mouseup', onMouseUp);
+            }
+
+            // ---- Attach mousedown to each overlay ----
+            browsers.forEach(bw => {
+                const overlay = bw.querySelector('.bw-drag-overlay');
+                if (!overlay) return;
+
+                overlay.addEventListener('mousedown', e => {
+                    e.preventDefault();
+                    dragging = bw;
+                    isDragging = true;
+
+                    bw.classList.add('is-dragging');
+
+                    // Set ghost label
+                    ghostLabel.textContent = bw.dataset.dragLabel || 'link';
+                    ghost.style.left = e.clientX + 'px';
+                    ghost.style.top = e.clientY + 'px';
+                    ghost.classList.add('visible');
+
+                    window.addEventListener('mousemove', onMouseMove);
+                    window.addEventListener('mouseup', onMouseUp);
+                });
+            });
+        })();
+
+        // ==========================================
+        // 🎛️ MASTER ANIMATION CONTROLS
+        // ==========================================
+        const CONTROLS = {
+            parallaxMagnitude: 0.2,
+            parallaxEase: 0.08,
+            squeezeAmount: 0.08, // Restored breathing
+            squeezeBaseSpeed: 0.01,
+            hoverMultiplier: 1.5,
+            buttonHoverMultiplier: 4,
+            transitionSpeed: 0.05
+        };
+
+        const parallaxElements = document.querySelectorAll('[data-speed]');
+        const layers = document.querySelectorAll('.layer');
+        const btn = document.querySelector('.hero-btn');
+
+        let targetX = 0, targetY = 0;
+        let currentX = 0, currentY = 0;
+        let time = 0;
+
+        let isHeroHovered = true;
+        let isButtonHovered = false;
+        let currentSpeedMultiplier = 1;
+
+        window.addEventListener('mousemove', (e) => {
+            targetX = (e.clientX - window.innerWidth / 2);
+            targetY = (e.clientY - window.innerHeight / 2);
+        });
+
+        if (btn) {
+            btn.addEventListener('mouseenter', () => { isButtonHovered = true; });
+            btn.addEventListener('mouseleave', () => { isButtonHovered = false; });
+        }
+
+        // All parallax and squeeze animations removed as per request
+
+        // ==========================================
+        // 🔡 SCRAMBLE TEXT CYCLER
+        // ==========================================
+        const PHRASES = [
+            'Air Paste it',
+            'Air Paste it',
+        ];
+
+        const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&';
+        const SCRAMBLE_DURATION = 600; // ms to resolve each character
+
+        const btnText = document.querySelector('.btn-text');
+        let phraseIndex = 0;
+        let scrambleRaf = null;
+        let lastHoverTime = 0;
+
+        function scrambleTo(target) {
+            if (scrambleRaf) cancelAnimationFrame(scrambleRaf);
+            if (!btnText) return;
+
+            // 1. ADD THE BLUR CLASS HERE
+            btnText.classList.add('is-scrambling');
+
+            const start = performance.now();
+            const origin = btnText.textContent;
+            const len = Math.max(origin.length, target.length);
+
+            function frame(now) {
+                const elapsed = now - start;
+                const progress = Math.min(elapsed / SCRAMBLE_DURATION, 1);
+                const resolved = Math.floor(progress * len);
+
+                let output = '';
+                for (let i = 0; i < len; i++) {
+                    if (i < resolved) {
+                        output += target[i] ?? '';
+                    } else if (i < target.length) {
+                        output += CHARS[Math.floor(Math.random() * CHARS.length)];
+                    }
+                }
+                btnText.textContent = output;
+
+                if (progress < 1) {
+                    scrambleRaf = requestAnimationFrame(frame);
+                } else {
+                    btnText.textContent = target;
+
+                    // 2. REMOVE THE BLUR CLASS HERE
+                    btnText.classList.remove('is-scrambling');
+
+                    scrambleRaf = null;
+                }
+            }
+
+            scrambleRaf = requestAnimationFrame(frame);
+        }
+        function nextPhrase() {
+            phraseIndex = (phraseIndex + 1) % PHRASES.length;
+            scrambleTo(PHRASES[phraseIndex]);
+        }
+
+        // Auto-cycle every 6 seconds
+        let cycleTimer = setInterval(nextPhrase, 6000);
+
+        // Hover triggers the next phrase (with a short cooldown so it doesn't spam)
+        if (btn) {
+            btn.addEventListener('mouseenter', () => {
+                const now = Date.now();
+                if (now - lastHoverTime > 800) {
+                    lastHoverTime = now;
+                    clearInterval(cycleTimer);
+                    nextPhrase();
+                    cycleTimer = setInterval(nextPhrase, 6000);
+                }
+            });
+        }
+
+        // ==========================================
+        // 📜 HERO TITLE — SCROLL-DRIVEN SHRINK
+        // ==========================================
+        const heroTitle = document.querySelector('.hero-title-center');
+
+        // The font size range (in px) JS will interpolate between.
+        // We measure the starting size from the element itself after render.
+        const FONT_MIN_PX = 28;   // shrinks down to ~1.75rem at full scroll
+        const RISE_PX = 50;   // rises 50px by the time hero is fully scrolled past
+
+        // Snapshot the starting font size ONCE before any mutation
+        const FONT_START_PX = heroTitle ? parseFloat(getComputedStyle(heroTitle).fontSize) : 0;
+
+        const navLinks = document.querySelector('.nav-links');
+        const getBtn = document.querySelector('.get-btn');
+
+        function updateHeroTitle() {
+            const progress = Math.min(window.scrollY / 500, 1);
+
+            // Title Fly-out
+            const flyY = -300 * progress;
+            if (heroTitle) {
+                heroTitle.style.opacity = 1;
+                heroTitle.style.transform = `translate(-50%, calc(-50% + ${flyY}px))`;
+            }
+
+            // Nav Elements Reveal
+            // Center Pill
+            if (navLinks) navLinks.style.pointerEvents = 'auto';
+
+            // Right CTA Button
+            if (getBtn) getBtn.style.pointerEvents = 'auto';
+        }
+
+        // Run once on load so the state is correct if page was already scrolled
+        updateHeroTitle();
+        window.addEventListener('scroll', updateHeroTitle, { passive: true });
+        window.addEventListener('resize', updateHeroTitle, { passive: true });
+
+        // ==========================================
+        // 🖼️ BEFORE / AFTER SCRUBBER
+        // ==========================================
+        (function () {
+            const card = document.getElementById('scrubberCard');
+            const before = document.getElementById('scrubberBefore');
+            const divider = document.getElementById('scrubberDivider');
+            if (!card || !before || !divider) return;
+
+            const TILT_MAX = 8;
+
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width;
+                const y = (e.clientY - rect.top) / rect.height;
+
+                const targetPct = x * 100;
+                const targetTiltX = (x - 0.5) * 2 * TILT_MAX;
+                const targetTiltY = (y - 0.5) * 2 * TILT_MAX;
+
+                gsap.to(before, { width: targetPct + '%', duration: 0.2, ease: "power2.out" });
+                gsap.to(divider, { left: targetPct + '%', duration: 0.2, ease: "power2.out" });
+                gsap.to(card, {
+                    rotateY: targetTiltX,
+                    rotateX: -targetTiltY,
+                    duration: 0.4,
+                    ease: "power2.out"
+                });
+            });
+
+            card.addEventListener('mouseleave', () => {
+                gsap.to(card, { rotateY: 0, rotateX: 0, duration: 0.8, ease: "elastic.out(1, 0.5)" });
+            });
+        })();
+
+        // ==========================================
+        // 🌀 INTERACTIVE ENDLESS MOTION (FOOTER VOID)
+        // ==========================================
+        (function () {
+            const VOID_SETTINGS = {
+                lerp: 0.1,
+                text: "Download Airpaste Today",
+                lineGap: "12vh"
+            };
+
+            const voidEl = document.querySelector('.footer-void');
+            const lines = document.querySelector('.lines');
+            if (!voidEl || !lines) return;
+
+            voidEl.style.setProperty('--line-gap', VOID_SETTINGS.lineGap);
+            document.querySelectorAll('.line-text').forEach(t => t.textContent = VOID_SETTINGS.text);
+
+            const group = document.querySelector('.lines-group');
+            if (group) {
+                lines.appendChild(group.cloneNode(true));
+                lines.appendChild(group.cloneNode(true));
+            }
+
+            const lenis = new Lenis({
+                wrapper: voidEl,
+                content: lines,
+                smoothWheel: true,
+                infinite: true,
+                lerp: VOID_SETTINGS.lerp,
+            });
+
+            function anim(time) {
+                lenis.raf(time);
+                requestAnimationFrame(anim);
+            }
+            requestAnimationFrame(anim);
+
+            lenis.on('scroll', ScrollTrigger.update);
+
+            gsap.utils.toArray('.line-text').forEach((line) => {
+                gsap.fromTo(line,
+                    { scale: 1.1, opacity: 0.4 },
+                    {
+                        scale: 0.5,
+                        opacity: 1,
+                        ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: line,
+                            scroller: voidEl,
+                            start: "top bottom",
+                            end: "bottom top",
+                            scrub: true
+                        }
+                    }
+                );
+            });
+
+            setTimeout(() => ScrollTrigger.refresh(), 500);
+        })();
+
+
+        // ==========================================
+        // 👾 ASCII / ARROW SWEEP EFFECT
+        // ==========================================
+        // (Now handled centrally by navbar-logic.js)
+
+
+
+        const carouselData = [
+            {
+                title: "Curate with Ease",
+                sub: "A sanctuary for your digital discoveries",
+                desc: "Save articles, images, and notes without being tracked or nudge-baited.",
+                img: "images/f1.png"
+            },
+            {
+                title: "Local-First Logic",
+                sub: "Your data stays where it belongs",
+                desc: "Everything is stored on your device. We don't have accounts because we don't have your data.",
+                img: "images/f2.png"
+            },
+            {
+                title: "Pure Interaction",
+                sub: "Zero streaks, zero badges",
+                desc: "Focus on what matters. We stripped away the addictive loops and left the utility.",
+                img: "images/f3.png"
+            },
+            {
+                title: "Technical Freedom",
+                sub: "Open-source and Extensible",
+                desc: "Built for those who value digital sovereignty. Your library, your rules.",
+                img: "images/f4.png"
+            }
+        ];
+
+        let currentIndex = 0;
+        const titleEl = document.getElementById('premiumCarouselTitle');
+        const subEl = document.getElementById('premiumCarouselSub');
+        const descEl = document.getElementById('premiumCarouselDesc');
+        const imgEl = document.getElementById('premiumCarouselImg');
+        const paginationEl = document.getElementById('carouselPagination');
+        const prevBtn = document.getElementById('prevCarousel');
+        const nextBtn = document.getElementById('nextCarousel');
+
+        const AUTO_SKIP_TIME = 3000;
+        let autoSkipTimer;
+        let progressInterval;
+        let progressValue = 0;
+
+        function startAutoSkip() {
+            clearInterval(autoSkipTimer);
+            clearInterval(progressInterval);
+            progressValue = 0;
+
+            // Ensure only the current active dot has a fill
+            document.querySelectorAll('.dot-fill').forEach(el => el.remove());
+
+            const activeDot = document.querySelectorAll('.dot')[currentIndex];
+            if (activeDot) {
+                const fill = document.createElement('div');
+                fill.className = 'dot-fill';
+                activeDot.appendChild(fill);
+            }
+
+            progressInterval = setInterval(() => {
+                progressValue += (100 / (AUTO_SKIP_TIME / 100));
+                const currentFill = document.querySelector('.dot.active .dot-fill');
+                if (currentFill) {
+                    currentFill.style.width = Math.min(progressValue, 100) + '%';
+                }
+            }, 100);
+
+            autoSkipTimer = setInterval(() => {
+                currentIndex = (currentIndex + 1) % carouselData.length;
+                updateSlide();
+            }, AUTO_SKIP_TIME);
+        }
+
+        function initCarousel() {
+            carouselData.forEach((_, i) => {
+                const dot = document.createElement('span');
+                dot.classList.add('dot');
+                if (i === 0) dot.classList.add('active');
+                dot.addEventListener('click', () => {
+                    currentIndex = i;
+                    updateSlide();
+                });
+                paginationEl.appendChild(dot);
+            });
+
+            prevBtn.addEventListener('click', () => {
+                currentIndex = (currentIndex - 1 + carouselData.length) % carouselData.length;
+                updateSlide();
+            });
+
+            nextBtn.addEventListener('click', () => {
+                currentIndex = (currentIndex + 1) % carouselData.length;
+                updateSlide();
+            });
+
+            startAutoSkip();
+        }
+
+        function updateSlide() {
+            const data = carouselData[currentIndex];
+            imgEl.classList.add('fade-out');
+
+            setTimeout(() => {
+                titleEl.textContent = data.title;
+                subEl.textContent = data.sub;
+                descEl.textContent = data.desc;
+                imgEl.src = data.img;
+
+                const dots = document.querySelectorAll('.dot');
+                dots.forEach((dot, i) => {
+                    dot.classList.toggle('active', i === currentIndex);
+                });
+
+                imgEl.classList.remove('fade-out');
+
+                // Restart auto-skip to sync progress bar with the new slide
+                startAutoSkip();
+            }, 400);
+        }
+
+        if (titleEl) initCarousel();
+
+        // ==========================================
+        // ✨ FEATURES ACCORDION LOGIC
+        // ==========================================
+        (function () {
+            const accordionItems = document.querySelectorAll('.accordion-item');
+
+            accordionItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const isActive = item.classList.contains('active');
+
+                    // Close all other items
+                    accordionItems.forEach(otherItem => {
+                        otherItem.classList.remove('active');
+                    });
+
+                    // Toggle current item
+                    if (!isActive) {
+                        item.classList.add('active');
+                    }
+                });
+            });
+        })();
+
+
+
+    </script>
+    <script type="module">
+        import gsap from 'https://esm.sh/gsap@3.13.0'
+        import Draggable from 'https://esm.sh/gsap@3.13.0/Draggable'
+        import { Pane } from 'https://esm.sh/tweakpane@4.0.4'
+        gsap.registerPlugin(Draggable)
+
+        const config = {
+            theme: 'dark',
+            hue: 33,
+            duration: 10,
+            bglight: 0.1,
+            scale: 1.1,
+            style: 'track',
+            text: 'Only for WINDOWS 10 and above',
+        }
+
+        const board = document.querySelector('.board')
+        const textTrack = board.querySelector('.text-track')
+
+        const ctrl = new Pane({
+            title: 'config',
+            expanded: true,
+        })
+        let textCtrl
+        const update = () => {
+            document.documentElement.dataset.theme = config.theme
+            document.documentElement.style.setProperty('--hue', config.hue)
+            document.documentElement.style.setProperty('--duration', config.duration)
+            document.documentElement.style.setProperty('--bg-lightness', config.bglight)
+            document.documentElement.style.setProperty('--scale', config.scale)
+            if (textCtrl) textCtrl.hidden = config.style !== 'track'
+        }
+
+        const sync = (event) => {
+            if (
+                !document.startViewTransition ||
+                event.target.controller.view.labelElement.innerText !== 'theme'
+            )
+                return update()
+            document.startViewTransition(() => update())
+        }
+
+        ctrl.addBinding(config, 'style', {
+            label: 'style',
+            options: {
+                countdown: 'countdown',
+                track: 'track',
+                video: 'video',
+            },
+        })
+
+        ctrl.addBinding(config, 'bglight', {
+            label: 'bg-light',
+            min: 0,
+            max: 1,
+            step: 0.01,
+        })
+
+        textCtrl = ctrl.addBinding(config, 'text', {
+            label: 'text',
+            hidden: config.style !== 'track',
+        }).on('change', () => {
+            textTrack.innerHTML = `<div class="text">${config.text}</div><div class="text text--clone">${config.text}</div>`
+        })
+
+        ctrl.addBinding(config, 'hue', {
+            label: 'hue',
+            min: 0,
+            max: 359,
+            step: 1,
+        })
+
+        ctrl.addBinding(config, 'scale', {
+            label: 'scale',
+            min: 0.5,
+            max: 1.5,
+            step: 0.1,
+        })
+
+        ctrl.addBinding(config, 'duration', {
+            label: 'duration(s)',
+            min: 0.2,
+            max: 10,
+            step: 0.01,
+        })
+
+        ctrl.addBinding(config, 'theme', {
+            label: 'theme',
+            options: {
+                system: 'system',
+                light: 'light',
+                dark: 'dark',
+            },
+        })
+
+        ctrl.on('change', sync)
+        textTrack.innerHTML = `<div class="text">${config.text}</div><div class="text text--clone">${config.text}</div>`
+        update()
+
+        // make tweakpane panel draggable
+        const tweakClass = 'div.tp-dfwv'
+        setTimeout(() => {
+            const d = Draggable.create(tweakClass, {
+                type: 'x,y',
+                allowEventDefault: true,
+                trigger: tweakClass + ' button.tp-rotv_b',
+            })
+            const el = document.querySelector(tweakClass);
+            if (el) {
+                el.addEventListener('dblclick', () => {
+                    gsap.to(tweakClass, {
+                        x: `+=${d[0].x * -1}`,
+                        y: `+=${d[0].y * -1}`,
+                        onComplete: () => {
+                            gsap.set(tweakClass, { clearProps: 'all' })
+                        },
+                    })
+                })
+            }
+        }, 100);
+    </script>
 </body>
+
 </html>

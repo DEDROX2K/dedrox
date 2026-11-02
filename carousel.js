@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
         isDragging = true;
         startX = e.clientX;
         prevTranslate = targetPos;
-        container.style.cursor = 'grabbing';
+        container.style.cursor = 'var(--ap-cursor-grabbing)';
         e.preventDefault();
     });
 
@@ -52,14 +52,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.addEventListener('pointerup', () => {
         isDragging = false;
-        container.style.cursor = 'grab';
+        container.style.cursor = 'var(--ap-cursor-grab)';
         snapToClosest();
     });
 
     window.addEventListener('pointerleave', () => {
         if (!isDragging) return;
         isDragging = false;
-        container.style.cursor = 'grab';
+        container.style.cursor = 'var(--ap-cursor-grab)';
         snapToClosest();
     });
 
