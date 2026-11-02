@@ -4254,7 +4254,7 @@ function initReaderBlogs() {
             return `
                 <article class="reader-blog-card">
                     <p class="reader-blog-date">${escapeHtml(date)}</p>
-                    <a href="${escapeAttr(href)}" class="reader-blog-link" data-blog-title="${escapeAttr(title)}" data-cursor="link">${escapeHtml(title)}</a>
+                    <a href="${escapeAttr(href)}" class="reader-blog-link" data-blog-title="${escapeAttr(title)}" data-blog-file="${escapeAttr(file)}" data-blog-date="${escapeAttr(date)}" data-blog-tags="${escapeAttr(tags.join(','))}" data-cursor="link">${escapeHtml(title)}</a>
                     <ul class="reader-blog-tags">${tagsMarkup}</ul>
                 </article>
             `;
@@ -4264,6 +4264,18 @@ function initReaderBlogs() {
     blogListEl.addEventListener('click', (event) => {
         const link = event.target instanceof Element ? event.target.closest('.reader-blog-link') : null;
         if (!link) return;
+
+        // Read inside the portfolio card when the article view is available.
+        if (typeof window.openPortfolioArticle === 'function') {
+            event.preventDefault();
+            window.openPortfolioArticle({
+                title: link.getAttribute('data-blog-title') || link.textContent || 'Writing',
+                file: link.getAttribute('data-blog-file') || '',
+                date: link.getAttribute('data-blog-date') || '',
+                tags: (link.getAttribute('data-blog-tags') || '').split(',').filter(Boolean)
+            });
+            return;
+        }
 
         const overlay = window.CaseOverlayControl;
         if (!overlay || typeof overlay.openExternal !== 'function') return;
@@ -5556,7 +5568,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const updatePortfolioBall = (animate = true, targetName = null) => {
         if (!portfolioToggleBall) return;
-        const resolved = targetName || pendingViewTarget || getCurrentPortfolioView();
+        const resolved = toNavView(targetName || pendingViewTarget || getCurrentPortfolioView());
         const activeBtn = portfolioViewToggles[resolved] || portfolioHomeToggle;
         if (!activeBtn) return;
 
@@ -5648,9 +5660,14 @@ document.addEventListener('DOMContentLoaded', () => {
         return device?.dataset.page || 'home';
     }
 
+    function toNavView(view) {
+        return view === 'article' ? 'writings' : view;
+    }
+
     const setPortfolioPressed = (view) => {
+        const navView = toNavView(view);
         Object.entries(portfolioViewToggles).forEach(([name, btn]) => {
-            btn?.setAttribute('aria-pressed', String(name === view));
+            btn?.setAttribute('aria-pressed', String(name === navView));
         });
     };
 
@@ -5740,7 +5757,7 @@ document.addEventListener('DOMContentLoaded', () => {
             device.dataset.page = page;
             if (scrollableContentEl) scrollableContentEl.scrollTop = 0;
             pendingViewTarget = null;
-            showSectionContextHint(page === 'projects' ? 'Projects' : 'Socials');
+            showSectionContextHint({ projects: 'Projects', socials: 'Socials', article: 'Writings' }[page] || 'Home');
             syncTopPillSelection();
             syncPortfolioViewToggle(false);
 
@@ -5752,6 +5769,84 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 420);
         }, 150);
     };
+
+    // Articles open inside the card (replaces the old floating window).
+    const articleTitleEl = document.getElementById('article-title');
+    const articleMetaEl = document.getElementById('article-meta');
+    const articleBodyEl = document.getElementById('article-body');
+    const articleFullEl = document.getElementById('article-full');
+    let markedLoader = null;
+    let articleRequestId = 0;
+
+    const loadMarked = () => {
+        if (window.marked) return Promise.resolve(window.marked);
+        if (!markedLoader) {
+            markedLoader = new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = 'https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js';
+                script.onload = () => resolve(window.marked);
+                script.onerror = () => {
+                    markedLoader = null;
+                    reject(new Error('Could not load the markdown renderer'));
+                };
+                document.head.appendChild(script);
+            });
+        }
+        return markedLoader;
+    };
+
+    const isSafePostFile = (file) => /^[a-zA-Z0-9][a-zA-Z0-9 ._-]*\.md$/.test(file) && !file.includes('..');
+
+    window.openPortfolioArticle = async ({ title, file, date, tags }) => {
+        if (!articleBodyEl || !isSafePostFile(file)) return;
+        const requestId = ++articleRequestId;
+
+        articleTitleEl.textContent = title;
+        articleMetaEl.textContent = [date, ...tags.map((tag) => tag.replace(/-/g, ' '))].filter(Boolean).join('  ·  ');
+        articleFullEl.href = `blog.html?post=${encodeURIComponent(file)}`;
+        articleBodyEl.innerHTML = '<p class="article-status">Loading…</p>';
+
+        if (device?.dataset.page === 'article') {
+            scrollableContentEl?.scrollTo({ top: 0 });
+        } else {
+            openPageScreen('article');
+        }
+
+        try {
+            const [marked, response] = await Promise.all([
+                loadMarked(),
+                fetch(`./posts/${encodeURIComponent(file)}`, { cache: 'default' })
+            ]);
+            if (!response.ok) throw new Error(`Post not found (${response.status})`);
+            const markdown = await response.text();
+            if (requestId !== articleRequestId) return;
+
+            articleBodyEl.innerHTML = marked.parse(markdown, { headerIds: false, mangle: false });
+            // The title is already in the header.
+            const firstHeading = articleBodyEl.querySelector('h1');
+            if (firstHeading && firstHeading.textContent.trim() === title.trim()) firstHeading.remove();
+            articleBodyEl.querySelectorAll('img').forEach((img) => {
+                img.loading = 'lazy';
+                img.decoding = 'async';
+            });
+            articleBodyEl.querySelectorAll('a[href^="http"]').forEach((a) => {
+                a.target = '_blank';
+                a.rel = 'noopener noreferrer';
+            });
+        } catch (error) {
+            console.error(error);
+            if (requestId !== articleRequestId) return;
+            articleBodyEl.innerHTML = '<p class="article-status">This article couldn\'t be loaded. Try the full page link below.</p>';
+        }
+    };
+
+    ['article-back', 'article-back-bottom'].forEach((id) => {
+        document.getElementById(id)?.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            openWritingsScreen();
+        });
+    });
 
     // Config based UI updates
     if (githubChartImg) {

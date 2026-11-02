@@ -10768,6 +10768,15 @@ body.case-open .case-window.is-closing:not(.expanded-height) {
 
 .hero-section-title {
     padding-left: 5px;
+    color: #111;
+    font: 600 clamp(2.25rem, 7vw, 4rem)/0.96 var(--font-sans);
+    letter-spacing: -0.06em;
+}
+
+.hero-section-title .hero-language-letter {
+    background: none;
+    -webkit-text-fill-color: currentColor;
+    color: inherit;
 }
 
 /* ==========================================
@@ -10782,12 +10791,14 @@ body.case-open .case-window.is-closing:not(.expanded-height) {
 }
 
 .device-container[data-page="projects"] .site-content> :not(#projects-inline),
-.device-container[data-page="socials"] .site-content> :not(#socials-inline) {
+.device-container[data-page="socials"] .site-content> :not(#socials-inline),
+.device-container[data-page="article"] .site-content> :not(#article-inline) {
     display: none !important;
 }
 
 .device-container[data-page="projects"] #projects-inline,
-.device-container[data-page="socials"] #socials-inline {
+.device-container[data-page="socials"] #socials-inline,
+.device-container[data-page="article"] #article-inline {
     display: block;
 }
 
@@ -11116,3 +11127,251 @@ body.case-open .case-window.is-closing:not(.expanded-height) {
     transform-origin: center center;
     will-change: transform, opacity;
 }
+
+/* ==========================================
+   ARTICLE VIEW — reads inside the card
+   ========================================== */
+#article-inline {
+    max-width: 620px;
+    margin: 0 auto;
+}
+
+.article-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 28px;
+    padding: 6px 12px 6px 8px;
+    border: 1px solid rgba(17, 17, 17, 0.12);
+    border-radius: 999px;
+    background: #fff;
+    color: #111;
+    font: 500 0.85rem/1 var(--font-sans);
+    cursor: pointer;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.article-back:hover {
+    border-color: rgba(17, 17, 17, 0.3);
+    transform: translateX(-2px);
+}
+
+.article-back .px-icon {
+    width: 14px;
+    height: 14px;
+}
+
+.article-meta {
+    margin: 0 0 14px;
+    color: rgba(17, 17, 17, 0.5);
+    font: 400 0.72rem/1.4 var(--font-mono);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.article-title {
+    max-width: none;
+    margin: 0 0 32px;
+    font-size: clamp(2rem, 5.5vw, 3rem);
+    line-height: 1.02;
+    letter-spacing: -0.05em;
+    text-wrap: balance;
+}
+
+.article-body {
+    padding-top: 28px;
+    border-top: 1px solid rgba(17, 17, 17, 0.12);
+    color: #2a2a2a;
+    font: 400 1.02rem/1.72 var(--font-sans);
+    overflow-wrap: break-word;
+}
+
+.article-body> :first-child {
+    margin-top: 0;
+}
+
+.article-body p,
+.article-body ul,
+.article-body ol,
+.article-body blockquote {
+    margin: 0 0 1.15em;
+}
+
+.article-body h2,
+.article-body h3 {
+    margin: 2.2em 0 0.6em;
+    color: #111;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+}
+
+.article-body h2 {
+    font-size: 1.5rem;
+}
+
+.article-body h3 {
+    font-size: 1.2rem;
+}
+
+.article-body strong {
+    color: #111;
+    font-weight: 600;
+}
+
+.article-body a {
+    color: #0047FF;
+    text-decoration: underline;
+    text-decoration-color: rgba(0, 71, 255, 0.3);
+    text-underline-offset: 3px;
+}
+
+.article-body ul,
+.article-body ol {
+    padding-left: 1.3em;
+}
+
+.article-body li {
+    margin-bottom: 0.4em;
+}
+
+.article-body li::marker {
+    color: rgba(17, 17, 17, 0.4);
+}
+
+.article-body blockquote {
+    padding: 2px 0 2px 18px;
+    border-left: 2px solid #0047FF;
+    color: #444;
+}
+
+.article-body img {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 1.6em 0;
+    border: 1px solid rgba(17, 17, 17, 0.08);
+    border-radius: var(--content-card-radius);
+    background: #fff;
+}
+
+.article-body hr {
+    margin: 2.4em 0;
+    border: 0;
+    border-top: 2px dotted rgba(17, 17, 17, 0.25);
+}
+
+.article-body code {
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: rgba(17, 17, 17, 0.06);
+    font: 400 0.85em var(--font-mono);
+}
+
+.article-status {
+    color: rgba(17, 17, 17, 0.5);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+}
+
+.article-foot {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 2px dotted rgba(17, 17, 17, 0.25);
+}
+
+.article-foot .article-back {
+    margin: 0;
+}
+
+.article-full {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: rgba(17, 17, 17, 0.55);
+    font: 400 0.85rem/1 var(--font-sans);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.article-full:hover {
+    color: #0047FF;
+}
+
+.article-full .px-icon {
+    width: 12px;
+    height: 12px;
+}
+
+/* ==========================================
+   MOBILE — nav becomes a floating tab bar inside the card
+   (the card is transformed, so position: fixed would be card-relative anyway)
+   ========================================== */
+@media (max-width: 600px) {
+    #contact-pocket.pill-portfolio-text {
+        top: auto;
+        bottom: 12px;
+        left: 50%;
+        transform: translateX(-50%);
+        flex-direction: row;
+        align-items: center;
+        gap: 24px;
+        min-width: 0;
+        padding: 10px 24px 10px 16px;
+        white-space: nowrap;
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid rgba(17, 17, 17, 0.08);
+        border-radius: 999px;
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.14);
+        -webkit-backdrop-filter: blur(14px) saturate(1.4);
+        backdrop-filter: blur(14px) saturate(1.4);
+    }
+
+    #contact-pocket.pill-portfolio-text .portfolio-view-toggle {
+        font-size: 0.9rem;
+        padding: 4px 0;
+    }
+
+    /* Keep the last lines of every view clear of the tab bar */
+    #scrollable-content::after {
+        content: '';
+        display: block;
+        height: 72px;
+    }
+
+    .hero-section {
+        padding-top: 28px;
+    }
+
+    .article-back {
+        margin-bottom: 22px;
+    }
+
+    .article-body {
+        font-size: 1rem;
+        line-height: 1.68;
+    }
+
+    .article-body h2 {
+        font-size: 1.3rem;
+    }
+
+    .footer-void {
+        height: 200px;
+    }
+
+    .footer-void .line-block {
+        min-height: 64px;
+        flex-basis: 64px;
+    }
+
+    .footer-void .line-text {
+        font-size: 1.9rem;
+    }
+}
+
