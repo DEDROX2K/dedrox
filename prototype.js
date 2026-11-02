@@ -6516,7 +6516,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ==========================================
 // 🌀 ENDLESS FOOTER LINES (same idea as the AirPaste footer void)
-// Drifts on its own; drag up/down to scrub. Wheel still scrolls the card.
+// Drifts on its own and reacts to scrolling; drag up/down to scrub.
 // ==========================================
 (function initFooterVoid() {
     const voidEl = document.querySelector('.footer-void');
@@ -6531,6 +6531,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const texts = Array.from(lines.querySelectorAll('.line-text'));
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const DRIFT = prefersReducedMotion ? 0 : 0.35; // px per frame
+    const SCROLL_PUSH = 1.4; // how hard page scrolling pushes the lines
     let offset = 0;
     let target = 0;
     let groupHeight = 0;
@@ -6559,13 +6560,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         lines.style.transform = `translate3d(0, ${-offset}px, 0)`;
 
-        // Lines grow as they enter from the bottom and settle as they leave the top.
+        // Lines are large as they enter at the bottom and shrink as they rise to the top.
         const box = voidEl.getBoundingClientRect();
         texts.forEach((text) => {
             const r = text.parentElement.getBoundingClientRect();
             const progress = Math.min(1, Math.max(0, (box.bottom - r.top) / (box.height + r.height)));
-            text.style.transform = `scale(${1.1 - progress * 0.6})`;
-            text.style.opacity = String(0.4 + progress * 0.6);
+            text.style.transform = `scale(${1.15 - progress * 0.75})`;
+            text.style.opacity = String(0.35 + progress * 0.65);
         });
 
         rafId = visible ? requestAnimationFrame(render) : 0;
@@ -6579,6 +6580,22 @@ document.addEventListener('DOMContentLoaded', () => {
         visible = entries.some((entry) => entry.isIntersecting);
         start();
     }).observe(voidEl);
+
+    // Scrolling the card pushes the lines along with it.
+    const scroller = document.getElementById('scrollable-content');
+    let lastScrollTop = scroller?.scrollTop || 0;
+    scroller?.addEventListener('scroll', () => {
+        const delta = scroller.scrollTop - lastScrollTop;
+        lastScrollTop = scroller.scrollTop;
+        if (visible && !dragging) target += delta * SCROLL_PUSH;
+    }, { passive: true });
+
+    // At the very bottom the card can't scroll any further, so the wheel drives the lines directly.
+    voidEl.addEventListener('wheel', (e) => {
+        if (!scroller || dragging) return;
+        const atBottom = scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - 1;
+        if (atBottom && e.deltaY > 0) target += e.deltaY * SCROLL_PUSH;
+    }, { passive: true });
 
     voidEl.addEventListener('pointerdown', (e) => {
         dragging = true;
