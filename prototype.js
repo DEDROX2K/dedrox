@@ -950,6 +950,14 @@ const contactNotesBtn = document.getElementById('contact-notes-btn');
 const contactBlogsBtn = document.getElementById('contact-blogs-btn');
 const portfolioHomeToggle = document.getElementById('portfolio-home-toggle');
 const portfolioWritingToggle = document.getElementById('portfolio-writing-toggle');
+const portfolioProjectsToggle = document.getElementById('portfolio-projects-toggle');
+const portfolioSocialsToggle = document.getElementById('portfolio-socials-toggle');
+const portfolioViewToggles = {
+    home: portfolioHomeToggle,
+    projects: portfolioProjectsToggle,
+    writings: portfolioWritingToggle,
+    socials: portfolioSocialsToggle
+};
 const portfolioToggleBall = document.getElementById('portfolio-toggle-ball');
 const resumePopoutEl = document.getElementById('resume-popout');
 const resumePopoutFrame = document.getElementById('resume-popout-frame');
@@ -3300,6 +3308,7 @@ function initHeroLanguageLoop() {
     if (!lineEl) return;
 
     const languages = [
+        'RAGHAV',
         'ராகவ்',
         'รากาฟ',
         '拉贾夫',
@@ -5516,6 +5525,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (device) {
+            delete device.dataset.page;
             device.classList.remove('is-home-leaving', 'is-writing-leaving', 'is-writing-entering');
             void device.offsetWidth;
             device.classList.add('is-home-entering');
@@ -5546,8 +5556,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const updatePortfolioBall = (animate = true, targetName = null) => {
         if (!portfolioToggleBall) return;
-        const resolved = targetName || pendingViewTarget || (readerMode.isActive() ? 'writings' : 'home');
-        const activeBtn = resolved === 'writings' ? portfolioWritingToggle : portfolioHomeToggle;
+        const resolved = targetName || pendingViewTarget || getCurrentPortfolioView();
+        const activeBtn = portfolioViewToggles[resolved] || portfolioHomeToggle;
         if (!activeBtn) return;
 
         const target = getBallPosition(activeBtn);
@@ -5633,11 +5643,20 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     };
 
+    function getCurrentPortfolioView() {
+        if (readerMode.isActive()) return 'writings';
+        return device?.dataset.page || 'home';
+    }
+
+    const setPortfolioPressed = (view) => {
+        Object.entries(portfolioViewToggles).forEach(([name, btn]) => {
+            btn?.setAttribute('aria-pressed', String(name === view));
+        });
+    };
+
     const syncPortfolioViewToggle = (animate = false) => {
-        const resolved = pendingViewTarget || (readerMode.isActive() ? 'writings' : 'home');
-        const writingIsActive = resolved === 'writings';
-        portfolioHomeToggle?.setAttribute('aria-pressed', String(!writingIsActive));
-        portfolioWritingToggle?.setAttribute('aria-pressed', String(writingIsActive));
+        const resolved = pendingViewTarget || getCurrentPortfolioView();
+        setPortfolioPressed(resolved);
         updatePortfolioBall(animate, resolved);
     };
 
@@ -5647,11 +5666,10 @@ document.addEventListener('DOMContentLoaded', () => {
         clearViewSwitchTimers();
 
         pendingViewTarget = 'home';
-        portfolioHomeToggle?.setAttribute('aria-pressed', 'true');
-        portfolioWritingToggle?.setAttribute('aria-pressed', 'false');
+        setPortfolioPressed('home');
         updatePortfolioBall(true, 'home');
 
-        if (!device || !readerMode.isActive()) {
+        if (!device || (!readerMode.isActive() && !device.dataset.page)) {
             revealHomeScreen();
             return;
         }
@@ -5669,8 +5687,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!device || readerMode.isActive()) return;
 
         pendingViewTarget = 'writings';
-        portfolioHomeToggle?.setAttribute('aria-pressed', 'false');
-        portfolioWritingToggle?.setAttribute('aria-pressed', 'true');
+        setPortfolioPressed('writings');
         updatePortfolioBall(true, 'writings');
 
         clearViewSwitchTimers();
@@ -5681,12 +5698,49 @@ document.addEventListener('DOMContentLoaded', () => {
         viewSwitchTimerId = window.setTimeout(() => {
             viewSwitchTimerId = 0;
             device.classList.remove('is-home-leaving');
+            delete device.dataset.page;
             if (recruiterMode.isActive()) recruiterMode.close();
             if (chatMode.isActive()) chatMode.close();
             readerMode.open();
             pendingViewTarget = null;
             showSectionContextHint('Writings');
             if (typeof blogSystem !== 'undefined') blogSystem.loadBlogs();
+            syncTopPillSelection();
+            syncPortfolioViewToggle(false);
+
+            void device.offsetWidth;
+            device.classList.add('is-writing-entering');
+            writingRevealTimerId = window.setTimeout(() => {
+                device.classList.remove('is-writing-entering');
+                writingRevealTimerId = 0;
+            }, 420);
+        }, 150);
+    };
+
+    // Projects and Socials live inside the same card as Home/Writings, swapped via data-page.
+    const openPageScreen = (page) => {
+        expandDeviceShell(false);
+        if (!device || getCurrentPortfolioView() === page) return;
+
+        pendingViewTarget = page;
+        setPortfolioPressed(page);
+        updatePortfolioBall(true, page);
+
+        clearViewSwitchTimers();
+        if (writingRevealTimerId) window.clearTimeout(writingRevealTimerId);
+        device.classList.remove('is-home-entering', 'is-writing-leaving', 'is-writing-entering');
+        device.classList.add('is-home-leaving');
+
+        viewSwitchTimerId = window.setTimeout(() => {
+            viewSwitchTimerId = 0;
+            device.classList.remove('is-home-leaving');
+            if (readerMode.isActive()) readerMode.close();
+            if (recruiterMode.isActive()) recruiterMode.close();
+            if (chatMode.isActive()) chatMode.close();
+            device.dataset.page = page;
+            if (scrollableContentEl) scrollableContentEl.scrollTop = 0;
+            pendingViewTarget = null;
+            showSectionContextHint(page === 'projects' ? 'Projects' : 'Socials');
             syncTopPillSelection();
             syncPortfolioViewToggle(false);
 
@@ -5832,9 +5886,38 @@ document.addEventListener('DOMContentLoaded', () => {
     portfolioHomeToggle?.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
-        if (!readerMode.isActive() && !chatMode.isActive() && !recruiterMode.isActive()) return;
+        if (!readerMode.isActive() && !chatMode.isActive() && !recruiterMode.isActive() && !device?.dataset.page) return;
         goToHomeScreen();
         showSectionContextHint('Home');
+    });
+
+    portfolioProjectsToggle?.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        openPageScreen('projects');
+    });
+
+    portfolioSocialsToggle?.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        openPageScreen('socials');
+    });
+
+    // Footer "Pages" links drive the same view switcher as the side nav.
+    document.querySelectorAll('[data-footer-view]').forEach((btn) => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const view = btn.dataset.footerView;
+            if (view === 'writings') openWritingsScreen();
+            else if (view === 'home') {
+                if (getCurrentPortfolioView() === 'home') {
+                    scrollableContentEl?.scrollTo({ top: 0, behavior: 'smooth' });
+                    return;
+                }
+                goToHomeScreen();
+            } else openPageScreen(view);
+        });
     });
 
     portfolioWritingToggle?.addEventListener('click', (e) => {
@@ -6333,4 +6416,95 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (document.readyState === 'complete') initCustomization();
     else window.addEventListener('load', initCustomization);
+})();
+
+
+// ==========================================
+// 🌀 ENDLESS FOOTER LINES (same idea as the AirPaste footer void)
+// Drifts on its own; drag up/down to scrub. Wheel still scrolls the card.
+// ==========================================
+(function initFooterVoid() {
+    const voidEl = document.querySelector('.footer-void');
+    const lines = voidEl?.querySelector('.lines');
+    const group = lines?.querySelector('.lines-group');
+    if (!voidEl || !lines || !group) return;
+
+    // Two extra copies so the wrap point is never visible.
+    lines.appendChild(group.cloneNode(true));
+    lines.appendChild(group.cloneNode(true));
+
+    const texts = Array.from(lines.querySelectorAll('.line-text'));
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const DRIFT = prefersReducedMotion ? 0 : 0.35; // px per frame
+    let offset = 0;
+    let target = 0;
+    let groupHeight = 0;
+    let dragging = false;
+    let dragStartY = 0;
+    let dragStartTarget = 0;
+    let rafId = 0;
+    let visible = false;
+
+    const measure = () => {
+        groupHeight = group.offsetHeight;
+    };
+
+    const render = () => {
+        if (!groupHeight) measure();
+        if (!dragging) target += DRIFT;
+        offset += (target - offset) * 0.1;
+
+        // Wrap both values together so the motion stays continuous.
+        if (groupHeight && offset > groupHeight) {
+            offset -= groupHeight;
+            target -= groupHeight;
+        } else if (groupHeight && offset < 0) {
+            offset += groupHeight;
+            target += groupHeight;
+        }
+        lines.style.transform = `translate3d(0, ${-offset}px, 0)`;
+
+        // Lines grow as they enter from the bottom and settle as they leave the top.
+        const box = voidEl.getBoundingClientRect();
+        texts.forEach((text) => {
+            const r = text.parentElement.getBoundingClientRect();
+            const progress = Math.min(1, Math.max(0, (box.bottom - r.top) / (box.height + r.height)));
+            text.style.transform = `scale(${1.1 - progress * 0.6})`;
+            text.style.opacity = String(0.4 + progress * 0.6);
+        });
+
+        rafId = visible ? requestAnimationFrame(render) : 0;
+    };
+
+    const start = () => {
+        if (!rafId && visible) rafId = requestAnimationFrame(render);
+    };
+
+    new IntersectionObserver((entries) => {
+        visible = entries.some((entry) => entry.isIntersecting);
+        start();
+    }).observe(voidEl);
+
+    voidEl.addEventListener('pointerdown', (e) => {
+        dragging = true;
+        dragStartY = e.clientY;
+        dragStartTarget = target;
+        voidEl.setPointerCapture(e.pointerId);
+        voidEl.classList.add('is-dragging');
+    });
+
+    voidEl.addEventListener('pointermove', (e) => {
+        if (!dragging) return;
+        target = dragStartTarget - (e.clientY - dragStartY) * 1.6;
+    });
+
+    const endDrag = () => {
+        dragging = false;
+        voidEl.classList.remove('is-dragging');
+    };
+    voidEl.addEventListener('pointerup', endDrag);
+    voidEl.addEventListener('pointercancel', endDrag);
+
+    window.addEventListener('resize', measure, { passive: true });
+    document.fonts?.ready?.then?.(measure);
 })();
