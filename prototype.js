@@ -975,7 +975,7 @@ const resumeCardDock = document.getElementById('resume-card-dock');
 const idCardDock = document.getElementById('id-card-dock');
 const scrollableContentEl = document.getElementById('scrollable-content');
 
-function initManagedCarousel(miniCarousel) {
+function initManagedCarousel(miniCarousel, { startDelay = 0 } = {}) {
     if (!miniCarousel || miniCarousel.dataset.carouselInitialized === 'true') return;
 
     const track = miniCarousel.querySelector('.carousel-track');
@@ -1013,7 +1013,8 @@ function initManagedCarousel(miniCarousel) {
     };
 
     const tick = () => {
-        if (document.hidden || !isVisible) return;
+        // offsetParent is null while the carousel is display:none (e.g. the desktop/mobile swap)
+        if (document.hidden || !isVisible || !miniCarousel.offsetParent) return;
         applySlide((currentIndex + 1) % images.length);
     };
 
@@ -1045,7 +1046,30 @@ function initManagedCarousel(miniCarousel) {
         else start();
     });
 
-    start();
+    // Offset start so neighbouring carousels don't flip in sync.
+    window.setTimeout(() => {
+        if (isVisible && !document.hidden) start();
+    }, startDelay);
+    applySlide(0);
+}
+
+// Mobile: one portrait carousel made from the images in every desktop carousel.
+function buildMergedCarousel(panel) {
+    if (!panel || panel.querySelector('.mini-carousel--merged')) return null;
+    const sources = Array.from(panel.querySelectorAll('.mini-carousel:not(.mini-carousel--merged) .carousel-track img'));
+    if (!sources.length) return null;
+
+    const merged = document.createElement('div');
+    merged.className = 'mini-carousel mini-carousel--merged';
+    merged.setAttribute('aria-hidden', 'true');
+    const track = document.createElement('div');
+    track.className = 'carousel-track';
+    sources.forEach((source) => track.appendChild(source.cloneNode(true)));
+    const indicators = document.createElement('div');
+    indicators.className = 'carousel-indicators';
+    merged.append(track, indicators);
+    panel.appendChild(merged);
+    return merged;
 }
 
 function initModelViewerPerformance() {
@@ -6503,9 +6527,12 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // Mini Carousel Timer
+        // Mini Carousels: two side by side on desktop, merged into one on mobile
         if (miniCarousel) {
-            initManagedCarousel(miniCarousel);
+            buildMergedCarousel(miniCarousel.closest('.mini-carousel-panel'));
+            document.querySelectorAll('.mini-carousel').forEach((carousel, index) => {
+                initManagedCarousel(carousel, { startDelay: index === 1 ? 1000 : 0 });
+            });
         }
     }
 
@@ -6619,4 +6646,108 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.addEventListener('resize', measure, { passive: true });
     document.fonts?.ready?.then?.(measure);
+})();
+
+// ==========================================
+// GITHUB CONTRIBUTIONS — dotted graph above the footer
+// Data: github-contributions-api.jogruber.de (public profile data, CORS enabled)
+// ==========================================
+(function initGithubDots() {
+    const USERNAME = 'dedrox2k';
+    const dotsEl = document.getElementById('gh-dots');
+    const monthsEl = document.getElementById('gh-months');
+    const totalEl = document.getElementById('gh-total');
+    const graphEl = document.getElementById('gh-graph');
+    if (!dotsEl || !monthsEl || !graphEl) return;
+
+    const WEEKS = 53;
+    const dayFormat = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    const monthFormat = new Intl.DateTimeFormat('en-GB', { month: 'short' });
+
+    // Ripple the dots in, column by column, the first time the card is seen.
+    const revealWhenSeen = () => {
+        new IntersectionObserver((entries, observer) => {
+            if (!entries.some((entry) => entry.isIntersecting)) return;
+            graphEl.scrollLeft = graphEl.scrollWidth;
+            graphEl.classList.add('is-revealed');
+            observer.disconnect();
+        }, { threshold: 0.3 }).observe(graphEl);
+    };
+
+    // Empty grid first so the card keeps its shape while loading.
+    const renderEmpty = () => {
+        const frag = document.createDocumentFragment();
+        for (let i = 0; i < WEEKS * 7; i++) {
+            const dot = document.createElement('i');
+            dot.dataset.level = '0';
+            frag.appendChild(dot);
+        }
+        dotsEl.replaceChildren(frag);
+    };
+
+    const render = (days, total) => {
+        const recent = days.slice(-(WEEKS * 7 - 6));
+        const first = new Date(recent[0].date + 'T00:00:00');
+        const lead = first.getDay(); // rows run Sunday to Saturday
+        const frag = document.createDocumentFragment();
+        const monthLabels = [];
+        let lastMonth = first.getMonth();
+
+        for (let i = 0; i < lead; i++) {
+            const blank = document.createElement('i');
+            blank.className = 'is-blank';
+            frag.appendChild(blank);
+        }
+
+        recent.forEach((day, index) => {
+            const date = new Date(day.date + 'T00:00:00');
+            const column = Math.floor((index + lead) / 7);
+            // Label a month on the first week that starts inside it.
+            if (date.getDay() === 0 && date.getMonth() !== lastMonth) {
+                lastMonth = date.getMonth();
+                monthLabels.push({ column, label: monthFormat.format(date) });
+            }
+            const dot = document.createElement('i');
+            dot.dataset.level = String(day.level);
+            dot.style.setProperty('--col', column);
+            const plural = day.count === 1 ? 'contribution' : 'contributions';
+            dot.title = `${day.count || 'No'} ${plural} on ${dayFormat.format(date)}`;
+            frag.appendChild(dot);
+        });
+
+        dotsEl.replaceChildren(frag);
+        const columns = Math.ceil((recent.length + lead) / 7);
+        graphEl.style.setProperty('--gh-cols', columns);
+        monthsEl.replaceChildren(...monthLabels
+            .filter((m) => m.column < columns - 2)
+            .map((m) => {
+                const span = document.createElement('span');
+                span.textContent = m.label;
+                span.style.gridColumn = String(m.column + 1);
+                return span;
+            }));
+
+        if (totalEl) totalEl.textContent = `${total.toLocaleString('en-GB')} contributions in the last year`;
+        graphEl.setAttribute('aria-label', `${total} GitHub contributions in the last year`);
+        // On phones the graph scrolls sideways; it starts on the most recent weeks when revealed.
+        revealWhenSeen();
+    };
+
+    renderEmpty();
+
+    fetch(`https://github-contributions-api.jogruber.de/v4/${USERNAME}?y=last`)
+        .then((response) => {
+            if (!response.ok) throw new Error(`GitHub contributions request failed (${response.status})`);
+            return response.json();
+        })
+        .then((data) => {
+            const days = Array.isArray(data?.contributions) ? data.contributions : [];
+            if (!days.length) throw new Error('No contribution data');
+            render(days, data?.total?.lastYear ?? days.reduce((sum, d) => sum + (d.count || 0), 0));
+        })
+        .catch((error) => {
+            console.warn(error);
+            graphEl.classList.add('is-revealed', 'is-unavailable');
+            if (totalEl) totalEl.textContent = 'See my activity on GitHub';
+        });
 })();

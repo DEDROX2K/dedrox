@@ -386,6 +386,44 @@
             </div>
             <div id="projects-inline" class="page-inline" aria-hidden="true">
                 <h2 class="page-inline-title">Projects</h2>
+                <ul class="project-list">
+                    <li>
+                        <a class="project-card" href="https://dedrox2k.github.io/dedrox/airpaste.html" target="_blank" rel="noopener noreferrer" data-cursor="link">
+                            <span class="project-thumb"><img src="images/proj-1.png" alt="AirPaste canvas with pinned images, notes and links" width="437" height="437"
+                                    loading="lazy" decoding="async"></span>
+                            <span class="project-info">
+                                <!-- <span class="project-tag">Beta v1</span> -->
+                                <span class="project-name">AirPaste</span>
+                                <span class="project-desc">My new app, now in beta. A local-first infinite canvas for visual thinkers &mdash; save links, images and notes, all on your own drive.</span>
+                                <span class="project-cta">Try the beta<i class="px-icon" style="--icon: url(icons/pixelarticons/external-link.svg)"></i></span>
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="project-card" href="https://www.listenr.in/" target="_blank" rel="noopener noreferrer" data-cursor="link">
+                            <span class="project-thumb"><img src="images/proj-2.png" alt="Listenr website homepage" width="437" height="437"
+                                    loading="lazy" decoding="async"></span>
+                            <span class="project-info">
+                                <!-- <span class="project-tag">Live</span> -->
+                                <span class="project-name">Listenr</span>
+                                <span class="project-desc">I built the website and the backend infrastructure behind Listenr, and I maintain both today.</span>
+                                <span class="project-cta">Visit listenr.in<i class="px-icon" style="--icon: url(icons/pixelarticons/external-link.svg)"></i></span>
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="project-card" href="https://www.behance.net/gallery/215201231/Research-Phrase" target="_blank" rel="noopener noreferrer" data-cursor="link">
+                            <span class="project-thumb"><img src="images/proj-3.png" alt="UX portfolio cover" width="437" height="437"
+                                    loading="lazy" decoding="async"></span>
+                            <span class="project-info">
+                                <!-- <span class="project-tag">Behance</span> -->
+                                <span class="project-name">UX case studies</span>
+                                <span class="project-desc">My UX and product design work &mdash; research, process and full case studies &mdash; lives on Behance.</span>
+                                <span class="project-cta">View on Behance<i class="px-icon" style="--icon: url(icons/pixelarticons/external-link.svg)"></i></span>
+                            </span>
+                        </a>
+                    </li>
+                </ul>
             </div>
 
             <article id="article-inline" class="page-inline" aria-hidden="true">
@@ -622,46 +660,59 @@ Raghav Prasanna
                 </section>
             </div>
 
+                        <section class="gh-section" aria-labelledby="gh-title">
+                <div class="gh-card">
+                    <header class="gh-head">
+                        <a class="gh-user" id="gh-title" href="https://github.com/dedrox2k" target="_blank"
+                            rel="noopener noreferrer" data-cursor="link">
+                            <i class="px-icon" style="--icon: url(icons/pixelarticons/github.svg)"></i>dedrox2k
+                        </a>
+                        <span class="gh-total" id="gh-total">Contributions in the last year</span>
+                    </header>
+                    <div class="gh-graph" id="gh-graph" role="img" aria-label="GitHub contributions in the last year">
+                        <div class="gh-months" id="gh-months" aria-hidden="true"></div>
+                        <div class="gh-dots" id="gh-dots" aria-hidden="true"></div>
+                    </div>
+                    <footer class="gh-foot">
+                        <a href="https://github.com/dedrox2k" target="_blank" rel="noopener noreferrer"
+                            data-cursor="link">View on GitHub</a>
+                        <span class="gh-legend" aria-hidden="true">Less<i data-level="0"></i><i data-level="1"></i><i
+                                data-level="2"></i><i data-level="3"></i><i data-level="4"></i>More</span>
+                    </footer>
+                </div>
+            </section>
+            
             <section class="mini-carousel-section" aria-label="Portfolio previews">
                 <div class="mini-carousel-panel">
+                    <!-- Desktop shows two carousels side by side; on mobile they merge into one
+                         portrait carousel (built in prototype.js), so add new images to either list. -->
                     <div class="mini-carousel" id="miniCarousel">
-                        <div class="carousel-track" id="carouselTrack">
-                            <img src="images/mg1.jpg" alt="Portfolio Preview 1" loading="lazy" decoding="async"
+                        <div class="carousel-track">
+                            <img src="images/mg1.jpg" alt="Portfolio preview 1" loading="lazy" decoding="async"
                                 fetchpriority="low">
-                            <img src="images/mg2.jpg" alt="Portfolio Preview 2" loading="lazy" decoding="async"
+                            <img src="images/mg2.jpg" alt="Portfolio preview 2" loading="lazy" decoding="async"
                                 fetchpriority="low">
-                            <img src="images/mg3.jpg" alt="Portfolio Preview 3" loading="lazy" decoding="async"
+                            <img src="images/mg3.jpg" alt="Portfolio preview 3" loading="lazy" decoding="async"
                                 fetchpriority="low">
-                            <img src="images/mg0.png" alt="Portfolio Preview 0" loading="lazy" decoding="async"
-                                fetchpriority="low">
-                            <img src="images/mg4.jpg" alt="Portfolio Preview 4" loading="lazy" decoding="async"
-                                fetchpriority="low">
-                            <img src="images/mg5.jpg" alt="Portfolio Preview 5" loading="lazy" decoding="async"
-                                fetchpriority="low">
-                            <img src="images/mg6.png" alt="Portfolio Preview 6" loading="lazy" decoding="async"
-                                fetchpriority="low">
-                            <img src="images/mg7.jpg" alt="Portfolio Preview 7" loading="lazy" decoding="async"
-                                fetchpriority="low">
-                            <img src="images/mg8.jpg" alt="Portfolio Preview 8" loading="lazy" decoding="async"
+                            <img src="images/mg0.png" alt="Portfolio preview 4" loading="lazy" decoding="async"
                                 fetchpriority="low">
                         </div>
-                        <div class="carousel-indicators">
-                            <span class="indicator active"></span>
-                            <span class="indicator"></span><span class="indicator"></span><span
-                                class="indicator"></span>
-                            <span class="indicator"></span><span class="indicator"></span><span
-                                class="indicator"></span>
-                            <span class="indicator"></span><span class="indicator"></span>
-                        </div>
+                        <div class="carousel-indicators"></div>
                     </div>
-                    <div class="mini-carousel-copy">
-                        <p>Whether I’m deploying interactive <i class="px-inline" style="--icon: url(icons/pixelarticons/monitor.svg)"></i> physical kiosks, advocating for product
-                            vision at industry events, or guiding a cross-functional team
-                            through a complex launch, my focus is always on getting products into users' hands.
-                            <br><br> background in creative tech means I’m comfortable navigating the messy reality of
-                            <i class="px-inline" style="--icon: url(icons/pixelarticons/cpu.svg)"></i> hardware constraints, public deployments, and tight feedback loops to ensure what
-                            we build actually delivers value.
-                        </p>
+                    <div class="mini-carousel" id="miniCarouselRight">
+                        <div class="carousel-track">
+                            <img src="images/mg4.jpg" alt="Portfolio preview 5" loading="lazy" decoding="async"
+                                fetchpriority="low">
+                            <img src="images/mg5.jpg" alt="Portfolio preview 6" loading="lazy" decoding="async"
+                                fetchpriority="low">
+                            <img src="images/mg6.png" alt="Portfolio preview 7" loading="lazy" decoding="async"
+                                fetchpriority="low">
+                            <img src="images/mg7.jpg" alt="Portfolio preview 8" loading="lazy" decoding="async"
+                                fetchpriority="low">
+                            <img src="images/mg8.jpg" alt="Portfolio preview 9" loading="lazy" decoding="async"
+                                fetchpriority="low">
+                        </div>
+                        <div class="carousel-indicators"></div>
                     </div>
                 </div>
             </section>
@@ -771,6 +822,8 @@ Raghav Prasanna
                     </div>
                 </div>
             </section>
+
+
 
 
             <section class="footer-section reveal delay-5" id="contact-footer">
