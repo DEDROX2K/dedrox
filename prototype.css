@@ -11081,20 +11081,21 @@ body.case-open .case-window.is-closing:not(.expanded-height) {
 
 .footer-void {
     position: relative;
+    /* margin: 0px 10%; */
     height: 260px;
     margin-top: -28px;
     padding-top: 28px;
     overflow: hidden;
     background: #0a0a0a;
     border-radius: 0 0 var(--content-card-radius) var(--content-card-radius);
-    cursor: ns-resize;
+    cursor: grab;
     touch-action: none;
     user-select: none;
     -webkit-user-select: none;
 }
 
 .footer-void.is-dragging {
-    cursor: grabbing;
+    cursor: none;
 }
 
 .footer-void .lines {
@@ -11112,14 +11113,14 @@ body.case-open .case-window.is-closing:not(.expanded-height) {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 54px;
+    min-height: 24px;
     flex: 0 0 54px;
 }
 
 .footer-void .line-text {
     margin: 0;
     font: 600 clamp(1.9rem, 5vw, 3rem)/1 var(--font-sans);
-    letter-spacing: -0.06em;
+    letter-spacing: -0.07em;
     white-space: nowrap;
     color: #fff;
     transform-origin: center center;
@@ -11360,7 +11361,7 @@ body.case-open .case-window.is-closing:not(.expanded-height) {
     }
 
     .footer-void {
-        height: 200px;
+        height: 900px;
     }
 
     .footer-void .line-block {
