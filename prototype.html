@@ -22,6 +22,7 @@
 
     <link rel="icon" href="logo.png" type="png">
     <meta name="theme-color" content="#ff3f3f">
+    <meta name="color-scheme" content="light">
     <link rel="stylesheet" href="prototype.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -409,6 +410,20 @@
                         </a>
                     </li>
                     <li>
+                        <a class="project-card" href="databridge-zero-trust.html" data-cursor="link"
+                            data-case-file="Databridge Zero-Trust Architecture.md" data-case-title="Databridge &mdash; Zero-Trust Data Architecture"
+                            data-case-date="2026-11-07" data-case-tags="product,security,architecture">
+                            <span class="project-thumb"><img src="images/port3.jpg" alt="Databridge zero-trust data architecture" width="437" height="437"
+                                    loading="lazy" decoding="async"></span>
+                            <span class="project-info">
+                                <!-- <span class="project-tag">Case study</span> -->
+                                <span class="project-name">Databridge: Zero-Trust Architecture</span>
+                                <span class="project-desc">Part three &mdash; clean rooms and federated access for suppliers who can't upload their data: BYOS, enclave training, differential privacy, and MPC.</span>
+                                <span class="project-cta">Read case study<i class="px-icon" style="--icon: url(icons/pixelarticons/arrow-right.svg)"></i></span>
+                            </span>
+                        </a>
+                    </li>
+                    <li>
                         <a class="project-card" href="https://dedrox2k.github.io/dedrox/airpaste.html" target="_blank" rel="noopener noreferrer" data-cursor="link">
                             <span class="project-thumb"><img src="images/proj-1.png" alt="AirPaste canvas with pinned images, notes and links" width="437" height="437"
                                     loading="lazy" decoding="async"></span>
@@ -529,6 +544,13 @@
                             data-case-file="Databridge Legal and Monetization Engine.md" data-case-title="Databridge &mdash; Legal and Monetization Engine"
                             data-case-date="2026-11-07" data-case-tags="product,legal,pricing" data-case-return="home">
                             <span class="hero-quicklink-name">Databridge: Licensing Engine</span>
+                            <span class="hero-quicklink-tag">Case study</span>
+                            <i class="px-icon hero-quicklink-arrow" style="--icon: url(icons/pixelarticons/arrow-right.svg)"></i>
+                        </a>
+                        <a class="hero-quicklink" href="databridge-zero-trust.html" data-cursor="link"
+                            data-case-file="Databridge Zero-Trust Architecture.md" data-case-title="Databridge &mdash; Zero-Trust Data Architecture"
+                            data-case-date="2026-11-07" data-case-tags="product,security,architecture" data-case-return="home">
+                            <span class="hero-quicklink-name">Databridge: Zero-Trust Architecture</span>
                             <span class="hero-quicklink-tag">Case study</span>
                             <i class="px-icon hero-quicklink-arrow" style="--icon: url(icons/pixelarticons/arrow-right.svg)"></i>
                         </a>
@@ -995,6 +1017,10 @@ Raghav Prasanna
         </div> <!-- End site-content -->
         <!-- Custom gradient blur for the device container -->
         <div class="device-bottom-blur"></div>
+
+        <div class="project-hover-blob" id="project-hover-blob" aria-hidden="true">
+            <p id="project-hover-blob-text"></p>
+        </div>
 
         <div class="pill-portfolio-text" id="contact-pocket" role="group" aria-label="Portfolio views">
             <button class="portfolio-view-toggle" id="portfolio-home-toggle" type="button" aria-pressed="true"

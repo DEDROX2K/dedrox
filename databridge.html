@@ -17,7 +17,8 @@
     <meta name="twitter:description" content="UX / product case study on building trust between data suppliers and AI buyers." />
 
     <link rel="icon" href="logo.png" type="png">
-    <meta name="theme-color" content="#111111">
+    <meta name="theme-color" content="#0047FF">
+    <meta name="color-scheme" content="light">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -31,8 +32,11 @@
             --soft-ink: #4b4b4b;
             --muted: #828282;
             --line: #e4e2dd;
-            --accent: #ff3f3f;
-            --code-bg: #141414;
+            --accent: #0047FF;
+            --accent-soft: #eaf1ff;
+            --accent-dark: #002E9E;
+            --code-bg: #002E9E;
+            color-scheme: light;
             --font-sans: 'IBM Plex Sans', sans-serif;
             --font-mono: 'IBM Plex Mono', monospace;
             --radius: 12px;
@@ -89,6 +93,19 @@
             letter-spacing: .04em;
         }
 
+        .case-topbar.is-scrolled .case-back-label {
+            display: none;
+        }
+
+        .case-topbar.is-scrolled #case-back-top {
+            padding: 6px 10px;
+        }
+
+        .case-topbar.is-scrolled .case-topbar-tag {
+            opacity: 0;
+            visibility: hidden;
+        }
+
         .case-hero {
             max-width: 880px;
             margin: 0 auto;
@@ -105,7 +122,7 @@
         }
 
         .case-title {
-            font-size: clamp(32px, 5vw, 52px);
+            font-size: clamp(28px, 6vw, 44px);
             line-height: 1.08;
             margin: 0 0 18px;
             font-weight: 600;
@@ -157,7 +174,7 @@
         }
 
         h2.case-h2 {
-            font-size: clamp(24px, 3.4vw, 32px);
+            font-size: clamp(24px, 4vw, 34px);
             margin: 0 0 20px;
             font-weight: 600;
             letter-spacing: -0.01em;
@@ -264,25 +281,32 @@
         }
 
         .metric-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-            gap: 12px;
-            margin: 0 0 24px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 28px 40px;
+            margin: 0 0 32px;
+            padding-top: 22px;
+            border-top: 1px solid var(--line);
         }
         .metric-card {
-            background: var(--code-bg);
-            color: #fff;
-            border-radius: 10px;
-            padding: 16px;
+            flex: 1 1 140px;
+            padding-left: 20px;
+            border-left: 1px solid var(--line);
+        }
+        .metric-card:first-child {
+            padding-left: 0;
+            border-left: none;
         }
         .metric-card .n {
-            font-family: var(--font-mono);
-            font-size: 22px;
-            color: #ff8a8a;
             display: block;
-            margin-bottom: 4px;
+            font-family: var(--font-sans);
+            font-weight: 700;
+            font-size: clamp(1.9rem, 4.6vw, 2.6rem);
+            color: var(--ink);
+            letter-spacing: -0.02em;
+            margin-bottom: 6px;
         }
-        .metric-card .d { font-size: 12.5px; color: #cfcfcf; }
+        .metric-card .d { font-size: 13px; color: var(--muted); }
 
         .panel-mock {
             border: 1px solid var(--line);
@@ -373,8 +397,8 @@
             background: var(--code-bg);
             border-color: var(--code-bg);
         }
-        .bridge-node.bridge-center h4 { color: #ff8a8a; }
-        .bridge-node.bridge-center p { color: #d8d8d8; }
+        .bridge-node.bridge-center h4 { color: #ffffff; }
+        .bridge-node.bridge-center p { color: #c7d7f5; }
         .bridge-arrow {
             color: rgba(17, 17, 17, 0.28);
             font-family: var(--font-mono);
@@ -439,8 +463,8 @@
 <body>
 
     <div class="case-topbar">
-        <a href="prototype.html" class="case-back">&larr; Back to portfolio</a>
-        <span class="case-topbar-tag">Part 1 of 2 &middot; <a href="databridge-licensing.html" style="color: inherit;">Licensing engine &rarr;</a></span>
+        <a href="prototype.html" class="case-back" id="case-back-top">&larr; <span class="case-back-label">Back to portfolio</span></a>
+        <span class="case-topbar-tag">Part 1 of 3 &middot; <a href="databridge-licensing.html" style="color: inherit;">Licensing engine &rarr;</a> &middot; <a href="databridge-zero-trust.html" style="color: inherit;">Zero-trust &rarr;</a></span>
     </div>
 
     <header class="case-hero">
@@ -789,6 +813,18 @@
         <p class="case-footer-note">Databridge is a product &amp; UX case study exploring trust design for AI data marketplaces.</p>
         <a href="databridge-licensing.html" class="case-back">Part 2: Licensing engine &rarr;</a>
     </footer>
+
+<script>
+    (function () {
+        var topbar = document.querySelector(".case-topbar");
+        if (!topbar) return;
+        var onScroll = function () {
+            topbar.classList.toggle("is-scrolled", window.scrollY > 80);
+        };
+        window.addEventListener("scroll", onScroll, { passive: true });
+        onScroll();
+    })();
+    </script>
 
 </body>
 
