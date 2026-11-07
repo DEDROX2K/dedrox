@@ -1,0 +1,70 @@
+/* ==========================================================
+   Google-style theme for the portfolio (prototype.html).
+   Loaded after prototype.css. Google Sans everywhere, huge
+   type, generous spacing.
+   ========================================================== */
+
+@font-face {
+    font-family: 'Google Sans';
+    src: url('Fonts/GoogleSans-VariableFont_GRAD%2Copsz%2Cwght.ttf') format('truetype');
+    font-weight: 400 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Google Sans';
+    src: url('Fonts/GoogleSans-Italic-VariableFont_GRAD%2Copsz%2Cwght.ttf') format('truetype');
+    font-weight: 400 700;
+    font-style: italic;
+    font-display: swap;
+}
+
+:root {
+    --font-sans: 'Google Sans', 'Product Sans', Arial, sans-serif;
+    --font-mono: 'Google Sans', 'Product Sans', Arial, sans-serif;
+}
+
+html,
+body,
+button,
+input,
+textarea,
+select,
+[class*="pill-"],
+[class*="status-"],
+[class*="re-"],
+code,
+kbd,
+pre {
+    font-family: var(--font-sans);
+}
+
+/* ---------- No page transitions: navigation is instant ---------- */
+.page-transition-overlay,
+.nav-overlay,
+.expand-shockwave,
+.contract-shockwave,
+.theme-bloom {
+    display: none !important;
+}
+
+.device-container.is-navigating,
+.device-container.is-navigating * {
+    filter: none !important;
+    transform: none;
+    opacity: 1 !important;
+}
+
+/* ---------- True dark mode: page behind the shell goes black too ---------- */
+html.theme-dark,
+html.theme-dark body {
+    background: #000 !important;
+    background-image: none !important;
+    color-scheme: dark;
+}
+
+html.theme-dark .pill-radiating-glow,
+html.theme-dark .pill-particle-field {
+    display: none;
+}

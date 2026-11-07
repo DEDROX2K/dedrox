@@ -619,9 +619,7 @@ const SITE_CONFIG = {
         cards.forEach(card => {
             card.addEventListener('click', (e) => {
                 e.preventDefault();
-                const caseId = card.getAttribute('data-case');
-                const caseHref = card.getAttribute('href');
-                openCase(caseId, caseHref, card);
+                window.location.href = card.getAttribute('href');
             });
         });
 
@@ -645,7 +643,7 @@ const SITE_CONFIG = {
                 event.preventDefault();
                 event.stopPropagation();
                 if (!activeCaseHref) return;
-                window.open(activeCaseHref, '_blank', 'noopener,noreferrer');
+                window.location.href = activeCaseHref;
             });
         }
 
@@ -4403,6 +4401,7 @@ function initDisplayControls() {
 
     const applyTheme = (theme) => {
         device.classList.toggle('theme-dark', theme === 'dark');
+        document.documentElement.classList.toggle('theme-dark', theme === 'dark');
         lightBtn?.classList.toggle('is-active', theme !== 'dark');
         darkBtn?.classList.toggle('is-active', theme === 'dark');
         try { localStorage.setItem('siteTheme', theme); } catch (e) { /* ignore */ }
@@ -6271,11 +6270,7 @@ document.addEventListener('DOMContentLoaded', () => {
     scrambleText(resumeBtnEl, "/-Resume", 1000);
 
     // Page Transition: Fade in from white
-    if (pageOverlayEl) {
-        setTimeout(() => {
-            pageOverlayEl.classList.remove('on-load');
-        }, 100);
-    }
+    pageOverlayEl?.classList.remove('on-load');
 
     const restoreView = new URLSearchParams(window.location.search).get('view');
     const shouldRestoreProjects = restoreView === 'projects' || restoreView === 'writings';
@@ -6339,26 +6334,6 @@ document.addEventListener('DOMContentLoaded', () => {
         // Calm Navigation Transition
         const deviceContainer = document.getElementById('portfolio-device');
         if (deviceContainer) {
-            document.addEventListener('click', (e) => {
-                const link = e.target.closest('a[target="_blank"]');
-                if (link && !link.classList.contains('side-panel-trigger')) {
-                    e.preventDefault();
-                    const href = link.href;
-
-                    // Trigger effect
-                    deviceContainer.classList.add('is-navigating');
-
-                    // Open link after delay
-                    setTimeout(() => {
-                        window.open(href, '_blank', 'noopener,noreferrer');
-
-                        // Cleanup after a while
-                        setTimeout(() => {
-                            deviceContainer.classList.remove('is-navigating');
-                        }, 1000);
-                    }, 600);
-                }
-            });
         }
 
         // Back to Top functionality

@@ -1,0 +1,48 @@
+/* ==========================================================
+   Google-style theme for the Databridge case studies.
+   Loaded after each page's inline <style>. Google Sans only,
+   huge type, generous spacing.
+   ========================================================== */
+
+@font-face {
+    font-family: 'Google Sans';
+    src: url('Fonts/GoogleSans-VariableFont_GRAD%2Copsz%2Cwght.ttf') format('truetype');
+    font-weight: 400 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Google Sans';
+    src: url('Fonts/GoogleSans-Italic-VariableFont_GRAD%2Copsz%2Cwght.ttf') format('truetype');
+    font-weight: 400 700;
+    font-style: italic;
+    font-display: swap;
+}
+
+:root {
+    --font-sans: 'Google Sans', 'Product Sans', Arial, sans-serif;
+    --font-mono: 'Google Sans', 'Product Sans', Arial, sans-serif;
+}
+
+body {
+    font-family: var(--font-sans);
+}
+
+/* ---------- Instant: no fade/slide-in of sections ---------- */
+.case-block {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+}
+
+/* ---------- True dark mode (follows the portfolio's saved theme) ---------- */
+html.theme-dark {
+    background: #fff;
+    filter: invert(1) hue-rotate(180deg);
+}
+
+html.theme-dark img,
+html.theme-dark video {
+    filter: invert(1) hue-rotate(180deg);
+}
