@@ -65,8 +65,7 @@
             align-items: center;
             justify-content: space-between;
             padding: 14px 24px;
-            background: rgba(245, 245, 243, 0.85);
-            backdrop-filter: blur(10px);
+            background: var(--bg);
             border-bottom: 1px solid var(--line);
         }
 
@@ -107,7 +106,7 @@
         }
 
         .case-hero {
-            max-width: 880px;
+            max-width: 1040px;
             margin: 0 auto;
             padding: 64px 24px 32px;
         }
@@ -148,7 +147,7 @@
         }
 
         main {
-            max-width: 880px;
+            max-width: 1040px;
             margin: 0 auto;
             padding: 0 24px 120px;
         }
@@ -437,7 +436,7 @@
         }
 
         .case-footer {
-            max-width: 880px;
+            max-width: 1040px;
             margin: 0 auto;
             padding: 0 24px 80px;
             display: flex;
@@ -457,10 +456,263 @@
             font-size: 13px;
             color: var(--muted);
         }
+
+        /* Interactive layer: reading progress, on-page nav, scroll reveals */
+        .case-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            width: 0%;
+            background: var(--accent);
+            z-index: 30;
+            transition: width 0.1s linear;
+        }
+
+        .case-toc {
+            position: fixed;
+            right: 28px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 15;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .case-toc a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font: 500 11.5px/1 var(--font-mono);
+            color: var(--muted);
+            text-decoration: none;
+            opacity: 0.55;
+            transition: opacity 0.2s ease, color 0.2s ease;
+        }
+
+        .case-toc a:hover,
+        .case-toc a.is-active {
+            opacity: 1;
+            color: var(--accent);
+        }
+
+        .case-toc .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+            flex-shrink: 0;
+            transition: transform 0.2s ease;
+        }
+
+        .case-toc a.is-active .dot {
+            transform: scale(1.5);
+        }
+
+        .case-toc .label {
+            max-width: 0;
+            overflow: hidden;
+            white-space: nowrap;
+            transition: max-width 0.25s ease;
+        }
+
+        .case-toc a:hover .label,
+        .case-toc a.is-active .label {
+            max-width: 160px;
+        }
+
+        @media (max-width: 1480px) {
+            .case-toc {
+                display: none;
+            }
+        }
+
+        .case-block {
+            opacity: 0;
+            transform: translateY(22px);
+            transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .case-block.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .case-block {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
+        }
+
+        .metric-card {
+            transition: transform 0.25s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .step-list li,
+        .arch-card,
+        .layer-card {
+            transition: background-color 0.18s ease, border-color 0.18s ease;
+        }
+
+        .step-list li:hover,
+        .arch-card:hover,
+        .layer-card:hover {
+            border-color: var(--accent);
+            background: var(--accent-soft);
+        }
+
+        .bridge-node {
+            transition: border-color 0.18s ease, background-color 0.18s ease;
+        }
+
+        .bridge-node:not(.bridge-center):hover {
+            border-color: var(--accent);
+            background: var(--accent-soft);
+        }
+
+        .bridge-node.bridge-center:hover {
+            border-color: var(--accent-dark);
+        }
+
+        /* Stage selector: pick a stage, the panel below swaps in like a moving card. */
+        .stage-hint {
+            font-size: 13px;
+            color: var(--muted);
+            margin: -8px 0 14px;
+        }
+
+        .stage-selector {
+            margin: 0 0 24px;
+        }
+
+        .stage-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            border: 1px solid var(--line);
+            border-bottom: none;
+        }
+
+        .stage-tab {
+            flex: 1 1 0;
+            min-width: 90px;
+            padding: 12px 8px;
+            border: none;
+            border-right: 1px solid var(--line);
+            background: var(--panel);
+            color: var(--soft-ink);
+            font: 600 11.5px/1.2 var(--font-mono);
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            cursor: pointer;
+            text-align: center;
+            transition: background-color 0.15s ease, color 0.15s ease;
+        }
+
+        .stage-tab:last-child {
+            border-right: none;
+        }
+
+        .stage-tab:hover {
+            background: var(--accent-soft);
+            color: var(--ink);
+        }
+
+        .stage-tab.is-active {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .stage-panels {
+            position: relative;
+            border: 1px solid var(--line);
+            background: var(--panel);
+            padding: 22px 24px;
+            overflow: hidden;
+            min-height: 108px;
+        }
+
+        .stage-panel h4 {
+            margin: 0 0 8px;
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--ink);
+        }
+
+        .stage-panel p {
+            margin: 0;
+        }
+
+        .stage-panel.is-entering {
+            animation: stage-slide-in 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .stage-panel.is-entering-back {
+            animation: stage-slide-in-back 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        @keyframes stage-slide-in {
+            from { opacity: 0; transform: translateX(28px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes stage-slide-in-back {
+            from { opacity: 0; transform: translateX(-28px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .stage-panel.is-entering,
+            .stage-panel.is-entering-back {
+                animation: none;
+            }
+        }
+
+        @media (max-width: 680px) {
+            .stage-tab {
+                flex: 1 1 33%;
+                border-bottom: 1px solid var(--line);
+            }
+        }
+
+        .flow-strip .step {
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .flow-strip .step:hover {
+            background: var(--accent);
+            transform: translateY(-1px);
+        }
+
+        table.case-table tbody tr {
+            transition: background-color 0.2s ease;
+        }
+
+        table.case-table tbody tr:hover {
+            background: var(--accent-soft);
+        }
     </style>
 </head>
 
 <body>
+
+    <div class="case-progress" id="case-progress"></div>
+
+    <nav class="case-toc" id="case-toc" aria-label="On this page">
+        <a href="#sec-impact"><span class="dot"></span><span class="label">Impact</span></a>
+        <a href="#sec-strategy"><span class="dot"></span><span class="label">Strategy</span></a>
+        <a href="#sec-architecture"><span class="dot"></span><span class="label">Architecture</span></a>
+        <a href="#sec-engineering"><span class="dot"></span><span class="label">Engineering</span></a>
+        <a href="#sec-interface"><span class="dot"></span><span class="label">Interface</span></a>
+        <a href="#sec-outcomes"><span class="dot"></span><span class="label">Outcomes</span></a>
+        <a href="#sec-appendix"><span class="dot"></span><span class="label">Appendix</span></a>
+    </nav>
 
     <div class="case-topbar">
         <a href="prototype.html" class="case-back" id="case-back-top">&larr; <span class="case-back-label">Back to portfolio</span></a>
@@ -487,7 +739,7 @@
 
         <section class="case-block">
             <p class="case-eyebrow">Overview</p>
-            <h2 class="case-h2">Impact</h2>
+            <h2 class="case-h2" id="sec-impact">Impact</h2>
             <div class="metric-grid">
                 <div class="metric-card"><span class="n">&lt; 15 Min</span><span class="d">Median time from upload to live listing (reduced from days)</span></div>
                 <div class="metric-card"><span class="n">&gt; 95%</span><span class="d">Listings with auto-generated, machine-verified metadata</span></div>
@@ -539,7 +791,7 @@
 
         <section class="case-block">
             <p class="case-eyebrow">01 &mdash; Strategy</p>
-            <h2 class="case-h2">Executive summary and strategy</h2>
+            <h2 class="case-h2" id="sec-strategy">Executive summary and strategy</h2>
 
             <h3 class="case-h3">The validation bottleneck</h3>
             <p>
@@ -579,44 +831,86 @@
 
         <section class="case-block">
             <p class="case-eyebrow">02 &mdash; Architecture</p>
-            <h2 class="case-h2">System architecture and data flow</h2>
+            <h2 class="case-h2" id="sec-architecture">System architecture and data flow</h2>
 
             <h3 class="case-h3">The supplier ingestion pipeline</h3>
-            <div class="flow-strip">
-                <span class="step">Upload</span><span class="arrow">&rarr;</span>
-                <span class="step">Stage</span><span class="arrow">&rarr;</span>
-                <span class="step">Scan</span><span class="arrow">&rarr;</span>
-                <span class="step">Enrich</span><span class="arrow">&rarr;</span>
-                <span class="step">Gate</span><span class="arrow">&rarr;</span>
-                <span class="step">Publish</span>
+            <p class="stage-hint">Select a stage to see what happens inside it.</p>
+            <div class="stage-selector">
+                <div class="stage-tabs" role="tablist" aria-label="Supplier ingestion pipeline stages">
+                    <button type="button" class="stage-tab is-active" role="tab" aria-selected="true">01 Upload</button>
+                    <button type="button" class="stage-tab" role="tab" aria-selected="false">02 Stage</button>
+                    <button type="button" class="stage-tab" role="tab" aria-selected="false">03 Scan</button>
+                    <button type="button" class="stage-tab" role="tab" aria-selected="false">04 Enrich</button>
+                    <button type="button" class="stage-tab" role="tab" aria-selected="false">05 Gate</button>
+                    <button type="button" class="stage-tab" role="tab" aria-selected="false">06 Publish</button>
+                </div>
+                <div class="stage-panels">
+                    <div class="stage-panel" role="tabpanel">
+                        <h4>Upload</h4>
+                        <p>Resumable chunked upload to object storage (S3-compatible). Accepts CSV, Parquet, JSON Lines, images in archive, PDF. Files never touch the app server directly &mdash; pre-signed URLs, virus scan on arrival.</p>
+                    </div>
+                    <div class="stage-panel" role="tabpanel" hidden>
+                        <h4>Stage</h4>
+                        <p>Files land in a quarantine bucket, invisible to buyers. A schema probe reads the first N rows and infers types, row counts, and column null rates.</p>
+                    </div>
+                    <div class="stage-panel" role="tabpanel" hidden>
+                        <h4>Scan</h4>
+                        <p>Deterministic pass first (regex and checksum detectors for emails, phone numbers, national IDs, card numbers, IPs), then a statistical pass on column samples. Output: a PII report with column, type, confidence, and row-level hit counts.</p>
+                    </div>
+                    <div class="stage-panel" role="tabpanel" hidden>
+                        <h4>Enrich</h4>
+                        <p>An LLM pass generates title, description, schema summary, domain tags, language, and suggested license class. A vision model handles images. Output is a draft, never auto-published.</p>
+                    </div>
+                    <div class="stage-panel" role="tabpanel" hidden>
+                        <h4>Gate</h4>
+                        <p>A rules engine decides: auto-approve (low PII risk, complete license), supplier-fix-required (missing fields, PII above threshold), or human review (sensitive categories). Every gate decision is logged with reason codes.</p>
+                    </div>
+                    <div class="stage-panel" role="tabpanel" hidden>
+                        <h4>Publish</h4>
+                        <p>The listing goes live. The dataset is versioned; hash, lineage, and license snapshot are frozen.</p>
+                    </div>
+                </div>
             </div>
-            <ol class="step-list">
-                <li><strong>Upload.</strong> Resumable chunked upload to object storage (S3-compatible). Accepts CSV, Parquet, JSON Lines, images in archive, PDF. Files never touch the app server directly &mdash; pre-signed URLs, virus scan on arrival.</li>
-                <li><strong>Stage.</strong> Files land in a quarantine bucket, invisible to buyers. A schema probe reads the first N rows and infers types, row counts, and column null rates.</li>
-                <li><strong>Scan.</strong> Deterministic pass first (regex and checksum detectors for emails, phone numbers, national IDs, card numbers, IPs), then a statistical pass on column samples. Output: a PII report with column, type, confidence, and row-level hit counts.</li>
-                <li><strong>Enrich.</strong> An LLM pass generates title, description, schema summary, domain tags, language, and suggested license class. A vision model handles images. Output is a draft, never auto-published.</li>
-                <li><strong>Gate.</strong> A rules engine decides: auto-approve (low PII risk, complete license), supplier-fix-required (missing fields, PII above threshold), or human review (sensitive categories). Every gate decision is logged with reason codes.</li>
-                <li><strong>Publish.</strong> The listing goes live. The dataset is versioned; hash, lineage, and license snapshot are frozen.</li>
-            </ol>
             <div class="quote-card">Key design rule: the pipeline is asynchronous and idempotent. Each stage is a job with a state &mdash; queued, running, passed, failed, needs-review. Retries are safe. The supplier sees live status, not a spinner.</div>
 
             <h3 class="case-h3">The buyer search and retrieval flow</h3>
-            <div class="flow-strip">
-                <span class="step">Query</span><span class="arrow">&rarr;</span>
-                <span class="step">Parse</span><span class="arrow">&rarr;</span>
-                <span class="step">Retrieve</span><span class="arrow">&rarr;</span>
-                <span class="step">Rank</span><span class="arrow">&rarr;</span>
-                <span class="step">Preview</span><span class="arrow">&rarr;</span>
-                <span class="step">Access</span>
+            <p class="stage-hint">Select a stage to see what happens inside it.</p>
+            <div class="stage-selector">
+                <div class="stage-tabs" role="tablist" aria-label="Buyer search and retrieval stages">
+                    <button type="button" class="stage-tab is-active" role="tab" aria-selected="true">01 Query</button>
+                    <button type="button" class="stage-tab" role="tab" aria-selected="false">02 Parse</button>
+                    <button type="button" class="stage-tab" role="tab" aria-selected="false">03 Retrieve</button>
+                    <button type="button" class="stage-tab" role="tab" aria-selected="false">04 Rank</button>
+                    <button type="button" class="stage-tab" role="tab" aria-selected="false">05 Preview</button>
+                    <button type="button" class="stage-tab" role="tab" aria-selected="false">06 Access</button>
+                </div>
+                <div class="stage-panels">
+                    <div class="stage-panel" role="tabpanel">
+                        <h4>Query</h4>
+                        <p>Natural language or structured filters (domain, language, license, size, freshness, modality).</p>
+                    </div>
+                    <div class="stage-panel" role="tabpanel" hidden>
+                        <h4>Parse</h4>
+                        <p>Intent extraction splits the query into hard filters (e.g. "license must allow commercial training") and soft semantics (e.g. "customer support chat in Portuguese").</p>
+                    </div>
+                    <div class="stage-panel" role="tabpanel" hidden>
+                        <h4>Retrieve</h4>
+                        <p>Hybrid search &mdash; keyword/BM25 for exact terms plus vector search over listing embeddings (title, description, schema summary, sample embeddings). Hard filters apply before ranking.</p>
+                    </div>
+                    <div class="stage-panel" role="tabpanel" hidden>
+                        <h4>Rank</h4>
+                        <p>A blend of relevance, quality score, supplier trust score, freshness, and fit to buyer history.</p>
+                    </div>
+                    <div class="stage-panel" role="tabpanel" hidden>
+                        <h4>Preview</h4>
+                        <p>The buyer sees schema, PII report summary, license terms, and a stratified, pre-scrubbed sample.</p>
+                    </div>
+                    <div class="stage-panel" role="tabpanel" hidden>
+                        <h4>Access</h4>
+                        <p>Purchase creates a scoped, time-limited access grant. Usage is metered; lineage records which dataset version went into which training run.</p>
+                    </div>
+                </div>
             </div>
-            <ol class="step-list">
-                <li><strong>Query.</strong> Natural language or structured filters (domain, language, license, size, freshness, modality).</li>
-                <li><strong>Parse.</strong> Intent extraction splits the query into hard filters (e.g. "license must allow commercial training") and soft semantics (e.g. "customer support chat in Portuguese").</li>
-                <li><strong>Retrieve.</strong> Hybrid search &mdash; keyword/BM25 for exact terms plus vector search over listing embeddings (title, description, schema summary, sample embeddings). Hard filters apply before ranking.</li>
-                <li><strong>Rank.</strong> A blend of relevance, quality score, supplier trust score, freshness, and fit to buyer history.</li>
-                <li><strong>Preview.</strong> The buyer sees schema, PII report summary, license terms, and a stratified, pre-scrubbed sample.</li>
-                <li><strong>Access.</strong> Purchase creates a scoped, time-limited access grant. Usage is metered; lineage records which dataset version went into which training run.</li>
-            </ol>
 
             <h3 class="case-h3">Architecture summary</h3>
             <div class="arch-grid">
@@ -629,7 +923,7 @@
 
         <section class="case-block">
             <p class="case-eyebrow">03 &mdash; Engineering</p>
-            <h2 class="case-h2">Product engineering and AI integration</h2>
+            <h2 class="case-h2" id="sec-engineering">Product engineering and AI integration</h2>
 
             <h3 class="case-h3">Automating metadata and PII scrubbing</h3>
             <p><strong>Problem.</strong> Suppliers write bad descriptions or none. Schemas are undocumented. PII hides in free-text columns, logs, and image EXIF data. Manual review costs more than the dataset earns.</p>
@@ -668,7 +962,7 @@
 
         <section class="case-block">
             <p class="case-eyebrow">04 &mdash; Interface design</p>
-            <h2 class="case-h2">Interface design and wireframes</h2>
+            <h2 class="case-h2" id="sec-interface">Interface design and wireframes</h2>
 
             <h3 class="case-h3">Supplier dashboard — the "Data Refinery"</h3>
             <p>Job of the screen: turn a raw file into a publishable, trusted listing with the fewest decisions possible. The supplier should feel guided, not audited.</p>
@@ -734,7 +1028,7 @@
 
         <section class="case-block">
             <p class="case-eyebrow">05 &mdash; Outcomes</p>
-            <h2 class="case-h2">Outcomes and future roadmap</h2>
+            <h2 class="case-h2" id="sec-outcomes">Outcomes and future roadmap</h2>
 
             <h3 class="case-h3">Technical constraints and edge cases</h3>
             <ul>
@@ -770,7 +1064,7 @@
 
         <section class="case-block">
             <p class="case-eyebrow">Appendix</p>
-            <h2 class="case-h2">Current landscape (as of November 2026)</h2>
+            <h2 class="case-h2" id="sec-appendix">Current landscape (as of November 2026)</h2>
             <p>
                 Market size is contested. Published estimates for the AI training dataset market disagree widely.
                 Mordor Intelligence puts it at about USD 11.9 billion in 2026, growing to USD 49.8 billion by 2031
@@ -823,6 +1117,120 @@
         };
         window.addEventListener("scroll", onScroll, { passive: true });
         onScroll();
+    })();
+
+    (function () {
+        // Reading progress bar
+        var progress = document.getElementById("case-progress");
+        var updateProgress = function () {
+            var doc = document.documentElement;
+            var scrollTop = doc.scrollTop || document.body.scrollTop;
+            var scrollable = (doc.scrollHeight || document.body.scrollHeight) - doc.clientHeight;
+            var pct = scrollable > 0 ? (scrollTop / scrollable) * 100 : 0;
+            if (progress) progress.style.width = pct + "%";
+        };
+        window.addEventListener("scroll", updateProgress, { passive: true });
+        window.addEventListener("resize", updateProgress);
+        updateProgress();
+
+        // Section reveal on scroll
+        var blocks = document.querySelectorAll(".case-block");
+        if ("IntersectionObserver" in window) {
+            var revealIO = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("is-visible");
+                        revealIO.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+            blocks.forEach(function (block, i) {
+                if (i === 0) {
+                    block.classList.add("is-visible");
+                    return;
+                }
+                revealIO.observe(block);
+            });
+        } else {
+            blocks.forEach(function (b) { b.classList.add("is-visible"); });
+        }
+
+        // Count-up animation for Impact metrics
+        var countUp = function (el) {
+            var text = el.textContent;
+            var match = text.match(/\d+(\.\d+)?/);
+            if (!match) return;
+            var target = parseFloat(match[0]);
+            var prefix = text.slice(0, match.index);
+            var suffix = text.slice(match.index + match[0].length);
+            var isInt = target % 1 === 0;
+            var duration = 900;
+            var start = null;
+            var step = function (ts) {
+                if (!start) start = ts;
+                var ratio = Math.min((ts - start) / duration, 1);
+                var eased = 1 - Math.pow(1 - ratio, 3);
+                var current = target * eased;
+                el.textContent = prefix + (isInt ? Math.round(current) : current.toFixed(1)) + suffix;
+                if (ratio < 1) window.requestAnimationFrame(step);
+                else el.textContent = text;
+            };
+            window.requestAnimationFrame(step);
+        };
+        var metrics = document.querySelectorAll(".metric-card .n");
+        if ("IntersectionObserver" in window && metrics.length) {
+            var metricIO = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        countUp(entry.target);
+                        metricIO.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.6 });
+            metrics.forEach(function (m) { metricIO.observe(m); });
+        }
+
+        // Stage selector: pick a stage, the panel slides in like a moving card
+        document.querySelectorAll(".stage-selector").forEach(function (root) {
+            var tabs = Array.prototype.slice.call(root.querySelectorAll(".stage-tab"));
+            var panels = Array.prototype.slice.call(root.querySelectorAll(".stage-panel"));
+            var current = 0;
+            var show = function (index) {
+                if (index === current || !panels[index]) return;
+                var goingForward = index > current;
+                panels[current].hidden = true;
+                panels[current].classList.remove("is-entering", "is-entering-back");
+                tabs[current].classList.remove("is-active");
+                tabs[current].setAttribute("aria-selected", "false");
+
+                panels[index].hidden = false;
+                void panels[index].offsetWidth;
+                panels[index].classList.add(goingForward ? "is-entering" : "is-entering-back");
+                tabs[index].classList.add("is-active");
+                tabs[index].setAttribute("aria-selected", "true");
+                current = index;
+            };
+            tabs.forEach(function (tab, i) {
+                tab.addEventListener("click", function () { show(i); });
+            });
+        });
+
+        // On-page nav active-section tracking
+        var tocLinks = document.querySelectorAll("#case-toc a");
+        var headings = document.querySelectorAll("main h2.case-h2[id]");
+        if (tocLinks.length && headings.length && "IntersectionObserver" in window) {
+            var setActive = function (id) {
+                tocLinks.forEach(function (link) {
+                    link.classList.toggle("is-active", link.getAttribute("href") === "#" + id);
+                });
+            };
+            var tocIO = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) setActive(entry.target.id);
+                });
+            }, { rootMargin: "-20% 0px -70% 0px" });
+            headings.forEach(function (h) { tocIO.observe(h); });
+        }
     })();
     </script>
 

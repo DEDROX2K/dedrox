@@ -4366,6 +4366,57 @@ function initContentMaskVisibility() {
     window.requestAnimationFrame(loop);
 }
 
+function initDisplayControls() {
+    const device = document.getElementById('portfolio-device');
+    const downBtn = document.getElementById('font-size-down');
+    const upBtn = document.getElementById('font-size-up');
+    const lightBtn = document.getElementById('theme-light-btn');
+    const darkBtn = document.getElementById('theme-dark-btn');
+    if (!device) return;
+
+    const FONT_STEPS = [87.5, 100, 112.5, 125, 137.5];
+    let stepIndex = FONT_STEPS.indexOf(100);
+
+    const applyFontSize = () => {
+        const pct = FONT_STEPS[stepIndex];
+        document.documentElement.style.fontSize = `${pct}%`;
+        downBtn?.toggleAttribute('disabled', stepIndex === 0);
+        upBtn?.toggleAttribute('disabled', stepIndex === FONT_STEPS.length - 1);
+        try { localStorage.setItem('siteFontStep', String(stepIndex)); } catch (e) { /* ignore */ }
+    };
+
+    const savedStep = Number.parseInt(localStorage.getItem('siteFontStep') || '', 10);
+    if (Number.isInteger(savedStep) && FONT_STEPS[savedStep] !== undefined) {
+        stepIndex = savedStep;
+    }
+    applyFontSize();
+
+    downBtn?.addEventListener('click', () => {
+        stepIndex = Math.max(0, stepIndex - 1);
+        applyFontSize();
+    });
+
+    upBtn?.addEventListener('click', () => {
+        stepIndex = Math.min(FONT_STEPS.length - 1, stepIndex + 1);
+        applyFontSize();
+    });
+
+    const applyTheme = (theme) => {
+        device.classList.toggle('theme-dark', theme === 'dark');
+        lightBtn?.classList.toggle('is-active', theme !== 'dark');
+        darkBtn?.classList.toggle('is-active', theme === 'dark');
+        try { localStorage.setItem('siteTheme', theme); } catch (e) { /* ignore */ }
+    };
+
+    const savedTheme = (() => {
+        try { return localStorage.getItem('siteTheme'); } catch (e) { return null; }
+    })() || 'light';
+    applyTheme(savedTheme);
+
+    lightBtn?.addEventListener('click', () => applyTheme('light'));
+    darkBtn?.addEventListener('click', () => applyTheme('dark'));
+}
+
 function initSmoothWheelScrolling() {
     const targets = [
         document.scrollingElement,
@@ -5598,7 +5649,7 @@ document.addEventListener('DOMContentLoaded', () => {
             homeRevealTimerId = window.setTimeout(() => {
                 device.classList.remove('is-home-entering');
                 homeRevealTimerId = 0;
-            }, 420);
+            }, 140);
         }
 
         pendingViewTarget = null;
@@ -5750,7 +5801,7 @@ document.addEventListener('DOMContentLoaded', () => {
         viewSwitchTimerId = window.setTimeout(() => {
             viewSwitchTimerId = 0;
             revealHomeScreen();
-        }, 150);
+        }, 50);
     };
 
     const openWritingsScreen = () => {
@@ -5784,8 +5835,8 @@ document.addEventListener('DOMContentLoaded', () => {
             writingRevealTimerId = window.setTimeout(() => {
                 device.classList.remove('is-writing-entering');
                 writingRevealTimerId = 0;
-            }, 420);
-        }, 150);
+            }, 140);
+        }, 50);
     };
 
     // Projects and Socials live inside the same card as Home/Writings, swapped via data-page.
@@ -5821,8 +5872,8 @@ document.addEventListener('DOMContentLoaded', () => {
             writingRevealTimerId = window.setTimeout(() => {
                 device.classList.remove('is-writing-entering');
                 writingRevealTimerId = 0;
-            }, 420);
-        }, 150);
+            }, 140);
+        }, 50);
     };
 
     // Articles open inside the card (replaces the old floating window).
@@ -6213,6 +6264,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initFeaturedCardHoverMotion();
     initHeroLanguageLoop();
     initContentMaskVisibility();
+    initDisplayControls();
     const blogSystem = initReaderBlogs();
     // Initialize Scramble Animations
     const resumeBtnEl = document.querySelector('.resume-fab');
@@ -6240,12 +6292,14 @@ document.addEventListener('DOMContentLoaded', () => {
         expandDeviceShell(true);
         localStorage.removeItem('forcePillExpanded');
     } else {
-        applyPillSizes('collapsed'); // Default initial state
-        window.setTimeout(() => {
-            if (!device?.classList.contains('expanded')) {
-                expandDeviceShell(false);
-            }
-        }, 700);
+        // Load straight into the expanded view — skip the collapsed-pill intro animation.
+        device?.classList.add('no-intro-transition');
+        expandDeviceShell(false);
+        window.requestAnimationFrame(() => {
+            window.requestAnimationFrame(() => {
+                device?.classList.remove('no-intro-transition');
+            });
+        });
     }
     applyBlurMaskSettings();
 

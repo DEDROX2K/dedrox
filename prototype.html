@@ -385,9 +385,7 @@
                 <h2 class="page-inline-title">Projects</h2>
                 <ul class="project-list">
                     <li>
-                        <a class="project-card" href="databridge.html" data-cursor="link"
-                            data-case-file="Databridge Case Study.md" data-case-title="Databridge &mdash; Two-Sided Data Marketplace"
-                            data-case-date="2026-11-07" data-case-tags="product,ux,ai">
+                        <a class="project-card" href="databridge.html" target="_blank" rel="noopener noreferrer" data-cursor="link">
                             <span class="project-thumb"><img src="images/port3.jpg" alt="Databridge two-sided data marketplace" width="437" height="437"
                                     loading="lazy" decoding="async"></span>
                             <span class="project-info">
@@ -399,9 +397,7 @@
                         </a>
                     </li>
                     <li>
-                        <a class="project-card" href="databridge-licensing.html" data-cursor="link"
-                            data-case-file="Databridge Legal and Monetization Engine.md" data-case-title="Databridge &mdash; Legal and Monetization Engine"
-                            data-case-date="2026-11-07" data-case-tags="product,legal,pricing">
+                        <a class="project-card" href="databridge-licensing.html" target="_blank" rel="noopener noreferrer" data-cursor="link">
                             <span class="project-thumb"><img src="images/port3.jpg" alt="Databridge legal and monetization engine" width="437" height="437"
                                     loading="lazy" decoding="async"></span>
                             <span class="project-info">
@@ -413,9 +409,7 @@
                         </a>
                     </li>
                     <li>
-                        <a class="project-card" href="databridge-zero-trust.html" data-cursor="link"
-                            data-case-file="Databridge Zero-Trust Architecture.md" data-case-title="Databridge &mdash; Zero-Trust Data Architecture"
-                            data-case-date="2026-11-07" data-case-tags="product,security,architecture">
+                        <a class="project-card" href="databridge-zero-trust.html" target="_blank" rel="noopener noreferrer" data-cursor="link">
                             <span class="project-thumb"><img src="images/port3.jpg" alt="Databridge zero-trust data architecture" width="437" height="437"
                                     loading="lazy" decoding="async"></span>
                             <span class="project-info">
@@ -537,23 +531,17 @@
 
                     <p class="hero-quicklinks-summary">A few things I've built and written &mdash; case studies, apps, and more below.</p>
                     <nav class="hero-quicklinks" aria-label="Quick project links">
-                        <a class="hero-quicklink" href="databridge.html" data-cursor="link"
-                            data-case-file="Databridge Case Study.md" data-case-title="Databridge &mdash; Two-Sided Data Marketplace"
-                            data-case-date="2026-11-07" data-case-tags="product,ux,ai" data-case-return="home">
-                            <span class="hero-quicklink-name">Databridge: A two-sided AI data marketplace case study</span>
+                        <a class="hero-quicklink" href="databridge.html" target="_blank" rel="noopener noreferrer" data-cursor="link">
+                            <span class="hero-quicklink-name">Databridge</span>
                             <span class="hero-quicklink-tag">Case study</span>
                             <i class="px-icon hero-quicklink-arrow" style="--icon: url(icons/pixelarticons/arrow-right.svg)"></i>
                         </a>
-                        <a class="hero-quicklink" href="databridge-licensing.html" data-cursor="link"
-                            data-case-file="Databridge Legal and Monetization Engine.md" data-case-title="Databridge &mdash; Legal and Monetization Engine"
-                            data-case-date="2026-11-07" data-case-tags="product,legal,pricing" data-case-return="home">
+                        <a class="hero-quicklink" href="databridge-licensing.html" target="_blank" rel="noopener noreferrer" data-cursor="link">
                             <span class="hero-quicklink-name">Databridge: Licensing Engine</span>
                             <span class="hero-quicklink-tag">Case study</span>
                             <i class="px-icon hero-quicklink-arrow" style="--icon: url(icons/pixelarticons/arrow-right.svg)"></i>
                         </a>
-                        <a class="hero-quicklink" href="databridge-zero-trust.html" data-cursor="link"
-                            data-case-file="Databridge Zero-Trust Architecture.md" data-case-title="Databridge &mdash; Zero-Trust Data Architecture"
-                            data-case-date="2026-11-07" data-case-tags="product,security,architecture" data-case-return="home">
+                        <a class="hero-quicklink" href="databridge-zero-trust.html" target="_blank" rel="noopener noreferrer" data-cursor="link">
                             <span class="hero-quicklink-name">Databridge: Zero-Trust Architecture</span>
                             <span class="hero-quicklink-tag">Case study</span>
                             <i class="px-icon hero-quicklink-arrow" style="--icon: url(icons/pixelarticons/arrow-right.svg)"></i>
@@ -1033,6 +1021,26 @@ Raghav Prasanna
             <span class="pill-open-prompt">click open</span>
         </div>
     </div> <!-- End device-container -->
+
+    <!-- Display controls: font size + theme, sit outside the device shell -->
+    <div class="display-controls" id="display-controls" aria-label="Display settings">
+        <div class="display-controls-group" role="group" aria-label="Font size">
+            <button type="button" class="display-control-btn" id="font-size-down" aria-label="Decrease font size" data-cursor="link">
+                <i class="px-icon" style="--icon: url(icons/pixelarticons/minus.svg)"></i>
+            </button>
+            <button type="button" class="display-control-btn" id="font-size-up" aria-label="Increase font size" data-cursor="link">
+                <i class="px-icon" style="--icon: url(icons/pixelarticons/plus.svg)"></i>
+            </button>
+        </div>
+        <div class="display-controls-group" role="group" aria-label="Theme">
+            <button type="button" class="display-control-btn" id="theme-light-btn" aria-label="Light mode" data-cursor="link">
+                <i class="px-icon" style="--icon: url(icons/pixelarticons/sun.svg)"></i>
+            </button>
+            <button type="button" class="display-control-btn" id="theme-dark-btn" aria-label="Dark mode" data-cursor="link">
+                <i class="px-icon" style="--icon: url(icons/pixelarticons/moon.svg)"></i>
+            </button>
+        </div>
+    </div>
 
     <!-- Resume Peek Dock -->
     <div class="resume-card-wrap" aria-hidden="true">
