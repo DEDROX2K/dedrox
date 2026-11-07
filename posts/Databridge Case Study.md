@@ -11,7 +11,7 @@
 
 ### Context
 
-The bottleneck in the AI training data marketplace is not supply &mdash; it is trust. AI Trainers need to verify dataset contents, legal compliance, and cleanliness before purchasing, but data suppliers cannot easily or cheaply prove these metrics. We designed Opendatabay to solve this dual-sided trust deficit, replacing unscalable manual reviews with an AI-assisted ingestion pipeline. The platform uses models to do the expensive verification work upfront, giving suppliers a low-friction publishing flow and buyers a catalog built on verified facts rather than seller claims.
+The bottleneck in the AI training data marketplace is not supply &mdash; it is trust. AI Trainers need to verify dataset contents, legal compliance, and cleanliness before purchasing, but data suppliers cannot easily or cheaply prove these metrics. We designed Databridge to solve this dual-sided trust deficit, replacing unscalable manual reviews with an AI-assisted ingestion pipeline. The platform uses models to do the expensive verification work upfront, giving suppliers a low-friction publishing flow and buyers a catalog built on verified facts rather than seller claims.
 
 ### Challenges
 
