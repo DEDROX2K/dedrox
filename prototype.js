@@ -4341,9 +4341,8 @@ function initContentMaskVisibility() {
     const device = document.getElementById('portfolio-device');
     const scrollEl = document.getElementById('scrollable-content');
     const topMask = document.querySelector('.content-mask.top');
-    const bottomMask = document.querySelector('.content-mask.bottom');
-    const articleBack = document.getElementById('article-back');
-    if (!device || !scrollEl || !topMask || !bottomMask) return;
+    const floatingBack = document.getElementById('article-floating-back');
+    if (!device || !scrollEl || !topMask) return;
 
     const EDGE_THRESHOLD = 4;
 
@@ -4351,10 +4350,8 @@ function initContentMaskVisibility() {
         const { scrollTop, scrollHeight, clientHeight } = scrollEl;
         const hasOverflow = scrollHeight - clientHeight > EDGE_THRESHOLD;
         const atTop = !hasOverflow || scrollTop <= EDGE_THRESHOLD;
-        const atBottom = !hasOverflow || scrollTop + clientHeight >= scrollHeight - EDGE_THRESHOLD;
         topMask.classList.toggle('is-edge-hidden', atTop);
-        bottomMask.classList.toggle('is-edge-hidden', atBottom);
-        articleBack?.classList.toggle('is-scrolled', scrollTop > 60);
+        floatingBack?.classList.toggle('is-visible', device.dataset.page === 'article' && scrollTop > 60);
     };
 
     scrollEl.addEventListener('scroll', update, { passive: true });
@@ -4367,64 +4364,6 @@ function initContentMaskVisibility() {
         window.requestAnimationFrame(loop);
     };
     window.requestAnimationFrame(loop);
-}
-
-function initProjectHoverBlob() {
-    const device = document.getElementById('portfolio-device');
-    const blob = document.getElementById('project-hover-blob');
-    const textEl = document.getElementById('project-hover-blob-text');
-    const list = document.querySelector('.project-list');
-    if (!device || !blob || !textEl || !list) return;
-
-    const OFFSET_X = 22;
-    const OFFSET_Y = 22;
-    let active = null;
-    let targetX = 0;
-    let targetY = 0;
-    let currentX = 0;
-    let currentY = 0;
-    let rafId = 0;
-
-    const render = () => {
-        currentX += (targetX - currentX) * 0.22;
-        currentY += (targetY - currentY) * 0.22;
-        blob.style.transform = `translate(${currentX}px, ${currentY}px) scale(1)`;
-        rafId = active ? window.requestAnimationFrame(render) : 0;
-    };
-
-    const show = (card) => {
-        active = card;
-        textEl.textContent = card.querySelector('.project-desc')?.textContent.trim() || '';
-        blob.classList.add('is-visible');
-        if (!rafId) rafId = window.requestAnimationFrame(render);
-    };
-
-    const hide = () => {
-        active = null;
-        blob.classList.remove('is-visible');
-    };
-
-    list.addEventListener('mouseover', (e) => {
-        const card = e.target instanceof Element ? e.target.closest('.project-card') : null;
-        if (!card || card === active) return;
-        show(card);
-    });
-
-    list.addEventListener('mouseout', (e) => {
-        const card = e.target instanceof Element ? e.target.closest('.project-card') : null;
-        if (!card) return;
-        if (e.relatedTarget instanceof Element && card.contains(e.relatedTarget)) return;
-        hide();
-    });
-
-    list.addEventListener('mousemove', (e) => {
-        if (!active) return;
-        const rect = device.getBoundingClientRect();
-        targetX = (e.clientX - rect.left) + OFFSET_X;
-        targetY = (e.clientY - rect.top) + OFFSET_Y;
-    });
-
-    list.addEventListener('mouseleave', hide);
 }
 
 function initSmoothWheelScrolling() {
@@ -5963,7 +5902,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    ['article-back', 'article-back-bottom'].forEach((id) => {
+    ['article-back', 'article-back-bottom', 'article-floating-back'].forEach((id) => {
         document.getElementById(id)?.addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -6274,7 +6213,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initFeaturedCardHoverMotion();
     initHeroLanguageLoop();
     initContentMaskVisibility();
-    initProjectHoverBlob();
     const blogSystem = initReaderBlogs();
     // Initialize Scramble Animations
     const resumeBtnEl = document.querySelector('.resume-fab');

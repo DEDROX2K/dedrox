@@ -119,7 +119,10 @@
         </nav>
 
         <div class="content-mask top"></div>
-        <div class="content-mask bottom"></div>
+
+        <button type="button" class="article-floating-back" id="article-floating-back" aria-hidden="true" data-cursor="link">
+            <i class="px-icon" style="--icon: url(icons/pixelarticons/arrow-left.svg)"></i>
+        </button>
 
         <div class="site-content" id="scrollable-content">
             <section id="talk-inline" class="talk-inline" aria-hidden="true">
@@ -532,6 +535,7 @@
                         </span>
                     </p>
 
+                    <p class="hero-quicklinks-summary">A few things I've built and written &mdash; case studies, apps, and more below.</p>
                     <nav class="hero-quicklinks" aria-label="Quick project links">
                         <a class="hero-quicklink" href="databridge.html" data-cursor="link"
                             data-case-file="Databridge Case Study.md" data-case-title="Databridge &mdash; Two-Sided Data Marketplace"
@@ -1017,10 +1021,6 @@ Raghav Prasanna
         </div> <!-- End site-content -->
         <!-- Custom gradient blur for the device container -->
         <div class="device-bottom-blur"></div>
-
-        <div class="project-hover-blob" id="project-hover-blob" aria-hidden="true">
-            <p id="project-hover-blob-text"></p>
-        </div>
 
         <div class="pill-portfolio-text" id="contact-pocket" role="group" aria-label="Portfolio views">
             <button class="portfolio-view-toggle" id="portfolio-home-toggle" type="button" aria-pressed="true"
