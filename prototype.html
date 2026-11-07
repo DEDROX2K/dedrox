@@ -139,13 +139,6 @@
                     </div>
                 </div>
             </section>
-            <div id="reader-inline" class="reader-inline" aria-hidden="true">
-                <section class="reader-feed-section">
-                    <div id="reader-blog-list" class="reader-blog-list" aria-live="polite">
-                        <p class="reader-blog-status">Loading writings...</p>
-                    </div>
-                </section>
-            </div>
             <div id="recruiter-inline" class="recruiter-inline" aria-hidden="true">
                 <section class="recruiter-blank" aria-label="Recruiter mode">
                     <div class="re-sheet re-classic-sheet">
@@ -388,6 +381,20 @@
                 <h2 class="page-inline-title">Projects</h2>
                 <ul class="project-list">
                     <li>
+                        <a class="project-card" href="opendatabay.html" data-cursor="link"
+                            data-case-file="Opendatabay Case Study.md" data-case-title="Opendatabay &mdash; Two-Sided Data Marketplace"
+                            data-case-date="2026-11-07" data-case-tags="product,ux,ai">
+                            <span class="project-thumb"><img src="images/port3.jpg" alt="Opendatabay two-sided data marketplace" width="437" height="437"
+                                    loading="lazy" decoding="async"></span>
+                            <span class="project-info">
+                                <!-- <span class="project-tag">Case study</span> -->
+                                <span class="project-name">Opendatabay</span>
+                                <span class="project-desc">A two-sided AI data marketplace case study &mdash; designing trust between data suppliers and AI buyers through automated verification and natural-language search.</span>
+                                <span class="project-cta">Read case study<i class="px-icon" style="--icon: url(icons/pixelarticons/arrow-right.svg)"></i></span>
+                            </span>
+                        </a>
+                    </li>
+                    <li>
                         <a class="project-card" href="https://dedrox2k.github.io/dedrox/airpaste.html" target="_blank" rel="noopener noreferrer" data-cursor="link">
                             <span class="project-thumb"><img src="images/proj-1.png" alt="AirPaste canvas with pinned images, notes and links" width="437" height="437"
                                     loading="lazy" decoding="async"></span>
@@ -424,11 +431,17 @@
                         </a>
                     </li>
                 </ul>
+
+                <section class="reader-feed-section">
+                    <div id="reader-blog-list" class="reader-blog-list" aria-live="polite">
+                        <p class="reader-blog-status">Loading writings...</p>
+                    </div>
+                </section>
             </div>
 
             <article id="article-inline" class="page-inline" aria-hidden="true">
                 <button type="button" class="article-back" id="article-back" data-cursor="link">
-                    <i class="px-icon" style="--icon: url(icons/pixelarticons/arrow-left.svg)"></i>All writings
+                    <i class="px-icon" style="--icon: url(icons/pixelarticons/arrow-left.svg)"></i><span id="article-back-label">All writings</span>
                 </button>
                 <header class="article-head">
                     <p class="article-meta" id="article-meta"></p>
@@ -437,7 +450,7 @@
                 <div class="article-body" id="article-body"></div>
                 <footer class="article-foot">
                     <button type="button" class="article-back" id="article-back-bottom" data-cursor="link">
-                        <i class="px-icon" style="--icon: url(icons/pixelarticons/arrow-left.svg)"></i>All writings
+                        <i class="px-icon" style="--icon: url(icons/pixelarticons/arrow-left.svg)"></i><span id="article-back-label-bottom">All writings</span>
                     </button>
                     <a class="article-full" id="article-full" href="blog.html" target="_blank" rel="noopener noreferrer"
                         data-cursor="link">Open full page
@@ -488,8 +501,36 @@
                             I speak the language of both the user and the engineer — which saves a
                             lot of headaches.
                         </span>
-                        <br><br>
+                    </p>
 
+                    <nav class="hero-quicklinks" aria-label="Quick project links">
+                        <a class="hero-quicklink" href="opendatabay.html" data-cursor="link"
+                            data-case-file="Opendatabay Case Study.md" data-case-title="Opendatabay &mdash; Two-Sided Data Marketplace"
+                            data-case-date="2026-11-07" data-case-tags="product,ux,ai" data-case-return="home">
+                            <span class="hero-quicklink-name">Opendatabay</span>
+                            <span class="hero-quicklink-tag">Case study</span>
+                            <i class="px-icon hero-quicklink-arrow" style="--icon: url(icons/pixelarticons/arrow-right.svg)"></i>
+                        </a>
+                        <a class="hero-quicklink" href="https://dedrox2k.github.io/dedrox/airpaste.html" target="_blank" rel="noopener noreferrer" data-cursor="link">
+                            <span class="hero-quicklink-name">AirPaste</span>
+                            <span class="hero-quicklink-tag">Beta</span>
+                            <i class="px-icon hero-quicklink-arrow" style="--icon: url(icons/pixelarticons/external-link.svg)"></i>
+                        </a>
+                        <a class="hero-quicklink" href="https://www.listenr.in/" target="_blank" rel="noopener noreferrer" data-cursor="link">
+                            <span class="hero-quicklink-name">Listenr</span>
+                            <span class="hero-quicklink-tag">Live</span>
+                            <i class="px-icon hero-quicklink-arrow" style="--icon: url(icons/pixelarticons/external-link.svg)"></i>
+                        </a>
+                        <a class="hero-quicklink" href="blog.html?post=How%20I%20Designed%20an%20Alert%20System%20for%20a%20Healthcare%20Platform.md" data-cursor="link"
+                            data-case-file="How I Designed an Alert System for a Healthcare Platform.md" data-case-title="How I Designed an Alert System for a Healthcare Platform"
+                            data-case-date="08 Sept 2026" data-case-tags="healthcare,product-design,ux" data-case-return="home">
+                            <span class="hero-quicklink-name">Healthcare Alerts</span>
+                            <span class="hero-quicklink-tag">Case study</span>
+                            <i class="px-icon hero-quicklink-arrow" style="--icon: url(icons/pixelarticons/arrow-right.svg)"></i>
+                        </a>
+                    </nav>
+
+                    <p class="hero-section-subtitle">
                         Currently based in the <i class="px-inline" style="--icon: url(icons/pixelarticons/map-pin.svg)"></i> UK and relocating to India in few months,
                         Will be bringing this mixture of product, UX, and technical and physical execution to teams
                         building for scale and purpose.
@@ -636,6 +677,23 @@ Raghav Prasanna
                                     <span class="folder-menu" aria-hidden="true">2026</span>
                                 </div>
                                 <p class="folder-foot">A UX Journey</p>
+                            </div>
+                        </a>
+
+                        <a href="opendatabay.html" class="featured-card" data-case="opendatabay" data-cursor="link">
+                            <div class="folder-top">
+                                <img src="images/port3.jpg" alt="Opendatabay two-sided data marketplace" loading="lazy" decoding="async"
+                                    fetchpriority="low">
+                            </div>
+                            <div class="folder-body">
+                                <div class="folder-head">
+                                    <div>
+                                        <!-- <h3>Opendatabay</h3> -->
+                                        <p>designing trust between AI buyers and data suppliers on a two-sided data marketplace</p>
+                                    </div>
+                                    <span class="folder-menu" aria-hidden="true">2026</span>
+                                </div>
+                                <p class="folder-foot">Product / UX case study</p>
                             </div>
                         </a>
 
@@ -854,7 +912,6 @@ Raghav Prasanna
                                 <ul class="ap-footer-list">
                                     <li><button type="button" data-footer-view="home" data-cursor="link"><i class="px-icon" style="--icon: url(icons/pixelarticons/home.svg)"></i>Home</button></li>
                                     <li><button type="button" data-footer-view="projects" data-cursor="link"><i class="px-icon" style="--icon: url(icons/pixelarticons/briefcase.svg)"></i>Projects</button></li>
-                                    <li><button type="button" data-footer-view="writings" data-cursor="link"><i class="px-icon" style="--icon: url(icons/pixelarticons/notes.svg)"></i>Writings</button></li>
                                     <li><button type="button" data-footer-view="socials" data-cursor="link"><i class="px-icon" style="--icon: url(icons/pixelarticons/users.svg)"></i>Socials</button></li>
                                 </ul>
                             </div>
@@ -923,8 +980,6 @@ Raghav Prasanna
                 data-cursor="link">Home</button>
             <button class="portfolio-view-toggle" id="portfolio-projects-toggle" type="button" aria-pressed="false"
                 data-cursor="link">Projects</button>
-            <button class="portfolio-view-toggle" id="portfolio-writing-toggle" type="button" aria-pressed="false"
-                data-cursor="link">Writings</button>
             <button class="portfolio-view-toggle" id="portfolio-socials-toggle" type="button" aria-pressed="false"
                 data-cursor="link">Socials</button>
             <span class="portfolio-toggle-ball" id="portfolio-toggle-ball" aria-hidden="true"></span>

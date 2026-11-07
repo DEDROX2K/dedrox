@@ -4296,7 +4296,8 @@ function initReaderBlogs() {
                 title: link.getAttribute('data-blog-title') || link.textContent || 'Writing',
                 file: link.getAttribute('data-blog-file') || '',
                 date: link.getAttribute('data-blog-date') || '',
-                tags: (link.getAttribute('data-blog-tags') || '').split(',').filter(Boolean)
+                tags: (link.getAttribute('data-blog-tags') || '').split(',').filter(Boolean),
+                returnView: 'projects'
             });
             return;
         }
@@ -4334,6 +4335,36 @@ function initReaderBlogs() {
     };
 
     return { loadBlogs };
+}
+
+function initContentMaskVisibility() {
+    const device = document.getElementById('portfolio-device');
+    const scrollEl = document.getElementById('scrollable-content');
+    const topMask = document.querySelector('.content-mask.top');
+    const bottomMask = document.querySelector('.content-mask.bottom');
+    if (!device || !scrollEl || !topMask || !bottomMask) return;
+
+    const EDGE_THRESHOLD = 4;
+
+    const update = () => {
+        const { scrollTop, scrollHeight, clientHeight } = scrollEl;
+        const hasOverflow = scrollHeight - clientHeight > EDGE_THRESHOLD;
+        const atTop = !hasOverflow || scrollTop <= EDGE_THRESHOLD;
+        const atBottom = !hasOverflow || scrollTop + clientHeight >= scrollHeight - EDGE_THRESHOLD;
+        topMask.classList.toggle('is-edge-hidden', atTop);
+        bottomMask.classList.toggle('is-edge-hidden', atBottom);
+    };
+
+    scrollEl.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+
+    // Pages swap via display toggles and transitions rather than scroll events,
+    // so keep checking on a light loop while the shell is open.
+    const loop = () => {
+        if (device.classList.contains('expanded')) update();
+        window.requestAnimationFrame(loop);
+    };
+    window.requestAnimationFrame(loop);
 }
 
 function initSmoothWheelScrolling() {
@@ -5685,7 +5716,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function toNavView(view) {
-        return view === 'article' ? 'writings' : view;
+        return view === 'article' ? (articleReturnScreen === 'writings' ? 'writings' : 'projects') : view;
     }
 
     const setPortfolioPressed = (view) => {
@@ -5781,7 +5812,8 @@ document.addEventListener('DOMContentLoaded', () => {
             device.dataset.page = page;
             if (scrollableContentEl) scrollableContentEl.scrollTop = 0;
             pendingViewTarget = null;
-            showSectionContextHint({ projects: 'Projects', socials: 'Socials', article: 'Writings' }[page] || 'Home');
+            if (page === 'projects' && typeof blogSystem !== 'undefined') blogSystem.loadBlogs();
+            showSectionContextHint({ projects: 'Projects', socials: 'Socials', article: 'Case study' }[page] || 'Home');
             syncTopPillSelection();
             syncPortfolioViewToggle(false);
 
@@ -5799,8 +5831,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const articleMetaEl = document.getElementById('article-meta');
     const articleBodyEl = document.getElementById('article-body');
     const articleFullEl = document.getElementById('article-full');
+    const articleBackLabelEls = ['article-back-label', 'article-back-label-bottom']
+        .map((id) => document.getElementById(id))
+        .filter(Boolean);
     let markedLoader = null;
     let articleRequestId = 0;
+    let articleReturnScreen = 'writings';
 
     const loadMarked = () => {
         if (window.marked) return Promise.resolve(window.marked);
@@ -5821,13 +5857,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const isSafePostFile = (file) => /^[a-zA-Z0-9][a-zA-Z0-9 ._-]*\.md$/.test(file) && !file.includes('..');
 
-    window.openPortfolioArticle = async ({ title, file, date, tags }) => {
+    window.openPortfolioArticle = async ({ title, file, date, tags = [], returnView = 'projects', fullHref } = {}) => {
         if (!articleBodyEl || !isSafePostFile(file)) return;
         const requestId = ++articleRequestId;
+        articleReturnScreen = returnView;
+        const backLabel = returnView === 'home' ? 'Back home' : (returnView === 'writings' ? 'All writings' : 'All projects');
+        articleBackLabelEls.forEach((el) => { el.textContent = backLabel; });
 
         articleTitleEl.textContent = title;
         articleMetaEl.textContent = [date, ...tags.map((tag) => tag.replace(/-/g, ' '))].filter(Boolean).join('  ·  ');
-        articleFullEl.href = `blog.html?post=${encodeURIComponent(file)}`;
+        articleFullEl.href = fullHref || `blog.html?post=${encodeURIComponent(file)}`;
         articleBodyEl.innerHTML = '<p class="article-status">Loading…</p>';
 
         if (device?.dataset.page === 'article') {
@@ -5868,7 +5907,25 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById(id)?.addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
-            openWritingsScreen();
+            if (articleReturnScreen === 'home') goToHomeScreen();
+            else if (articleReturnScreen === 'writings') openWritingsScreen();
+            else openPageScreen('projects');
+        });
+    });
+
+    // Project cards (and hero quick links) with a case-study file read inline, right in the card.
+    document.querySelectorAll('[data-case-file]').forEach((card) => {
+        card.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            window.openPortfolioArticle({
+                title: card.getAttribute('data-case-title') || card.querySelector('.project-name')?.textContent || card.textContent.trim() || 'Case study',
+                file: card.getAttribute('data-case-file') || '',
+                date: card.getAttribute('data-case-date') || '',
+                tags: (card.getAttribute('data-case-tags') || '').split(',').filter(Boolean),
+                returnView: card.getAttribute('data-case-return') || 'projects',
+                fullHref: card.getAttribute('href') || undefined
+            });
         });
     });
 
@@ -6156,6 +6213,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initIndexGrid();
     initFeaturedCardHoverMotion();
     initHeroLanguageLoop();
+    initContentMaskVisibility();
     const blogSystem = initReaderBlogs();
     // Initialize Scramble Animations
     const resumeBtnEl = document.querySelector('.resume-fab');
@@ -6168,12 +6226,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 100);
     }
 
-    const shouldRestoreWritings = new URLSearchParams(window.location.search).get('view') === 'writings';
+    const restoreView = new URLSearchParams(window.location.search).get('view');
+    const shouldRestoreProjects = restoreView === 'projects' || restoreView === 'writings';
 
-    // Restore the reader after returning from a standalone writing.
-    if (shouldRestoreWritings) {
+    // Restore Projects (writings now live there) after returning from a standalone writing.
+    if (shouldRestoreProjects) {
         expandDeviceShell(false);
-        readerMode.open();
+        device.dataset.page = 'projects';
         blogSystem.loadBlogs();
         syncTopPillSelection();
         syncPortfolioViewToggle();

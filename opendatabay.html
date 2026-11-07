@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Opendatabay — Two-Sided Data Marketplace | Raghav Prasanna</title>
+    <meta name="description" content="Opendatabay case study: a two-sided AI data marketplace built around trust, automated verification and natural-language discovery.">
+
+    <meta property="og:title" content="Opendatabay — Two-Sided Data Marketplace" />
+    <meta property="og:description" content="UX / product case study on building trust between data suppliers and AI buyers." />
+    <meta content="images/id-peek-card.png" property="og:image">
+    <meta property="og:type" content="article" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Opendatabay — Two-Sided Data Marketplace" />
+    <meta name="twitter:description" content="UX / product case study on building trust between data suppliers and AI buyers." />
+
+    <link rel="icon" href="logo.png" type="png">
+    <meta name="theme-color" content="#111111">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #f5f5f3;
+            --panel: #ffffff;
+            --ink: #111111;
+            --soft-ink: #4b4b4b;
+            --muted: #828282;
+            --line: #e4e2dd;
+            --accent: #ff3f3f;
+            --code-bg: #141414;
+            --font-sans: 'IBM Plex Sans', sans-serif;
+            --font-mono: 'IBM Plex Mono', monospace;
+            --radius: 12px;
+        }
+
+        * { box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--ink);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { color: var(--accent); }
+
+        .case-topbar {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 24px;
+            background: rgba(245, 245, 243, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .case-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            text-decoration: none;
+            color: var(--ink);
+            border: 1px solid var(--line);
+            padding: 6px 14px;
+            border-radius: 999px;
+            background: var(--panel);
+            transition: background .2s ease, transform .2s ease;
+        }
+        .case-back:hover { background: #ededed; transform: translateX(-2px); }
+
+        .case-topbar-tag {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--muted);
+            letter-spacing: .04em;
+        }
+
+        .case-hero {
+            max-width: 880px;
+            margin: 0 auto;
+            padding: 64px 24px 32px;
+        }
+
+        .case-kicker {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--accent);
+            margin: 0 0 14px;
+        }
+
+        .case-title {
+            font-size: clamp(32px, 5vw, 52px);
+            line-height: 1.08;
+            margin: 0 0 18px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        .case-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 18px;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 28px;
+        }
+
+        .case-meta span strong { color: var(--ink); }
+
+        .case-summary {
+            font-size: 18px;
+            color: var(--soft-ink);
+            max-width: 68ch;
+        }
+
+        main {
+            max-width: 880px;
+            margin: 0 auto;
+            padding: 0 24px 120px;
+        }
+
+        section.case-block {
+            padding-top: 56px;
+            border-top: 1px solid var(--line);
+            margin-top: 56px;
+        }
+        section.case-block:first-child {
+            border-top: none;
+            margin-top: 0;
+            padding-top: 0;
+        }
+
+        .case-eyebrow {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--muted);
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            margin: 0 0 10px;
+        }
+
+        h2.case-h2 {
+            font-size: clamp(24px, 3.4vw, 32px);
+            margin: 0 0 20px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        h3.case-h3 {
+            font-size: 19px;
+            font-weight: 600;
+            margin: 32px 0 12px;
+        }
+
+        p { margin: 0 0 16px; color: var(--soft-ink); }
+
+        ul, ol { margin: 0 0 16px; padding-left: 22px; color: var(--soft-ink); }
+        li { margin-bottom: 8px; }
+
+        strong { color: var(--ink); }
+
+        .flow-strip {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            background: var(--code-bg);
+            color: #f2f2f2;
+            border-radius: var(--radius);
+            padding: 16px 18px;
+            margin: 0 0 24px;
+        }
+        .flow-strip .step {
+            background: #262626;
+            border-radius: 999px;
+            padding: 5px 12px;
+        }
+        .flow-strip .arrow { color: #777; }
+
+        .step-list {
+            counter-reset: step;
+            list-style: none;
+            padding-left: 0;
+            margin: 0 0 24px;
+            display: grid;
+            gap: 12px;
+        }
+        .step-list li {
+            counter-increment: step;
+            position: relative;
+            padding: 14px 16px 14px 48px;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            margin: 0;
+        }
+        .step-list li::before {
+            content: counter(step);
+            position: absolute;
+            left: 14px;
+            top: 14px;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .step-list li strong { display: block; margin-bottom: 4px; }
+
+        .arch-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 12px;
+            margin: 0 0 24px;
+        }
+        .arch-card {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            padding: 14px 16px;
+        }
+        .arch-card h4 {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            color: var(--accent);
+            margin: 0 0 8px;
+        }
+        .arch-card p { font-size: 14px; margin: 0; }
+
+        .quote-card {
+            background: #fff6f0;
+            border-left: 3px solid var(--accent);
+            padding: 16px 20px;
+            border-radius: 0 10px 10px 0;
+            font-size: 16px;
+            color: var(--ink);
+            margin: 0 0 24px;
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 12px;
+            margin: 0 0 24px;
+        }
+        .metric-card {
+            background: var(--code-bg);
+            color: #fff;
+            border-radius: 10px;
+            padding: 16px;
+        }
+        .metric-card .n {
+            font-family: var(--font-mono);
+            font-size: 22px;
+            color: #ff8a8a;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .metric-card .d { font-size: 12.5px; color: #cfcfcf; }
+
+        .panel-mock {
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background: var(--panel);
+            overflow: hidden;
+            margin: 0 0 24px;
+        }
+        .panel-mock-head {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--line);
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--muted);
+        }
+        .panel-mock-head .dot {
+            width: 8px; height: 8px; border-radius: 50%; background: var(--line);
+        }
+        .panel-mock-body {
+            display: grid;
+            grid-template-columns: 0.9fr 1.3fr 1fr;
+            gap: 0;
+        }
+        .panel-mock-col {
+            padding: 14px;
+            border-right: 1px solid var(--line);
+            font-size: 13px;
+        }
+        .panel-mock-col:last-child { border-right: none; }
+        .panel-mock-col h5 {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            color: var(--muted);
+            margin: 0 0 10px;
+        }
+        .panel-mock-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px dashed var(--line);
+            font-size: 12.5px;
+        }
+        .panel-mock-row:last-child { border-bottom: none; }
+        .badge {
+            font-family: var(--font-mono);
+            font-size: 10.5px;
+            padding: 2px 7px;
+            border-radius: 999px;
+        }
+        .badge.ok { background: #e4f5e9; color: #1f8a4c; }
+        .badge.warn { background: #fdeee0; color: #b5610c; }
+        .badge.risk { background: #fde4e4; color: #c23b3b;}
+
+        .bridge-diagram {
+            display: grid;
+            grid-template-columns: 1fr auto 1.2fr auto 1fr;
+            align-items: center;
+            gap: 14px;
+            margin: 0 0 24px;
+        }
+        .bridge-node {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 22px 18px;
+            text-align: center;
+        }
+        .bridge-node h4 {
+            margin: 0 0 8px;
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+            color: var(--ink);
+        }
+        .bridge-node p {
+            margin: 0;
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.4;
+        }
+        .bridge-node.bridge-center {
+            background: var(--code-bg);
+            border-color: var(--code-bg);
+        }
+        .bridge-node.bridge-center h4 { color: #ff8a8a; }
+        .bridge-node.bridge-center p { color: #d8d8d8; }
+        .bridge-arrow {
+            color: rgba(17, 17, 17, 0.28);
+            font-family: var(--font-mono);
+            font-size: 22px;
+            font-weight: 600;
+        }
+        @media (max-width: 680px) {
+            .bridge-diagram { grid-template-columns: 1fr; }
+            .bridge-arrow { transform: rotate(90deg); justify-self: center; }
+        }
+
+        @media (max-width: 680px) {
+            .panel-mock-body { grid-template-columns: 1fr; }
+            .panel-mock-col { border-right: none; border-bottom: 1px solid var(--line); }
+            .panel-mock-col:last-child { border-bottom: none; }
+        }
+
+        table.case-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            margin: 0 0 24px;
+        }
+        table.case-table th, table.case-table td {
+            text-align: left;
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--line);
+            vertical-align: top;
+        }
+        table.case-table th {
+            font-family: var(--font-mono);
+            font-size: 11.5px;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            color: var(--muted);
+        }
+
+        .case-footer {
+            max-width: 880px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .case-footer-note {
+            font-size: 13px;
+            color: var(--muted);
+            max-width: 46ch;
+        }
+
+        .source-list {
+            font-size: 13px;
+            color: var(--muted);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="case-topbar">
+        <a href="prototype.html" class="case-back">&larr; Back to portfolio</a>
+        <span class="case-topbar-tag">Case study 05 / 06</span>
+    </div>
+
+    <header class="case-hero">
+        <p class="case-kicker">Product &amp; UX case study</p>
+        <h1 class="case-title">Opendatabay: a two-sided data marketplace built on trust</h1>
+        <div class="case-meta">
+            <span>7 Nov 2026</span>
+            <span><strong>Author</strong> Raghav Prasanna</span>
+            <span><strong>Role</strong> Product &amp; UX, AI systems design</span>
+            <span><strong>Focus</strong> Marketplace trust, ingestion pipeline, NL search</span>
+        </div>
+        <p class="case-summary">
+            An AI-data marketplace doesn't struggle to find data &mdash; it struggles to prove the data is worth buying.
+            This case study walks through designing a two-sided platform where AI trainers and data suppliers trust the
+            same system for different reasons: one for verification, the other for control.
+        </p>
+    </header>
+
+    <main>
+
+        <section class="case-block">
+            <p class="case-eyebrow">Overview</p>
+            <h2 class="case-h2">Impact</h2>
+            <div class="metric-grid">
+                <div class="metric-card"><span class="n">&lt; 15 Min</span><span class="d">Median time from upload to live listing (reduced from days)</span></div>
+                <div class="metric-card"><span class="n">&gt; 95%</span><span class="d">Listings with auto-generated, machine-verified metadata</span></div>
+                <div class="metric-card"><span class="n">&lt; 1%</span><span class="d">PII false-negative rate on audited samples</span></div>
+                <div class="metric-card"><span class="n">Higher</span><span class="d">Search-to-purchase conversion vs. keyword-only baseline</span></div>
+            </div>
+
+            <h3 class="case-h3">Context</h3>
+            <p>
+                The bottleneck in the AI training data marketplace is not supply &mdash; it is trust. AI Trainers need
+                to verify dataset contents, legal compliance, and cleanliness before purchasing, but data suppliers
+                cannot easily or cheaply prove these metrics. We designed Opendatabay to solve this dual-sided trust
+                deficit, replacing unscalable manual reviews with an AI-assisted ingestion pipeline. The platform
+                uses models to do the expensive verification work upfront, giving suppliers a low-friction publishing
+                flow and buyers a catalog built on verified facts rather than seller claims.
+            </p>
+
+            <h3 class="case-h3">Challenges</h3>
+            <ul>
+                <li><strong>The Validation Bottleneck.</strong> Manual review of datasets for compliance and quality is expensive, does not scale, and places the cost burden entirely on the platform.</li>
+                <li><strong>Poor Metadata.</strong> Suppliers frequently upload files with missing descriptions, undocumented schemas, and PII hidden in free-text columns or image metadata, deterring buyers.</li>
+                <li><strong>Discovery Disconnect.</strong> Buyers do not search using dataset names; they search using complex task intents (e.g., "French legal contracts, commercial use OK"). Traditional keyword search fails to match this intent.</li>
+            </ul>
+
+            <h3 class="case-h3">Objective</h3>
+            <p>
+                Automate dataset verification and metadata generation to reduce supplier time-to-publish to under 15
+                minutes, while increasing buyer conversion rates through a trusted, natural-language search and
+                preview experience.
+            </p>
+
+            <div class="bridge-diagram">
+                <div class="bridge-node">
+                    <h4>Suppliers</h4>
+                    <p>Data owners, enterprises, research groups</p>
+                </div>
+                <div class="bridge-arrow">&rarr;</div>
+                <div class="bridge-node bridge-center">
+                    <h4>AI-Assisted Trust Layer</h4>
+                    <p>Verification &middot; PII scrubbing &middot; license classification</p>
+                </div>
+                <div class="bridge-arrow">&rarr;</div>
+                <div class="bridge-node">
+                    <h4>Buyers</h4>
+                    <p>AI Trainers, ML teams, analytics leads</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="case-block">
+            <p class="case-eyebrow">01 &mdash; Strategy</p>
+            <h2 class="case-h2">Executive summary and strategy</h2>
+
+            <h3 class="case-h3">The validation bottleneck</h3>
+            <p>
+                Data supply is not the hard part of an AI data marketplace. Trust is. An AI Trainer buying a dataset
+                needs to know four things before paying: what is in it, whether it is legal to train on, whether it
+                is clean, and whether it will still be true next quarter. Suppliers who hold useful data usually
+                cannot prove any of those four things cheaply. Manual review does not scale, and the cost falls on
+                the platform.
+            </p>
+
+            <h3 class="case-h3">Dual-sided users</h3>
+            <p>
+                Buyers (AI Trainers, ML teams, analytics leads) want fast discovery, clear license terms, and
+                sample-before-buy. Suppliers (data owners, enterprises, research groups) want low-friction
+                publishing, control over what leaves their hands, and a predictable payout. Each side distrusts the
+                other. The product must earn trust from both at once, not one at a time.
+            </p>
+
+            <h3 class="case-h3">The AI-assisted value proposition</h3>
+            <p>
+                Use models to do the boring, expensive verification work at ingestion time: generate metadata,
+                detect and scrub PII, classify license and sensitivity, score quality, and make datasets searchable
+                in natural language. The supplier gets a publish flow that takes minutes. The buyer gets a catalog
+                where every listing carries machine-verified facts, not seller claims.
+            </p>
+
+            <h3 class="case-h3">Success metrics</h3>
+            <p>Targets set for the case study:</p>
+            <div class="metric-grid">
+                <div class="metric-card"><span class="n">&lt; 15 min</span><span class="d">median time from upload to live listing</span></div>
+                <div class="metric-card"><span class="n">&gt; 95%</span><span class="d">listings with auto-generated metadata</span></div>
+                <div class="metric-card"><span class="n">&lt; 1%</span><span class="d">PII false-negative rate on audited samples</span></div>
+                <div class="metric-card"><span class="n">↑</span><span class="d">buyer search-to-purchase conversion</span></div>
+                <div class="metric-card"><span class="n">↑</span><span class="d">disputes resolved without human escalation</span></div>
+            </div>
+        </section>
+
+        <section class="case-block">
+            <p class="case-eyebrow">02 &mdash; Architecture</p>
+            <h2 class="case-h2">System architecture and data flow</h2>
+
+            <h3 class="case-h3">The supplier ingestion pipeline</h3>
+            <div class="flow-strip">
+                <span class="step">Upload</span><span class="arrow">&rarr;</span>
+                <span class="step">Stage</span><span class="arrow">&rarr;</span>
+                <span class="step">Scan</span><span class="arrow">&rarr;</span>
+                <span class="step">Enrich</span><span class="arrow">&rarr;</span>
+                <span class="step">Gate</span><span class="arrow">&rarr;</span>
+                <span class="step">Publish</span>
+            </div>
+            <ol class="step-list">
+                <li><strong>Upload.</strong> Resumable chunked upload to object storage (S3-compatible). Accepts CSV, Parquet, JSON Lines, images in archive, PDF. Files never touch the app server directly &mdash; pre-signed URLs, virus scan on arrival.</li>
+                <li><strong>Stage.</strong> Files land in a quarantine bucket, invisible to buyers. A schema probe reads the first N rows and infers types, row counts, and column null rates.</li>
+                <li><strong>Scan.</strong> Deterministic pass first (regex and checksum detectors for emails, phone numbers, national IDs, card numbers, IPs), then a statistical pass on column samples. Output: a PII report with column, type, confidence, and row-level hit counts.</li>
+                <li><strong>Enrich.</strong> An LLM pass generates title, description, schema summary, domain tags, language, and suggested license class. A vision model handles images. Output is a draft, never auto-published.</li>
+                <li><strong>Gate.</strong> A rules engine decides: auto-approve (low PII risk, complete license), supplier-fix-required (missing fields, PII above threshold), or human review (sensitive categories). Every gate decision is logged with reason codes.</li>
+                <li><strong>Publish.</strong> The listing goes live. The dataset is versioned; hash, lineage, and license snapshot are frozen.</li>
+            </ol>
+            <div class="quote-card">Key design rule: the pipeline is asynchronous and idempotent. Each stage is a job with a state &mdash; queued, running, passed, failed, needs-review. Retries are safe. The supplier sees live status, not a spinner.</div>
+
+            <h3 class="case-h3">The buyer search and retrieval flow</h3>
+            <div class="flow-strip">
+                <span class="step">Query</span><span class="arrow">&rarr;</span>
+                <span class="step">Parse</span><span class="arrow">&rarr;</span>
+                <span class="step">Retrieve</span><span class="arrow">&rarr;</span>
+                <span class="step">Rank</span><span class="arrow">&rarr;</span>
+                <span class="step">Preview</span><span class="arrow">&rarr;</span>
+                <span class="step">Access</span>
+            </div>
+            <ol class="step-list">
+                <li><strong>Query.</strong> Natural language or structured filters (domain, language, license, size, freshness, modality).</li>
+                <li><strong>Parse.</strong> Intent extraction splits the query into hard filters (e.g. "license must allow commercial training") and soft semantics (e.g. "customer support chat in Portuguese").</li>
+                <li><strong>Retrieve.</strong> Hybrid search &mdash; keyword/BM25 for exact terms plus vector search over listing embeddings (title, description, schema summary, sample embeddings). Hard filters apply before ranking.</li>
+                <li><strong>Rank.</strong> A blend of relevance, quality score, supplier trust score, freshness, and fit to buyer history.</li>
+                <li><strong>Preview.</strong> The buyer sees schema, PII report summary, license terms, and a stratified, pre-scrubbed sample.</li>
+                <li><strong>Access.</strong> Purchase creates a scoped, time-limited access grant. Usage is metered; lineage records which dataset version went into which training run.</li>
+            </ol>
+
+            <h3 class="case-h3">Architecture summary</h3>
+            <div class="arch-grid">
+                <div class="arch-card"><h4>Storage</h4><p>Object store for raw and staged files; relational DB for listings, orders, and grants; vector index for listing and sample embeddings.</p></div>
+                <div class="arch-card"><h4>Compute</h4><p>Job queue with workers for scan and enrich; LLM calls behind a gateway with caching, rate limits, and per-job cost tracking.</p></div>
+                <div class="arch-card"><h4>Trust layer</h4><p>Immutable audit log for every gate decision, license snapshot, and access grant.</p></div>
+                <div class="arch-card"><h4>Interfaces</h4><p>Supplier dashboard (Data Refinery) and buyer catalog (Data Explorer) read the same state machine, so the two sides never disagree on what is live.</p></div>
+            </div>
+        </section>
+
+        <section class="case-block">
+            <p class="case-eyebrow">03 &mdash; Engineering</p>
+            <h2 class="case-h2">Product engineering and AI integration</h2>
+
+            <h3 class="case-h3">Automating metadata and PII scrubbing</h3>
+            <p><strong>Problem.</strong> Suppliers write bad descriptions or none. Schemas are undocumented. PII hides in free-text columns, logs, and image EXIF data. Manual review costs more than the dataset earns.</p>
+            <p><strong>Pipeline design (Python).</strong></p>
+            <ul>
+                <li><strong>Parsing layer:</strong> pandas and pyarrow for tabular data; pdfplumber for PDF text; Pillow for image metadata. Each parser emits a common <code>DatasetProfile</code> object (columns, dtypes, null rates, row count, sample rows, byte size).</li>
+                <li><strong>Deterministic PII detectors:</strong> compiled regex plus validators (Luhn for card numbers, IBAN checksum, E.164 phone parsing, email RFC-lite). Fast, explainable, high precision.</li>
+                <li><strong>NER layer:</strong> Presidio or spaCy transformer models for names, addresses, and free-text entities &mdash; run on sampled rows, not full files, to control cost.</li>
+                <li><strong>LLM layer:</strong> structured-output prompts for column semantics, context-aware PII judgment ("is this a product code or a person ID?"), and license class suggestion. Output validated against a Pydantic schema; invalid output is retried once, then routed to human review.</li>
+                <li><strong>Redaction:</strong> scrubbing is a transform, not a delete. Tokens are replaced with typed placeholders (<code>&lt;EMAIL_1&gt;</code>) and a salted hash map is kept in a restricted vault for supplier-side reversibility.</li>
+            </ul>
+            <p><strong>Decision logic.</strong> The final PII risk score combines detector confidence, row-level hit rate, and column sensitivity class. Thresholds are per data category &mdash; any hit in a health or financial column blocks auto-approval.</p>
+            <p><strong>Evaluation.</strong> A labeled gold set of 500+ files across modalities tracks precision, recall, and time per file. Re-run on every model or prompt change; a regression gate blocks deploys that drop recall on high-sensitivity classes.</p>
+
+            <h3 class="case-h3">Natural language querying UX</h3>
+            <p><strong>Problem.</strong> Buyers do not search with dataset names. They search with tasks &mdash; "French legal contracts with redlines, commercial use OK, under 5 GB."</p>
+            <ul>
+                <li><strong>Index:</strong> each listing gets embeddings for title plus description, schema summary, and a short synthetic query set generated at publish time ("what questions would this dataset answer?"). Sample-level embeddings for text and image datasets.</li>
+                <li><strong>Query path:</strong> the query splits into hard constraints (license, size, language, modality) and a semantic remainder. Constraints become filters; the remainder is embedded and matched by approximate nearest neighbor search (HNSW).</li>
+                <li><strong>Hybrid ranking:</strong> reciprocal rank fusion of vector hits and keyword hits, then a learned reranker on quality, trust, and freshness.</li>
+                <li><strong>Explanation:</strong> every result shows why it matched ("matches: legal, French, redlines; fails: none") &mdash; auditable ranking builds buyer trust.</li>
+                <li><strong>Conversational refinement:</strong> a follow-up like "same but newer than 2025" updates filters without restarting the query. Context is a small structured object, not raw chat history.</li>
+            </ul>
+            <p><strong>Engineering constraints.</strong> P95 query latency under 400&nbsp;ms. Embeddings are versioned; a model change triggers a background re-index with dual-read during migration. Vector store and relational DB write through the same state machine so they never disagree.</p>
+
+            <h3 class="case-h3">Tooling decisions</h3>
+            <table class="case-table">
+                <thead><tr><th>Layer</th><th>Choice</th><th>Why</th></tr></thead>
+                <tbody>
+                    <tr><td>Embeddings</td><td>Hosted API first, self-hosted open-weight at volume</td><td>Speed to market, then per-query cost and data residency</td></tr>
+                    <tr><td>Vector store</td><td>pgvector below tens of millions of listings; dedicated engine (Qdrant/Weaviate/Pinecone) beyond that</td><td>One database until filtering and scale demand otherwise</td></tr>
+                    <tr><td>Orchestration</td><td>Plain job queue with explicit state</td><td>Ingestion must be deterministic and auditable &mdash; agent frameworks avoided here</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="case-block">
+            <p class="case-eyebrow">04 &mdash; Interface design</p>
+            <h2 class="case-h2">Interface design and wireframes</h2>
+
+            <h3 class="case-h3">Supplier dashboard — the "Data Refinery"</h3>
+            <p>Job of the screen: turn a raw file into a publishable, trusted listing with the fewest decisions possible. The supplier should feel guided, not audited.</p>
+
+            <div class="panel-mock">
+                <div class="panel-mock-head"><span class="dot"></span><span class="dot"></span><span class="dot"></span>&nbsp;Data Refinery &mdash; dataset.csv</div>
+                <div class="panel-mock-body">
+                    <div class="panel-mock-col">
+                        <h5>Pipeline</h5>
+                        <div class="panel-mock-row">Upload <span class="badge ok">done</span></div>
+                        <div class="panel-mock-row">Scan <span class="badge ok">done</span></div>
+                        <div class="panel-mock-row">Enrich <span class="badge ok">done</span></div>
+                        <div class="panel-mock-row">Review <span class="badge warn">needs you</span></div>
+                        <div class="panel-mock-row">Publish <span class="badge">blocked</span></div>
+                    </div>
+                    <div class="panel-mock-col">
+                        <h5>Schema &amp; PII</h5>
+                        <div class="panel-mock-row">customer_email <span class="badge risk">PII</span></div>
+                        <div class="panel-mock-row">order_id <span class="badge ok">clean</span></div>
+                        <div class="panel-mock-row">notes (free text) <span class="badge warn">review</span></div>
+                        <div class="panel-mock-row">region <span class="badge ok">clean</span></div>
+                    </div>
+                    <div class="panel-mock-col">
+                        <h5>Listing draft</h5>
+                        <div class="panel-mock-row">Title <span class="badge">generated</span></div>
+                        <div class="panel-mock-row">License class <span class="badge">generated, edited</span></div>
+                        <div class="panel-mock-row">Tags (4) <span class="badge">generated</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <ul>
+                <li><strong>Fix-it queue.</strong> Blocking issues surface as a checklist at top &mdash; "3 columns contain names, redact or exclude?" &mdash; each with one-click resolutions: redact, drop column, mark as non-personal (with a logged reason).</li>
+                <li><strong>Exclude, don't delete.</strong> Suppliers can exclude columns from the listing while keeping them in the source. Reduces fear of over-sharing.</li>
+                <li><strong>Preview as buyer.</strong> A toggle shows exactly what the buyer will see &mdash; removes guesswork and cuts support tickets.</li>
+                <li><strong>Status honesty.</strong> The dashboard always shows real pipeline state. No fake progress bars.</li>
+            </ul>
+            <p><strong>Empty and error states.</strong> On a failed upload, show the exact row or byte where the parser broke and offer a fix template. On a blocked scan, explain which rule fired in plain language, with a link to the policy.</p>
+
+            <h3 class="case-h3">Buyer interface — the "Data Explorer"</h3>
+            <p>Job of the screen: let a buyer go from a task description to a confident purchase decision in under five minutes.</p>
+            <ul>
+                <li><strong>One search bar</strong> that accepts natural language, with parsed chips below it ("Language: French", "License: commercial OK", "Size: under 5&nbsp;GB") &mdash; each removable, making the AI's interpretation visible and editable.</li>
+                <li><strong>Facets</strong> on the left, synced with chips, with live counts.</li>
+                <li><strong>Result cards</strong> showing title, supplier trust badge, quality score, freshness, license class, and a one-line "why it matched" explanation.</li>
+                <li><strong>Dataset detail</strong> on select &mdash; schema, PII report summary (counts only, no values), license clause summary linking to full text, and a stratified sample with redaction visible.</li>
+            </ul>
+            <ul>
+                <li><strong>Compare mode.</strong> Pin up to three datasets; compare schema overlap, size, license, and freshness side by side.</li>
+                <li><strong>Ask about this dataset.</strong> A scoped question box answers only from listing metadata and sample statistics, with citations &mdash; it never invents content.</li>
+                <li><strong>One-click license check.</strong> The buyer selects a use case (training, fine-tuning, evaluation, internal analytics); the panel replies allowed, restricted, or not allowed, with the responsible clause.</li>
+                <li><strong>Access grant preview.</strong> Before purchase, the buyer sees access duration, usage metering, and what happens to derived models.</li>
+            </ul>
+            <p>Trust cues used consistently: verified PII scan date, supplier verification level, license snapshot date, and version number &mdash; never a star rating alone.</p>
+
+            <h3 class="case-h3">Accessibility and mobile</h3>
+            <ul>
+                <li>Supplier dashboard is desktop-first; mobile supports status checks and fix-it actions only.</li>
+                <li>Buyer explorer collapses facets into a sheet on mobile; result cards stack; chips stay visible.</li>
+                <li>All status colors pair with text and icons. Keyboard path covers every fix-it action.</li>
+            </ul>
+        </section>
+
+        <section class="case-block">
+            <p class="case-eyebrow">05 &mdash; Outcomes</p>
+            <h2 class="case-h2">Outcomes and future roadmap</h2>
+
+            <h3 class="case-h3">Technical constraints and edge cases</h3>
+            <ul>
+                <li><strong>PII is never perfect.</strong> Detectors miss context-dependent identifiers, and LLMs can hallucinate "clean" verdicts. Mitigated with layered detection, sampling audits on auto-approved listings, and a visible re-scan path if a leak is reported. Liability terms state this plainly.</li>
+                <li><strong>Scale vs. cost of LLM enrichment.</strong> Full-file LLM passes on large datasets are uneconomic &mdash; enrichment runs on profiles and samples, cached by content hash so re-uploads cost nothing.</li>
+                <li><strong>Format sprawl.</strong> Broken CSVs, mixed encodings, nested JSON, unindexed image zips. Parser failures are explained, not silent; fallback is a column-mapping step in the dashboard.</li>
+                <li><strong>Synthetic and derived data.</strong> Datasets produced by models trained on other datasets may carry upstream license terms. Lineage fields are mandatory; undeclared lineage is marked restricted.</li>
+                <li><strong>Multilingual quality.</strong> Language detection is unreliable on short text &mdash; language is declared and verified on sample.</li>
+                <li><strong>Right to erasure and revocation.</strong> A supplier removing a dataset triggers access revocation and notifies buyers who purchased it; versioned storage and grant records make this tractable.</li>
+                <li><strong>Cross-border data.</strong> Residency rules limit where embeddings and samples can be processed &mdash; region-pinned storage and inference from day one for EU suppliers.</li>
+                <li><strong>Gaming the trust score.</strong> Buyer-side signals (completed training runs, dispute rates) are weighted above supplier-declared fields to resist gaming.</li>
+                <li><strong>Regulatory timing.</strong> The EU AI Act requires documentation and traceability for training data in high-risk systems &mdash; lineage and license snapshots become a selling point, not overhead.</li>
+            </ul>
+
+            <h3 class="case-h3">Outcomes (to validate once measured)</h3>
+            <ul>
+                <li>Supplier time-to-publish reduced from days of manual review to minutes for standard file types.</li>
+                <li>Share of listings with complete metadata and license class at publish time raised toward 100%.</li>
+                <li>Buyer search-to-purchase conversion improved versus a keyword-only baseline, measured by A/B test.</li>
+                <li>Human review load concentrated on sensitive categories, not every upload.</li>
+                <li>Dispute volume and resolution time tracked as trust proxies.</li>
+            </ul>
+            <div class="quote-card">Note: publish only measured numbers. Replace targets with real results before external use.</div>
+
+            <h3 class="case-h3">Next steps for the platform</h3>
+            <ol class="step-list">
+                <li><strong>Near term (0&ndash;3 months).</strong> Harden the scan and gate stages; build the gold evaluation set; ship Preview-as-buyer; instrument the conversion funnel.</li>
+                <li><strong>Mid term (3&ndash;9 months).</strong> Conversational refinement in the Explorer; compare mode; buyer-side trust signals in ranking; region-pinned processing.</li>
+                <li><strong>Longer term (9&ndash;18 months).</strong> License marketplace integrations for rights-cleared content; federated / clean-room access so sensitive data never leaves supplier control; contract templates generated from license class; supplier analytics on which data categories earn most.</li>
+                <li><strong>Ongoing.</strong> Cost dashboards for LLM calls per listing; quarterly red-team of PII detection with adversarial files.</li>
+            </ol>
+        </section>
+
+        <section class="case-block">
+            <p class="case-eyebrow">Appendix</p>
+            <h2 class="case-h2">Current landscape (as of November 2026)</h2>
+            <p>
+                Market size is contested. Published estimates for the AI training dataset market disagree widely.
+                Mordor Intelligence puts it at about USD 11.9 billion in 2026, growing to USD 49.8 billion by 2031
+                at a 33% CAGR. Other firms (Grand View, Value Market Research, TechNavio) forecast 22&ndash;29% CAGRs
+                from different 2025 baselines. Use a range in any deck, and cite the specific report.
+            </p>
+            <p>
+                Demand is shifting toward curated, licensed data &mdash; a move away from bulk web collection toward
+                licensed, curated, multimodal sets with quality assurance. Post-training preference data, agent
+                trajectories, and evaluation sets are growing categories.
+            </p>
+            <p>
+                Regulation is pushing provenance into the product. The EU AI Act reaches full enforcement on
+                2 August 2026, requiring high-risk systems to use datasets that are relevant, representative, and
+                documented with traceability. Marketplaces carrying structured metadata and standard license terms
+                reduce procurement friction &mdash; that is the core argument for this platform.
+            </p>
+            <p>
+                Licensed content deals are real: OpenAI's partnership with Shutterstock is one example of model
+                developers buying structured licensed visual content. Synthetic data is rising alongside real data,
+                used to fill privacy gaps and scarcity, especially for autonomous systems and healthcare &mdash;
+                positioning the marketplace to supply both, with lineage flags so buyers know which is which.
+            </p>
+            <p>
+                <strong>Competitive angle.</strong> Most incumbents sell datasets or annotation services. Few combine
+                automated verification at supplier ingestion with buyer-side natural language discovery and
+                license-aware access. That gap is the differentiation to argue.
+            </p>
+            <p class="source-list">
+                Sources: GlobeNewswire / ResearchAndMarkets (Jul 2026, May 2026); Mordor Intelligence via GII Research;
+                Lucintel via GII Research; Value Market Research (Feb 2026); TechNavio (2026&ndash;2030). Several of
+                these are paid market-research reports summarized in press releases &mdash; verify figures in the
+                original before quoting externally.
+            </p>
+        </section>
+
+    </main>
+
+    <footer class="case-footer">
+        <p class="case-footer-note">Opendatabay is a product &amp; UX case study exploring trust design for AI data marketplaces.</p>
+        <a href="prototype.html" class="case-back">&larr; Back to portfolio</a>
+    </footer>
+
+</body>
+
+</html>
