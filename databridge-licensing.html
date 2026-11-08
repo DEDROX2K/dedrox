@@ -348,6 +348,10 @@
     </header>
 
     <main>
+            <figure class="case-figure">
+                <img src="images/case/lic-flat-vs-metered.svg" alt="Comparison of a flat $6,000 corpus licence against a metered $50 per run charge for the same 5% slice" loading="lazy" decoding="async">
+                <figcaption>The same 5% slice priced two ways. Flat pricing charges for rows the eval never touches.</figcaption>
+            </figure>
 
         <section class="case-block">
             <p class="case-eyebrow">01 &mdash; Context</p>
@@ -423,6 +427,11 @@
             <p class="case-eyebrow">04 &mdash; Pricing model</p>
             <h2 class="case-h2">Licensing tiers and dynamic pricing</h2>
             <p>Price follows use class first and consumption second. The same slice can carry three prices depending on what the buyer does with it.</p>
+            <figure class="case-figure">
+                <img src="images/case/lic-tiers.svg" alt="Three licence tiers: internal evaluation, commercial training and open-source release, with billing unit, pricing, derivative rights and audit rights" loading="lazy" decoding="async">
+                <figcaption>The three tiers side by side: use class sets the price and the rights before consumption does.</figcaption>
+            </figure>
+
 
             <table class="case-table">
                 <thead><tr><th>Tier</th><th>Permitted use</th><th>Billing unit</th><th>Indicative pricing logic</th></tr></thead>
@@ -470,6 +479,10 @@
             </ol>
 
             <h3 class="case-h3">Metering pipeline</h3>
+            <figure class="case-figure">
+                <img src="images/case/lic-metering.svg" alt="Four-step metering pipeline from signed grant to event chain, Merkle commitment and reconciliation statement" loading="lazy" decoding="async">
+                <figcaption>Each billable action lands in a hash-chained log; the Merkle root lets both sides verify use without seeing raw queries.</figcaption>
+            </figure>
             <ul>
                 <li><strong>Grant.</strong> Contains dataset ID, version hash, use class, row-set scope (a row-ID list or filter predicate), expiry, and price terms. Signed by the platform.</li>
                 <li><strong>Event.</strong> Each billable action writes: grant ID, row IDs or token count, timestamp, use class, and a hash of the previous event. The chain is append-only.</li>

@@ -436,6 +436,11 @@
             <p class="case-eyebrow">04 &mdash; Blueprint 1</p>
             <h2 class="case-h2">Bring-Your-Own-Storage (BYOS)</h2>
             <p><strong>Principle.</strong> The supplier owns the bucket, the keys, and the retention policy. We receive a role that can do exactly what the listing permits, for as long as the listing is live.</p>
+            <figure class="case-figure">
+                <img src="images/case/zt-byos.svg" alt="Supplier account holding the bucket, key and pipeline worker, linked by a scoped role to a platform account that holds only the control plane" loading="lazy" decoding="async">
+                <figcaption>BYOS: the platform reaches in through a scoped, short-lived role and takes back only metadata and redacted samples.</figcaption>
+            </figure>
+
 
             <h3 class="case-h3">Components</h3>
             <ul>
@@ -466,6 +471,11 @@
             <p class="case-eyebrow">05 &mdash; Blueprint 2</p>
             <h2 class="case-h2">Encrypted compute and privacy-preserving ML</h2>
             <p>Goal: a buyer trains or evaluates a model on data it cannot download. Only permitted outputs cross the boundary.</p>
+            <figure class="case-figure">
+                <img src="images/case/zt-enclave.svg" alt="Buyer submits a signed container that trains inside an enclave in the supplier account; an egress gate lets checkpoints and metrics out and blocks raw rows" loading="lazy" decoding="async">
+                <figcaption>Enclave training: the code goes to the data, and an egress gate decides what leaves.</figcaption>
+            </figure>
+
 
             <div class="layer-stack">
                 <div class="layer-card">
@@ -508,6 +518,11 @@
             <p class="case-eyebrow">06 &mdash; Trust model</p>
             <h2 class="case-h2">Deployment tiers</h2>
             <p>No single technique covers every case. Each listing declares its tier, and the buyer sees exactly which guarantees apply.</p>
+            <figure class="case-figure">
+                <img src="images/case/zt-tiers.svg" alt="Staircase of five deployment tiers from standard platform storage up to joint analysis with multi-party computation" loading="lazy" decoding="async">
+                <figcaption>Five tiers, each stating what it defends against. Custody and running cost rise together.</figcaption>
+            </figure>
+
 
             <table class="case-table">
                 <thead><tr><th>Tier</th><th>Data location</th><th>Compute location</th><th>Buyer gets</th><th>Guarantee</th></tr></thead>
