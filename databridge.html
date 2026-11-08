@@ -4,11 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Databridge — Two-Sided Data Marketplace | Raghav Prasanna</title>
-    <meta name="description" content="Databridge case study: a two-sided AI data marketplace built around trust, automated verification and natural-language discovery.">
+    <title>Databridge — Designing Trust for an AI Data Marketplace | Raghav Prasanna</title>
+    <meta name="description" content="Databridge case study: verification, pricing and sensitive-data access for an AI training-data marketplace.">
 
-    <meta property="og:title" content="Databridge — Two-Sided Data Marketplace" />
-    <meta property="og:description" content="UX / product case study on building trust between data suppliers and AI buyers." />
+    <meta property="og:title" content="Databridge — Designing Trust for an AI Data Marketplace" />
+    <meta property="og:description" content="UX / product case study on verification, usage-based pricing and zero-trust data access." />
     <meta content="images/id-peek-card.png" property="og:image">
     <meta property="og:type" content="article" />
 
@@ -707,140 +707,80 @@
     <div class="case-progress" id="case-progress"></div>
 
     <nav class="case-toc" id="case-toc" aria-label="On this page">
-        <a href="#sec-impact"><span class="dot"></span><span class="label">Impact</span></a>
-        <a href="#sec-strategy"><span class="dot"></span><span class="label">Strategy</span></a>
-        <a href="#sec-architecture"><span class="dot"></span><span class="label">Architecture</span></a>
-        <a href="#sec-engineering"><span class="dot"></span><span class="label">Engineering</span></a>
-        <a href="#sec-interface"><span class="dot"></span><span class="label">Interface</span></a>
-        <a href="#sec-outcomes"><span class="dot"></span><span class="label">Outcomes</span></a>
-        <a href="#sec-appendix"><span class="dot"></span><span class="label">Appendix</span></a>
+        <a href="#sec-problem"><span class="dot"></span><span class="label">Problem</span></a>
+        <a href="#sec-approach"><span class="dot"></span><span class="label">Approach</span></a>
+        <a href="#sec-how"><span class="dot"></span><span class="label">How it works</span></a>
+        <a href="#sec-screens"><span class="dot"></span><span class="label">Screens</span></a>
+        <a href="#sec-pricing"><span class="dot"></span><span class="label">Pricing</span></a>
+        <a href="#sec-sovereignty"><span class="dot"></span><span class="label">Sensitive data</span></a>
+        <a href="#sec-next"><span class="dot"></span><span class="label">Next</span></a>
     </nav>
 
     <div class="case-topbar">
         <a href="prototype.html" class="case-back" id="case-back-top">&larr; <span class="case-back-label">Back to portfolio</span></a>
-        <span class="case-topbar-tag">Part 1 of 3 &middot; <a href="databridge-licensing.html" style="color: inherit;">Licensing engine &rarr;</a> &middot; <a href="databridge-zero-trust.html" style="color: inherit;">Zero-trust &rarr;</a></span>
+        <span class="case-topbar-tag">Concept case study</span>
     </div>
 
     <header class="case-hero">
         <p class="case-kicker">Product &amp; UX case study</p>
-        <h1 class="case-title">Databridge: a two-sided data marketplace built on trust</h1>
+        <h1 class="case-title">Databridge: designing trust for an AI data marketplace</h1>
         <div class="case-meta">
             <span>7 Nov 2026</span>
             <span><strong>Author</strong> Raghav Prasanna</span>
             <span><strong>Role</strong> Product &amp; UX, AI systems design</span>
-            <span><strong>Focus</strong> Marketplace trust, ingestion pipeline, NL search</span>
+            <span><strong>Focus</strong> Verification, pricing, sensitive data</span>
         </div>
         <p class="case-summary">
-            An AI-data marketplace doesn't struggle to find data &mdash; it struggles to prove the data is worth buying.
-            This case study walks through designing a two-sided platform where AI trainers and data suppliers trust the
-            same system for different reasons: one for verification, the other for control.
+            A marketplace for AI training data doesn't have a supply problem. It has a trust problem. I designed a
+            platform where suppliers and buyers can both rely on the same system, from the upload screen to the
+            license terms.
         </p>
     </header>
 
     <main>
+        <section class="case-block">
+            <h2 class="case-h2" id="sec-problem">Data is easy to find. Trust isn't.</h2>
+            <p>
+                Before an AI team pays for a dataset they want four answers. What's in it? Are we allowed to train on
+                it? Is it clean? Will it still be true next quarter? The people who own useful data usually can't
+                answer any of those cheaply. Manual review is the obvious fix, and it doesn't scale: it costs the
+                platform more than a small dataset earns.
+            </p>
+            <p>
+                It gets worse from both sides. Suppliers upload files with no description, no documented schema and
+                personal data hiding in free-text columns. Buyers don't search by dataset name, they search by task,
+                like "French legal contracts, commercial use OK", which keyword search can't read. And each side
+                distrusts the other, so the product has to win both at once.
+            </p>
+        </section>
+
+        <section class="case-block">
+            <h2 class="case-h2" id="sec-approach">What I set out to do</h2>
+            <p>
+                My bet was to move the expensive checking to upload time and let models do it. When a supplier
+                uploads a file, the system writes the metadata, finds and scrubs personal data, guesses the license
+                class and makes the dataset searchable in plain language. Suppliers get a publish flow that takes
+                minutes. Buyers get listings that carry checked facts instead of seller claims.
+            </p>
             <figure class="case-figure">
                 <img src="images/case/db-marketplace.svg" alt="Diagram: data suppliers on the left, the Databridge verification layer in the middle, AI trainers on the right" loading="lazy" decoding="async">
-                <figcaption>How the two sides meet: suppliers upload raw data, the verification layer gates it, trainers search verified listings.</figcaption>
+                <figcaption>Suppliers upload raw data, the verification layer gates it, trainers search verified listings.</figcaption>
             </figure>
-
-        <section class="case-block">
-            <p class="case-eyebrow">Overview</p>
-            <h2 class="case-h2" id="sec-impact">Impact</h2>
+            <p>
+                These are the targets I designed against. They're goals for the concept, not measured results.
+            </p>
             <div class="metric-grid">
-                <div class="metric-card"><span class="n">&lt; 15 Min</span><span class="d">Median time from upload to live listing (reduced from days)</span></div>
-                <div class="metric-card"><span class="n">&gt; 95%</span><span class="d">Listings with auto-generated, machine-verified metadata</span></div>
-                <div class="metric-card"><span class="n">&lt; 1%</span><span class="d">PII false-negative rate on audited samples</span></div>
-                <div class="metric-card"><span class="n">Higher</span><span class="d">Search-to-purchase conversion vs. keyword-only baseline</span></div>
-            </div>
-
-            <h3 class="case-h3">Context</h3>
-            <p>
-                The bottleneck in the AI training data marketplace is not supply &mdash; it is trust. AI Trainers need
-                to verify dataset contents, legal compliance, and cleanliness before purchasing, but data suppliers
-                cannot easily or cheaply prove these metrics. We designed Databridge to solve this dual-sided trust
-                deficit, replacing unscalable manual reviews with an AI-assisted ingestion pipeline. The platform
-                uses models to do the expensive verification work upfront, giving suppliers a low-friction publishing
-                flow and buyers a catalog built on verified facts rather than seller claims.
-            </p>
-
-            <h3 class="case-h3">Challenges</h3>
-            <ul>
-                <li><strong>The Validation Bottleneck.</strong> Manual review of datasets for compliance and quality is expensive, does not scale, and places the cost burden entirely on the platform.</li>
-                <li><strong>Poor Metadata.</strong> Suppliers frequently upload files with missing descriptions, undocumented schemas, and PII hidden in free-text columns or image metadata, deterring buyers.</li>
-                <li><strong>Discovery Disconnect.</strong> Buyers do not search using dataset names; they search using complex task intents (e.g., "French legal contracts, commercial use OK"). Traditional keyword search fails to match this intent.</li>
-            </ul>
-
-            <h3 class="case-h3">Objective</h3>
-            <p>
-                Automate dataset verification and metadata generation to reduce supplier time-to-publish to under 15
-                minutes, while increasing buyer conversion rates through a trusted, natural-language search and
-                preview experience.
-            </p>
-
-            <div class="bridge-diagram">
-                <div class="bridge-node">
-                    <h4>Suppliers</h4>
-                    <p>Data owners, enterprises, research groups</p>
-                </div>
-                <div class="bridge-arrow">&rarr;</div>
-                <div class="bridge-node bridge-center">
-                    <h4>AI-Assisted Trust Layer</h4>
-                    <p>Verification &middot; PII scrubbing &middot; license classification</p>
-                </div>
-                <div class="bridge-arrow">&rarr;</div>
-                <div class="bridge-node">
-                    <h4>Buyers</h4>
-                    <p>AI Trainers, ML teams, analytics leads</p>
-                </div>
+                <div class="metric-card"><span class="n">&lt; 15 min</span><span class="d">target time from upload to live listing</span></div>
+                <div class="metric-card"><span class="n">&gt; 95%</span><span class="d">target share of listings with auto-generated metadata</span></div>
+                <div class="metric-card"><span class="n">&lt; 1%</span><span class="d">target PII false-negative rate on audited samples</span></div>
             </div>
         </section>
 
         <section class="case-block">
-            <p class="case-eyebrow">01 &mdash; Strategy</p>
-            <h2 class="case-h2" id="sec-strategy">Executive summary and strategy</h2>
+            <h2 class="case-h2" id="sec-how">How it works</h2>
+            <p>Two flows: suppliers push files through an ingestion pipeline, and buyers search through a retrieval flow. Click through the stages.</p>
 
-            <h3 class="case-h3">The validation bottleneck</h3>
-            <p>
-                Data supply is not the hard part of an AI data marketplace. Trust is. An AI Trainer buying a dataset
-                needs to know four things before paying: what is in it, whether it is legal to train on, whether it
-                is clean, and whether it will still be true next quarter. Suppliers who hold useful data usually
-                cannot prove any of those four things cheaply. Manual review does not scale, and the cost falls on
-                the platform.
-            </p>
-
-            <h3 class="case-h3">Dual-sided users</h3>
-            <p>
-                Buyers (AI Trainers, ML teams, analytics leads) want fast discovery, clear license terms, and
-                sample-before-buy. Suppliers (data owners, enterprises, research groups) want low-friction
-                publishing, control over what leaves their hands, and a predictable payout. Each side distrusts the
-                other. The product must earn trust from both at once, not one at a time.
-            </p>
-
-            <h3 class="case-h3">The AI-assisted value proposition</h3>
-            <p>
-                Use models to do the boring, expensive verification work at ingestion time: generate metadata,
-                detect and scrub PII, classify license and sensitivity, score quality, and make datasets searchable
-                in natural language. The supplier gets a publish flow that takes minutes. The buyer gets a catalog
-                where every listing carries machine-verified facts, not seller claims.
-            </p>
-
-            <h3 class="case-h3">Success metrics</h3>
-            <p>Targets set for the case study:</p>
-            <div class="metric-grid">
-                <div class="metric-card"><span class="n">&lt; 15 min</span><span class="d">median time from upload to live listing</span></div>
-                <div class="metric-card"><span class="n">&gt; 95%</span><span class="d">listings with auto-generated metadata</span></div>
-                <div class="metric-card"><span class="n">&lt; 1%</span><span class="d">PII false-negative rate on audited samples</span></div>
-                <div class="metric-card"><span class="n">↑</span><span class="d">buyer search-to-purchase conversion</span></div>
-                <div class="metric-card"><span class="n">↑</span><span class="d">disputes resolved without human escalation</span></div>
-            </div>
-        </section>
-
-        <section class="case-block">
-            <p class="case-eyebrow">02 &mdash; Architecture</p>
-            <h2 class="case-h2" id="sec-architecture">System architecture and data flow</h2>
-
-            <h3 class="case-h3">The supplier ingestion pipeline</h3>
-            <p class="stage-hint">Select a stage to see what happens inside it.</p>
+            <h3 class="case-h3">Supplier side: from file to listing</h3>
             <div class="stage-selector">
                 <div class="stage-tabs" role="tablist" aria-label="Supplier ingestion pipeline stages">
                     <button type="button" class="stage-tab is-active" role="tab" aria-selected="true">01 Upload</button>
@@ -853,34 +793,32 @@
                 <div class="stage-panels">
                     <div class="stage-panel" role="tabpanel">
                         <h4>Upload</h4>
-                        <p>Resumable chunked upload to object storage (S3-compatible). Accepts CSV, Parquet, JSON Lines, images in archive, PDF. Files never touch the app server directly &mdash; pre-signed URLs, virus scan on arrival.</p>
+                        <p>Resumable upload straight to object storage, so files never touch the app server. It takes CSV, Parquet, JSON Lines, PDFs and image archives, with a virus scan on arrival.</p>
                     </div>
                     <div class="stage-panel" role="tabpanel" hidden>
                         <h4>Stage</h4>
-                        <p>Files land in a quarantine bucket, invisible to buyers. A schema probe reads the first N rows and infers types, row counts, and column null rates.</p>
+                        <p>Files sit in a quarantine bucket buyers can't see. A schema probe reads the first rows and works out types, row counts and null rates.</p>
                     </div>
                     <div class="stage-panel" role="tabpanel" hidden>
                         <h4>Scan</h4>
-                        <p>Deterministic pass first (regex and checksum detectors for emails, phone numbers, national IDs, card numbers, IPs), then a statistical pass on column samples. Output: a PII report with column, type, confidence, and row-level hit counts.</p>
+                        <p>Fast, explainable detectors run first (emails, phone numbers, IDs, card numbers), then a statistical pass on column samples. The output is a PII report per column.</p>
                     </div>
                     <div class="stage-panel" role="tabpanel" hidden>
                         <h4>Enrich</h4>
-                        <p>An LLM pass generates title, description, schema summary, domain tags, language, and suggested license class. A vision model handles images. Output is a draft, never auto-published.</p>
+                        <p>An LLM drafts the title, description, tags, language and a suggested license class. It's always a draft, never auto-published.</p>
                     </div>
                     <div class="stage-panel" role="tabpanel" hidden>
                         <h4>Gate</h4>
-                        <p>A rules engine decides: auto-approve (low PII risk, complete license), supplier-fix-required (missing fields, PII above threshold), or human review (sensitive categories). Every gate decision is logged with reason codes.</p>
+                        <p>A rules engine either approves the listing, sends it back to the supplier to fix, or flags it for a human, and logs why every time.</p>
                     </div>
                     <div class="stage-panel" role="tabpanel" hidden>
                         <h4>Publish</h4>
-                        <p>The listing goes live. The dataset is versioned; hash, lineage, and license snapshot are frozen.</p>
+                        <p>The listing goes live. The dataset is versioned, and its hash and license snapshot are frozen.</p>
                     </div>
                 </div>
             </div>
-            <div class="quote-card">Key design rule: the pipeline is asynchronous and idempotent. Each stage is a job with a state &mdash; queued, running, passed, failed, needs-review. Retries are safe. The supplier sees live status, not a spinner.</div>
 
-            <h3 class="case-h3">The buyer search and retrieval flow</h3>
-            <p class="stage-hint">Select a stage to see what happens inside it.</p>
+            <h3 class="case-h3">Buyer side: from task to purchase</h3>
             <div class="stage-selector">
                 <div class="stage-tabs" role="tablist" aria-label="Buyer search and retrieval stages">
                     <button type="button" class="stage-tab is-active" role="tab" aria-selected="true">01 Query</button>
@@ -893,235 +831,161 @@
                 <div class="stage-panels">
                     <div class="stage-panel" role="tabpanel">
                         <h4>Query</h4>
-                        <p>Natural language or structured filters (domain, language, license, size, freshness, modality).</p>
+                        <p>The buyer types a sentence or uses filters for domain, language, license, size and freshness.</p>
                     </div>
                     <div class="stage-panel" role="tabpanel" hidden>
                         <h4>Parse</h4>
-                        <p>Intent extraction splits the query into hard filters (e.g. "license must allow commercial training") and soft semantics (e.g. "customer support chat in Portuguese").</p>
+                        <p>The query splits into hard filters ("license must allow commercial training") and the softer meaning ("customer support chat in Portuguese").</p>
                     </div>
                     <div class="stage-panel" role="tabpanel" hidden>
                         <h4>Retrieve</h4>
-                        <p>Hybrid search &mdash; keyword/BM25 for exact terms plus vector search over listing embeddings (title, description, schema summary, sample embeddings). Hard filters apply before ranking.</p>
+                        <p>Keyword and vector search run together. The hard filters apply before anything gets ranked.</p>
                     </div>
                     <div class="stage-panel" role="tabpanel" hidden>
                         <h4>Rank</h4>
-                        <p>A blend of relevance, quality score, supplier trust score, freshness, and fit to buyer history.</p>
+                        <p>Relevance, quality score, supplier trust, freshness and fit with the buyer's history are blended into one order. Every result says why it matched.</p>
                     </div>
                     <div class="stage-panel" role="tabpanel" hidden>
                         <h4>Preview</h4>
-                        <p>The buyer sees schema, PII report summary, license terms, and a stratified, pre-scrubbed sample.</p>
+                        <p>Schema, a PII report summary, license terms and a pre-scrubbed sample, all before the buyer pays.</p>
                     </div>
                     <div class="stage-panel" role="tabpanel" hidden>
                         <h4>Access</h4>
-                        <p>Purchase creates a scoped, time-limited access grant. Usage is metered; lineage records which dataset version went into which training run.</p>
+                        <p>Buying creates a scoped, time-limited grant. Usage is metered, and lineage records which dataset version went into which training run.</p>
                     </div>
                 </div>
             </div>
 
-            <h3 class="case-h3">Architecture summary</h3>
-            <div class="arch-grid">
-                <div class="arch-card"><h4>Storage</h4><p>Object store for raw and staged files; relational DB for listings, orders, and grants; vector index for listing and sample embeddings.</p></div>
-                <div class="arch-card"><h4>Compute</h4><p>Job queue with workers for scan and enrich; LLM calls behind a gateway with caching, rate limits, and per-job cost tracking.</p></div>
-                <div class="arch-card"><h4>Trust layer</h4><p>Immutable audit log for every gate decision, license snapshot, and access grant.</p></div>
-                <div class="arch-card"><h4>Interfaces</h4><p>Supplier dashboard (Data Refinery) and buyer catalog (Data Explorer) read the same state machine, so the two sides never disagree on what is live.</p></div>
-            </div>
+            <p>
+                Underneath, an object store holds the files, a relational database holds listings and grants, and a
+                vector index holds embeddings. The supplier dashboard and the buyer catalog read the same job state,
+                so the two sides never disagree about what's live. For the Python-side tooling I'd start with a hosted
+                embeddings API and pgvector, and keep ingestion on a plain job queue with explicit states. Ingestion
+                has to be auditable, so I'd avoid agent frameworks there.
+            </p>
         </section>
 
         <section class="case-block">
-            <p class="case-eyebrow">03 &mdash; Engineering</p>
-            <h2 class="case-h2" id="sec-engineering">Product engineering and AI integration</h2>
-
-            <h3 class="case-h3">Automating metadata and PII scrubbing</h3>
-            <p><strong>Problem.</strong> Suppliers write bad descriptions or none. Schemas are undocumented. PII hides in free-text columns, logs, and image EXIF data. Manual review costs more than the dataset earns.</p>
-            <p><strong>Pipeline design (Python).</strong></p>
-            <ul>
-                <li><strong>Parsing layer:</strong> pandas and pyarrow for tabular data; pdfplumber for PDF text; Pillow for image metadata. Each parser emits a common <code>DatasetProfile</code> object (columns, dtypes, null rates, row count, sample rows, byte size).</li>
-                <li><strong>Deterministic PII detectors:</strong> compiled regex plus validators (Luhn for card numbers, IBAN checksum, E.164 phone parsing, email RFC-lite). Fast, explainable, high precision.</li>
-                <li><strong>NER layer:</strong> Presidio or spaCy transformer models for names, addresses, and free-text entities &mdash; run on sampled rows, not full files, to control cost.</li>
-                <li><strong>LLM layer:</strong> structured-output prompts for column semantics, context-aware PII judgment ("is this a product code or a person ID?"), and license class suggestion. Output validated against a Pydantic schema; invalid output is retried once, then routed to human review.</li>
-                <li><strong>Redaction:</strong> scrubbing is a transform, not a delete. Tokens are replaced with typed placeholders (<code>&lt;EMAIL_1&gt;</code>) and a salted hash map is kept in a restricted vault for supplier-side reversibility.</li>
-            </ul>
-            <p><strong>Decision logic.</strong> The final PII risk score combines detector confidence, row-level hit rate, and column sensitivity class. Thresholds are per data category &mdash; any hit in a health or financial column blocks auto-approval.</p>
-            <p><strong>Evaluation.</strong> A labeled gold set of 500+ files across modalities tracks precision, recall, and time per file. Re-run on every model or prompt change; a regression gate blocks deploys that drop recall on high-sensitivity classes.</p>
-
-            <h3 class="case-h3">Natural language querying UX</h3>
-            <p><strong>Problem.</strong> Buyers do not search with dataset names. They search with tasks &mdash; "French legal contracts with redlines, commercial use OK, under 5 GB."</p>
-            <ul>
-                <li><strong>Index:</strong> each listing gets embeddings for title plus description, schema summary, and a short synthetic query set generated at publish time ("what questions would this dataset answer?"). Sample-level embeddings for text and image datasets.</li>
-                <li><strong>Query path:</strong> the query splits into hard constraints (license, size, language, modality) and a semantic remainder. Constraints become filters; the remainder is embedded and matched by approximate nearest neighbor search (HNSW).</li>
-                <li><strong>Hybrid ranking:</strong> reciprocal rank fusion of vector hits and keyword hits, then a learned reranker on quality, trust, and freshness.</li>
-                <li><strong>Explanation:</strong> every result shows why it matched ("matches: legal, French, redlines; fails: none") &mdash; auditable ranking builds buyer trust.</li>
-                <li><strong>Conversational refinement:</strong> a follow-up like "same but newer than 2025" updates filters without restarting the query. Context is a small structured object, not raw chat history.</li>
-            </ul>
-            <p><strong>Engineering constraints.</strong> P95 query latency under 400&nbsp;ms. Embeddings are versioned; a model change triggers a background re-index with dual-read during migration. Vector store and relational DB write through the same state machine so they never disagree.</p>
-
-            <h3 class="case-h3">Tooling decisions</h3>
-            <table class="case-table">
-                <thead><tr><th>Layer</th><th>Choice</th><th>Why</th></tr></thead>
-                <tbody>
-                    <tr><td>Embeddings</td><td>Hosted API first, self-hosted open-weight at volume</td><td>Speed to market, then per-query cost and data residency</td></tr>
-                    <tr><td>Vector store</td><td>pgvector below tens of millions of listings; dedicated engine (Qdrant/Weaviate/Pinecone) beyond that</td><td>One database until filtering and scale demand otherwise</td></tr>
-                    <tr><td>Orchestration</td><td>Plain job queue with explicit state</td><td>Ingestion must be deterministic and auditable &mdash; agent frameworks avoided here</td></tr>
-                </tbody>
-            </table>
-        </section>
-
-        <section class="case-block">
-            <p class="case-eyebrow">04 &mdash; Interface design</p>
-            <h2 class="case-h2" id="sec-interface">Interface design and wireframes</h2>
-
-            <h3 class="case-h3">Supplier dashboard — the "Data Refinery"</h3>
-            <p>Job of the screen: turn a raw file into a publishable, trusted listing with the fewest decisions possible. The supplier should feel guided, not audited.</p>
+            <h2 class="case-h2" id="sec-screens">The two screens</h2>
+            <p>
+                The supplier screen has one job: turn a raw file into a trusted listing with as few decisions as
+                possible. Blocking issues sit in a fix-it list at the top, each with a one-click resolution: redact,
+                drop the column, or mark it non-personal with a logged reason. Suppliers can exclude a column from the
+                listing without deleting it, which takes away the fear of over-sharing, and a "preview as buyer"
+                toggle shows exactly what buyers will see.
+            </p>
             <figure class="case-figure">
                 <img src="images/case/db-supplier-dashboard.svg" alt="Data Refinery screen showing pipeline status, a PII schema table, a fix-it banner and an auto-generated listing draft" loading="lazy" decoding="async">
-                <figcaption>The Data Refinery: pipeline state, the fix-it queue and the generated listing draft on one screen.</figcaption>
+                <figcaption>The Data Refinery: pipeline state, the fix-it list and the generated listing draft on one screen.</figcaption>
             </figure>
-
-
-            <div class="panel-mock">
-                <div class="panel-mock-head"><span class="dot"></span><span class="dot"></span><span class="dot"></span>&nbsp;Data Refinery &mdash; dataset.csv</div>
-                <div class="panel-mock-body">
-                    <div class="panel-mock-col">
-                        <h5>Pipeline</h5>
-                        <div class="panel-mock-row">Upload <span class="badge ok">done</span></div>
-                        <div class="panel-mock-row">Scan <span class="badge ok">done</span></div>
-                        <div class="panel-mock-row">Enrich <span class="badge ok">done</span></div>
-                        <div class="panel-mock-row">Review <span class="badge warn">needs you</span></div>
-                        <div class="panel-mock-row">Publish <span class="badge">blocked</span></div>
-                    </div>
-                    <div class="panel-mock-col">
-                        <h5>Schema &amp; PII</h5>
-                        <div class="panel-mock-row">customer_email <span class="badge risk">PII</span></div>
-                        <div class="panel-mock-row">order_id <span class="badge ok">clean</span></div>
-                        <div class="panel-mock-row">notes (free text) <span class="badge warn">review</span></div>
-                        <div class="panel-mock-row">region <span class="badge ok">clean</span></div>
-                    </div>
-                    <div class="panel-mock-col">
-                        <h5>Listing draft</h5>
-                        <div class="panel-mock-row">Title <span class="badge">generated</span></div>
-                        <div class="panel-mock-row">License class <span class="badge">generated, edited</span></div>
-                        <div class="panel-mock-row">Tags (4) <span class="badge">generated</span></div>
-                    </div>
-                </div>
-            </div>
-
-            <ul>
-                <li><strong>Fix-it queue.</strong> Blocking issues surface as a checklist at top &mdash; "3 columns contain names, redact or exclude?" &mdash; each with one-click resolutions: redact, drop column, mark as non-personal (with a logged reason).</li>
-                <li><strong>Exclude, don't delete.</strong> Suppliers can exclude columns from the listing while keeping them in the source. Reduces fear of over-sharing.</li>
-                <li><strong>Preview as buyer.</strong> A toggle shows exactly what the buyer will see &mdash; removes guesswork and cuts support tickets.</li>
-                <li><strong>Status honesty.</strong> The dashboard always shows real pipeline state. No fake progress bars.</li>
-            </ul>
-            <p><strong>Empty and error states.</strong> On a failed upload, show the exact row or byte where the parser broke and offer a fix template. On a blocked scan, explain which rule fired in plain language, with a link to the policy.</p>
-
-            <h3 class="case-h3">Buyer interface — the "Data Explorer"</h3>
-            <p>Job of the screen: let a buyer go from a task description to a confident purchase decision in under five minutes.</p>
+            <p>
+                The buyer screen has one search bar and removable chips underneath showing how the AI read the query.
+                That keeps its interpretation visible, so the buyer can correct it. Facets stay synced with the chips,
+                and each result card shows a trust badge, a quality score, the license class and a line saying why it
+                matched. Before purchase there's a one-click license check for the buyer's use case, and a preview of
+                the access grant.
+            </p>
             <figure class="case-figure">
                 <img src="images/case/db-buyer-explorer.svg" alt="Data Explorer screen with a natural-language search, removable parsed chips, facets and result cards with why-it-matched lines" loading="lazy" decoding="async">
-                <figcaption>The Data Explorer: the AI’s reading of the query stays visible as chips, and every result says why it matched.</figcaption>
+                <figcaption>The Data Explorer: the query's reading stays visible as chips, and every result says why it matched.</figcaption>
             </figure>
-
-            <ul>
-                <li><strong>One search bar</strong> that accepts natural language, with parsed chips below it ("Language: French", "License: commercial OK", "Size: under 5&nbsp;GB") &mdash; each removable, making the AI's interpretation visible and editable.</li>
-                <li><strong>Facets</strong> on the left, synced with chips, with live counts.</li>
-                <li><strong>Result cards</strong> showing title, supplier trust badge, quality score, freshness, license class, and a one-line "why it matched" explanation.</li>
-                <li><strong>Dataset detail</strong> on select &mdash; schema, PII report summary (counts only, no values), license clause summary linking to full text, and a stratified sample with redaction visible.</li>
-            </ul>
-            <ul>
-                <li><strong>Compare mode.</strong> Pin up to three datasets; compare schema overlap, size, license, and freshness side by side.</li>
-                <li><strong>Ask about this dataset.</strong> A scoped question box answers only from listing metadata and sample statistics, with citations &mdash; it never invents content.</li>
-                <li><strong>One-click license check.</strong> The buyer selects a use case (training, fine-tuning, evaluation, internal analytics); the panel replies allowed, restricted, or not allowed, with the responsible clause.</li>
-                <li><strong>Access grant preview.</strong> Before purchase, the buyer sees access duration, usage metering, and what happens to derived models.</li>
-            </ul>
-            <p>Trust cues used consistently: verified PII scan date, supplier verification level, license snapshot date, and version number &mdash; never a star rating alone.</p>
-
-            <h3 class="case-h3">Accessibility and mobile</h3>
-            <ul>
-                <li>Supplier dashboard is desktop-first; mobile supports status checks and fix-it actions only.</li>
-                <li>Buyer explorer collapses facets into a sheet on mobile; result cards stack; chips stay visible.</li>
-                <li>All status colors pair with text and icons. Keyboard path covers every fix-it action.</li>
-            </ul>
         </section>
 
         <section class="case-block">
-            <p class="case-eyebrow">05 &mdash; Outcomes</p>
-            <h2 class="case-h2" id="sec-outcomes">Outcomes and future roadmap</h2>
-
-            <h3 class="case-h3">Technical constraints and edge cases</h3>
-            <ul>
-                <li><strong>PII is never perfect.</strong> Detectors miss context-dependent identifiers, and LLMs can hallucinate "clean" verdicts. Mitigated with layered detection, sampling audits on auto-approved listings, and a visible re-scan path if a leak is reported. Liability terms state this plainly.</li>
-                <li><strong>Scale vs. cost of LLM enrichment.</strong> Full-file LLM passes on large datasets are uneconomic &mdash; enrichment runs on profiles and samples, cached by content hash so re-uploads cost nothing.</li>
-                <li><strong>Format sprawl.</strong> Broken CSVs, mixed encodings, nested JSON, unindexed image zips. Parser failures are explained, not silent; fallback is a column-mapping step in the dashboard.</li>
-                <li><strong>Synthetic and derived data.</strong> Datasets produced by models trained on other datasets may carry upstream license terms. Lineage fields are mandatory; undeclared lineage is marked restricted.</li>
-                <li><strong>Multilingual quality.</strong> Language detection is unreliable on short text &mdash; language is declared and verified on sample.</li>
-                <li><strong>Right to erasure and revocation.</strong> A supplier removing a dataset triggers access revocation and notifies buyers who purchased it; versioned storage and grant records make this tractable.</li>
-                <li><strong>Cross-border data.</strong> Residency rules limit where embeddings and samples can be processed &mdash; region-pinned storage and inference from day one for EU suppliers.</li>
-                <li><strong>Gaming the trust score.</strong> Buyer-side signals (completed training runs, dispute rates) are weighted above supplier-declared fields to resist gaming.</li>
-                <li><strong>Regulatory timing.</strong> The EU AI Act requires documentation and traceability for training data in high-risk systems &mdash; lineage and license snapshots become a selling point, not overhead.</li>
-            </ul>
-
-            <h3 class="case-h3">Outcomes (to validate once measured)</h3>
-            <ul>
-                <li>Supplier time-to-publish reduced from days of manual review to minutes for standard file types.</li>
-                <li>Share of listings with complete metadata and license class at publish time raised toward 100%.</li>
-                <li>Buyer search-to-purchase conversion improved versus a keyword-only baseline, measured by A/B test.</li>
-                <li>Human review load concentrated on sensitive categories, not every upload.</li>
-                <li>Dispute volume and resolution time tracked as trust proxies.</li>
-            </ul>
-            <div class="quote-card">Note: publish only measured numbers. Replace targets with real results before external use.</div>
-
-            <h3 class="case-h3">Next steps for the platform</h3>
-            <ol class="step-list">
-                <li><strong>Near term (0&ndash;3 months).</strong> Harden the scan and gate stages; build the gold evaluation set; ship Preview-as-buyer; instrument the conversion funnel.</li>
-                <li><strong>Mid term (3&ndash;9 months).</strong> Conversational refinement in the Explorer; compare mode; buyer-side trust signals in ranking; region-pinned processing.</li>
-                <li><strong>Longer term (9&ndash;18 months).</strong> License marketplace integrations for rights-cleared content; federated / clean-room access so sensitive data never leaves supplier control; contract templates generated from license class; supplier analytics on which data categories earn most.</li>
-                <li><strong>Ongoing.</strong> Cost dashboards for LLM calls per listing; quarterly red-team of PII detection with adversarial files.</li>
-            </ol>
+            <h2 class="case-h2" id="sec-pricing">Pricing by use, not by file</h2>
+            <p>
+                Selling whole datasets under flat licenses breaks down fast. A retrieval eval might need a few hundred
+                pairs out of a 2 million row corpus, and a flat price charges for the other 95%. Fine-tuning teams
+                run many short cycles and want to pay per experiment. And since the EU AI Act asks for documented
+                training data, buyers are paying for proof of rights as much as for rows.
+            </p>
+            <figure class="case-figure">
+                <img src="images/case/lic-flat-vs-metered.svg" alt="Comparison of a flat $6,000 corpus licence against a metered $50 per run charge for the same 5% slice" loading="lazy" decoding="async">
+                <figcaption>The same 5% slice priced two ways. All the dollar figures are placeholders, not market rates.</figcaption>
+            </figure>
+            <p>
+                So I'd price by use class first and consumption second, in three tiers. The buyer picks the class
+                when they request access and the license enforces it, so switching class means a new grant and a new
+                charge, never a silent upgrade.
+            </p>
+            <figure class="case-figure">
+                <img src="images/case/lic-tiers.svg" alt="Three licence tiers: internal evaluation, commercial training and open-source release, with billing unit, pricing, derivative rights and audit rights" loading="lazy" decoding="async">
+                <figcaption>Use class sets the price and the rights before consumption does.</figcaption>
+            </figure>
+            <p>
+                Metering has to be something both sides can verify. Every billable action is written to a hash-chained
+                log, and the platform publishes a Merkle root of it at intervals, so a supplier can check their own
+                events are in it without seeing anyone else's, and a buyer's statement can cite event hashes instead
+                of raw data. Trusted execution environments come next, and zero-knowledge proofs later, if both sides
+                need them.
+            </p>
+            <p>
+                With my placeholder rates, a buyer running a 100,000-row eval three times pays $150 instead of $6,000,
+                and the supplier earns $120 instead of one flat sale. Metered only beats flat after about 150 runs
+                per listing, so I'd still sell full-corpus grants and use the metered tier for long-tail demand.
+            </p>
+            <p>
+                The question enterprise buyers ask first is who owns the weights. My default is that the buyer owns
+                the model they train, the supplier keeps the data, and the license says what the model can be used
+                for. Open-source release is its own tier with supplier sign-off, because public weights can't be
+                taken back. This is a design stance for counsel to confirm, not legal advice. Whether weights count as
+                a derivative work is still open in most jurisdictions.
+            </p>
         </section>
 
         <section class="case-block">
-            <p class="case-eyebrow">Appendix</p>
-            <h2 class="case-h2" id="sec-appendix">Current landscape (as of November 2026)</h2>
+            <h2 class="case-h2" id="sec-sovereignty">When the data can't be uploaded</h2>
             <p>
-                Market size is contested. Published estimates for the AI training dataset market disagree widely.
-                Mordor Intelligence puts it at about USD 11.9 billion in 2026, growing to USD 49.8 billion by 2031
-                at a 33% CAGR. Other firms (Grand View, Value Market Research, TechNavio) forecast 22&ndash;29% CAGRs
-                from different 2025 baselines. Use a range in any deck, and cite the specific report.
+                Banks, hospitals and big enterprises won't hand raw records to a third party, however well audited,
+                and regulators often want the data to stay in-region. A nicer upload screen won't fix that, so the
+                platform has to work against data it never copies.
             </p>
             <p>
-                Demand is shifting toward curated, licensed data &mdash; a move away from bulk web collection toward
-                licensed, curated, multimodal sets with quality assurance. Post-training preference data, agent
-                trajectories, and evaluation sets are growing categories.
+                The first step is bring-your-own-storage. The supplier keeps the bucket, the keys and the retention
+                policy, and runs our pipeline worker in their own account. We get one scoped, short-lived role, and
+                only metadata and redacted samples come back. Revoking access is a key rotation, not a takedown
+                request. I'd ship this first, because it changes legal's question from "where does our data go" to
+                "what can this role do", which is a page of policy they can read.
             </p>
+            <figure class="case-figure">
+                <img src="images/case/zt-byos.svg" alt="Supplier account holding the bucket, key and pipeline worker, linked by a scoped role to a platform account that holds only the control plane" loading="lazy" decoding="async">
+                <figcaption>The platform reaches in through a scoped, short-lived role and takes back only metadata and redacted samples.</figcaption>
+            </figure>
             <p>
-                Regulation is pushing provenance into the product. The EU AI Act reaches full enforcement on
-                2 August 2026, requiring high-risk systems to use datasets that are relevant, representative, and
-                documented with traceability. Marketplaces carrying structured metadata and standard license terms
-                reduce procurement friction &mdash; that is the core argument for this platform.
+                For buyers who need to train on this data, the code goes to the data. Training runs in an enclave in
+                the supplier's account, the key is only released if the attestation matches the approved code, and an
+                egress gate lets checkpoints and metrics out while blocking raw rows. Enclaves don't stop a model
+                from memorizing what it saw, so differential privacy covers that, at some cost to accuracy.
+                Multi-party computation handles joint statistics across suppliers, but not deep learning.
             </p>
+            <figure class="case-figure">
+                <img src="images/case/zt-tiers.svg" alt="Staircase of five deployment tiers from standard platform storage up to joint analysis with multi-party computation" loading="lazy" decoding="async">
+                <figcaption>Five tiers. Custody and running cost rise together, so buyers start on the lowest one that meets their legal need.</figcaption>
+            </figure>
             <p>
-                Licensed content deals are real: OpenAI's partnership with Shutterstock is one example of model
-                developers buying structured licensed visual content. Synthetic data is rising alongside real data,
-                used to fill privacy gaps and scarcity, especially for autonomous systems and healthcare &mdash;
-                positioning the marketplace to supply both, with lineage flags so buyers know which is which.
+                Each listing declares its tier and says what it doesn't defend against. For example, the enclave tier
+                stops raw data leaving but not memorization. These are design targets and would need penetration
+                testing and independent review before anyone says them to a customer.
             </p>
+        </section>
+
+        <section class="case-block">
+            <h2 class="case-h2" id="sec-next">What I'd do next</h2>
             <p>
-                <strong>Competitive angle.</strong> Most incumbents sell datasets or annotation services. Few combine
-                automated verification at supplier ingestion with buyer-side natural language discovery and
-                license-aware access. That gap is the differentiation to argue.
+                I haven't shipped this, so nothing here is a result. The first thing I'd build is the proxy and
+                bring-your-own-storage path on one pilot corpus with two suppliers, with a gate of zero raw-data
+                egress. Then a pricing pilot with a few suppliers and buyers to find out what people actually pay per
+                row, and tier-specific license templates drafted with counsel. After that, enclave training for
+                evaluation jobs, and only then differential privacy and joint analysis.
             </p>
-            <p class="source-list">
-                Sources: GlobeNewswire / ResearchAndMarkets (Jul 2026, May 2026); Mordor Intelligence via GII Research;
-                Lucintel via GII Research; Value Market Research (Feb 2026); TechNavio (2026&ndash;2030). Several of
-                these are paid market-research reports summarized in press releases &mdash; verify figures in the
-                original before quoting externally.
-            </p>
+            <div class="quote-card">Every number in this case study is a target or a placeholder. I'd want pilot data and legal review before quoting any of it.</div>
         </section>
 
     </main>
 
     <footer class="case-footer">
-        <p class="case-footer-note">Databridge is a product &amp; UX case study exploring trust design for AI data marketplaces.</p>
-        <a href="databridge-licensing.html" class="case-back">Part 2: Licensing engine &rarr;</a>
+        <p class="case-footer-note">Databridge is a concept case study on trust design for AI data marketplaces. Figures are design targets, not measured results.</p>
+        <a href="prototype.html" class="case-back">&larr; Back to portfolio</a>
     </footer>
 
 <script>
