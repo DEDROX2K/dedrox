@@ -1,0 +1,196 @@
+/* Listenr app shell: tokens, base, glass tab bar, toast, motion.
+   Shared by every Listenr screen. Icons: Phosphor (MIT), loaded per page. */
+
+:root {
+  --page: #f1ebe5;
+  --cream: #faf5f0;
+  --paper: #fffdfb;
+  --orange: #f47a2a;
+  --orange-deep: #e0621a;
+  --apricot: #f6a06a;
+  --peach: #fde4d2;
+  --peach-soft: #fef0e6;
+  --ink: #241c17;
+  --ink-soft: #74665d;
+  --ink-faint: #c9bfb7;
+  --line: #ebe2da;
+  --ease: cubic-bezier(.16, 1, .3, 1);      /* long, soft expo-out */
+  --ease-soft: cubic-bezier(.45, 0, .2, 1);  /* gentle in-out for swaps and loops */
+  --tabbar-h: 72px;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  --safe-t: env(safe-area-inset-top, 0px);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; }
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+/* Soft cross-screen fade (Chromium; other browsers just navigate) */
+@view-transition { navigation: auto; }
+::view-transition-old(root) { animation: vt-out .6s var(--ease-soft) both; }
+::view-transition-new(root) { animation: vt-in .9s var(--ease) both; }
+::view-transition-group(tabbar) { animation-duration: 0s; }
+@keyframes vt-out { to { opacity: 0; filter: blur(6px); transform: scale(.985); } }
+@keyframes vt-in { from { opacity: 0; filter: blur(6px); transform: translateY(18px); } }
+
+body {
+  background: var(--page);
+  color: var(--ink);
+  font-family: "Atkinson Hyperlegible Next", "Atkinson Hyperlegible", system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+.serif { font-family: "Lora", Georgia, serif; }
+.ph, .ph-fill, .ph-duotone { display: inline-block; line-height: 1; vertical-align: -0.125em; }
+
+/* App frame: full-bleed on phones, a phone-shaped column on desktop */
+.app {
+  position: relative;
+  max-width: 480px;
+  min-height: 100svh;
+  margin: 0 auto;
+  background: var(--cream);
+  overflow: clip; /* not hidden: hidden would break position: sticky inside */
+}
+@media (min-width: 560px) {
+  body { padding-top: 48px; }
+  .app { border-radius: 48px 48px 0 0; }
+}
+
+/* Logo: the PNG used as a mask so it can take any colour */
+.logo-mark {
+  display: inline-block;
+  width: 28px; height: 28px;
+  background: currentColor;
+  -webkit-mask: url("images/LISTENR%20logo.png") center / contain no-repeat;
+  mask: url("images/LISTENR%20logo.png") center / contain no-repeat;
+}
+
+/* ---------- Glass ----------
+   backdrop-filter works in Chrome/WebView on Android and Safari on iOS.
+   Anything without it gets a near-opaque fill so the bar never turns see-through mush. */
+.glass {
+  background: rgba(255, 249, 244, .56);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, .75);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .9),
+    inset 0 -1px 0 rgba(255, 255, 255, .25),
+    0 12px 40px rgba(110, 50, 10, .16),
+    0 2px 6px rgba(110, 50, 10, .05);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass { background: rgba(255, 249, 244, .95); }
+}
+
+/* ---------- Tab bar ---------- */
+.tabbar {
+  position: fixed; z-index: 40;
+  left: 50%;
+  bottom: calc(12px + var(--safe-b));
+  width: min(calc(100% - 24px), 456px);
+  height: var(--tabbar-h);
+  transform: translateX(-50%);
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  padding: 8px;
+  border-radius: 30px;
+  view-transition-name: tabbar;
+  animation: tabbar-in 1.3s var(--ease) .35s both;
+}
+.tabbar::before {
+  /* specular sheen across the top edge */
+  content: "";
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,0) 55%);
+  pointer-events: none;
+}
+@keyframes tabbar-in { from { transform: translate(-50%, 140%); } }
+.tab-blob {
+  position: absolute; top: 8px; left: 0;
+  height: calc(var(--tabbar-h) - 16px);
+  border-radius: 22px;
+  background: rgba(244, 122, 42, .14);
+  transition: transform .9s var(--ease), width .9s var(--ease);
+  will-change: transform;
+}
+.tab {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 4px;
+  color: var(--ink-soft);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .01em;
+  transition: color .8s var(--ease);
+}
+.tab .ico {
+  position: relative;
+  width: 26px; height: 26px;
+  font-size: 26px;
+  transition: transform .9s var(--ease);
+}
+.tab .ico i { position: absolute; inset: 0; transition: opacity .5s var(--ease-soft), transform .9s var(--ease); }
+.tab .ico .ph-fill { opacity: 0; transform: scale(.6); }
+.tab.is-active { color: var(--orange-deep); }
+.tab.is-active .ico .ph { opacity: 0; transform: scale(1.25); }
+.tab.is-active .ico .ph-fill { opacity: 1; transform: none; }
+.tab:active .ico { transform: scale(.86); transition-duration: .2s; }
+.tab .badge {
+  position: absolute; top: -2px; right: -5px;
+  width: 9px; height: 9px; border-radius: 50%;
+  background: var(--orange);
+  box-shadow: 0 0 0 2px rgba(255, 249, 244, .9);
+}
+
+/* ---------- Toast ---------- */
+.toast {
+  position: fixed; z-index: 50;
+  left: 50%;
+  bottom: calc(var(--tabbar-h) + 26px + var(--safe-b));
+  max-width: calc(100% - 48px);
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 18px;
+  border-radius: 999px;
+  font-size: 15px;
+  white-space: nowrap;
+  transform: translate(-50%, 16px);
+  opacity: 0;
+  filter: blur(6px);
+  pointer-events: none;
+  transition: opacity .6s var(--ease-soft), transform 1s var(--ease), filter .6s var(--ease-soft);
+}
+.toast i { font-size: 20px; color: var(--orange-deep); }
+.toast.show { opacity: 1; transform: translate(-50%, 0); filter: blur(0); }
+
+/* ---------- Motion helpers ---------- */
+.intro {
+  opacity: 0;
+  transform: translate3d(0, 22px, 0);
+  filter: blur(8px);
+  animation: rise 1.6s var(--ease) forwards;
+  animation-delay: calc(var(--d, 0) * 110ms + 150ms);
+}
+@keyframes rise { to { opacity: 1; transform: none; filter: blur(0); } }
+
+.reveal {
+  opacity: 0;
+  transform: translate3d(0, 28px, 0);
+  filter: blur(6px);
+  transition: opacity 1.4s var(--ease-soft), transform 1.8s var(--ease), filter 1.4s var(--ease-soft);
+  transition-delay: calc(var(--i, 0) * 90ms);
+}
+.reveal.in { opacity: 1; transform: none; filter: blur(0); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .reveal, .intro { opacity: 1; transform: none; filter: none; }
+}
