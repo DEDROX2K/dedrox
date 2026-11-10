@@ -586,3 +586,35 @@ a.arrow-out:hover::after { transform: translate(2px, -2px); }
     *, *::before, *::after { animation: none !important; transition: none !important; }
     html { scroll-behavior: auto; }
 }
+
+/* Figma-style corner smoothing.
+   Figma's smoothing stretches each corner past its radius, so the radius is
+   scaled up by --smooth-scale and the curve is set with corner-shape.
+   Browsers without corner-shape keep the plain radii above. */
+@supports (corner-shape: superellipse(2)) {
+    :root {
+        --smooth-shape: superellipse(1.6);
+        --smooth-scale: 1.6;
+        --radius-smooth: calc(var(--radius) * var(--smooth-scale));
+    }
+    .card-media,
+    .case-figure img,
+    .image-stack img,
+    .metric,
+    .stages {
+        border-radius: var(--radius-smooth);
+        corner-shape: var(--smooth-shape);
+    }
+    .note {
+        border-radius: 0 var(--radius-smooth) var(--radius-smooth) 0;
+        corner-shape: var(--smooth-shape);
+    }
+    .tags li {
+        border-radius: calc(6px * var(--smooth-scale));
+        corner-shape: var(--smooth-shape);
+    }
+    .stage-tab {
+        border-radius: calc(7px * var(--smooth-scale));
+        corner-shape: var(--smooth-shape);
+    }
+}
