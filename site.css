@@ -75,12 +75,41 @@ a { color: inherit; text-decoration: none; }
 }
 .u-link:hover { text-decoration-color: var(--ink); }
 
-.arrow-out::after {
-    content: "\2197";
+/* Pixel icons (pixelarticons, MIT). Drawn as a mask so they take the text colour.
+   Drawn at 24px (the set's native size) so every icon pixel stays crisp;
+   negative margins stop the 24px box from pushing the line height. */
+.px-icon,
+.arrow-out::after,
+.back-link::before,
+.next-case span::after {
+    content: "";
     display: inline-block;
-    margin-left: .3em;
-    font-size: .95em;
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    margin-block: -6px;
+    background-color: currentColor;
+    -webkit-mask: var(--icon) center / contain no-repeat;
+    mask: var(--icon) center / contain no-repeat;
+}
+
+/* Link icons sit beside body-size text, so they are drawn at half size (12px).
+   external-link is drawn on odd coordinates, so it is shifted half a pixel
+   to keep its pixels on whole screen pixels. */
+.arrow-out::after {
+    --icon: url("icons/pixelarticons/external-link.svg");
+    width: 12px;
+    height: 12px;
+    margin: 0 0 0 .4em;
+    vertical-align: -1px;
+    -webkit-mask-position: .5px .5px;
+    mask-position: .5px .5px;
     transition: transform .25s var(--ease);
+}
+.arrow-out.is-mail::after {
+    --icon: url("icons/pixelarticons/mail.svg");
+    -webkit-mask-position: center;
+    mask-position: center;
 }
 a:hover > .arrow-out::after,
 a.arrow-out:hover::after { transform: translate(2px, -2px); }
@@ -135,7 +164,7 @@ a.arrow-out:hover::after { transform: translate(2px, -2px); }
     display: grid;
     grid-template-columns: var(--side-w) minmax(0, 1fr);
     gap: var(--col-gap);
-    padding: clamp(24px, 5vh, 61px) var(--gutter) 82px;
+    padding: 0 var(--gutter) 82px;
     align-items: start;
 }
 
@@ -326,12 +355,12 @@ a.arrow-out:hover::after { transform: translate(2px, -2px); }
 .back-link {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 4px;
     font-size: 15px;
     color: var(--ink-2);
     transition: color .2s;
 }
-.back-link::before { content: "\2190"; transition: transform .25s var(--ease); }
+.back-link::before { --icon: url("icons/pixelarticons/arrow-left.svg"); transition: transform .25s var(--ease); }
 .back-link:hover { color: var(--ink); }
 .back-link:hover::before { transform: translateX(-3px); }
 
@@ -515,7 +544,12 @@ a.arrow-out:hover::after { transform: translate(2px, -2px); }
 }
 .next-case small { display: block; font-size: 13px; color: var(--muted); margin-bottom: 7px; }
 .next-case span { font-size: clamp(19px, 1.7vw, 29px); letter-spacing: -.01em; }
-.next-case span::after { content: " \2192"; display: inline-block; transition: transform .25s var(--ease); }
+.next-case span::after {
+    --icon: url("icons/pixelarticons/arrow-right.svg");
+    margin-left: .2em;
+    vertical-align: 0;
+    transition: transform .25s var(--ease);
+}
 .next-case:hover span::after { transform: translateX(4px); }
 
 /* About page */
@@ -715,7 +749,7 @@ a.arrow-out:hover::after { transform: translate(2px, -2px); }
 @media (max-width: 900px) {
     :root { --header-h: 58px; }
 
-    .shell { grid-template-columns: minmax(0, 1fr); gap: 48px; padding-top: 14px; }
+    .shell { grid-template-columns: minmax(0, 1fr); gap: 48px; }
     .side { position: static; padding-bottom: 0; }
 
     .site-clock span { display: none; }

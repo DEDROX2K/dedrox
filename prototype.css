@@ -11345,7 +11345,7 @@ body.case-open .case-window.is-closing:not(.expanded-height) {
     max-width: none;
     margin: 0 0 32px;
     font-size: clamp(1.75rem, 6vw, 2.75rem);
-    line-height: 1.08;
+    /* line-height: 1.08; */
     letter-spacing: -0.03em;
     text-wrap: balance;
 }
