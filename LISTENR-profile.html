@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#9dbbdb">
+<title>Listenr · Me</title>
+<meta name="description" content="UI prototype: your Listenr profile and settings.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;500;700&family=Atkinson+Hyperlegible:wght@400;700&family=Lora:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<link rel="stylesheet" href="listenr-app.css">
+<style>
+  /* ---------- Header ---------- */
+  .band {
+    padding: calc(84px + var(--safe-t)) 20px 64px;
+    color: #fff;
+    background:
+      radial-gradient(90% 70% at 90% 0%, rgba(255, 228, 238, .7) 0%, rgba(255,228,238,0) 70%),
+      linear-gradient(180deg, #efc0d0 0%, #5f9cc2 55%, #a9c4dc 74%, #e3e9f2 88%, var(--cream) 100%);
+  }
+  .me { display: flex; align-items: center; gap: 14px; }
+  .me .avatar { width: 64px; height: 64px; font-size: 22px; background: rgba(255,255,255,.35); color: #fff; border: 1px solid rgba(255,255,255,.5); }
+  .me h1 { font-family: "Lora", Georgia, serif; font-size: 26px; font-weight: 600; line-height: 1.15; }
+  .me p { font-size: 13px; color: rgba(255,255,255,.88); display: flex; align-items: center; gap: 5px; }
+  .me .pill { margin-left: auto; height: 36px; font-size: 13px; }
+
+  /* A few things about you, as soft tags */
+  .facts { display: flex; gap: 6px; flex-wrap: wrap; padding: 0 20px; margin-top: -26px; }
+  .fact { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border-radius: 999px; font-size: 13px; background: #fff; border: 1px solid var(--line); }
+  .fact i { font-size: 15px; color: var(--pink-deep); }
+  .fact b { font-weight: 700; }
+
+  /* ---------- Settings ---------- */
+  .group { padding: 0 20px; margin-top: 28px; }
+  .group h2 { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); font-weight: 500; margin-bottom: 2px; }
+  .rows { list-style: none; }
+  .row {
+    width: 100%;
+    min-height: 54px;
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    font-size: 15px;
+  }
+  .rows li:last-child .row { border-bottom: 0; }
+  .row > i:first-child { flex: none; width: 22px; font-size: 20px; color: var(--sea-deep); }
+  .row .txt { flex: 1; min-width: 0; }
+  .row .txt small { display: block; font-size: 12px; color: var(--ink-soft); }
+  .row .val { font-size: 13px; color: var(--ink-soft); white-space: nowrap; }
+  .row .go { color: var(--ink-faint); font-size: 16px; }
+  button.row:active, a.row:active { opacity: .6; }
+  .row.warn, .row.warn > i:first-child { color: var(--pink-deep); }
+
+  /* Switch */
+  .switch {
+    flex: none;
+    position: relative;
+    width: 46px; height: 28px;
+    border-radius: 999px;
+    background: var(--grey);
+    transition: background .7s var(--ease);
+  }
+  .switch::after {
+    content: "";
+    position: absolute; top: 3px; left: 3px;
+    width: 22px; height: 22px; border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(25, 40, 60, .2);
+    transition: transform .8s var(--ease);
+  }
+  .switch[aria-checked="true"] { background: var(--sea); }
+  .switch[aria-checked="true"]::after { transform: translateX(18px); }
+
+  /* Small segmented choice */
+  .choice { position: relative; display: flex; padding: 3px; border-radius: 999px; background: #e6e8ee; }
+  .choice button { position: relative; z-index: 1; height: 28px; padding: 0 11px; font-size: 12px; color: var(--ink-soft); display: inline-flex; align-items: center; gap: 4px; transition: color .7s var(--ease); }
+  .choice button[aria-pressed="true"] { color: var(--ink); }
+  .choice .thumb { position: absolute; top: 3px; left: 0; height: 28px; border-radius: 999px; background: #fff; box-shadow: 0 1px 3px rgba(25, 40, 60, .1); transition: transform .8s var(--ease), width .8s var(--ease); }
+
+  /* Expanding helpline row */
+  .more-panel { overflow: hidden; height: 0; transition: height .8s var(--ease); }
+  .more-panel .inner { padding: 0 0 12px 34px; display: grid; gap: 8px; font-size: 14px; }
+  .more-panel a { display: flex; justify-content: space-between; align-items: center; color: var(--ink); }
+  .more-panel a span { color: var(--sea-deep); font-weight: 700; display: inline-flex; align-items: center; gap: 4px; }
+  .row .go.turn { transition: transform .8s var(--ease); }
+  .open .row .go.turn { transform: rotate(90deg); }
+
+  .bye { padding: 28px 20px 0; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+  .bye .pill { background: #fff; border-color: var(--line); color: var(--pink-deep); }
+  .bye .small { font-size: 12px; color: var(--ink-soft); text-decoration: underline; text-decoration-color: var(--ink-faint); text-underline-offset: 3px; }
+  .fine { padding: 22px 20px calc(var(--tabbar-h) + 40px + var(--safe-b)); font-size: 11px; color: var(--ink-faint); text-align: center; }
+</style>
+</head>
+<body data-tab="profile">
+<div class="app">
+
+  <div class="appbar" id="appbar">
+    <a class="round intro" href="LISTENR.html" aria-label="Listenr home"><span class="logo-mark"></span></a>
+    <button class="round intro" style="--d:1" id="bell" aria-label="Notifications, 1 new"><i class="ph ph-bell"></i><span class="dot"></span></button>
+  </div>
+
+  <header class="band" id="band">
+    <div class="me intro" style="--d:2">
+      <span class="avatar">R</span>
+      <div>
+        <h1>Riya</h1>
+        <p id="anonLine"><i class="ph ph-mask-happy"></i><span>Anonymous to listeners</span></p>
+      </div>
+      <button class="pill on-color" id="edit"><i class="ph ph-pencil-simple"></i>Edit</button>
+    </div>
+  </header>
+
+  <div class="facts intro" style="--d:3">
+    <span class="fact"><i class="ph ph-check-circle"></i><b>5</b> calls</span>
+    <span class="fact"><i class="ph ph-clock"></i><b>3h 45m</b> talked</span>
+    <span class="fact"><i class="ph ph-heart"></i><b id="savedN">0</b> saved</span>
+    <span class="fact"><i class="ph ph-calendar-blank"></i>Since Mar 2026</span>
+  </div>
+
+  <section class="group reveal">
+    <h2>Calls</h2>
+    <ul class="rows">
+      <li><div class="row"><i class="ph ph-phone"></i><span class="txt">Call type</span>
+        <span class="choice" data-key="callType"><span class="thumb"></span>
+          <button data-v="voice"><i class="ph ph-phone"></i>Voice</button><button data-v="video"><i class="ph ph-video-camera"></i>Video</button>
+        </span></div></li>
+      <li><div class="row"><i class="ph ph-translate"></i><span class="txt">Language<small>Listeners who speak it come first</small></span>
+        <span class="choice" data-key="lang"><span class="thumb"></span>
+          <button data-v="en">English</button><button data-v="hi">हिंदी</button>
+        </span></div></li>
+      <li><a class="row" href="LISTENR-listeners.html"><i class="ph ph-heart"></i><span class="txt">Saved listeners</span><span class="val" id="savedVal"></span><i class="ph ph-caret-right go"></i></a></li>
+    </ul>
+  </section>
+
+  <section class="group reveal">
+    <h2>Notifications</h2>
+    <ul class="rows">
+      <li><div class="row"><i class="ph ph-bell-ringing"></i><span class="txt">Call reminders<small>30 minutes and 5 minutes before</small></span><button class="switch" role="switch" data-key="remind" aria-label="Call reminders"></button></div></li>
+      <li><div class="row"><i class="ph ph-hand-heart"></i><span class="txt">Gentle check-ins<small>A soft nudge if it’s been a while</small></span><button class="switch" role="switch" data-key="checkins" aria-label="Gentle check-ins"></button></div></li>
+      <li><div class="row"><i class="ph ph-moon-stars"></i><span class="txt">Quiet hours<small>No notifications 11 pm – 7 am</small></span><button class="switch" role="switch" data-key="quiet" aria-label="Quiet hours"></button></div></li>
+    </ul>
+  </section>
+
+  <section class="group reveal">
+    <h2>Privacy</h2>
+    <ul class="rows">
+      <li><div class="row"><i class="ph ph-mask-happy"></i><span class="txt">Stay anonymous<small>Listeners only see your first initial</small></span><button class="switch" role="switch" data-key="anon" aria-label="Stay anonymous"></button></div></li>
+      <li><div class="row"><i class="ph ph-fingerprint"></i><span class="txt">App lock<small>Fingerprint or Face ID to open</small></span><button class="switch" role="switch" data-key="lock" aria-label="App lock"></button></div></li>
+      <li><button class="row" data-toast="Your notes and reflections were cleared from this phone|broom"><i class="ph ph-broom"></i><span class="txt">Clear notes on this phone</span><i class="ph ph-caret-right go"></i></button></li>
+    </ul>
+  </section>
+
+  <section class="group reveal">
+    <h2>Payments</h2>
+    <ul class="rows">
+      <li><button class="row" data-toast="Payment methods open here in the app|wallet"><i class="ph ph-wallet"></i><span class="txt">Payment methods</span><span class="val">UPI · riya@okaxis</span><i class="ph ph-caret-right go"></i></button></li>
+      <li><a class="row" href="LISTENR-bookings.html?view=past"><i class="ph ph-receipt"></i><span class="txt">Receipts</span><i class="ph ph-caret-right go"></i></a></li>
+    </ul>
+  </section>
+
+  <section class="group reveal">
+    <h2>Help</h2>
+    <ul class="rows">
+      <li id="crisis"><button class="row" id="crisisBtn" aria-expanded="false"><i class="ph ph-lifebuoy"></i><span class="txt">Crisis helplines<small>Free, any time</small></span><i class="ph ph-caret-right go turn"></i></button>
+        <div class="more-panel" id="crisisPanel"><div class="inner">
+          <a href="tel:112">Emergency <span><i class="ph ph-phone"></i>112</span></a>
+          <a href="tel:14416">Tele-MANAS <span><i class="ph ph-phone"></i>14416</span></a>
+        </div></div></li>
+      <li><a class="row" href="LISTENR.html#faqH"><i class="ph ph-question"></i><span class="txt">Help &amp; FAQs</span><i class="ph ph-caret-right go"></i></a></li>
+      <li><button class="row" data-toast="We usually reply within a few hours|envelope-simple"><i class="ph ph-envelope-simple"></i><span class="txt">Contact us</span><i class="ph ph-caret-right go"></i></button></li>
+      <li><button class="row" data-toast="Terms, privacy and disclaimer open here|file-text"><i class="ph ph-file-text"></i><span class="txt">Terms, privacy &amp; disclaimer</span><i class="ph ph-caret-right go"></i></button></li>
+    </ul>
+  </section>
+
+  <div class="bye reveal">
+    <button class="pill" id="logout"><i class="ph ph-sign-out"></i><span>Log out</span></button>
+    <button class="small" data-toast="Account deletion asks you to confirm twice|warning-circle">Delete account</button>
+  </div>
+  <p class="fine">Listenr 0.1 · UI prototype</p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script src="listenr-app.js"></script>
+<script>
+  const { toast, reduceMotion } = window.Listenr;
+
+  /* ---------- Settings, kept on this device ---------- */
+  const DEFAULTS = { callType: 'voice', lang: 'en', remind: true, checkins: true, quiet: false, anon: true, lock: false };
+  let settings = { ...DEFAULTS };
+  try { settings = { ...DEFAULTS, ...JSON.parse(localStorage.getItem('listenr-settings') || '{}') }; } catch {}
+  const save = () => { try { localStorage.setItem('listenr-settings', JSON.stringify(settings)); } catch {} };
+
+  const SAID = {
+    remind: ['Reminders on', 'Reminders off'], checkins: ['Check-ins on', 'Check-ins off'],
+    quiet: ['Quiet hours on', 'Quiet hours off'], anon: ['You’re anonymous to listeners', 'Listeners will see your name'],
+    lock: ['App lock on', 'App lock off'],
+  };
+  document.querySelectorAll('.switch').forEach(s => {
+    const k = s.dataset.key;
+    s.setAttribute('aria-checked', settings[k]);
+    s.addEventListener('click', () => {
+      settings[k] = !settings[k];
+      s.setAttribute('aria-checked', settings[k]);
+      save();
+      toast(SAID[k][settings[k] ? 0 : 1], settings[k] ? 'check-circle' : 'minus-circle');
+      if (k === 'anon') paintAnon();
+    });
+  });
+
+  function placeThumb(c, instant) {
+    const on = c.querySelector(`[data-v="${settings[c.dataset.key]}"]`);
+    c.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', b === on));
+    const t = c.querySelector('.thumb');
+    if (instant) t.style.transition = 'none';
+    t.style.width = on.offsetWidth + 'px';
+    t.style.transform = `translateX(${on.offsetLeft}px)`;
+    if (instant) { t.offsetWidth; t.style.transition = ''; }
+  }
+  document.querySelectorAll('.choice').forEach(c => {
+    placeThumb(c, true);
+    c.addEventListener('click', e => {
+      const b = e.target.closest('button');
+      if (!b || settings[c.dataset.key] === b.dataset.v) return;
+      settings[c.dataset.key] = b.dataset.v;
+      save();
+      placeThumb(c);
+    });
+  });
+  document.fonts?.ready.then(() => document.querySelectorAll('.choice').forEach(c => placeThumb(c, true)));
+
+  function paintAnon() {
+    document.querySelector('#anonLine span').textContent = settings.anon ? 'Anonymous to listeners' : 'Listeners see your name';
+    document.querySelector('#anonLine i').className = `ph ph-${settings.anon ? 'mask-happy' : 'user'}`;
+  }
+  paintAnon();
+
+  // Saved listeners come from the Listeners screen
+  let saved = [];
+  try { saved = JSON.parse(localStorage.getItem('listenr-favs') || '[]'); } catch {}
+  document.getElementById('savedN').textContent = saved.length;
+  document.getElementById('savedVal').textContent = saved.length ? `${saved.length}` : 'None yet';
+
+  // Crisis helplines open in place
+  const crisis = document.getElementById('crisis');
+  const panel = document.getElementById('crisisPanel');
+  document.getElementById('crisisBtn').addEventListener('click', e => {
+    const open = !crisis.classList.contains('open');
+    crisis.classList.toggle('open', open);
+    e.currentTarget.setAttribute('aria-expanded', open);
+    panel.style.height = open ? panel.scrollHeight + 'px' : '0px';
+  });
+
+  document.querySelectorAll('[data-toast]').forEach(b => b.addEventListener('click', () => {
+    const [msg, icon] = b.dataset.toast.split('|');
+    toast(msg, icon);
+  }));
+  document.getElementById('edit').addEventListener('click', () => toast('Name, pronouns and photo are edited here', 'pencil-simple'));
+  let armT;
+  document.getElementById('logout').addEventListener('click', e => {
+    const b = e.currentTarget, span = b.querySelector('span');
+    if (!b.dataset.armed) {
+      b.dataset.armed = 1; span.textContent = 'Tap again to log out';
+      clearTimeout(armT); armT = setTimeout(() => { delete b.dataset.armed; span.textContent = 'Log out'; }, 3000);
+      return;
+    }
+    location.href = 'LISTENR.html';
+  });
+
+  const appbar = document.getElementById('appbar');
+  new IntersectionObserver(([e]) => appbar.classList.toggle('scrolled', !e.isIntersecting), { rootMargin: '-120px 0px 0px 0px' })
+    .observe(document.getElementById('band'));
+  document.getElementById('bell').addEventListener('click', () => toast('Annanya confirmed your call', 'bell'));
+</script>
+</body>
+</html>

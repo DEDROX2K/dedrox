@@ -3,67 +3,39 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#f59b62">
+<meta name="theme-color" content="#9dbbdb">
 <title>Listenr</title>
 <meta name="description" content="UI prototype: Listenr app home screen.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;500;700&family=Atkinson+Hyperlegible:wght@400;700&family=Lora:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;500;700&family=Atkinson+Hyperlegible:wght@400;700&family=Lora:wght@500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
 <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
-<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
 <link rel="stylesheet" href="listenr-app.css">
 <style>
-  /* ---------- App bar ---------- */
-  .appbar {
-    position: sticky; top: 0; z-index: 20;
-    display: flex; justify-content: space-between; align-items: center;
-    padding: calc(16px + var(--safe-t)) 16px 0;
-    margin-bottom: calc(-68px - var(--safe-t));
-    pointer-events: none;
-  }
-  .appbar > * { pointer-events: auto; }
-  .round {
-    position: relative;
-    width: 52px; height: 52px; border-radius: 50%;
-    display: grid; place-items: center;
-    color: #fff;
-    background: rgba(232, 108, 44, .38);
-    border: 1px solid rgba(255,255,255,.3);
-    -webkit-backdrop-filter: blur(18px) saturate(150%);
-    backdrop-filter: blur(18px) saturate(150%);
-    transition: background 1.2s var(--ease-soft), color 1.2s var(--ease-soft), border-color 1.2s var(--ease-soft), transform .9s var(--ease);
-  }
-  .round:active { transform: scale(.92); transition-duration: .2s; }
-  .round .logo-mark { width: 30px; height: 30px; }
-  .round i { font-size: 24px; }
-  .round .dot { position: absolute; top: 13px; right: 14px; width: 8px; height: 8px; border-radius: 50%; background: #fff; transition: background 1.2s var(--ease-soft); }
-  .appbar.scrolled .round { background: rgba(255, 249, 244, .7); color: var(--orange-deep); border-color: rgba(255,255,255,.8); box-shadow: 0 6px 20px rgba(110, 50, 10, .1); }
-  .appbar.scrolled .round .dot { background: var(--orange); }
-
   /* ---------- Hero ---------- */
   .hero {
     position: relative;
-    min-height: 88svh;
-    max-height: 860px;
+    min-height: 80svh;
+    max-height: 760px;
     display: flex; flex-direction: column; justify-content: flex-end; align-items: center;
-    padding: 0 28px calc(64px + 36px);
+    padding: 0 28px 72px;
     text-align: center;
     color: #fff;
     isolation: isolate;
     background:
-      radial-gradient(90% 55% at 90% 8%, rgba(255, 236, 220, .75) 0%, rgba(255,236,220,0) 70%),
-      radial-gradient(110% 60% at 10% 95%, rgba(214, 88, 24, .55) 0%, rgba(214,88,24,0) 70%),
-      linear-gradient(170deg, #f8c3a0 0%, #f59b62 38%, #ef7e3c 70%, #e86c2c 100%);
+      radial-gradient(90% 55% at 90% 8%, rgba(255, 228, 238, .75) 0%, rgba(255, 228, 238,0) 70%),
+      radial-gradient(110% 60% at 10% 95%, rgba(30, 95, 140, .5) 0%, rgba(30, 95, 140,0) 70%),
+      linear-gradient(170deg, #f6cdd9 0%, #9dbbdb 38%, #5f9cc2 70%, #3f86ad 100%);
   }
-  @media (min-width: 560px) { .hero { min-height: 780px; } }
+  @media (min-width: 560px) { .hero { min-height: 700px; } }
   .hero::before {
     content: "";
     position: absolute; inset: -20%;
     z-index: -1;
     background:
       radial-gradient(40% 30% at 30% 30%, rgba(255,255,255,.22), transparent 70%),
-      radial-gradient(35% 25% at 75% 60%, rgba(255, 214, 180, .35), transparent 70%);
+      radial-gradient(35% 25% at 75% 60%, rgba(255, 205, 222, .35), transparent 70%);
     filter: blur(20px);
     animation: drift 26s var(--ease-soft) infinite alternate;
     will-change: transform;
@@ -75,160 +47,104 @@
     opacity: calc(1 - var(--p, 0) * 1.1);
     will-change: transform, opacity;
   }
-  .greet { display: inline-flex; align-items: center; gap: 8px; font-size: 15px; color: rgba(255,255,255,.9); margin-bottom: 14px; }
-  .greet i { font-size: 20px; }
+  .greet { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: rgba(255,255,255,.9); margin-bottom: 12px; }
+  .greet i { font-size: 17px; }
   .hero h1 {
     font-family: "Lora", Georgia, serif;
-    font-size: clamp(38px, 11vw, 50px);
-    line-height: 1.08;
+    font-size: clamp(32px, 9vw, 40px);
+    line-height: 1.12;
     font-weight: 600;
-    letter-spacing: -0.015em;
-    max-width: 10.5ch;
+    max-width: 11ch;
     text-wrap: balance;
-    text-shadow: 0 2px 30px rgba(170, 70, 15, .25);
+    text-shadow: 0 2px 24px rgba(20, 60, 95, .2);
   }
-  .hero p.sub { margin-top: 14px; max-width: 30ch; font-size: 16px; color: rgba(255,255,255,.9); }
-  .cta {
-    margin-top: 28px;
-    height: 58px;
-    padding: 0 26px 0 22px;
-    display: inline-flex; align-items: center; gap: 10px;
+  .hero p.sub { margin-top: 10px; max-width: 28ch; font-size: 15px; color: rgba(255,255,255,.88); }
+
+  .hero .pill.big { margin-top: 22px; }
+  .ghost { margin-top: 12px; display: inline-flex; align-items: center; gap: 5px; font-size: 14px; color: rgba(255,255,255,.85); }
+
+  /* ---------- Sections ---------- */
+  .reviews .eyebrow i, .breathe .eyebrow i { color: #fff; }
+  /* Up next — sits where the hero's blue fades into the page */
+  .upnext {
+    padding-top: 84px;
+    background: linear-gradient(180deg, #3f86ad 0px, #a9c4dc 48px, #e3e9f2 100px, var(--cream) 170px);
+  }
+  .next { display: flex; align-items: center; gap: 12px; margin-top: 14px; }
+  .next-name { font-weight: 700; }
+  .next-meta { font-size: 13px; color: var(--ink-soft); }
+  .when-tag {
+    margin-left: auto;
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12px;
+    color: var(--pink-deep);
+    background: var(--pink-soft);
+    padding: 5px 10px;
     border-radius: 999px;
-    color: #fff;
-    font-size: 17px; font-weight: 500;
-    background: rgba(255, 255, 255, .2);
-    border: 1px solid rgba(255,255,255,.3);
-    -webkit-backdrop-filter: blur(18px);
-    backdrop-filter: blur(18px);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.35), 0 10px 30px rgba(140, 60, 10, .15);
-    transition: transform .9s var(--ease), background .9s var(--ease);
+    white-space: nowrap;
   }
-  .cta i { font-size: 22px; }
-  @media (hover: hover) { .cta:hover { background: rgba(255,255,255,.3); transform: translateY(-2px); } }
-  .cta:active { transform: scale(.97); transition-duration: .2s; }
-  .ghost { margin-top: 16px; display: inline-flex; align-items: center; gap: 6px; font-size: 15px; color: rgba(255,255,255,.88); }
-  .ghost i { font-size: 18px; }
+  .when-tag .live { width: 6px; height: 6px; border-radius: 50%; background: var(--pink-deep); animation: breathe-dot 2.4s var(--ease-soft) infinite; }
+  @keyframes breathe-dot { 50% { opacity: .3; } }
+  .row-actions { display: flex; gap: 8px; margin-top: 14px; overflow-x: auto; scrollbar-width: none; }
+  .row-actions::-webkit-scrollbar { display: none; }
+  .row-actions .pill { background: #fff; border-color: var(--line); }
+  .row-actions .pill.join { background: var(--sea); border-color: var(--sea); color: #fff; }
+  .row-actions .pill.join[aria-disabled="true"] { background: #a9cbe0; border-color: #a9cbe0; }
 
-  /* ---------- Sheet: the cream surface that slides over the hero ---------- */
-  .sheet {
-    position: relative; z-index: 2;
-    margin-top: -36px;
-    border-radius: 36px 36px 0 0;
-    background: var(--cream);
-    padding: 12px 0 calc(var(--tabbar-h) + 48px + var(--safe-b));
-  }
-  .sheet::before {
-    content: ""; display: block;
-    width: 40px; height: 5px; border-radius: 3px;
-    margin: 0 auto 4px;
-    background: var(--line);
-  }
-  .block { padding: 36px 20px 8px; }
-  .block-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
-  .h2 { font-family: "Lora", Georgia, serif; font-size: 26px; line-height: 1.15; font-weight: 600; letter-spacing: -0.01em; text-wrap: balance; }
-  .more { display: inline-flex; align-items: center; gap: 4px; font-size: 15px; color: var(--orange-deep); white-space: nowrap; }
-  .more i { transition: transform .8s var(--ease); }
-  .more:hover i { transform: translateX(3px); }
-  .lede { margin-top: 8px; color: var(--ink-soft); max-width: 36ch; }
-  .rule { height: 1px; background: var(--line); margin: 28px 20px 0; }
-
-  /* ---------- Up next ---------- */
-  .next { display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: center; margin-top: 20px; }
-  .next-date { text-align: center; padding-right: 18px; border-right: 1px solid var(--line); }
-  .next-day { display: block; font-family: "Lora", Georgia, serif; font-size: 48px; line-height: 1; font-weight: 600; color: var(--orange-deep); }
-  .next-mon { display: block; margin-top: 6px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); }
-  .who { display: flex; align-items: center; gap: 12px; }
-  .avatar {
-    flex: none;
-    width: 44px; height: 44px; border-radius: 50%;
-    display: grid; place-items: center;
-    font-family: "Lora", Georgia, serif; font-weight: 600; font-size: 15px; color: #fff;
-    background: var(--bg, linear-gradient(145deg, #f7a35c, #d4542a));
-  }
-  .who-name { font-size: 17px; font-weight: 700; }
-  .who-meta { font-size: 14px; color: var(--ink-soft); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-  .count { margin-top: 12px; display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--ink-soft); }
-  .count b { color: var(--ink); }
-  .pulse { position: relative; width: 8px; height: 8px; border-radius: 50%; background: var(--orange); }
-  .pulse::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: var(--orange); animation: pulse 2.4s var(--ease-soft) infinite; }
-  @keyframes pulse { 0% { transform: scale(1); opacity: .6; } 100% { transform: scale(3.2); opacity: 0; } }
-  .actions { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 24px; }
-  .act { display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 13px; color: var(--ink-soft); }
-  .act .ring {
-    width: 56px; height: 56px; border-radius: 50%;
-    display: grid; place-items: center;
-    font-size: 24px;
-    color: var(--orange-deep);
-    background: var(--peach-soft);
-    transition: transform .9s var(--ease), background .9s var(--ease), color .9s var(--ease);
-  }
-  @media (hover: hover) { .act:hover .ring { background: var(--peach); transform: translateY(-2px); } }
-  .act:active .ring { transform: scale(.92); transition-duration: .2s; }
-  .act.primary .ring { background: var(--orange); color: #fff; box-shadow: 0 8px 20px rgba(228, 102, 26, .3); }
-  .act[aria-disabled="true"] .ring { background: var(--peach-soft); color: var(--ink-faint); box-shadow: none; }
-
-  /* ---------- Free today ---------- */
-  .strip {
-    display: flex; gap: 18px;
-    margin: 18px -20px 0;
-    padding: 4px 20px 8px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scroll-padding: 0 20px;
-    scrollbar-width: none;
-    overscroll-behavior-x: contain;
-  }
+  /* Free today */
+  .strip { display: flex; gap: 14px; margin: 14px -20px 0; padding: 4px 20px 4px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: 0 20px; scrollbar-width: none; overscroll-behavior-x: contain; }
   .strip::-webkit-scrollbar { display: none; }
-  .person { position: relative; flex: none; width: 76px; scroll-snap-align: start; text-align: center; }
+  .person { position: relative; flex: none; width: 60px; scroll-snap-align: start; text-align: center; }
   .person > a { display: block; }
-  .person .avatar { width: 72px; height: 72px; font-size: 22px; margin: 0 auto; transition: transform .9s var(--ease); }
+  .person .avatar { width: 56px; height: 56px; font-size: 16px; margin: 0 auto; transition: transform .9s var(--ease); }
   .person > a:active .avatar { transform: scale(.94); transition-duration: .2s; }
-  .person .online { position: absolute; top: 54px; left: 54px; width: 14px; height: 14px; border-radius: 50%; background: #3fae6e; box-shadow: 0 0 0 3px var(--cream); }
-  .p-name { display: block; margin-top: 8px; font-size: 14px; font-weight: 700; }
-  .p-slot { display: inline-flex; align-items: center; gap: 3px; font-size: 12px; color: var(--ink-soft); }
+  .person .online { position: absolute; top: 43px; left: 45px; width: 11px; height: 11px; border-radius: 50%; background: var(--pink-deep); border: 2px solid var(--cream); }
+  .p-name { display: block; margin-top: 6px; font-size: 13px; font-weight: 500; }
+  .p-slot { display: block; font-size: 11px; color: var(--ink-soft); }
   .fav {
-    position: absolute; top: -2px; right: -4px;
-    width: 30px; height: 30px; border-radius: 50%;
+    position: absolute; top: -3px; right: -5px;
+    width: 24px; height: 24px; border-radius: 50%;
     display: grid; place-items: center;
-    font-size: 16px;
+    font-size: 13px;
     color: var(--ink-soft);
-    background: var(--paper);
-    box-shadow: 0 3px 10px rgba(110, 50, 10, .12);
+    background: #fff;
+    border: 1px solid var(--line);
   }
   .fav i { grid-area: 1 / 1; transition: opacity .4s var(--ease-soft), transform .8s var(--ease); }
-  .fav .ph-fill { color: var(--orange); opacity: 0; transform: scale(.4); }
+  .fav .ph-fill { color: var(--sea); opacity: 0; transform: scale(.4); }
   .fav[aria-pressed="true"] .ph { opacity: 0; }
   .fav[aria-pressed="true"] .ph-fill { opacity: 1; transform: none; }
   .fav.pop { animation: pop .7s var(--ease); }
   @keyframes pop { 30% { transform: scale(1.3); } }
 
-  /* ---------- How it works: an open timeline ---------- */
-  .flow { list-style: none; margin-top: 24px; }
-  .flow li { position: relative; display: grid; grid-template-columns: 56px 1fr; gap: 16px; padding-bottom: 30px; }
+  /* Steps: an open timeline, no boxes */
+  .flow { list-style: none; margin-top: 16px; }
+  .flow li { position: relative; display: grid; grid-template-columns: 38px 1fr; gap: 12px; padding-bottom: 18px; }
   .flow li:last-child { padding-bottom: 0; }
   .flow li:not(:last-child)::before {
     content: "";
-    position: absolute; left: 27px; top: 62px; bottom: 6px;
-    border-left: 2px dashed #f6c3a0;
-    transform-origin: top;
-    transform: scaleY(0);
+    position: absolute; left: 18px; top: 44px; bottom: 2px;
+    border-left: 1.5px dashed var(--pink);
+    transform-origin: top; transform: scaleY(0);
     transition: transform 1.6s var(--ease) .4s;
   }
   .flow li.in::before { transform: scaleY(1); }
-  .flow .ico {
-    width: 56px; height: 56px; border-radius: 50%;
-    display: grid; place-items: center;
-    font-size: 28px;
-    color: var(--orange-deep);
-    background: var(--peach-soft);
-  }
-  .flow h3 { font-family: "Lora", Georgia, serif; font-size: 20px; font-weight: 600; margin-top: 4px; }
-  .flow p { color: var(--ink-soft); font-size: 15px; margin-top: 2px; }
+  .flow .ico { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; font-size: 19px; color: var(--pink-deep); background: var(--pink-soft); }
+  .flow h3 { font-size: 15px; font-weight: 700; margin-top: 1px; }
+  .flow p { color: var(--ink-soft); font-size: 14px; }
 
-  /* ---------- Reviews ---------- */
-  .reviews { text-align: center; padding-top: 48px; }
-  .reviews .qmark { font-size: 44px; color: var(--orange); }
-  .quote-track { position: relative; min-height: 190px; margin-top: 8px; }
+  /* Reviews — a sky-pink band, like the old site's colour band */
+  .reviews {
+    margin-top: 40px;
+    padding: 64px 20px 72px;
+    text-align: center;
+    color: #fff;
+    background:
+      radial-gradient(90% 60% at 20% 30%, rgba(255,255,255,.16), transparent 70%),
+      linear-gradient(180deg, var(--cream) 0%, #f7dbe4 18%, #e3a3b8 60%, #d48aa3 100%);
+  }
+  .reviews .eyebrow { color: #fff; background: rgba(255,255,255,.18); border-color: rgba(255,255,255,.35); }
+  .quote-track { position: relative; min-height: 132px; margin-top: 14px; }
   .quote {
     position: absolute; inset: 0;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -236,86 +152,66 @@
     transition: opacity 1.2s var(--ease-soft), transform 1.6s var(--ease), filter 1.2s var(--ease-soft);
   }
   .quote.is-active { opacity: 1; transform: none; filter: blur(0); transition-delay: .25s; }
-  .quote blockquote { font-family: "Lora", Georgia, serif; font-style: italic; font-size: 24px; line-height: 1.3; font-weight: 500; max-width: 18ch; text-wrap: balance; }
-  .quote cite { margin-top: 14px; font-style: normal; font-size: 14px; color: var(--ink-soft); display: inline-flex; align-items: center; gap: 6px; }
-  .quote cite i { color: var(--orange); }
-  .dots { display: flex; justify-content: center; gap: 8px; margin-top: 12px; }
-  .dots button { width: 8px; height: 8px; border-radius: 999px; background: var(--ink-faint); transition: width 1s var(--ease), background 1s var(--ease); }
-  .dots button[aria-current="true"] { width: 24px; background: var(--orange); }
+  .quote blockquote { font-family: "Lora", Georgia, serif; font-size: 20px; line-height: 1.3; font-weight: 500; max-width: 19ch; text-wrap: balance; text-shadow: 0 1px 16px rgba(120, 40, 70, .2); }
+  .quote cite { margin-top: 10px; font-style: normal; font-size: 13px; color: rgba(255,255,255,.85); }
+  .dots { display: flex; justify-content: center; gap: 6px; margin-top: 8px; }
+  .dots button { width: 7px; height: 7px; border-radius: 999px; background: rgba(255,255,255,.45); transition: width 1s var(--ease), background 1s var(--ease); }
+  .dots button[aria-current="true"] { width: 20px; background: #fff; }
 
-  /* ---------- Topics ---------- */
-  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
-  .chip {
-    height: 46px;
-    padding: 0 18px 0 14px;
-    display: inline-flex; align-items: center; gap: 8px;
-    border-radius: 999px;
-    font-size: 15px;
-    background: var(--peach-soft);
-    transition: background .9s var(--ease), color .9s var(--ease), transform .9s var(--ease);
-  }
-  .chip i { font-size: 20px; color: var(--orange-deep); transition: color .9s var(--ease); }
-  .chip[aria-pressed="true"] { background: var(--orange); color: #fff; }
+  /* Topics — continues out of the pink band */
+  .topics { background: linear-gradient(180deg, #d48aa3 0, #f1cfda 60px, #f6ecf0 120px, var(--cream) 190px); padding-top: 72px; }
+  .lede { margin-top: 4px; color: var(--ink-soft); font-size: 14px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .chip { height: 38px; padding: 0 14px 0 11px; font-size: 14px; }
+  .chip i { color: var(--pink-deep); transition: color .9s var(--ease); }
+  .chip[aria-pressed="true"] { background: var(--pink-deep); border-color: var(--pink-deep); color: #fff; }
   .chip[aria-pressed="true"] i { color: #fff; }
-  .chip:active { transform: scale(.96); transition-duration: .2s; }
-  .chip-note { margin-top: 16px; min-height: 48px; color: var(--ink-soft); transition: opacity .5s var(--ease-soft), transform .9s var(--ease), filter .5s var(--ease-soft); }
+  .chip-note { margin-top: 12px; min-height: 42px; font-size: 14px; color: var(--ink-soft); transition: opacity .5s var(--ease-soft), transform .9s var(--ease), filter .5s var(--ease-soft); }
   .chip-note.out { opacity: 0; transform: translate3d(0, 6px, 0); filter: blur(4px); }
 
-  /* ---------- Breathe ---------- */
-  .breathe { text-align: center; padding-top: 48px; position: relative; }
-  .breathe::before {
-    content: ""; position: absolute; left: 50%; top: 60%; width: 340px; height: 340px; margin: -170px 0 0 -170px;
-    border-radius: 50%; background: radial-gradient(circle, rgba(246, 160, 106, .28), transparent 65%);
-    pointer-events: none;
+  /* Breathe — a sea-blue band with the glass orb */
+  .breathe {
+    margin-top: 32px;
+    padding: 64px 20px 64px;
+    text-align: center;
+    color: #fff;
+    background:
+      radial-gradient(80% 50% at 80% 30%, rgba(255, 215, 228, .55), transparent 70%),
+      linear-gradient(180deg, var(--cream) 0%, #f6cdd9 22%, #9dbbdb 60%, #4a8db4 100%);
   }
-  .breathe .lede { margin-inline: auto; }
-  .orb { position: relative; width: 200px; height: 200px; margin: 28px auto 4px; display: grid; place-items: center; }
+  .breathe .eyebrow { color: #fff; background: rgba(255,255,255,.18); border-color: rgba(255,255,255,.35); }
+  .breathe .h2 { color: #fff; }
+  .orb { position: relative; width: 150px; height: 150px; margin: 22px auto 0; display: grid; place-items: center; }
   .orb::before, .orb::after {
     content: ""; position: absolute; inset: 0; border-radius: 50%;
-    background: radial-gradient(circle at 35% 30%, #fbd0b0, #f39457 75%);
+    background: radial-gradient(circle at 35% 30%, rgba(255,255,255,.55), rgba(255,255,255,.12) 70%);
+    border: 1px solid rgba(255,255,255,.45);
+    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
     transform: scale(var(--s, .62));
     transition: transform 4s cubic-bezier(.37, 0, .63, 1);
     will-change: transform;
   }
-  .orb::after { inset: -18px; opacity: .25; transition-delay: .2s; }
+  .orb::after { inset: -14px; opacity: .4; transition-delay: .2s; }
   .orb.inhale { --s: 1; }
-  .orb-label { position: relative; z-index: 1; font-family: "Lora", Georgia, serif; font-size: 18px; font-weight: 600; color: #fff; transition: opacity .6s var(--ease-soft); }
+  .orb-label { position: relative; z-index: 1; font-size: 15px; font-weight: 500; transition: opacity .6s var(--ease-soft); }
   .orb-label.out { opacity: 0; }
-  .soft-btn {
-    margin-top: 20px;
-    height: 50px; padding: 0 22px 0 18px;
-    display: inline-flex; align-items: center; gap: 8px;
-    border-radius: 999px;
-    font-size: 16px; font-weight: 500;
-    color: var(--orange-deep);
-    background: var(--peach-soft);
-    transition: background .9s var(--ease), transform .9s var(--ease);
-  }
-  .soft-btn i { font-size: 20px; }
-  .soft-btn:hover { background: var(--peach); }
-  .soft-btn:active { transform: scale(.97); transition-duration: .2s; }
+  .breathe .pill { margin-top: 18px; }
 
-  /* ---------- FAQ: hairlines, no boxes ---------- */
-  .faq-list { margin-top: 12px; }
+  /* FAQ — hairlines */
+  .faq { background: linear-gradient(180deg, #4a8db4 0, #c9d6ea 40px, #e6ebf3 90px, var(--cream) 150px); padding-top: 64px; }
+  .faq-list { margin-top: 6px; }
   .faq details { border-bottom: 1px solid var(--line); overflow: hidden; }
-  .faq summary {
-    list-style: none;
-    display: flex; align-items: center; justify-content: space-between; gap: 16px;
-    padding: 18px 0;
-    font-size: 16px; font-weight: 700;
-    cursor: pointer;
-  }
+  .faq summary { list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 0; font-size: 15px; font-weight: 500; cursor: pointer; }
   .faq summary::-webkit-details-marker { display: none; }
-  .faq summary i { flex: none; font-size: 20px; color: var(--orange-deep); transition: transform 1s var(--ease); }
+  .faq summary i { flex: none; font-size: 16px; color: var(--ink-soft); transition: transform 1s var(--ease); }
   .faq details.is-open summary i { transform: rotate(135deg); }
-  .faq .answer { padding: 0 0 20px; color: var(--ink-soft); font-size: 15px; transition: opacity .8s var(--ease-soft), transform 1s var(--ease); }
+  .faq .answer { padding: 0 0 16px; color: var(--ink-soft); font-size: 14px; transition: opacity .8s var(--ease-soft), transform 1s var(--ease); }
   .faq details:not(.is-open) .answer { opacity: 0; transform: translate3d(0, -6px, 0); }
 
-  /* ---------- Crisis line ---------- */
-  .crisis { display: flex; gap: 14px; align-items: flex-start; padding: 36px 20px 0; font-size: 14px; color: var(--ink-soft); }
-  .crisis i { flex: none; font-size: 26px; color: var(--orange-deep); }
-  .crisis a { color: var(--ink); font-weight: 700; border-bottom: 1px solid var(--ink-faint); }
-  .fine { padding: 20px 20px 0; font-size: 12px; color: var(--ink-faint); }
+  .crisis { display: flex; gap: 10px; align-items: flex-start; padding: 28px 20px 0; font-size: 13px; color: var(--ink-soft); }
+  .crisis i { flex: none; font-size: 19px; color: var(--pink-deep); margin-top: 1px; }
+  .crisis a { color: var(--ink); font-weight: 700; }
+  .fine { padding: 14px 20px calc(var(--tabbar-h) + 40px + var(--safe-b)); font-size: 11px; color: var(--ink-faint); }
 </style>
 </head>
 <body data-tab="home">
@@ -330,138 +226,109 @@
     <div class="hero-copy" id="heroCopy">
       <p class="greet intro" style="--d:2"><i class="ph ph-sun-horizon" id="greetIcon"></i><span id="greet">Good evening, Riya</span></p>
       <h1 class="intro" style="--d:3">Someone to listen. When you need it.</h1>
-      <p class="sub intro" style="--d:4">A safe, judgment-free space to speak your mind and feel a little lighter.</p>
-      <a class="cta intro" style="--d:5" href="LISTENR-book.html"><i class="ph ph-chat-circle-dots"></i>Start a conversation</a>
-      <a class="ghost intro" style="--d:6" href="#breathe"><i class="ph ph-wind"></i>or take a one-minute breather</a>
+      <p class="sub intro" style="--d:4">A safe, judgment-free space to feel a little lighter.</p>
+      <a class="pill big on-color intro" style="--d:5" href="LISTENR-book.html"><i class="ph ph-chat-circle-dots"></i>Start a conversation</a>
+      <a class="ghost intro" style="--d:6" href="#breathe"><i class="ph ph-wind"></i>or take a breather</a>
     </div>
   </header>
 
-  <main class="sheet">
-
-    <section class="block reveal" aria-labelledby="nextH">
-      <div class="block-head">
-        <h2 class="h2" id="nextH">Up next</h2>
-        <a class="more" href="#" data-soon="Bookings">All bookings <i class="ph ph-caret-right"></i></a>
+  <section class="section upnext reveal" aria-labelledby="nextH">
+    <div class="head">
+      <div><span class="eyebrow"><i class="ph ph-calendar-check"></i>Up next</span><h2 class="h2" id="nextH">Your next call</h2></div>
+      <a class="more" href="LISTENR-bookings.html">All <i class="ph ph-caret-right"></i></a>
+    </div>
+    <a class="next" href="LISTENR-bookings.html?open=next" aria-label="Open your next call">
+      <span class="avatar">AN</span>
+      <div>
+        <p class="next-name">Annanya Nair</p>
+        <p class="next-meta" id="nWhen">Thu 12 Nov · 8:00 – 8:45 am</p>
       </div>
-      <div class="next">
-        <div class="next-date"><span class="next-day" id="nDay">12</span><span class="next-mon" id="nMon">Thu · Nov</span></div>
-        <div>
-          <div class="who">
-            <span class="avatar">AN</span>
-            <div>
-              <p class="who-name">Annanya Nair</p>
-              <p class="who-meta"><i class="ph ph-clock"></i>8:00 – 8:45 am</p>
-              <p class="who-meta"><i class="ph ph-phone"></i>Voice call</p>
-            </div>
-          </div>
-          <p class="count"><span class="pulse"></span>Starts in <b id="nCount">2 days</b></p>
-        </div>
-      </div>
-      <div class="actions" data-stagger>
-        <button class="act primary" aria-disabled="true" data-msg="Join opens 10 minutes before the call" data-icon="phone"><span class="ring"><i class="ph-fill ph-phone"></i></span>Join</button>
-        <button class="act" data-msg="Rescheduling comes with the Bookings screen" data-icon="arrows-clockwise"><span class="ring"><i class="ph ph-arrows-clockwise"></i></span>Reschedule</button>
-        <button class="act" data-msg="Added to your calendar" data-icon="calendar-check"><span class="ring"><i class="ph ph-calendar-plus"></i></span>Calendar</button>
-        <button class="act" data-msg="A note to Annanya, before you talk" data-icon="note-pencil"><span class="ring"><i class="ph ph-note-pencil"></i></span>Add note</button>
-      </div>
-    </section>
+      <span class="when-tag"><span class="live"></span><span id="nCount">in 2 days</span></span>
+    </a>
+    <div class="row-actions">
+      <button class="pill join" aria-disabled="true" data-msg="Join opens 10 minutes before the call" data-icon="phone"><i class="ph ph-phone"></i>Join</button>
+      <a class="pill" href="LISTENR-book.html"><i class="ph ph-arrows-clockwise"></i>Reschedule</a>
+      <button class="pill" data-msg="Added to your calendar" data-icon="calendar-check"><i class="ph ph-calendar-plus"></i>Add to calendar</button>
+      <a class="pill" href="LISTENR-bookings.html?open=next"><i class="ph ph-note-pencil"></i>Note</a>
+    </div>
+  </section>
 
-    <div class="rule"></div>
+  <section class="section reveal" aria-labelledby="freeH">
+    <div class="head">
+      <div><span class="eyebrow"><i class="ph ph-users-three"></i>Listeners</span><h2 class="h2" id="freeH">Free today</h2></div>
+      <a class="more" href="LISTENR-listeners.html">All <i class="ph ph-caret-right"></i></a>
+    </div>
+    <div class="strip" id="strip"></div>
+  </section>
 
-    <section class="block reveal" aria-labelledby="freeH">
-      <div class="block-head">
-        <h2 class="h2" id="freeH">Free today</h2>
-        <a class="more" href="#" data-soon="Listeners">All listeners <i class="ph ph-caret-right"></i></a>
-      </div>
-      <div class="strip" id="strip"></div>
-    </section>
+  <section class="section" aria-labelledby="howH">
+    <span class="eyebrow reveal"><i class="ph ph-path"></i>How it works</span>
+    <h2 class="h2 reveal" id="howH">Lighter in three small steps</h2>
+    <ol class="flow" data-stagger>
+      <li class="reveal"><span class="ico"><i class="ph ph-calendar-check"></i></span><div><h3>Pick a time</h3><p>Any slot that feels right.</p></div></li>
+      <li class="reveal"><span class="ico"><i class="ph ph-handshake"></i></span><div><h3>We match you</h3><p>With the best listener free then.</p></div></li>
+      <li class="reveal"><span class="ico"><i class="ph ph-ear"></i></span><div><h3>Feel heard</h3><p>A private call, at your pace.</p></div></li>
+    </ol>
+  </section>
 
-    <div class="rule"></div>
+  <section class="reviews" aria-roledescription="carousel" aria-label="Anonymous reviews">
+    <span class="eyebrow reveal"><i class="ph ph-quotes"></i>Anonymous reviews</span>
+    <div class="quote-track">
+      <figure class="quote is-active"><blockquote>“Venting to a listener made me feel like someone heard me out.”</blockquote><cite>Career</cite></figure>
+      <figure class="quote"><blockquote>“No advice, no judgment. The knot finally loosened.”</blockquote><cite>Relationships</cite></figure>
+      <figure class="quote"><blockquote>“I left clearer than I’ve felt in weeks.”</blockquote><cite>Loneliness</cite></figure>
+    </div>
+    <div class="dots">
+      <button aria-label="Review 1" aria-current="true"></button>
+      <button aria-label="Review 2"></button>
+      <button aria-label="Review 3"></button>
+    </div>
+  </section>
 
-    <section class="block" aria-labelledby="howH">
-      <h2 class="h2 reveal" id="howH">Lighter in three small steps</h2>
-      <ol class="flow" data-stagger>
-        <li class="reveal">
-          <span class="ico"><i class="ph-duotone ph-calendar-check"></i></span>
-          <div><h3>Pick a time</h3><p>Choose a slot that feels right. Tonight, or next week.</p></div>
-        </li>
-        <li class="reveal">
-          <span class="ico"><i class="ph-duotone ph-handshake"></i></span>
-          <div><h3>We match you</h3><p>We pair you with the best listener free in that slot, or pick one yourself.</p></div>
-        </li>
-        <li class="reveal">
-          <span class="ico"><i class="ph-duotone ph-ear"></i></span>
-          <div><h3>Feel heard</h3><p>Join a private call and let some of the weight off your shoulders.</p></div>
-        </li>
-      </ol>
-    </section>
+  <section class="section topics" aria-labelledby="aloneH">
+    <span class="eyebrow reveal"><i class="ph ph-hand-heart"></i>You are not alone</span>
+    <h2 class="h2 reveal" id="aloneH">Whatever you’re carrying, it’s okay</h2>
+    <div class="chips" role="group" aria-label="Topics" data-stagger>
+      <button class="pill chip reveal" aria-pressed="true" data-note="Deadlines, expectations, the next step. Talk it through before it piles up."><i class="ph ph-briefcase"></i>Career</button>
+      <button class="pill chip reveal" aria-pressed="false" data-note="When the room feels quiet, a voice on the other end can help."><i class="ph ph-moon-stars"></i>Loneliness</button>
+      <button class="pill chip reveal" aria-pressed="false" data-note="Partners, family, friends. Untangle what’s hard to say out loud."><i class="ph ph-heart"></i>Relationships</button>
+      <button class="pill chip reveal" aria-pressed="false" data-note="No topic is too small. If it’s on your mind, it’s worth saying."><i class="ph ph-leaf"></i>Anything else</button>
+    </div>
+    <p class="chip-note" id="chipNote">Deadlines, expectations, the next step. Talk it through before it piles up.</p>
+  </section>
 
-    <section class="block reviews reveal" aria-roledescription="carousel" aria-label="Anonymous reviews">
-      <i class="ph-fill ph-quotes qmark"></i>
-      <div class="quote-track">
-        <figure class="quote is-active">
-          <blockquote>Venting out my stress to a listener made me feel like someone heard me out.</blockquote>
-          <cite><i class="ph-fill ph-seal-check"></i>Anonymous · Career</cite>
-        </figure>
-        <figure class="quote">
-          <blockquote>No advice, no judgment. I just talked, and the knot finally loosened.</blockquote>
-          <cite><i class="ph-fill ph-seal-check"></i>Anonymous · Relationships</cite>
-        </figure>
-        <figure class="quote">
-          <blockquote>I left the call clearer than I’ve felt in weeks.</blockquote>
-          <cite><i class="ph-fill ph-seal-check"></i>Anonymous · Loneliness</cite>
-        </figure>
-      </div>
-      <div class="dots">
-        <button aria-label="Review 1" aria-current="true"></button>
-        <button aria-label="Review 2"></button>
-        <button aria-label="Review 3"></button>
-      </div>
-    </section>
+  <section class="breathe" id="breathe" aria-labelledby="breatheH">
+    <span class="eyebrow reveal"><i class="ph ph-wind"></i>Breathe</span>
+    <h2 class="h2 reveal" id="breatheH">It’s alright. Everything is alright.</h2>
+    <div class="orb" id="orb" aria-live="polite"><span class="orb-label" id="orbLabel">Ready</span></div>
+    <button class="pill on-color" id="breatheBtn"><i class="ph ph-play"></i><span>Start breathing</span></button>
+  </section>
 
-    <section class="block" aria-labelledby="aloneH">
-      <h2 class="h2 reveal" id="aloneH">Whatever you’re carrying, it’s okay</h2>
-      <p class="lede reveal">Lost, tired, confused, or just heavy. We listen without pushing, judging, or trying to fix you.</p>
-      <div class="chips" role="group" aria-label="Topics" data-stagger>
-        <button class="chip reveal" aria-pressed="true" data-note="Deadlines, expectations, the next step. Talk it through before it piles up."><i class="ph ph-briefcase"></i>Career &amp; pressure</button>
-        <button class="chip reveal" aria-pressed="false" data-note="When the room feels quiet, a voice on the other end can help."><i class="ph ph-moon-stars"></i>Loneliness</button>
-        <button class="chip reveal" aria-pressed="false" data-note="Partners, family, friends. Untangle what’s hard to say out loud."><i class="ph ph-heart"></i>Relationships</button>
-        <button class="chip reveal" aria-pressed="false" data-note="No topic is too small. If it’s on your mind, it’s worth saying."><i class="ph ph-leaf"></i>Anything else</button>
-      </div>
-      <p class="chip-note" id="chipNote">Deadlines, expectations, the next step. Talk it through before it piles up.</p>
-    </section>
+  <section class="section faq" aria-labelledby="faqH">
+    <span class="eyebrow reveal"><i class="ph ph-question"></i>FAQ</span>
+    <h2 class="h2 reveal" id="faqH">Questions</h2>
+    <div class="faq-list">
+      <details class="reveal" open>
+        <summary>What does a session feel like? <i class="ph ph-plus"></i></summary>
+        <div class="answer">You do most of the talking. Your listener doesn’t give advice; they help you untangle your thoughts.</div>
+      </details>
+      <details class="reveal">
+        <summary>How many sessions do I need? <i class="ph ph-plus"></i></summary>
+        <div class="answer">As many or as few as you like.</div>
+      </details>
+      <details class="reveal">
+        <summary>Are sessions confidential? <i class="ph ph-plus"></i></summary>
+        <div class="answer">Yes. Calls are private and never recorded.</div>
+      </details>
+      <details class="reveal">
+        <summary>Is this therapy? <i class="ph ph-plus"></i></summary>
+        <div class="answer">No. Listening sessions don’t diagnose or treat. They give you room to be heard.</div>
+      </details>
+    </div>
+  </section>
 
-    <section class="block breathe" id="breathe" aria-labelledby="breatheH">
-      <h2 class="h2 reveal" id="breatheH">It’s alright. Everything is alright.</h2>
-      <p class="lede reveal">Take one slow breath with us.</p>
-      <div class="orb" id="orb" aria-live="polite"><span class="orb-label" id="orbLabel">Ready</span></div>
-      <button class="soft-btn" id="breatheBtn"><i class="ph ph-wind"></i><span>Start breathing</span></button>
-    </section>
-
-    <section class="block faq" aria-labelledby="faqH">
-      <h2 class="h2 reveal" id="faqH">Questions, answered gently</h2>
-      <div class="faq-list">
-        <details class="reveal" open>
-          <summary>What does a session feel like? <i class="ph ph-plus"></i></summary>
-          <div class="answer">You do about 80% of the talking. Your listener doesn’t interrupt with advice or their own stories; they help you untangle your thoughts, so you leave clearer and lighter.</div>
-        </details>
-        <details class="reveal">
-          <summary>How many sessions do I need? <i class="ph ph-plus"></i></summary>
-          <div class="answer">As many or as few as you like. Many people book one when something feels heavy.</div>
-        </details>
-        <details class="reveal">
-          <summary>Are sessions confidential? <i class="ph ph-plus"></i></summary>
-          <div class="answer">Yes. Calls are private and never recorded. Placeholder copy for the prototype.</div>
-        </details>
-        <details class="reveal">
-          <summary>How is it different from therapy? <i class="ph ph-plus"></i></summary>
-          <div class="answer">Listening sessions don’t diagnose or treat. They give you room to be heard. Placeholder copy for the prototype.</div>
-        </details>
-      </div>
-    </section>
-
-    <p class="crisis reveal"><i class="ph-duotone ph-lifebuoy"></i><span>Listenr isn’t an emergency service. If you’re in crisis, call <a href="tel:112">112</a> or Tele-MANAS <a href="tel:14416">14416</a>, any time.</span></p>
-    <p class="fine">UI prototype · © 2025–26 Listenr</p>
-  </main>
+  <p class="crisis reveal"><i class="ph ph-lifebuoy"></i><span>Not an emergency service. In crisis, call <a href="tel:112">112</a> or Tele-MANAS <a href="tel:14416">14416</a>.</span></p>
+  <p class="fine">UI prototype · © 2025–26 Listenr</p>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
@@ -471,6 +338,7 @@
   const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   const now = new Date();
+  const initials = n => n.split(' ').map(w => w[0]).join('');
 
   // Greeting by time of day
   const hr = now.getHours();
@@ -480,7 +348,7 @@
 
   // App bar firms up once it leaves the hero
   const appbar = document.getElementById('appbar');
-  new IntersectionObserver(([e]) => appbar.classList.toggle('scrolled', !e.isIntersecting), { rootMargin: '-90px 0px 0px 0px' })
+  new IntersectionObserver(([e]) => appbar.classList.toggle('scrolled', !e.isIntersecting), { rootMargin: '-80px 0px 0px 0px' })
     .observe(document.querySelector('.hero'));
   document.getElementById('bell').addEventListener('click', () => toast('Annanya confirmed your call', 'bell'));
 
@@ -497,52 +365,48 @@
 
   // Up next: a call two days out, with a live countdown
   const call = new Date(now); call.setDate(call.getDate() + 2); call.setHours(8, 0, 0, 0);
-  document.getElementById('nDay').textContent = call.getDate();
-  document.getElementById('nMon').textContent = `${DAYS[call.getDay()]} · ${MONTHS[call.getMonth()]}`;
+  document.getElementById('nWhen').textContent = `${DAYS[call.getDay()]} ${call.getDate()} ${MONTHS[call.getMonth()]} · 8:00 – 8:45 am`;
   function countdown() {
     const m = Math.max(0, Math.round((call - Date.now()) / 60000));
     const d = Math.floor(m / 1440), h = Math.floor((m % 1440) / 60), mm = m % 60;
-    document.getElementById('nCount').textContent = d ? `${d} day${d > 1 ? 's' : ''} ${h} h` : h ? `${h} h ${mm} min` : `${mm} min`;
+    document.getElementById('nCount').textContent = 'in ' + (d ? `${d}d ${h}h` : h ? `${h}h ${mm}m` : `${mm} min`);
   }
   countdown(); setInterval(countdown, 30000);
-  document.querySelectorAll('.act').forEach(b => b.addEventListener('click', () => toast(b.dataset.msg, b.dataset.icon)));
+  document.querySelectorAll('.row-actions button.pill').forEach(b => b.addEventListener('click', () => toast(b.dataset.msg, b.dataset.icon)));
   document.querySelectorAll('[data-soon]').forEach(a => a.addEventListener('click', e => {
     e.preventDefault(); toast(`${a.dataset.soon} is the next screen we build`, 'sparkle');
   }));
 
-  // Free today
-  const PEOPLE = [
-    ['Kavya Iyer', ['#f4b98c', '#c9643a'], true],
-    ['Rohan Mehta', ['#e9b48a', '#a85a3a'], false],
-    ['Diya Sharma', ['#f8b07a', '#e0602a'], true],
-    ['Tara Menon', ['#f2bf98', '#c86b40'], false],
-    ['Kabir Joshi', ['#e0a172', '#a24d26'], true],
-    ['Sana Qureshi', ['#f5b688', '#cf5d2c'], false],
-  ];
-  // Next slots from the coming hour; late in the evening the strip rolls over to tomorrow
+  // Free today: next slots from the coming hour; late in the evening it rolls over to tomorrow
+  const PEOPLE = [['Kavya Iyer', true], ['Rohan Mehta', false], ['Diya Sharma', true], ['Tara Menon', false], ['Kabir Joshi', true], ['Sana Qureshi', false]];
   const base = new Date(now); base.setMinutes(base.getMinutes() < 30 ? 30 : 60, 0, 0); base.setHours(Math.max(base.getHours() + 1, 9));
-  const tomorrow = base.getHours() >= 18 || base.getDate() !== now.getDate();
-  if (tomorrow) {
+  if (base.getHours() >= 18 || base.getDate() !== now.getDate()) {
     base.setTime(now.getTime()); base.setDate(now.getDate() + 1); base.setHours(9, 0, 0, 0);
     document.getElementById('freeH').textContent = 'Free tomorrow';
   }
   const fmt = d => `${d.getHours() % 12 || 12}:${String(d.getMinutes()).padStart(2, '0')} ${d.getHours() < 12 ? 'am' : 'pm'}`;
-  document.getElementById('strip').replaceChildren(...PEOPLE.map(([name, [a, b], online], i) => {
+  // Saved listeners are shared with the Listeners screen
+  let favs = new Set();
+  try { favs = new Set(JSON.parse(localStorage.getItem('listenr-favs') || '[]')); } catch {}
+  document.getElementById('strip').replaceChildren(...PEOPLE.map(([name, online], i) => {
     const slot = new Date(base.getTime() + i * 45 * 60000);
+    const id = name.toLowerCase().replace(/\s+/g, '-');
     const el = document.createElement('div');
     el.className = 'person';
     el.innerHTML = `
-      <a href="LISTENR-book.html" aria-label="Book ${name}">
-        <span class="avatar" style="--bg: linear-gradient(145deg, ${a}, ${b})">${name.split(' ').map(w => w[0]).join('')}</span>
+      <a href="LISTENR-listeners.html?open=${id}" aria-label="${name}">
+        <span class="avatar">${initials(name)}</span>
         ${online ? '<span class="online" title="Online now"></span>' : ''}
         <span class="p-name">${name.split(' ')[0]}</span>
-        <span class="p-slot"><i class="ph ph-clock"></i>${fmt(slot)}</span>
+        <span class="p-slot">${fmt(slot)}</span>
       </a>
-      <button class="fav" aria-pressed="false" aria-label="Save ${name}"><i class="ph ph-heart"></i><i class="ph-fill ph-heart"></i></button>`;
+      <button class="fav" aria-pressed="${favs.has(id)}" aria-label="Save ${name}"><i class="ph ph-heart"></i><i class="ph-fill ph-heart"></i></button>`;
     const fav = el.querySelector('.fav');
     fav.addEventListener('click', () => {
       const on = fav.getAttribute('aria-pressed') !== 'true';
-      fav.setAttribute('aria-pressed', on);
+      fav.setAttribute("aria-pressed", on);
+      on ? favs.add(id) : favs.delete(id);
+      try { localStorage.setItem("listenr-favs", JSON.stringify([...favs])); } catch {}
       fav.classList.remove('pop'); fav.offsetWidth; fav.classList.add('pop');
       toast(on ? `${name.split(' ')[0]} saved to favourites` : `Removed ${name.split(' ')[0]}`, 'heart');
     });
@@ -606,7 +470,7 @@
     if (bTimer) {
       clearInterval(bTimer); bTimer = null;
       orb.classList.remove('inhale'); setLabel('Ready');
-      btn.innerHTML = '<i class="ph ph-wind"></i><span>Start breathing</span>';
+      btn.innerHTML = '<i class="ph ph-play"></i><span>Start breathing</span>';
       return;
     }
     let inhale = true;

@@ -1,0 +1,587 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#9dbbdb">
+<title>Listenr · Listeners</title>
+<meta name="description" content="UI prototype: find a listener by voice, topic and language.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;500;700&family=Atkinson+Hyperlegible:wght@400;700&family=Lora:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<link rel="stylesheet" href="listenr-app.css">
+<style>
+  /* ---------- Header band ---------- */
+  .band {
+    position: relative;
+    padding: calc(84px + var(--safe-t)) 20px 72px;
+    color: #fff;
+    background:
+      radial-gradient(90% 70% at 90% 0%, rgba(255, 228, 238, .7) 0%, rgba(255, 228, 238,0) 70%),
+      linear-gradient(180deg, #efc0d0 0%, #5f9cc2 55%, #a9c4dc 74%, #e3e9f2 88%, var(--cream) 100%);
+  }
+  .band h1 { font-family: "Lora", Georgia, serif; font-size: 30px; line-height: 1.15; font-weight: 600; }
+  .band .sub { margin-top: 4px; font-size: 14px; color: rgba(255,255,255,.9); display: flex; align-items: center; gap: 6px; }
+
+  /* ---------- Search + filters ---------- */
+  .tools { padding: 0 20px; margin-top: -30px; }
+  .search {
+    height: 46px;
+    display: flex; align-items: center; gap: 10px;
+    padding: 0 8px 0 16px;
+    border-radius: 999px;
+    background: #fff;
+    border: 1px solid var(--line);
+    transition: border-color .8s var(--ease);
+  }
+  .search:focus-within { border-color: var(--pink); }
+  .search i { font-size: 18px; color: var(--ink-soft); }
+  .search input { flex: 1; min-width: 0; border: 0; background: none; font: inherit; font-size: 15px; color: var(--ink); }
+  .search input::placeholder { color: var(--ink-faint); }
+  .search .clear { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; opacity: 0; pointer-events: none; transition: opacity .5s var(--ease-soft); }
+  .search.has .clear { opacity: 1; pointer-events: auto; }
+  .chips { display: flex; gap: 6px; margin: 12px -20px 0; padding: 0 20px 2px; overflow-x: auto; scrollbar-width: none; }
+  .chips::-webkit-scrollbar { display: none; }
+  .chips .pill { height: 34px; padding: 0 12px 0 10px; font-size: 13px; background: #fff; border-color: var(--line); flex: none; }
+  .chips .pill i { font-size: 15px; color: var(--pink-deep); }
+  .chips .pill[aria-pressed="true"] { background: var(--pink-deep); border-color: var(--pink-deep); color: #fff; }
+  .chips .pill[aria-pressed="true"] i { color: #fff; }
+  .chips .div { flex: none; width: 1px; margin: 6px 2px; background: var(--line); }
+  .tools-row { padding: 0 20px; }
+  .count-row { display: flex; justify-content: space-between; align-items: center; margin-top: 18px; font-size: 13px; color: var(--ink-soft); }
+  .sort { display: inline-flex; align-items: center; gap: 5px; color: var(--ink); }
+  .sort i { font-size: 15px; color: var(--pink-deep); }
+
+  /* ---------- Favourites strip ---------- */
+  .favs { padding: 0 20px; overflow: hidden; transition: opacity .6s var(--ease-soft); }
+  .favs-row { display: flex; gap: 14px; margin: 10px -20px 0; padding: 0 20px 4px; overflow-x: auto; scrollbar-width: none; }
+  .favs-row::-webkit-scrollbar { display: none; }
+  .favs-row button { flex: none; width: 52px; text-align: center; font-size: 12px; }
+  .favs-row .avatar { width: 48px; height: 48px; margin: 0 auto 4px; box-shadow: 0 0 0 2px var(--cream), 0 0 0 3px var(--sea); }
+  .label { margin-top: 22px; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); }
+
+  /* ---------- List ---------- */
+  .list { list-style: none; padding: 0 20px; }
+  .lrow { position: relative; padding: 16px 0; border-bottom: 1px solid var(--line); }
+  .lmain { width: 100%; display: grid; grid-template-columns: 52px 1fr; gap: 12px; text-align: left; padding-right: 36px; }
+  .lmain:active { opacity: .6; }
+  .av-wrap { position: relative; }
+  .av-wrap .avatar { width: 52px; height: 52px; font-size: 16px; }
+  .online { position: absolute; top: 40px; left: 40px; width: 12px; height: 12px; border-radius: 50%; background: var(--pink-deep); border: 2px solid var(--cream); }
+  .lname { font-weight: 700; font-size: 16px; }
+  .ltag { font-size: 13px; color: var(--ink-soft); }
+  .lmeta { margin-top: 3px; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; font-size: 12px; color: var(--ink-soft); }
+  .lmeta span { display: inline-flex; align-items: center; gap: 3px; }
+  .lmeta .ph-fill.ph-star { color: var(--sea); }
+  .lmeta .free.today { color: var(--pink-deep); font-weight: 500; }
+  .lrow > .fav {
+    position: absolute; top: 14px; right: 0;
+    width: 34px; height: 34px; border-radius: 50%;
+    display: grid; place-items: center;
+    font-size: 18px; color: var(--ink-soft);
+  }
+  .fav i { grid-area: 1 / 1; transition: opacity .4s var(--ease-soft), transform .8s var(--ease); }
+  .fav .ph-fill { color: var(--sea); opacity: 0; transform: scale(.4); }
+  .fav[aria-pressed="true"] .ph { opacity: 0; }
+  .fav[aria-pressed="true"] .ph-fill { opacity: 1; transform: none; }
+  .fav.pop { animation: pop .7s var(--ease); }
+  @keyframes pop { 30% { transform: scale(1.3); } }
+  .lfoot { display: flex; align-items: center; gap: 10px; margin-top: 10px; padding-left: 64px; }
+  .tag { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; padding: 4px 9px; border-radius: 999px; white-space: nowrap; }
+  .tag.pink { color: var(--pink-deep); background: var(--pink-soft); }
+  .tag.grey { color: var(--ink-soft); background: #eceef3; }
+
+  /* ---------- Voice player ---------- */
+  .voice { flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px; }
+  .play {
+    flex: none;
+    width: 34px; height: 34px; border-radius: 50%;
+    display: grid; place-items: center;
+    font-size: 14px;
+    color: var(--pink-deep);
+    background: var(--pink-soft);
+    transition: background .8s var(--ease), color .8s var(--ease), transform .8s var(--ease);
+  }
+  .play i { grid-area: 1 / 1; transition: opacity .3s var(--ease-soft), transform .6s var(--ease); }
+  .play .ph-pause { opacity: 0; transform: scale(.5); }
+  .voice.playing .play { background: var(--pink-deep); color: #fff; }
+  .voice.playing .play .ph-play { opacity: 0; transform: scale(.5); }
+  .voice.playing .play .ph-pause { opacity: 1; transform: none; }
+  .play:active { transform: scale(.9); transition-duration: .2s; }
+  .wave { flex: 1; min-width: 0; height: 26px; display: flex; align-items: center; gap: 2px; overflow: hidden; }
+  .bar { flex: 1; max-width: 3px; min-width: 2px; height: calc(var(--h) * 100%); border-radius: 2px; background: var(--ink-faint); transition: background .3s var(--ease-soft); transform-origin: center; }
+  .bar.on { background: var(--pink-deep); }
+  .voice.playing .bar { animation: wob .9s var(--ease-soft) infinite alternate; animation-delay: calc(var(--i) * -70ms); }
+  @keyframes wob { from { transform: scaleY(.7); } to { transform: scaleY(1.08); } }
+  .dur { flex: none; font-size: 12px; color: var(--ink-soft); font-variant-numeric: tabular-nums; min-width: 30px; }
+
+  .empty { text-align: center; padding: 40px 20px 0; color: var(--ink-soft); }
+  .empty i { font-size: 36px; color: var(--pink); }
+  .empty .pill { margin-top: 14px; background: #fff; border-color: var(--line); color: var(--ink); }
+  .fine { padding: 28px 20px calc(var(--tabbar-h) + 40px + var(--safe-b)); font-size: 11px; color: var(--ink-faint); text-align: center; }
+
+  /* ---------- Profile sheet ---------- */
+  .p-head { display: flex; align-items: center; gap: 14px; margin-top: 8px; padding-right: 40px; }
+  .p-head .av-wrap .avatar { width: 68px; height: 68px; font-size: 20px; }
+  .p-head .online { top: 52px; left: 52px; }
+  .p-head h2 { font-family: "Lora", Georgia, serif; font-size: 22px; font-weight: 600; line-height: 1.2; }
+  .p-head p { font-size: 13px; color: var(--ink-soft); }
+  .p-voice { margin-top: 18px; padding: 12px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .p-voice .cap { font-size: 12px; color: var(--ink-soft); margin-bottom: 8px; display: flex; align-items: center; gap: 5px; }
+  .p-voice .cap i { color: var(--pink-deep); font-size: 14px; }
+  .p-voice .play { width: 44px; height: 44px; font-size: 18px; }
+  .p-voice .wave { height: 34px; }
+  .p-stats { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 16px; text-align: center; }
+  .p-stats b { display: block; font-family: "Lora", Georgia, serif; font-size: 20px; font-weight: 600; }
+  .p-stats span { font-size: 12px; color: var(--ink-soft); }
+  .p-stats > div + div { border-left: 1px solid var(--line); }
+  .p-sec { margin-top: 20px; }
+  .p-sec h3 { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+  .p-sec p { font-size: 14px; color: var(--ink-soft); }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .traits { list-style: none; }
+  .traits li { display: flex; align-items: center; gap: 10px; padding: 6px 0; font-size: 14px; }
+  .traits i { font-size: 18px; color: var(--pink-deep); }
+  .reviews blockquote { font-family: "Lora", Georgia, serif; font-size: 15px; line-height: 1.4; padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .reviews blockquote:last-child { border-bottom: 0; }
+  .reviews cite { display: block; margin-top: 2px; font-family: "Atkinson Hyperlegible Next", sans-serif; font-style: normal; font-size: 12px; color: var(--ink-soft); }
+  .slots { display: flex; gap: 6px; flex-wrap: wrap; }
+  .slots .pill { height: 36px; font-size: 13px; background: #fff; border-color: var(--line); }
+  .p-actions { display: flex; gap: 8px; margin-top: 22px; }
+  .p-actions .pill { background: #fff; border-color: var(--line); }
+  .p-actions .pill.primary { flex: 1; justify-content: center; background: var(--sea); border-color: var(--sea); color: #fff; }
+  .p-actions .fav { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font-size: 18px; background: #fff; border: 1px solid var(--line); color: var(--ink-soft); }
+</style>
+</head>
+<body data-tab="listeners">
+<div class="app">
+
+  <div class="appbar" id="appbar">
+    <a class="round intro" href="LISTENR.html" aria-label="Listenr home"><span class="logo-mark"></span></a>
+    <button class="round intro" style="--d:1" id="bell" aria-label="Notifications, 1 new"><i class="ph ph-bell"></i><span class="dot"></span></button>
+  </div>
+
+  <header class="band" id="band">
+    <h1 class="intro" style="--d:2">Listeners</h1>
+    <p class="sub intro" style="--d:3"><i class="ph ph-waveform"></i><span id="summary">Hear them before you book</span></p>
+  </header>
+
+  <section class="tools intro" style="--d:4">
+    <label class="search" id="searchBox">
+      <i class="ph ph-magnifying-glass"></i>
+      <input id="q" type="search" placeholder="Name, topic or language" autocomplete="off" aria-label="Search listeners">
+      <button class="clear" id="clearQ" aria-label="Clear search"><i class="ph ph-x"></i></button>
+    </label>
+    <div class="chips" id="chips" role="group" aria-label="Filters">
+      <button class="pill" aria-pressed="false" data-f="today"><i class="ph ph-clock"></i>Free today</button>
+      <button class="pill" aria-pressed="false" data-f="online"><i class="ph ph-circle"></i>Online now</button>
+      <button class="pill" aria-pressed="false" data-f="fav"><i class="ph ph-heart"></i>Saved</button>
+      <span class="div"></span>
+      <button class="pill" aria-pressed="false" data-t="Career"><i class="ph ph-briefcase"></i>Career</button>
+      <button class="pill" aria-pressed="false" data-t="Relationships"><i class="ph ph-heart"></i>Relationships</button>
+      <button class="pill" aria-pressed="false" data-t="Loneliness"><i class="ph ph-moon-stars"></i>Loneliness</button>
+      <button class="pill" aria-pressed="false" data-t="Grief"><i class="ph ph-flower-lotus"></i>Grief</button>
+      <button class="pill" aria-pressed="false" data-t="Students"><i class="ph ph-student"></i>Students</button>
+      <button class="pill" aria-pressed="false" data-t="Family"><i class="ph ph-users"></i>Family</button>
+    </div>
+  </section>
+
+  <section class="favs" id="favs" aria-label="Saved listeners"></section>
+
+  <section class="tools-row">
+    <div class="count-row"><span id="count"></span><button class="sort" id="sort"><i class="ph ph-arrows-down-up"></i><span id="sortLabel">Soonest free</span></button></div>
+  </section>
+  <ul class="list" id="list"></ul>
+  <p class="fine">UI prototype · listeners are made up · voices use your device’s speech</p>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<section class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="pName">
+  <div class="grab" id="grab"></div>
+  <button class="close" id="close" aria-label="Close"><i class="ph ph-x"></i></button>
+  <div class="sheet-body" id="sheetBody" data-lenis-prevent></div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script src="listenr-app.js"></script>
+<script>
+  const { lenis, toast, reduceMotion, afterAnim } = window.Listenr;
+  const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const initials = n => n.split(' ').map(w => w[0]).join('');
+  const first = n => n.split(' ')[0];
+  const now = new Date();
+
+  /* ---------- Data (made up for the prototype) ---------- */
+  // [name, voice pitch, tagline, languages, topics, rating, calls, years, online, free in (hours), bio, traits, reviews, intro]
+  const RAW = [
+    ['Annanya Nair', 1.1, 'Calm for busy minds', ['English', 'Malayalam'], ['Career', 'Students'], 4.9, 214, 3, true, 2,
+      'Spent years in fast-paced offices and knows how heavy deadlines can feel. Patient with long pauses.',
+      [['hourglass-medium', 'Comfortable with silence'], ['sun', 'Mornings and lunch hours'], ['chat-teardrop-dots', 'Gentle questions, no advice']],
+      [['I finally said what I’d been holding for months.', 'Career'], ['She never rushed me.', 'Students']],
+      'Hi, I’m Annanya. I’m here to listen, not to fix. Take all the time you need.'],
+    ['Rohan Mehta', 0.85, 'Steady, unhurried', ['English', 'Hindi', 'Gujarati'], ['Relationships', 'Family'], 4.8, 167, 2, false, 5,
+      'A good listener for when family or relationships feel tangled. Lets you lead.',
+      [['users', 'Family and partner stuff'], ['moon', 'Evenings'], ['coffee', 'Easy, warm tone']],
+      [['Felt like talking to an old friend.', 'Family'], ['Helped me hear myself.', 'Relationships']],
+      'Hey, Rohan here. Whatever’s going on at home or in your heart, you can say it here.'],
+    ['Kavya Iyer', 1.2, 'Good company at night', ['English', 'Tamil'], ['Loneliness', 'Anything else'], 4.9, 302, 4, true, 1,
+      'A night owl who loves late, quiet conversations. Nothing is too small to bring.',
+      [['moon-stars', 'Free late at night'], ['hourglass-medium', 'Never rushes'], ['heart', 'Warm and soft-spoken']],
+      [['I didn’t feel alone at 11 pm anymore.', 'Loneliness'], ['Such a soothing voice.', 'Anything else']],
+      'Hi, I’m Kavya. Late nights can feel long. I’m happy to sit with you through them.'],
+    ['Arjun Rao', 0.8, 'Straightforward, kind', ['English', 'Telugu', 'Hindi'], ['Career', 'Students'], 4.7, 98, 1, false, 22,
+      'Former coach who listens well to people under pressure, especially students.',
+      [['student', 'Exams and first jobs'], ['sun', 'Weekend mornings'], ['chat-teardrop-dots', 'Clear and calm']],
+      [['Made exam stress feel smaller.', 'Students'], ['Very grounding.', 'Career']],
+      'Hi, I’m Arjun. Pressure is real. Let’s slow it down together.'],
+    ['Meera Pillai', 1.15, 'Gentle with family things', ['English', 'Malayalam', 'Hindi'], ['Family', 'Grief'], 5.0, 141, 3, false, 26,
+      'Listens with care to grief and family changes. Unhurried and very present.',
+      [['flower-lotus', 'Grief and loss'], ['hourglass-medium', 'Long pauses welcome'], ['sun-horizon', 'Afternoons']],
+      [['She made space for my grief.', 'Grief'], ['So gentle.', 'Family']],
+      'Hello, I’m Meera. If you’re carrying a loss or a change, I’m here to hear it.'],
+    ['Diya Sharma', 1.25, 'Bright, easy to talk to', ['English', 'Hindi'], ['Anything else', 'Relationships'], 4.8, 188, 2, true, 3,
+      'Easy to open up to. Good for when you just need to vent and be heard.',
+      [['chat-teardrop-dots', 'Great for venting'], ['moon', 'Evenings'], ['heart', 'Upbeat but never pushy']],
+      [['Vented for 40 minutes and felt so light.', 'Anything else'], ['Easy to talk to.', 'Relationships']],
+      'Hey! I’m Diya. Vent, ramble, go in circles. I’m listening.'],
+    ['Tara Menon', 1.05, 'Quiet and thoughtful', ['English', 'Malayalam'], ['Grief', 'Loneliness'], 4.9, 120, 3, false, 28,
+      'Thoughtful and quiet. Many come to her after a loss or a big change.',
+      [['flower-lotus', 'Loss and big changes'], ['hourglass-medium', 'Lets silence be'], ['moon', 'Late evenings']],
+      [['I cried and it was okay.', 'Grief'], ['Very thoughtful.', 'Loneliness']],
+      'Hi, I’m Tara. You don’t have to have the words ready. We can find them slowly.'],
+    ['Kabir Joshi', 0.9, 'Easygoing, honest', ['English', 'Hindi', 'Marathi'], ['Relationships', 'Career'], 4.7, 133, 2, true, 4,
+      'Easygoing and honest. Good for big decisions you need to talk out loud.',
+      [['arrows-down-up', 'Thinking out loud'], ['moon', 'After work'], ['coffee', 'Relaxed pace']],
+      [['Helped me untangle a big decision.', 'Career'], ['Chill and kind.', 'Relationships']],
+      'Hi, Kabir here. Big decision, small worry, it all counts. Let’s talk it out.'],
+    ['Sana Qureshi', 1.1, 'Soft-spoken and warm', ['English', 'Hindi', 'Urdu'], ['Loneliness', 'Family'], 4.9, 176, 3, false, 6,
+      'Soft-spoken and warm. People say she makes the room feel less empty.',
+      [['heart', 'Very warm'], ['moon-stars', 'Late nights'], ['hourglass-medium', 'Never rushes']],
+      [['Felt less alone after.', 'Loneliness'], ['Such a kind person.', 'Family']],
+      'Hello, I’m Sana. When it feels quiet and heavy, I’d love to keep you company.'],
+    ['Vikram Bose', 0.82, 'Grounded and patient', ['English', 'Bengali', 'Hindi'], ['Career', 'Grief'], 4.8, 89, 1, false, 30,
+      'Grounded and patient. Comfortable with heavy topics and long silences.',
+      [['hourglass-medium', 'Long silences are fine'], ['sun', 'Mornings'], ['chat-teardrop-dots', 'Few words, full attention']],
+      [['Very grounding presence.', 'Grief'], ['Listened properly.', 'Career']],
+      'Hi, I’m Vikram. No rush, no judgment. Start wherever you like.'],
+  ];
+  const L = RAW.map(([name, pitch, tagline, langs, topics, rating, calls, years, online, freeIn, bio, traits, reviews, intro]) => {
+    const free = new Date(now.getTime() + freeIn * 36e5);
+    free.setMinutes(free.getMinutes() < 30 ? 30 : 60, 0, 0);
+    if (free.getHours() >= 22) { free.setDate(free.getDate() + 1); free.setHours(9, 0, 0, 0); }
+    if (free.getHours() < 7) free.setHours(9, 0, 0, 0);
+    return { id: name.toLowerCase().replace(/\s+/g, '-'), name, pitch, tagline, langs, topics, rating, calls, years, online, free, bio, traits, reviews, intro };
+  });
+
+  let favs = new Set();
+  try { favs = new Set(JSON.parse(localStorage.getItem('listenr-favs') || '[]')); } catch {}
+  const saveFavs = () => { try { localStorage.setItem('listenr-favs', JSON.stringify([...favs])); } catch {} };
+
+  const fmtT = d => `${d.getHours() % 12 || 12}:${String(d.getMinutes()).padStart(2, '0')} ${d.getHours() < 12 ? 'am' : 'pm'}`;
+  function freeLabel(d) {
+    const day = new Date(d); day.setHours(0, 0, 0, 0);
+    const today = new Date(now); today.setHours(0, 0, 0, 0);
+    const diff = Math.round((day - today) / 864e5);
+    return `${diff === 0 ? 'Today' : diff === 1 ? 'Tomorrow' : DAYS[d.getDay()]} ${fmtT(d)}`;
+  }
+  const isToday = d => d.toDateString() === now.toDateString();
+  const bookHref = l => `LISTENR-book.html?listener=${encodeURIComponent(l.name)}`;
+
+  /* ---------- Voice intros ----------
+     Real recordings would go here. For the prototype the device's speech engine reads each intro,
+     with pitch and pace tuned per listener; the waveform tracks progress either way. */
+  const BARS = 34;
+  function bars(seed) {
+    let s = [...seed].reduce((a, c) => a * 31 + c.charCodeAt(0), 7) >>> 0;
+    return Array.from({ length: BARS }, (_, i) => {
+      s = (s * 1664525 + 1013904223) >>> 0;
+      const env = Math.sin(Math.PI * (i + 1) / (BARS + 1)) * .55 + .45;
+      return (.25 + (s / 4294967296) * .75) * env;
+    });
+  }
+  const estSecs = l => Math.max(6, Math.round(l.intro.split(' ').length / 2.3));
+  const fmtDur = s => `0:${String(s).padStart(2, '0')}`;
+  function voiceHTML(l) {
+    return `<div class="voice" data-voice="${l.id}">
+      <button class="play" aria-label="Play ${first(l.name)}’s voice intro"><i class="ph-fill ph-play"></i><i class="ph-fill ph-pause"></i></button>
+      <span class="wave" aria-hidden="true">${bars(l.name).map((h, i) => `<span class="bar" style="--h:${h.toFixed(2)};--i:${i}"></span>`).join('')}</span>
+      <span class="dur">${fmtDur(estSecs(l))}</span>
+    </div>`;
+  }
+
+  const synth = window.speechSynthesis;
+  let voices = [];
+  const loadVoices = () => { voices = synth ? synth.getVoices() : []; };
+  loadVoices();
+  synth?.addEventListener?.('voiceschanged', loadVoices);
+  // Match voice gender to the listener (pitch > 1 marks the women in the data),
+  // preferring Indian English voices (Heera/Ravi on Windows, Google en-IN on Android)
+  const FEMALE = /female|woman|heera|veena|neerja|zira|aria|jenny|samantha|susan|hazel|libby|sonia/i;
+  const MALE = /\bmale\b|man\b|ravi|prabhat|david|mark|guy|daniel|george|ryan|alex/i;
+  function pickVoice(l) {
+    const en = voices.filter(v => /^en/i.test(v.lang));
+    const want = l.pitch > 1 ? FEMALE : MALE;
+    const avoid = l.pitch > 1 ? MALE : FEMALE;
+    return en.find(v => v.lang === 'en-IN' && want.test(v.name))
+      || en.find(v => want.test(v.name) && !avoid.test(v.name))
+      || en.find(v => v.lang === 'en-IN')
+      || en[0] || null;
+  }
+
+  let playing = null; // { id, start, secs, raf, utter, progress }
+  function paintVoice(id, p, on) {
+    document.querySelectorAll(`.voice[data-voice="${id}"]`).forEach(v => {
+      v.classList.toggle('playing', on);
+      const lit = Math.round(p * BARS);
+      v.querySelectorAll('.bar').forEach((b, i) => b.classList.toggle('on', i < lit));
+      const l = L.find(x => x.id === id);
+      v.querySelector('.dur').textContent = fmtDur(on ? Math.max(0, Math.round(estSecs(l) * (1 - p))) : estSecs(l));
+      v.querySelector('.play').setAttribute('aria-label', `${on ? 'Pause' : 'Play'} ${first(l.name)}’s voice intro`);
+    });
+  }
+  function stopVoice() {
+    if (!playing) return;
+    const id = playing.id;
+    cancelAnimationFrame(playing.raf);
+    playing.ended = true;
+    try { synth?.cancel(); } catch {}
+    playing = null;
+    paintVoice(id, 0, false);
+  }
+  function playVoice(id) {
+    if (playing?.id === id) { stopVoice(); return; }
+    stopVoice();
+    const l = L.find(x => x.id === id);
+    const secs = estSecs(l);
+    const state = playing = { id, start: performance.now(), secs, progress: 0 };
+    if (synth) {
+      const u = new SpeechSynthesisUtterance(l.intro);
+      const v = pickVoice(l); if (v) u.voice = v;
+      // A matched voice already carries the gender, so pitch only nudges character
+      u.pitch = v && (l.pitch > 1 ? FEMALE : MALE).test(v.name) ? 1 + (l.pitch - (l.pitch > 1 ? 1.15 : .85)) : l.pitch;
+      u.rate = l.pitch > 1 ? 0.95 : 0.88;
+      u.onboundary = e => { if (e.charIndex != null) state.progress = Math.max(state.progress, e.charIndex / l.intro.length); };
+      u.onend = () => { if (playing === state) { state.progress = 1; finish(); } };
+      u.onerror = () => { if (playing === state) state.synthFailed = true; };
+      try { synth.cancel(); synth.speak(u); } catch { state.synthFailed = true; }
+    } else {
+      toast('Voice intros play as real recordings in the app', 'waveform');
+    }
+    const finish = () => {
+      if (state.ended) return;
+      paintVoice(id, 1, true);
+      setTimeout(() => { if (playing === state) { playing = null; paintVoice(id, 0, false); } }, 400);
+      state.ended = true;
+    };
+    (function frame(t) {
+      if (state.ended) return;
+      // Prefer real speech boundaries; fall back to an estimated clock
+      const clock = Math.min(1, (t - state.start) / (secs * 1000));
+      const p = synth && !state.synthFailed && state.progress > 0 ? Math.max(state.progress, clock * .9) : clock;
+      paintVoice(id, Math.min(1, p), true);
+      if (clock >= 1 && (!synth || state.synthFailed)) { finish(); return; }
+      if (clock >= 1.6) { finish(); return; }
+      state.raf = requestAnimationFrame(frame);
+    })(performance.now());
+  }
+  document.addEventListener('click', e => {
+    const btn = e.target.closest('.play');
+    if (btn) { e.stopPropagation(); playVoice(btn.closest('.voice').dataset.voice); }
+  }, true);
+
+  /* ---------- Filters, sort, list ---------- */
+  const filters = { today: false, online: false, fav: false, topic: null, q: '' };
+  const SORTS = [
+    ['Soonest free', (a, b) => a.free - b.free],
+    ['Top rated', (a, b) => b.rating - a.rating || b.calls - a.calls],
+    ['Most calls', (a, b) => b.calls - a.calls],
+  ];
+  let sortI = 0;
+
+  function matches(l) {
+    if (filters.today && !isToday(l.free)) return false;
+    if (filters.online && !l.online) return false;
+    if (filters.fav && !favs.has(l.id)) return false;
+    if (filters.topic && !l.topics.includes(filters.topic)) return false;
+    const q = filters.q.trim().toLowerCase();
+    if (q && ![l.name, l.tagline, ...l.langs, ...l.topics].some(s => s.toLowerCase().includes(q))) return false;
+    return true;
+  }
+
+  function favBtn(l, cls = '') {
+    return `<button class="fav ${cls}" data-fav="${l.id}" aria-pressed="${favs.has(l.id)}" aria-label="Save ${l.name}"><i class="ph ph-heart"></i><i class="ph-fill ph-heart"></i></button>`;
+  }
+  function rowHTML(l) {
+    return `<li class="lrow">
+      <button class="lmain" data-open="${l.id}">
+        <span class="av-wrap"><span class="avatar">${initials(l.name)}</span>${l.online ? '<span class="online" title="Online now"></span>' : ''}</span>
+        <span>
+          <span class="lname">${l.name}</span>
+          <span class="ltag" style="display:block">${l.tagline}</span>
+          <span class="lmeta"><span class="free ${isToday(l.free) ? 'today' : ''}"><i class="ph ph-clock"></i>${freeLabel(l.free)}</span><span><i class="ph-fill ph-star"></i>${l.rating.toFixed(1)}</span><span><i class="ph ph-globe-simple"></i>${l.langs.join(', ')}</span></span>
+        </span>
+      </button>
+      ${favBtn(l)}
+      <div class="lfoot">${voiceHTML(l)}</div>
+    </li>`;
+  }
+
+  const list = document.getElementById('list');
+  function paintList(animate) {
+    const shown = L.filter(matches).sort(SORTS[sortI][1]);
+    const build = () => {
+      if (playing && !shown.some(l => l.id === playing.id) && !sheet.classList.contains('open')) stopVoice();
+      list.innerHTML = shown.length ? shown.map(rowHTML).join('')
+        : `<li class="empty"><i class="ph ph-magnifying-glass"></i><p>No one matches that yet.</p><button class="pill" id="reset"><i class="ph ph-arrow-counter-clockwise"></i>Clear filters</button></li>`;
+      document.getElementById('count').textContent = `${shown.length} listener${shown.length === 1 ? '' : 's'}`;
+      if (playing) paintVoice(playing.id, playing.progress, true);
+    };
+    if (!animate || reduceMotion) { build(); return; }
+    const out = list.animate({ opacity: [1, 0], filter: ['blur(0)', 'blur(4px)'] }, { duration: 180, easing: 'cubic-bezier(.45, 0, .2, 1)', fill: 'forwards' });
+    afterAnim(out, 180, () => {
+      build(); out.cancel();
+      list.animate({ opacity: [0, 1], transform: ['translateY(10px)', 'none'], filter: ['blur(4px)', 'blur(0)'] }, { duration: 800, easing: 'cubic-bezier(.16, 1, .3, 1)' });
+    });
+  }
+
+  function paintFavs() {
+    const el = document.getElementById('favs');
+    const saved = L.filter(l => favs.has(l.id));
+    el.innerHTML = saved.length ? `<p class="label">Saved</p><div class="favs-row">${saved.map(l =>
+      `<button data-open="${l.id}"><span class="avatar">${initials(l.name)}</span>${first(l.name)}</button>`).join('')}</div>` : '';
+  }
+
+  function toggleFav(id, btn) {
+    const l = L.find(x => x.id === id);
+    const on = !favs.has(id);
+    on ? favs.add(id) : favs.delete(id);
+    saveFavs();
+    document.querySelectorAll(`[data-fav="${id}"]`).forEach(b => b.setAttribute('aria-pressed', on));
+    btn.classList.remove('pop'); btn.offsetWidth; btn.classList.add('pop');
+    toast(on ? `${first(l.name)} saved` : `Removed ${first(l.name)}`, 'heart');
+    paintFavs();
+    if (filters.fav) paintList(true);
+  }
+
+  // Chips
+  document.getElementById('chips').addEventListener('click', e => {
+    const c = e.target.closest('.pill');
+    if (!c) return;
+    if (c.dataset.f) {
+      filters[c.dataset.f] = !filters[c.dataset.f];
+      c.setAttribute('aria-pressed', filters[c.dataset.f]);
+    } else {
+      const t = c.dataset.t;
+      filters.topic = filters.topic === t ? null : t;
+      document.querySelectorAll('[data-t]').forEach(x => x.setAttribute('aria-pressed', x.dataset.t === filters.topic));
+    }
+    paintList(true);
+  });
+  // Search
+  const q = document.getElementById('q');
+  const box = document.getElementById('searchBox');
+  let qTimer;
+  q.addEventListener('input', () => {
+    box.classList.toggle('has', !!q.value);
+    clearTimeout(qTimer);
+    qTimer = setTimeout(() => { filters.q = q.value; paintList(true); }, 160);
+  });
+  document.getElementById('clearQ').addEventListener('click', e => { e.preventDefault(); q.value = ''; box.classList.remove('has'); filters.q = ''; paintList(true); });
+  // Sort
+  document.getElementById('sort').addEventListener('click', () => {
+    sortI = (sortI + 1) % SORTS.length;
+    document.getElementById('sortLabel').textContent = SORTS[sortI][0];
+    paintList(true);
+  });
+
+  /* ---------- Profile sheet ---------- */
+  const sheet = document.getElementById('sheet');
+  const scrim = document.getElementById('scrim');
+  const body = document.getElementById('sheetBody');
+  function profileHTML(l) {
+    const slots = [0, 1.5, 24].map(h => new Date(l.free.getTime() + h * 36e5));
+    return `
+      <div class="p-head">
+        <span class="av-wrap"><span class="avatar">${initials(l.name)}</span>${l.online ? '<span class="online"></span>' : ''}</span>
+        <div><h2 id="pName">${l.name}</h2><p>${l.tagline}${l.online ? ' · <span style="color: var(--pink-deep)">Online now</span>' : ''}</p></div>
+      </div>
+      <div class="p-voice">
+        <p class="cap"><i class="ph ph-microphone"></i>Hear how ${first(l.name)} sounds</p>
+        ${voiceHTML(l)}
+      </div>
+      <div class="p-stats">
+        <div><b>${l.rating.toFixed(1)}</b><span>rating</span></div>
+        <div><b>${l.calls}</b><span>calls</span></div>
+        <div><b>${l.years} yr${l.years > 1 ? 's' : ''}</b><span>listening</span></div>
+      </div>
+      <div class="p-sec"><h3>About</h3><p>${l.bio}</p></div>
+      <div class="p-sec"><h3>How ${first(l.name)} listens</h3><ul class="traits">${l.traits.map(([i, t]) => `<li><i class="ph ph-${i}"></i>${t}</li>`).join('')}</ul></div>
+      <div class="p-sec"><h3>Talks about</h3><div class="tags">${l.topics.map(t => `<span class="tag pink">${t}</span>`).join('')}${l.langs.map(t => `<span class="tag grey"><i class="ph ph-globe-simple"></i>${t}</span>`).join('')}</div></div>
+      <div class="p-sec reviews"><h3>What people said</h3>${l.reviews.map(([t, c]) => `<blockquote>“${t}”<cite>Anonymous · ${c}</cite></blockquote>`).join('')}</div>
+      <div class="p-sec"><h3>Next free</h3><div class="slots">${slots.map(s => `<a class="pill" href="${bookHref(l)}"><i class="ph ph-clock"></i>${freeLabel(s)}</a>`).join('')}</div></div>
+      <div class="p-actions">
+        <a class="pill primary" href="${bookHref(l)}"><i class="ph ph-chat-circle-dots"></i>Book ${first(l.name)}</a>
+        ${favBtn(l)}
+      </div>`;
+  }
+  let openId = null;
+  function openSheet(id) {
+    const l = L.find(x => x.id === id);
+    if (!l) return;
+    openId = id;
+    body.innerHTML = profileHTML(l);
+    body.scrollTop = 0;
+    if (playing) paintVoice(playing.id, playing.progress, true);
+    sheet.style.transform = '';
+    sheet.classList.add('open');
+    scrim.classList.add('open');
+    lenis?.stop();
+  }
+  function closeSheet() {
+    sheet.style.transform = '';
+    sheet.classList.remove('open');
+    scrim.classList.remove('open');
+    lenis?.start();
+    openId = null;
+  }
+  scrim.addEventListener('click', closeSheet);
+  document.getElementById('close').addEventListener('click', closeSheet);
+  addEventListener('keydown', e => { if (e.key === 'Escape' && openId) closeSheet(); });
+  const grab = document.getElementById('grab');
+  let dragY = null, dragStart = 0;
+  grab.addEventListener('pointerdown', e => { dragY = 0; dragStart = e.clientY; sheet.classList.add('dragging'); grab.setPointerCapture(e.pointerId); });
+  grab.addEventListener('pointermove', e => { if (dragY == null) return; dragY = Math.max(0, e.clientY - dragStart); sheet.style.transform = `translate(-50%, ${dragY}px)`; });
+  const endDrag = () => { if (dragY == null) return; sheet.classList.remove('dragging'); if (dragY > 110) closeSheet(); else sheet.style.transform = ''; dragY = null; };
+  grab.addEventListener('pointerup', endDrag);
+  grab.addEventListener('pointercancel', endDrag);
+
+  // One click handler for opening profiles, favourites and reset
+  document.addEventListener('click', e => {
+    const fav = e.target.closest('[data-fav]');
+    if (fav) { toggleFav(fav.dataset.fav, fav); return; }
+    const open = e.target.closest('[data-open]');
+    if (open) { openSheet(open.dataset.open); return; }
+    if (e.target.closest('#reset')) {
+      Object.assign(filters, { today: false, online: false, fav: false, topic: null, q: '' });
+      q.value = ''; box.classList.remove('has');
+      document.querySelectorAll('#chips .pill').forEach(c => c.setAttribute('aria-pressed', 'false'));
+      paintList(true);
+    }
+  });
+
+  /* ---------- Boot ---------- */
+  const appbar = document.getElementById('appbar');
+  new IntersectionObserver(([e]) => appbar.classList.toggle('scrolled', !e.isIntersecting), { rootMargin: '-120px 0px 0px 0px' })
+    .observe(document.getElementById('band'));
+  document.getElementById('bell').addEventListener('click', () => toast('Annanya confirmed your call', 'bell'));
+  document.getElementById('summary').textContent = `${L.length} listeners · ${L.filter(l => l.online).length} online now`;
+  paintFavs();
+  paintList(false);
+  const deep = new URLSearchParams(location.search).get('open');
+  if (deep) setTimeout(() => openSheet(deep), 500);
+  addEventListener('pagehide', stopVoice);
+</script>
+</body>
+</html>

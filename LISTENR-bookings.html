@@ -1,0 +1,574 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#9dbbdb">
+<title>Listenr · Bookings</title>
+<meta name="description" content="UI prototype: your upcoming and past Listenr calls.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;500;700&family=Atkinson+Hyperlegible:wght@400;700&family=Lora:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<link rel="stylesheet" href="listenr-app.css">
+<style>
+  /* ---------- Header band ---------- */
+  .band {
+    position: relative;
+    padding: calc(84px + var(--safe-t)) 20px 80px;
+    color: #fff;
+    isolation: isolate;
+    background:
+      radial-gradient(90% 70% at 90% 0%, rgba(255, 228, 238, .7) 0%, rgba(255, 228, 238,0) 70%),
+      linear-gradient(180deg, #efc0d0 0%, #5f9cc2 55%, #a9c4dc 74%, #e3e9f2 88%, var(--cream) 100%);
+  }
+
+  /* ---------- Calendar (folded in from the old Calendar tab) ---------- */
+  .cal { padding: 0 20px; margin-top: -24px; }
+  .cal-head { display: flex; align-items: center; gap: 8px; }
+  .cal-head h2 { font-family: "Lora", Georgia, serif; font-size: 20px; font-weight: 600; margin-right: auto; }
+  .cal-head .roll { display: inline-grid; overflow: hidden; }
+  .cal-head .roll > span { grid-area: 1 / 1; }
+  .nav-btn { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; font-size: 15px; background: #fff; border: 1px solid var(--line); transition: transform .8s var(--ease), opacity .6s var(--ease-soft); }
+  .nav-btn:active { transform: scale(.9); transition-duration: .2s; }
+  .nav-btn:disabled { opacity: .35; }
+  .wk, .days { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; }
+  .wk { margin-top: 12px; font-size: 11px; letter-spacing: .04em; color: var(--ink-soft); }
+  .days { margin-top: 4px; }
+  .day {
+    position: relative;
+    height: 36px;
+    display: grid; place-items: center;
+    font-size: 14px;
+    color: var(--ink);
+  }
+  .day.out { color: var(--ink-faint); }
+  .day > span { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; transition: background .8s var(--ease), color .8s var(--ease); }
+  .day.today > span { box-shadow: inset 0 0 0 1px var(--ink-faint); }
+  .day.has > span { font-weight: 700; }
+  .day.up > span { background: var(--sea-mist); color: var(--sea-deep); }
+  .day.pastcall > span { background: var(--pink-soft); color: var(--pink-deep); }
+  .day.gone > span { color: var(--ink-faint); text-decoration: line-through; }
+  .day.has { cursor: pointer; }
+  .day.has:active > span { transform: scale(.9); }
+  .legend { display: flex; gap: 14px; margin-top: 8px; font-size: 12px; color: var(--ink-soft); }
+  .legend span { display: inline-flex; align-items: center; gap: 5px; }
+  .legend i { width: 8px; height: 8px; border-radius: 50%; }
+  .band h1 { font-family: "Lora", Georgia, serif; font-size: 30px; line-height: 1.15; font-weight: 600; }
+  .band .sub { margin-top: 4px; font-size: 14px; color: rgba(255,255,255,.9); display: flex; align-items: center; gap: 6px; }
+
+  /* Segmented control */
+  .seg {
+    position: relative;
+    display: grid; grid-template-columns: 1fr 1fr;
+    margin: 28px 20px 0;
+    padding: 4px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.6);
+    border: 1px solid var(--line);
+  }
+  .seg button {
+    position: relative; z-index: 1;
+    height: 38px;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    font-size: 14px;
+    color: var(--ink-soft);
+    transition: color .8s var(--ease);
+  }
+  .seg button[aria-selected="true"] { color: var(--ink); font-weight: 500; }
+  .seg .n { font-size: 11px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px; display: grid; place-items: center; background: var(--line); color: var(--ink-soft); transition: background .8s var(--ease), color .8s var(--ease); }
+  .seg button[aria-selected="true"] .n { background: var(--pink-soft); color: var(--pink-deep); }
+  .seg .thumb {
+    position: absolute; top: 4px; bottom: 4px; left: 4px;
+    width: calc(50% - 4px);
+    border-radius: 999px;
+    background: #fff;
+    border: 1px solid var(--line);
+    transition: transform .9s var(--ease);
+  }
+  .seg[data-view="past"] .thumb { transform: translateX(100%); }
+
+  /* ---------- Lists ---------- */
+  .lists { padding: 0 20px; }
+  .group-label { margin-top: 26px; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); }
+  .stats { margin-top: 18px; display: flex; gap: 8px; flex-wrap: wrap; }
+  .stat { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--pink-deep); background: var(--pink-soft); padding: 5px 11px; border-radius: 999px; }
+  .rows { list-style: none; }
+  .rows li { border-bottom: 1px solid var(--line); overflow: hidden; }
+  .row {
+    width: 100%;
+    display: grid; grid-template-columns: 36px 42px 1fr auto; align-items: center; gap: 12px;
+    padding: 14px 0;
+    text-align: left;
+    transition: opacity .6s var(--ease-soft);
+  }
+  .row:active { opacity: .6; transition-duration: .15s; }
+  .d { text-align: center; line-height: 1; }
+  .d b { display: block; font-family: "Lora", Georgia, serif; font-size: 22px; font-weight: 600; color: var(--sea-deep); }
+  .d small { display: block; margin-top: 4px; font-size: 11px; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-soft); }
+  .past .d b { color: var(--ink-soft); }
+  .info { min-width: 0; }
+  .name { display: block; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .meta { display: flex; align-items: center; gap: 5px; font-size: 13px; color: var(--ink-soft); }
+  .trail { display: flex; align-items: center; gap: 6px; color: var(--ink-faint); font-size: 18px; }
+  .tag { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; padding: 4px 9px; border-radius: 999px; white-space: nowrap; }
+  .tag i { font-size: 13px; }
+  .tag.pink { color: var(--pink-deep); background: var(--pink-soft); }
+  .tag.sea { color: var(--sea-deep); background: var(--sea-mist); }
+  .tag.grey { color: var(--ink-soft); background: #eceef3; }
+  .tag .live { width: 6px; height: 6px; border-radius: 50%; background: var(--pink-deep); animation: blink 2.4s var(--ease-soft) infinite; }
+  @keyframes blink { 50% { opacity: .3; } }
+  .cancelled .name { color: var(--ink-soft); text-decoration: line-through; text-decoration-color: var(--ink-faint); }
+  .next-actions { display: flex; gap: 8px; padding: 0 0 14px 48px; }
+  .next-actions .pill { height: 36px; font-size: 13px; background: #fff; border-color: var(--line); }
+  .next-actions .pill.join { background: #a9cbe0; border-color: #a9cbe0; color: #fff; }
+
+  .empty { text-align: center; padding: 48px 20px 0; color: var(--ink-soft); }
+  .empty i { font-size: 40px; color: var(--pink); }
+  .empty p { margin-top: 8px; }
+  .empty .pill { margin-top: 16px; background: #fff; border-color: var(--line); color: var(--ink); }
+
+  .fine { padding: 28px 20px calc(var(--tabbar-h) + 40px + var(--safe-b)); font-size: 11px; color: var(--ink-faint); text-align: center; }
+
+
+  .who { display: flex; align-items: center; gap: 14px; margin-top: 8px; }
+  .who .avatar { width: 60px; height: 60px; font-size: 18px; }
+  .who h2 { font-family: "Lora", Georgia, serif; font-size: 22px; font-weight: 600; line-height: 1.2; }
+  .who p { font-size: 13px; color: var(--ink-soft); }
+  .status { margin-top: 14px; }
+
+  .facts { list-style: none; margin-top: 14px; }
+  .facts li { display: flex; align-items: center; gap: 12px; padding: 11px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+  .facts i { font-size: 19px; color: var(--pink-deep); }
+  .facts span:last-child { margin-left: auto; color: var(--ink-soft); }
+
+  .sub-h { margin-top: 22px; font-size: 13px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+  .sub-h i { font-size: 16px; color: var(--pink-deep); }
+  .sub-h small { font-weight: 400; color: var(--ink-soft); margin-left: auto; display: inline-flex; align-items: center; gap: 4px; }
+  textarea {
+    width: 100%;
+    margin-top: 8px;
+    min-height: 74px;
+    resize: none;
+    padding: 12px 14px;
+    border-radius: 18px;
+    border: 1px solid var(--line);
+    background: #fff;
+    font: inherit; font-size: 14px; color: var(--ink);
+    transition: border-color .8s var(--ease);
+  }
+  textarea:focus { border-color: var(--pink); }
+  textarea::placeholder { color: var(--ink-faint); }
+
+  .feel { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 10px; }
+  .feel button { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 8px 0; border-radius: 16px; font-size: 12px; color: var(--ink-soft); transition: background .8s var(--ease), color .8s var(--ease); }
+  .feel i { font-size: 28px; transition: transform .9s var(--ease); }
+  .feel button[aria-pressed="true"] { background: var(--pink-soft); color: var(--pink-deep); }
+  .feel button[aria-pressed="true"] i { transform: scale(1.12); }
+
+  .sheet-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+  .sheet-actions .pill { background: #fff; border-color: var(--line); }
+  .sheet-actions .pill.primary { background: var(--sea); border-color: var(--sea); color: #fff; }
+  .sheet-actions .pill.primary[aria-disabled="true"] { background: #a9cbe0; border-color: #a9cbe0; }
+  .sheet-actions .pill.danger { color: #b54a5e; }
+  .sheet-actions .pill.danger.arm { background: #b54a5e; border-color: #b54a5e; color: #fff; }
+  .links { display: flex; gap: 18px; margin-top: 18px; font-size: 13px; color: var(--ink-soft); }
+  .links button { display: inline-flex; align-items: center; gap: 5px; }
+</style>
+</head>
+<body data-tab="bookings">
+<div class="app">
+
+  <div class="appbar" id="appbar">
+    <a class="round intro" href="LISTENR.html" aria-label="Listenr home"><span class="logo-mark"></span></a>
+    <button class="round intro" style="--d:1" id="bell" aria-label="Notifications, 1 new"><i class="ph ph-bell"></i><span class="dot"></span></button>
+  </div>
+
+  <header class="band" id="band">
+    <h1 class="intro" style="--d:2">Bookings</h1>
+    <p class="sub intro" style="--d:3" id="summary"></p>
+  </header>
+
+  <section class="cal intro" style="--d:4" aria-label="Your calendar">
+    <div class="cal-head">
+      <h2><span class="roll" id="calLabel"></span></h2>
+      <button class="nav-btn" id="calPrev" aria-label="Previous month"><i class="ph ph-caret-left"></i></button>
+      <button class="nav-btn" id="calNext" aria-label="Next month"><i class="ph ph-caret-right"></i></button>
+    </div>
+    <div class="wk"><span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span></div>
+    <div class="days" id="calDays"></div>
+    <div class="legend"><span><i style="background: var(--sea)"></i>Upcoming</span><span><i style="background: var(--pink-deep)"></i>Done</span></div>
+  </section>
+
+  <div class="seg intro" style="--d:5" id="seg" role="tablist" data-view="upcoming">
+    <span class="thumb"></span>
+    <button role="tab" aria-selected="true" data-view="upcoming">Upcoming <span class="n" id="nUp">0</span></button>
+    <button role="tab" aria-selected="false" data-view="past">Past <span class="n" id="nPast">0</span></button>
+  </div>
+
+  <main class="lists" id="lists"></main>
+  <p class="fine">UI prototype · calls and listeners are made up</p>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<section class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sName">
+  <div class="grab" id="grab"></div>
+  <button class="close" id="close" aria-label="Close"><i class="ph ph-x"></i></button>
+  <div class="sheet-body" id="sheetBody" data-lenis-prevent></div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script src="listenr-app.js"></script>
+<script>
+  const { lenis, toast, reduceMotion } = window.Listenr;
+  const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const DAYS_LONG = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const initials = n => n.split(' ').map(w => w[0]).join('');
+  const first = n => n.split(' ')[0];
+
+  /* ---------- Data (made up, relative to today) ---------- */
+  const now = new Date();
+  const at = (days, h, m = 0) => { const d = new Date(now); d.setDate(d.getDate() + days); d.setHours(h, m, 0, 0); return d; };
+  const LISTENERS = {
+    'Annanya Nair': 'Career · Stress',
+    'Kabir Joshi': 'Relationships',
+    'Kavya Iyer': 'Loneliness',
+    'Rohan Mehta': 'Relationships',
+    'Diya Sharma': 'Anything else',
+    'Tara Menon': 'Grief',
+  };
+  const FEELS = [['smiley-sad', 'Heavier'], ['smiley-meh', 'The same'], ['smiley', 'Lighter'], ['smiley-wink', 'Much lighter']];
+  let calls = [
+    { id: 'LSN-2481', who: 'Annanya Nair', at: at(2, 8), mode: 'voice', status: 'upcoming', note: '' },
+    { id: 'LSN-2507', who: 'Kabir Joshi', at: at(6, 18, 30), mode: 'video', status: 'upcoming', note: 'Want to talk about moving cities.' },
+    { id: 'LSN-2533', who: 'Kavya Iyer', at: at(13, 10), mode: 'voice', status: 'upcoming', note: '' },
+    { id: 'LSN-2440', who: 'Kavya Iyer', at: at(-3, 21), mode: 'voice', status: 'done', feel: 3, reflection: 'Felt good to say it out loud.' },
+    { id: 'LSN-2398', who: 'Annanya Nair', at: at(-9, 8), mode: 'voice', status: 'done', feel: 2, reflection: '' },
+    { id: 'LSN-2361', who: 'Rohan Mehta', at: at(-16, 19), mode: 'video', status: 'cancelled' },
+    { id: 'LSN-2302', who: 'Diya Sharma', at: at(-24, 17, 30), mode: 'voice', status: 'done', feel: null, reflection: '' },
+    { id: 'LSN-2215', who: 'Annanya Nair', at: at(-38, 8), mode: 'voice', status: 'done', feel: 2, reflection: '' },
+    { id: 'LSN-2154', who: 'Tara Menon', at: at(-52, 20), mode: 'video', status: 'done', feel: 3, reflection: '' },
+  ];
+
+  const fmtT = d => `${d.getHours() % 12 || 12}:${String(d.getMinutes()).padStart(2, '0')}`;
+  const ap = d => d.getHours() < 12 ? 'am' : 'pm';
+  const range = d => { const e = new Date(d.getTime() + 45 * 60000); return `${fmtT(d)} – ${fmtT(e)} ${ap(e)}`; };
+  function untilText(d) {
+    const m = Math.max(0, Math.round((d - Date.now()) / 60000));
+    const dd = Math.floor(m / 1440), h = Math.floor((m % 1440) / 60), mm = m % 60;
+    return dd ? `in ${dd}d ${h}h` : h ? `in ${h}h ${mm}m` : `in ${mm} min`;
+  }
+  const modeIcon = c => c.mode === 'video' ? 'video-camera' : 'phone';
+  const upcoming = () => calls.filter(c => c.status === 'upcoming').sort((a, b) => a.at - b.at);
+  const past = () => calls.filter(c => c.status !== 'upcoming').sort((a, b) => b.at - a.at);
+
+  /* ---------- Header ---------- */
+  function paintHeader() {
+    const up = upcoming(), done = calls.filter(c => c.status === 'done');
+    document.getElementById('nUp').textContent = up.length;
+    document.getElementById('nPast').textContent = past().length;
+    document.getElementById('summary').innerHTML = up.length
+      ? `<i class="ph ph-clock"></i>Next call ${untilText(up[0].at)} with ${first(up[0].who)}`
+      : `<i class="ph ph-check-circle"></i>${done.length} calls done. Nothing booked right now.`;
+  }
+
+  /* ---------- Lists ---------- */
+  const lists = document.getElementById('lists');
+  let view = new URLSearchParams(location.search).get('view') === 'past' ? 'past' : 'upcoming';
+
+  function rowHTML(c) {
+    const trail = c.status === 'upcoming'
+      ? (c === upcoming()[0] ? `<span class="tag pink"><span class="live"></span>${untilText(c.at)}</span>` : '<i class="ph ph-caret-right"></i>')
+      : c.status === 'cancelled' ? '<span class="tag grey">Cancelled</span>'
+      : c.feel == null ? '<span class="tag sea"><i class="ph ph-smiley"></i>Rate</span>'
+      : `<span class="tag pink"><i class="ph ph-${FEELS[c.feel][0]}"></i>${FEELS[c.feel][1]}</span>`;
+    return `
+      <button class="row" data-id="${c.id}">
+        <span class="d"><b>${c.at.getDate()}</b><small>${DAYS[c.at.getDay()]}</small></span>
+        <span class="avatar">${initials(c.who)}</span>
+        <span class="info"><span class="name">${c.who}</span><span class="meta"><i class="ph ph-${modeIcon(c)}"></i>${range(c.at)}</span></span>
+        <span class="trail">${trail}</span>
+      </button>`;
+  }
+
+  function groupBy(items, keyFn) {
+    const out = [];
+    items.forEach(c => { const k = keyFn(c); const g = out.find(x => x.k === k); g ? g.items.push(c) : out.push({ k, items: [c] }); });
+    return out;
+  }
+
+  // Run a state change when an exit animation ends, with a timer backstop:
+  // throttled or hidden pages can pause animations and never fire onfinish
+  function afterAnim(anim, ms, fn) {
+    let done = false;
+    const run = () => { if (!done) { done = true; fn(); } };
+    anim.onfinish = run;
+    setTimeout(run, ms + 60);
+  }
+
+  /* ---------- Calendar ---------- */
+  const calDays = document.getElementById('calDays');
+  const calLabel = document.getElementById('calLabel');
+  let month = new Date(now.getFullYear(), now.getMonth(), 1);
+  const sameDay = (a, b) => a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+  function paintCal() {
+    const y = month.getFullYear(), m = month.getMonth();
+    const lead = new Date(y, m, 1).getDay(), count = new Date(y, m + 1, 0).getDate();
+    let html = '';
+    for (let i = 0; i < lead; i++) html += '<span class="day out"></span>';
+    for (let d = 1; d <= count; d++) {
+      const date = new Date(y, m, d);
+      const on = calls.filter(c => sameDay(c.at, date));
+      const live = on.find(c => c.status !== 'cancelled');
+      const cls = ['day', sameDay(date, now) && 'today', on.length && 'has',
+        live ? (live.status === 'upcoming' ? 'up' : 'pastcall') : on.length && 'gone'].filter(Boolean).join(' ');
+      const label = on.length ? `${d} ${MONTHS[m]}: call with ${(live || on[0]).who}` : `${d} ${MONTHS[m]}`;
+      html += on.length
+        ? `<button class="${cls}" data-id="${(live || on[0]).id}" aria-label="${label}"><span>${d}</span></button>`
+        : `<span class="${cls}"><span>${d}</span></span>`;
+    }
+    calDays.innerHTML = html;
+    const nextLabel = `${MONTHS[m]} ${y}`;
+    const cur = calLabel.lastElementChild;
+    if (!cur || cur.textContent !== nextLabel) {
+      const s = document.createElement('span'); s.textContent = nextLabel;
+      if (cur && !reduceMotion) {
+        calLabel.appendChild(s);
+        afterAnim(cur.animate({ opacity: [1, 0], transform: ['none', 'translateY(-60%)'], filter: ['blur(0)', 'blur(4px)'] }, { duration: 500, easing: 'cubic-bezier(.16, 1, .3, 1)', fill: 'forwards' }), 500, () => cur.remove());
+        s.animate({ opacity: [0, 1], transform: ['translateY(60%)', 'none'], filter: ['blur(4px)', 'blur(0)'] }, { duration: 800, easing: 'cubic-bezier(.16, 1, .3, 1)' });
+      } else calLabel.replaceChildren(s);
+    }
+    // Only browse months that have calls in them
+    const months = calls.map(c => c.at.getFullYear() * 12 + c.at.getMonth());
+    document.getElementById('calPrev').disabled = y * 12 + m <= Math.min(...months);
+    document.getElementById('calNext').disabled = y * 12 + m >= Math.max(...months);
+  }
+  function shiftMonth(dir) {
+    const to = new Date(month.getFullYear(), month.getMonth() + dir, 1);
+    if (reduceMotion) { month = to; paintCal(); return; }
+    const out = calDays.animate({ opacity: [1, 0], transform: ['none', `translateX(${-20 * dir}px)`], filter: ['blur(0)', 'blur(6px)'] },
+      { duration: 240, easing: 'cubic-bezier(.45, 0, .2, 1)', fill: 'forwards' });
+    afterAnim(out, 240, () => {
+      month = to; paintCal(); out.cancel();
+      calDays.animate({ opacity: [0, 1], transform: [`translateX(${20 * dir}px)`, 'none'], filter: ['blur(6px)', 'blur(0)'] },
+        { duration: 800, easing: 'cubic-bezier(.16, 1, .3, 1)' });
+    });
+  }
+  document.getElementById('calPrev').addEventListener('click', () => shiftMonth(-1));
+  document.getElementById('calNext').addEventListener('click', () => shiftMonth(1));
+  calDays.addEventListener('click', e => { const b = e.target.closest('[data-id]'); if (b) openSheet(b.dataset.id); });
+
+  function render() {
+    paintHeader();
+    paintCal();
+    let html = '';
+    if (view === 'upcoming') {
+      const up = upcoming();
+      if (!up.length) {
+        html = `<div class="empty"><i class="ph ph-tray"></i><p>Nothing booked yet.</p><a class="pill" href="LISTENR-book.html"><i class="ph ph-chat-circle-dots"></i>Start a conversation</a></div>`;
+      } else {
+        const weekEnd = new Date(now); weekEnd.setDate(now.getDate() + (7 - now.getDay())); weekEnd.setHours(0, 0, 0, 0);
+        groupBy(up, c => c.at < weekEnd ? 'This week' : c.at < new Date(weekEnd.getTime() + 7 * 864e5) ? 'Next week' : 'Later').forEach(g => {
+          html += `<p class="group-label">${g.k}</p><ul class="rows">${g.items.map((c, i) => `<li class="reveal in">${rowHTML(c)}${c === up[0] ? `
+            <div class="next-actions">
+              <button class="pill join" data-act="join"><i class="ph ph-phone"></i>Join</button>
+              <button class="pill" data-act="reschedule" data-id="${c.id}"><i class="ph ph-arrows-clockwise"></i>Reschedule</button>
+            </div>` : ''}</li>`).join('')}</ul>`;
+        });
+      }
+    } else {
+      const done = calls.filter(c => c.status === 'done');
+      html = `<div class="stats"><span class="stat"><i class="ph ph-check-circle"></i>${done.length} calls</span><span class="stat"><i class="ph ph-clock"></i>${Math.floor(done.length * 45 / 60)} h ${done.length * 45 % 60} min talked</span><span class="stat"><i class="ph ph-smiley"></i>${done.filter(c => c.feel >= 2).length} felt lighter</span></div>`;
+      groupBy(past(), c => `${MONTHS[c.at.getMonth()]} ${c.at.getFullYear()}`).forEach(g => {
+        html += `<p class="group-label">${g.k}</p><ul class="rows past">${g.items.map(c => `<li class="${c.status}">${rowHTML(c)}</li>`).join('')}</ul>`;
+      });
+    }
+    lists.innerHTML = html;
+  }
+
+  // Swap lists with a soft slide
+  let busy = false;
+  function setView(v) {
+    if (v === view || busy) return;
+    const dir = v === 'past' ? 1 : -1;
+    view = v;
+    seg.dataset.view = v;
+    seg.querySelectorAll('button').forEach(b => b.setAttribute('aria-selected', b.dataset.view === v));
+    history.replaceState(null, '', v === 'past' ? '?view=past' : location.pathname);
+    if (reduceMotion) { render(); return; }
+    busy = true;
+    const out = lists.animate({ opacity: [1, 0], transform: ['none', `translateX(${-20 * dir}px)`], filter: ['blur(0)', 'blur(6px)'] },
+      { duration: 260, easing: 'cubic-bezier(.45, 0, .2, 1)', fill: 'forwards' });
+    afterAnim(out, 260, () => {
+      render();
+      out.cancel();
+      lists.animate({ opacity: [0, 1], transform: [`translateX(${20 * dir}px)`, 'none'], filter: ['blur(6px)', 'blur(0)'] },
+        { duration: 900, easing: 'cubic-bezier(.16, 1, .3, 1)' });
+      busy = false;
+    });
+  }
+  const seg = document.getElementById('seg');
+  seg.dataset.view = view;
+  seg.querySelectorAll('button').forEach(b => {
+    b.setAttribute('aria-selected', b.dataset.view === view);
+    b.addEventListener('click', () => setView(b.dataset.view));
+  });
+
+  lists.addEventListener('click', e => {
+    const act = e.target.closest('[data-act]');
+    if (act) {
+      if (act.dataset.act === 'join') toast('Join opens 10 minutes before the call', 'phone');
+      if (act.dataset.act === 'reschedule') location.href = 'LISTENR-book.html';
+      return;
+    }
+    const row = e.target.closest('.row');
+    if (row) openSheet(row.dataset.id);
+  });
+
+  /* ---------- Detail sheet ---------- */
+  const sheet = document.getElementById('sheet');
+  const scrim = document.getElementById('scrim');
+  const body = document.getElementById('sheetBody');
+  let current = null;
+
+  function sheetHTML(c) {
+    const end = new Date(c.at.getTime() + 45 * 60000);
+    const status = c.status === 'upcoming' ? `<span class="tag pink"><span class="live"></span>Starts ${untilText(c.at)}</span>`
+      : c.status === 'cancelled' ? '<span class="tag grey"><i class="ph ph-x-circle"></i>Cancelled</span>'
+      : '<span class="tag pink"><i class="ph ph-check-circle"></i>Completed · 45 min</span>';
+    let html = `
+      <div class="who">
+        <span class="avatar">${initials(c.who)}</span>
+        <div><h2 id="sName">${c.who}</h2><p>${LISTENERS[c.who]} · English, Hindi</p></div>
+      </div>
+      <div class="status">${status}</div>
+      <ul class="facts">
+        <li><i class="ph ph-calendar-blank"></i><span>${DAYS_LONG[c.at.getDay()]}, ${c.at.getDate()} ${MONTHS[c.at.getMonth()].slice(0, 3)}</span><span>${c.at.getFullYear()}</span></li>
+        <li><i class="ph ph-clock"></i><span>${fmtT(c.at)} – ${fmtT(end)} ${ap(end)}</span><span>45 min</span></li>
+        <li><i class="ph ph-${modeIcon(c)}"></i><span>${c.mode === 'video' ? 'Video call' : 'Voice call'}</span><span>${c.mode === 'video' ? 'Camera optional' : 'No camera'}</span></li>
+        <li><i class="ph ph-receipt"></i><span>${c.status === 'cancelled' ? 'Refunded' : '₹499 · UPI'}</span><span>${c.id}</span></li>
+      </ul>`;
+    if (c.status === 'upcoming') {
+      html += `
+        <p class="sub-h"><i class="ph ph-note-pencil"></i>Note for ${first(c.who)}<small><i class="ph ph-lock-simple"></i>Only they see it</small></p>
+        <textarea id="note" placeholder="Anything you’d like them to know before you talk?">${c.note || ''}</textarea>
+        <div class="sheet-actions">
+          <button class="pill primary" aria-disabled="true" data-s="join"><i class="ph ph-phone"></i>Join</button>
+          <a class="pill" href="LISTENR-book.html"><i class="ph ph-arrows-clockwise"></i>Reschedule</a>
+          <button class="pill danger" data-s="cancel"><i class="ph ph-calendar-x"></i><span>Cancel</span></button>
+        </div>
+        <div class="links"><button data-s="cal"><i class="ph ph-calendar-plus"></i>Add to calendar</button></div>`;
+    } else if (c.status === 'done') {
+      html += `
+        <p class="sub-h"><i class="ph ph-smiley"></i>How did you feel after?<small><i class="ph ph-lock-simple"></i>Private</small></p>
+        <div class="feel">${FEELS.map(([ic, lb], i) => `<button aria-pressed="${c.feel === i}" data-feel="${i}"><i class="ph ph-${ic}"></i>${lb}</button>`).join('')}</div>
+        <p class="sub-h"><i class="ph ph-note-pencil"></i>Your reflection<small><i class="ph ph-lock-simple"></i>Only you</small></p>
+        <textarea id="note" placeholder="A line to remember how it went…">${c.reflection || ''}</textarea>
+        <div class="sheet-actions">
+          <a class="pill primary" href="LISTENR-book.html"><i class="ph ph-arrow-counter-clockwise"></i>Book ${first(c.who)} again</a>
+          <a class="pill" href="LISTENR-book.html"><i class="ph ph-user-switch"></i>Try someone new</a>
+        </div>
+        <div class="links"><button data-s="receipt"><i class="ph ph-download-simple"></i>Receipt</button><button data-s="report"><i class="ph ph-flag"></i>Report a problem</button></div>`;
+    } else {
+      html += `
+        <div class="sheet-actions">
+          <a class="pill primary" href="LISTENR-book.html"><i class="ph ph-arrow-counter-clockwise"></i>Book ${first(c.who)} again</a>
+        </div>`;
+    }
+    return html;
+  }
+
+  function openSheet(id) {
+    current = calls.find(c => c.id === id);
+    if (!current) return;
+    body.innerHTML = sheetHTML(current);
+    body.scrollTop = 0;
+    sheet.style.transform = '';
+    sheet.classList.add('open');
+    scrim.classList.add('open');
+    lenis?.stop();
+  }
+  function closeSheet() {
+    saveNote();
+    sheet.style.transform = '';
+    sheet.classList.remove('open');
+    scrim.classList.remove('open');
+    lenis?.start();
+    current = null;
+  }
+  function saveNote() {
+    const t = document.getElementById('note');
+    if (!current || !t) return;
+    const key = current.status === 'upcoming' ? 'note' : 'reflection';
+    if ((current[key] || '') !== t.value) { current[key] = t.value; toast('Saved', 'check-circle'); }
+  }
+  scrim.addEventListener('click', closeSheet);
+  document.getElementById('close').addEventListener('click', closeSheet);
+  addEventListener('keydown', e => { if (e.key === 'Escape' && current) closeSheet(); });
+
+  let armTimer;
+  body.addEventListener('click', e => {
+    const feel = e.target.closest('[data-feel]');
+    if (feel) {
+      current.feel = +feel.dataset.feel;
+      body.querySelectorAll('[data-feel]').forEach(b => b.setAttribute('aria-pressed', b === feel));
+      render();
+      return;
+    }
+    const s = e.target.closest('[data-s]');
+    if (!s) return;
+    if (s.dataset.s === 'join') toast('Join opens 10 minutes before the call', 'phone');
+    if (s.dataset.s === 'cal') toast('Added to your calendar', 'calendar-check');
+    if (s.dataset.s === 'receipt') toast('Receipt saved', 'download-simple');
+    if (s.dataset.s === 'report') toast('Our team will reach out within a day', 'flag');
+    if (s.dataset.s === 'cancel') {
+      // Two taps to cancel: the first arms the button, the second confirms
+      if (!s.classList.contains('arm')) {
+        s.classList.add('arm');
+        s.querySelector('span').textContent = 'Tap again to cancel';
+        clearTimeout(armTimer);
+        armTimer = setTimeout(() => { s.classList.remove('arm'); s.querySelector('span').textContent = 'Cancel'; }, 3000);
+        return;
+      }
+      const c = current;
+      closeSheet();
+      const li = lists.querySelector(`.row[data-id="${c.id}"]`)?.closest('li');
+      const finish = () => { c.status = 'cancelled'; render(); toast(`Cancelled · ${first(c.who)} has been told`, 'calendar-x'); };
+      if (li && !reduceMotion) {
+        afterAnim(li.animate({ height: [li.offsetHeight + 'px', '0px'], opacity: [1, 0] }, { duration: 700, easing: 'cubic-bezier(.16, 1, .3, 1)', fill: 'forwards' }), 700, finish);
+      } else finish();
+    }
+  });
+
+  // Drag the handle down to dismiss
+  const grab = document.getElementById('grab');
+  let dragY = null, dragStart = 0;
+  grab.addEventListener('pointerdown', e => { dragY = 0; dragStart = e.clientY; sheet.classList.add('dragging'); grab.setPointerCapture(e.pointerId); });
+  grab.addEventListener('pointermove', e => {
+    if (dragY == null) return;
+    dragY = Math.max(0, e.clientY - dragStart);
+    sheet.style.transform = `translate(-50%, ${dragY}px)`;
+  });
+  const endDrag = () => {
+    if (dragY == null) return;
+    sheet.classList.remove('dragging');
+    if (dragY > 110) closeSheet(); else sheet.style.transform = '';
+    dragY = null;
+  };
+  grab.addEventListener('pointerup', endDrag);
+  grab.addEventListener('pointercancel', endDrag);
+
+  /* ---------- Boot ---------- */
+  const appbar = document.getElementById('appbar');
+  new IntersectionObserver(([e]) => appbar.classList.toggle('scrolled', !e.isIntersecting), { rootMargin: '-120px 0px 0px 0px' })
+    .observe(document.getElementById('band'));
+  document.getElementById('bell').addEventListener('click', () => toast('Annanya confirmed your call', 'bell'));
+  render();
+  setInterval(() => { paintHeader(); }, 30000);
+  const open = new URLSearchParams(location.search).get('open');
+  if (open) setTimeout(() => openSheet(open === 'next' ? upcoming()[0]?.id : open), 500);
+</script>
+</body>
+</html>
