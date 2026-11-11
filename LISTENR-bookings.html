@@ -6,6 +6,20 @@
 <meta name="theme-color" content="#9dbbdb">
 <title>Listenr · Bookings</title>
 <meta name="description" content="UI prototype: your upcoming and past Listenr calls.">
+<link rel="icon" type="image/png" sizes="32x32" href="images/listenr/favicon-32.png">
+<link rel="apple-touch-icon" href="images/listenr/apple-touch-icon.png">
+<link rel="manifest" href="listenr.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Listenr">
+<meta property="og:title" content="Listenr">
+<meta property="og:description" content="Someone to listen. When you need it. A safe, judgment-free space to feel a little lighter.">
+<meta property="og:url" content="https://dedrox2k.github.io/dedrox/LISTENR-bookings.html">
+<meta property="og:image" content="https://dedrox2k.github.io/dedrox/images/listenr/og-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Listenr logo on a soft dusk sky: Someone to listen. When you need it.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://dedrox2k.github.io/dedrox/images/listenr/og-card.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;500;700&family=Atkinson+Hyperlegible:wght@400;700&family=Lora:wght@500;600&display=swap" rel="stylesheet">
@@ -59,14 +73,14 @@
   .band .sub { margin-top: 4px; font-size: 14px; color: rgba(255,255,255,.9); display: flex; align-items: center; gap: 6px; }
 
   /* Segmented control */
+  /* Soft, borderless: a tinted track and a white thumb that glides between the two */
   .seg {
     position: relative;
     display: grid; grid-template-columns: 1fr 1fr;
     margin: 28px 20px 0;
     padding: 4px;
-    border-radius: 999px;
-    background: rgba(255,255,255,.6);
-    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: #e9edf3;
   }
   .seg button {
     position: relative; z-index: 1;
@@ -76,15 +90,15 @@
     color: var(--ink-soft);
     transition: color .8s var(--ease);
   }
-  .seg button[aria-selected="true"] { color: var(--ink); font-weight: 500; }
-  .seg .n { font-size: 11px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px; display: grid; place-items: center; background: var(--line); color: var(--ink-soft); transition: background .8s var(--ease), color .8s var(--ease); }
-  .seg button[aria-selected="true"] .n { background: var(--pink-soft); color: var(--pink-deep); }
+  .seg button[aria-selected="true"] { color: var(--ink); }
+  .seg .n { font-size: 13px; color: var(--ink-faint); transition: color .8s var(--ease); }
+  .seg button[aria-selected="true"] .n { color: var(--sea); }
   .seg .thumb {
     position: absolute; top: 4px; bottom: 4px; left: 4px;
     width: calc(50% - 4px);
-    border-radius: 999px;
+    border-radius: 14px;
     background: #fff;
-    border: 1px solid var(--line);
+    box-shadow: 0 1px 3px rgba(25, 40, 60, .06);
     transition: transform .9s var(--ease);
   }
   .seg[data-view="past"] .thumb { transform: translateX(100%); }
@@ -125,7 +139,7 @@
   .cancelled .name { color: var(--ink-soft); text-decoration: line-through; text-decoration-color: var(--ink-faint); }
   .next-actions { display: flex; gap: 8px; padding: 0 0 14px 48px; }
   .next-actions .pill { height: 36px; font-size: 13px; background: #fff; border-color: var(--line); }
-  .next-actions .pill.join { background: #a9cbe0; border-color: #a9cbe0; color: #fff; }
+  .next-actions .pill.join { background: var(--sea); border-color: var(--sea); color: #fff; }
 
   .empty { text-align: center; padding: 48px 20px 0; color: var(--ink-soft); }
   .empty i { font-size: 40px; color: var(--pink); }
@@ -265,6 +279,7 @@
     return dd ? `in ${dd}d ${h}h` : h ? `in ${h}h ${mm}m` : `in ${mm} min`;
   }
   const modeIcon = c => c.mode === 'video' ? 'video-camera' : 'phone';
+  const joinHref = c => `LISTENR-call.html?with=${encodeURIComponent(c.who)}&mode=${c.mode}`;
   const upcoming = () => calls.filter(c => c.status === 'upcoming').sort((a, b) => a.at - b.at);
   const past = () => calls.filter(c => c.status !== 'upcoming').sort((a, b) => b.at - a.at);
 
@@ -378,7 +393,7 @@
         groupBy(up, c => c.at < weekEnd ? 'This week' : c.at < new Date(weekEnd.getTime() + 7 * 864e5) ? 'Next week' : 'Later').forEach(g => {
           html += `<p class="group-label">${g.k}</p><ul class="rows">${g.items.map((c, i) => `<li class="reveal in${c.fresh ? " fresh" : ""}">${rowHTML(c)}${c === up[0] ? `
             <div class="next-actions">
-              <button class="pill join" data-act="join"><i class="ph ph-phone"></i>Join</button>
+              <button class="pill join" data-act="join" data-id="${c.id}"><i class="ph ph-phone"></i>Join</button>
               <button class="pill" data-act="reschedule" data-id="${c.id}"><i class="ph ph-arrows-clockwise"></i>Reschedule</button>
             </div>` : ''}</li>`).join('')}</ul>`;
         });
@@ -426,7 +441,7 @@
   lists.addEventListener('click', e => {
     const act = e.target.closest('[data-act]');
     if (act) {
-      if (act.dataset.act === 'join') toast('Join opens 10 minutes before the call', 'phone');
+      if (act.dataset.act === 'join') { const c = calls.find(x => x.id === act.dataset.id); location.href = joinHref(c); }
       if (act.dataset.act === 'reschedule') location.href = 'LISTENR-book.html';
       return;
     }
@@ -462,7 +477,7 @@
         <p class="sub-h"><i class="ph ph-note-pencil"></i>Note for ${first(c.who)}<small><i class="ph ph-lock-simple"></i>Only they see it</small></p>
         <textarea id="note" placeholder="Anything you’d like them to know before you talk?">${c.note || ''}</textarea>
         <div class="sheet-actions">
-          <button class="pill primary" aria-disabled="true" data-s="join"><i class="ph ph-phone"></i>Join</button>
+          <button class="pill primary" data-s="join"><i class="ph ph-phone"></i>Join</button>
           <a class="pill" href="LISTENR-book.html"><i class="ph ph-arrows-clockwise"></i>Reschedule</a>
           <button class="pill danger" data-s="cancel"><i class="ph ph-calendar-x"></i><span>Cancel</span></button>
         </div>
@@ -526,7 +541,7 @@
     }
     const s = e.target.closest('[data-s]');
     if (!s) return;
-    if (s.dataset.s === 'join') toast('Join opens 10 minutes before the call', 'phone');
+    if (s.dataset.s === 'join') location.href = joinHref(current);
     if (s.dataset.s === 'cal') toast('Added to your calendar', 'calendar-check');
     if (s.dataset.s === 'receipt') toast('Receipt saved', 'download-simple');
     if (s.dataset.s === 'report') toast('Our team will reach out within a day', 'flag');

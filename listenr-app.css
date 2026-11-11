@@ -273,16 +273,26 @@ html.kbd :focus-visible { outline: 2px solid var(--pink-deep); outline-offset: 3
   color: var(--ink-soft);
   white-space: nowrap;
 }
+/* The wave is a plain repeating SVG background (drawn in --wave-ink); only the soft fade
+   toward the screen edge uses a mask, and a gradient mask works on every phone browser.
+   (An SVG used *as* a mask didn't draw on some mobile browsers.) */
 .eyebrow::before, .eyebrow::after {
   content: "";
-  flex: 1;
+  display: block;
+  flex: 1 1 0;
   min-width: 24px;
   height: 8px;
-  opacity: .45;
-  /* the gradient fades the line out toward the edge; the mask cuts it into a wave */
-  background: linear-gradient(90deg, transparent, currentColor 70%);
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='8' viewBox='0 0 16 8'%3E%3Cpath d='M0 4 Q4 1 8 4 T16 4' fill='none' stroke='black' stroke-width='1.3'/%3E%3C/svg%3E") left center / 16px 8px repeat-x;
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='8' viewBox='0 0 16 8'%3E%3Cpath d='M0 4 Q4 1 8 4 T16 4' fill='none' stroke='black' stroke-width='1.3'/%3E%3C/svg%3E") left center / 16px 8px repeat-x;
+  opacity: .55;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='8' viewBox='0 0 16 8'%3E%3Cpath d='M0 4 Q4 1 8 4 T16 4' fill='none' stroke='%23636c7b' stroke-width='1.3'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-position: left center;
+  background-size: 16px 8px;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 70%);
+  mask-image: linear-gradient(90deg, transparent, #000 70%);
+}
+/* On colour bands the wave turns white */
+.eyebrow.light::before, .eyebrow.light::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='8' viewBox='0 0 16 8'%3E%3Cpath d='M0 4 Q4 1 8 4 T16 4' fill='none' stroke='white' stroke-width='1.3'/%3E%3C/svg%3E");
 }
 .eyebrow::before { margin-right: 8px; }
 .eyebrow::after { margin-left: 8px; transform: scaleX(-1); }

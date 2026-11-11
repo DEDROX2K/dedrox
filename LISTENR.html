@@ -6,6 +6,20 @@
 <meta name="theme-color" content="#9dbbdb">
 <title>Listenr</title>
 <meta name="description" content="UI prototype: Listenr app home screen.">
+<link rel="icon" type="image/png" sizes="32x32" href="images/listenr/favicon-32.png">
+<link rel="apple-touch-icon" href="images/listenr/apple-touch-icon.png">
+<link rel="manifest" href="listenr.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Listenr">
+<meta property="og:title" content="Listenr">
+<meta property="og:description" content="Someone to listen. When you need it. A safe, judgment-free space to feel a little lighter.">
+<meta property="og:url" content="https://dedrox2k.github.io/dedrox/LISTENR.html">
+<meta property="og:image" content="https://dedrox2k.github.io/dedrox/images/listenr/og-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Listenr logo on a soft dusk sky: Someone to listen. When you need it.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://dedrox2k.github.io/dedrox/images/listenr/og-card.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;500;700&family=Atkinson+Hyperlegible:wght@400;700&family=Lora:wght@500;600&display=swap" rel="stylesheet">
@@ -80,7 +94,7 @@
   .who-name { display: block; font-weight: 700; }
   .who-meta { display: block; font-size: 13px; color: var(--ink-soft); }
   .acts { display: flex; gap: 8px; margin-top: 14px; }
-  .acts .join { flex: 1; justify-content: center; background: #a9cbe0; border-color: #a9cbe0; color: #fff; }
+  .acts .join { flex: 1; justify-content: center; background: var(--sea); border-color: var(--sea); color: #fff; }
   .ib {
     width: 40px; height: 40px; border-radius: 50%;
     display: grid; place-items: center;
@@ -239,7 +253,7 @@
         <span><span class="who-name">Annanya Nair</span><span class="who-meta" id="nWhen">Thu 12 Nov · 8:00 – 8:45 am</span></span>
       </a>
       <div class="acts">
-        <button class="pill join" data-msg="Join opens 10 minutes before the call" data-icon="phone"><i class="ph ph-phone"></i>Join</button>
+        <a class="pill join" href="LISTENR-call.html?with=Annanya%20Nair"><i class="ph ph-phone"></i>Join</a>
         <a class="ib" href="LISTENR-book.html" aria-label="Reschedule"><i class="ph ph-arrows-clockwise"></i></a>
         <button class="ib" data-msg="Added to your calendar" data-icon="calendar-check" aria-label="Add to calendar"><i class="ph ph-calendar-plus"></i></button>
         <a class="ib" href="LISTENR-bookings.html?open=next" aria-label="Add a note"><i class="ph ph-note-pencil"></i></a>
@@ -267,7 +281,7 @@
   </section>
 
   <section class="reviews" aria-roledescription="carousel" aria-label="Anonymous reviews">
-    <span class="eyebrow reveal"><i class="ph ph-quotes"></i>Anonymous reviews</span>
+    <span class="eyebrow light reveal"><i class="ph ph-quotes"></i>Anonymous reviews</span>
     <div class="quote-track">
       <figure class="quote is-active"><blockquote>“Venting to a listener made me feel like someone heard me out.”</blockquote><cite>Career</cite></figure>
       <figure class="quote"><blockquote>“No advice, no judgment. The knot finally loosened.”</blockquote><cite>Relationships</cite></figure>
@@ -293,7 +307,7 @@
   </section>
 
   <section class="breathe" id="breathe" aria-labelledby="breatheH">
-    <span class="eyebrow reveal"><i class="ph ph-wind"></i>Breathe</span>
+    <span class="eyebrow light reveal"><i class="ph ph-wind"></i>Breathe</span>
     <h2 class="h2 reveal" id="breatheH">It’s alright. Everything is alright.</h2>
     <div class="orb" id="orb" aria-live="polite"><span class="orb-label" id="orbLabel">Ready</span></div>
     <button class="pill on-color" id="breatheBtn"><i class="ph ph-play"></i><span>Start breathing</span></button>

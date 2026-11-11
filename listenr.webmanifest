@@ -1,0 +1,14 @@
+{
+  "name": "Listenr",
+  "short_name": "Listenr",
+  "description": "Someone to listen. When you need it.",
+  "start_url": "LISTENR.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f7f8fb",
+  "theme_color": "#9dbbdb",
+  "icons": [
+    { "src": "images/listenr/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "images/listenr/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
