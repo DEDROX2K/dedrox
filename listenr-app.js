@@ -126,6 +126,42 @@
     scrollTo(target);
   }));
 
+  // Night sky on [data-sky] headers: a few stars that glint now and then, and a rare,
+  // quick shooting star. Kept faint and short so it never pulls focus.
+  document.querySelectorAll('[data-sky]').forEach(host => {
+    const sky = document.createElement('div');
+    sky.className = 'sky';
+    sky.setAttribute('aria-hidden', 'true');
+    const rnd = (a, b) => a + Math.random() * (b - a);
+    const count = +host.dataset.sky || 14;
+    for (let i = 0; i < count; i++) {
+      const s = document.createElement('span');
+      s.className = 'star';
+      s.style.cssText = `left:${rnd(4, 96)}%;top:${rnd(4, 58)}%;--s:${rnd(1.2, 2.4).toFixed(1)}px;--o:${rnd(.45, .85).toFixed(2)};--t:${rnd(7, 15).toFixed(1)}s;--delay:${(-rnd(0, 15)).toFixed(1)}s`;
+      sky.appendChild(s);
+    }
+    host.prepend(sky);
+    if (reduceMotion) return;
+    (function shoot() {
+      setTimeout(() => {
+        if (!document.hidden && host.getBoundingClientRect().bottom > 0) {
+          const st = document.createElement('span');
+          st.className = 'shoot';
+          const x = rnd(25, 90), y = rnd(4, 30), ang = rnd(18, 32), dist = rnd(110, 170);
+          st.style.left = x + '%'; st.style.top = y + '%';
+          sky.appendChild(st);
+          const a = st.animate([
+            { opacity: 0, transform: `rotate(${ang + 180}deg) translateX(0) scaleX(.3)` },
+            { opacity: .9, offset: .25 },
+            { opacity: 0, transform: `rotate(${ang + 180}deg) translateX(${dist}px) scaleX(1)` },
+          ], { duration: rnd(650, 900), easing: 'cubic-bezier(.3, 0, .6, 1)' });
+          afterAnim(a, 900, () => st.remove());
+        }
+        shoot();
+      }, rnd(6000, 14000));
+    })();
+  });
+
   // Run a state change when an exit animation ends, with a timer backstop:
   // throttled or hidden pages can pause animations and never fire onfinish
   function afterAnim(anim, ms, fn) {

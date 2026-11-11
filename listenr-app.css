@@ -114,7 +114,7 @@ html.kbd :focus-visible { outline: 2px solid var(--pink-deep); outline-offset: 3
   content: "";
   position: absolute; inset: 0;
   border-radius: inherit;
-  background: linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,0) 55%);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.396), rgba(255, 255, 255, 0.396) 55%);
   pointer-events: none;
 }
 @keyframes tabbar-in { from { transform: translate(-50%, 140%); } }
@@ -262,17 +262,31 @@ html.kbd :focus-visible { outline: 2px solid var(--pink-deep); outline-offset: 3
 .pill.big i { font-size: 20px; }
 @media (hover: hover) { .pill:hover { background: rgba(255,255,255,.8); } .pill.on-color:hover { background: rgba(255,255,255,.3); } }
 .section { padding: 40px 20px 0; }
+/* Section label as a divider: centred icon and text, with soft wave lines running out to
+   both screen edges and fading away there. Assumes the section's 20px side padding. */
 .eyebrow {
-  display: inline-flex; align-items: center; gap: 5px;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  width: calc(100% + 40px);
+  margin: 0 -20px 6px;
   font-size: 12px;
-  letter-spacing: .02em;
+  letter-spacing: .04em;
   color: var(--ink-soft);
-  padding: 4px 10px;
-  border-radius: 999px;
-  background: rgba(255,255,255,.7);
-  border: 1px solid var(--line);
+  white-space: nowrap;
 }
-.eyebrow i { font-size: 14px; color: var(--pink-deep); }
+.eyebrow::before, .eyebrow::after {
+  content: "";
+  flex: 1;
+  min-width: 24px;
+  height: 8px;
+  opacity: .45;
+  /* the gradient fades the line out toward the edge; the mask cuts it into a wave */
+  background: linear-gradient(90deg, transparent, currentColor 70%);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='8' viewBox='0 0 16 8'%3E%3Cpath d='M0 4 Q4 1 8 4 T16 4' fill='none' stroke='black' stroke-width='1.3'/%3E%3C/svg%3E") left center / 16px 8px repeat-x;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='8' viewBox='0 0 16 8'%3E%3Cpath d='M0 4 Q4 1 8 4 T16 4' fill='none' stroke='black' stroke-width='1.3'/%3E%3C/svg%3E") left center / 16px 8px repeat-x;
+}
+.eyebrow::before { margin-right: 8px; }
+.eyebrow::after { margin-left: 8px; transform: scaleX(-1); }
+.eyebrow i { font-size: 15px; color: var(--pink-deep); }
 .head { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; }
 .h2 { margin-top: 10px; font-family: "Lora", Georgia, serif; font-size: 22px; line-height: 1.2; font-weight: 600; text-wrap: balance; }
 .more { display: inline-flex; align-items: center; gap: 3px; font-size: 13px; color: var(--ink-soft); white-space: nowrap; padding-bottom: 3px; }
@@ -313,3 +327,31 @@ html.kbd :focus-visible { outline: 2px solid var(--pink-deep); outline-offset: 3
 .grab::before { content: ""; display: block; width: 38px; height: 5px; border-radius: 3px; margin: 0 auto; background: var(--line); }
 .sheet-body { overflow-y: auto; overscroll-behavior: contain; padding: 4px 20px calc(24px + var(--safe-b)); }
 .close { position: absolute; top: 14px; right: 14px; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; font-size: 17px; color: var(--ink-soft); background: #fff; border: 1px solid var(--line); }
+
+/* ---------- Night sky: faint twinkles and the odd shooting star ([data-sky]) ---------- */
+[data-sky] { position: relative; isolation: isolate; }
+.sky { position: absolute; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+.star {
+  position: absolute;
+  width: var(--s, 2px); height: var(--s, 2px);
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 6px 1px rgba(255, 255, 255, .55);
+  opacity: 0;
+  animation: twinkle var(--t, 9s) var(--ease-soft) var(--delay, 0s) infinite;
+}
+/* Mostly dark: each star glints once, briefly, somewhere in its long cycle */
+@keyframes twinkle {
+  0%, 100% { opacity: 0; transform: scale(.6); }
+  6% { opacity: var(--o, .75); transform: scale(1); }
+  13% { opacity: 0; transform: scale(.6); }
+}
+.shoot {
+  position: absolute;
+  width: 72px; height: 1.5px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.85));
+  transform-origin: right center;
+  opacity: 0;
+}
+@media (prefers-reduced-motion: reduce) { .star { animation: none; opacity: .35; } .shoot { display: none; } }

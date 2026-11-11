@@ -26,7 +26,8 @@
       radial-gradient(90% 55% at 90% 8%, rgba(255, 228, 238, .75) 0%, rgba(255, 228, 238,0) 70%),
       radial-gradient(110% 60% at 10% 95%, rgba(30, 95, 140, .5) 0%, rgba(30, 95, 140,0) 70%),
       linear-gradient(170deg, #f6cdd9 0%, #9dbbdb 38%, #5f9cc2 70%, #3f86ad 100%);
-  }
+    justify-content: center;
+    }
   @media (min-width: 560px) { .hero { min-height: 700px; } }
   .hero::before {
     content: "";
@@ -58,37 +59,37 @@
     text-shadow: 0 2px 24px rgba(20, 60, 95, .2);
   }
   .hero p.sub { margin-top: 10px; max-width: 28ch; font-size: 15px; color: rgba(255,255,255,.88); }
-
   .hero .pill.big { margin-top: 22px; }
   .ghost { margin-top: 12px; display: inline-flex; align-items: center; gap: 5px; font-size: 14px; color: rgba(255,255,255,.85); }
 
   /* ---------- Sections ---------- */
   .reviews .eyebrow i, .breathe .eyebrow i { color: #fff; }
-  /* Up next — sits where the hero's blue fades into the page */
+
+  /* Up next — a card where the hero's blue fades into the page */
   .upnext {
-    padding-top: 84px;
-    background: linear-gradient(180deg, #3f86ad 0px, #a9c4dc 48px, #e3e9f2 100px, var(--cream) 170px);
+    padding: 56px 12px 0;
+    background: linear-gradient(180deg, #3f86ad 0px, #a9c4dc 40px, #e3e9f2 90px, var(--cream) 150px);
   }
-  .next { display: flex; align-items: center; gap: 12px; margin-top: 14px; }
-  .next-name { font-weight: 700; }
-  .next-meta { font-size: 13px; color: var(--ink-soft); }
-  .when-tag {
-    margin-left: auto;
-    display: inline-flex; align-items: center; gap: 6px;
-    font-size: 12px;
-    color: var(--pink-deep);
-    background: var(--pink-soft);
-    padding: 5px 10px;
-    border-radius: 999px;
-    white-space: nowrap;
+  .card { border-radius: 26px; padding: 16px; background: #fff; }
+  .k { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 12px; letter-spacing: .05em; text-transform: uppercase; color: var(--ink-soft); }
+  .tag { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; padding: 4px 9px; border-radius: 999px; white-space: nowrap; text-transform: none; letter-spacing: 0; }
+  .tag.pink { color: var(--pink-deep); background: var(--pink-soft); }
+  .tag .live { width: 6px; height: 6px; border-radius: 50%; background: var(--pink-deep); animation: blink 2.4s var(--ease-soft) infinite; }
+  @keyframes blink { 50% { opacity: .3; } }
+  .who { display: flex; align-items: center; gap: 12px; margin-top: 12px; }
+  .who-name { display: block; font-weight: 700; }
+  .who-meta { display: block; font-size: 13px; color: var(--ink-soft); }
+  .acts { display: flex; gap: 8px; margin-top: 14px; }
+  .acts .join { flex: 1; justify-content: center; background: #a9cbe0; border-color: #a9cbe0; color: #fff; }
+  .ib {
+    width: 40px; height: 40px; border-radius: 50%;
+    display: grid; place-items: center;
+    font-size: 18px;
+    color: var(--sea-deep);
+    background: var(--sea-mist);
+    transition: transform .8s var(--ease), background .8s var(--ease);
   }
-  .when-tag .live { width: 6px; height: 6px; border-radius: 50%; background: var(--pink-deep); animation: breathe-dot 2.4s var(--ease-soft) infinite; }
-  @keyframes breathe-dot { 50% { opacity: .3; } }
-  .row-actions { display: flex; gap: 8px; margin-top: 14px; overflow-x: auto; scrollbar-width: none; }
-  .row-actions::-webkit-scrollbar { display: none; }
-  .row-actions .pill { background: #fff; border-color: var(--line); }
-  .row-actions .pill.join { background: var(--sea); border-color: var(--sea); color: #fff; }
-  .row-actions .pill.join[aria-disabled="true"] { background: #a9cbe0; border-color: #a9cbe0; }
+  .ib:active { transform: scale(.9); transition-duration: .2s; }
 
   /* Free today */
   .strip { display: flex; gap: 14px; margin: 14px -20px 0; padding: 4px 20px 4px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding: 0 20px; scrollbar-width: none; overscroll-behavior-x: contain; }
@@ -142,7 +143,7 @@
       radial-gradient(90% 60% at 20% 30%, rgba(255,255,255,.16), transparent 70%),
       linear-gradient(180deg, var(--cream) 0%, #f7dbe4 18%, #e3a3b8 60%, #d48aa3 100%);
   }
-  .reviews .eyebrow { color: #fff; background: rgba(255,255,255,.18); border-color: rgba(255,255,255,.35); }
+  .reviews .eyebrow { color: #fff; }
   .quote-track { position: relative; min-height: 132px; margin-top: 14px; }
   .quote {
     position: absolute; inset: 0;
@@ -159,7 +160,6 @@
 
   /* Topics — continues out of the pink band */
   .topics { background: linear-gradient(180deg, #d48aa3 0, #f1cfda 60px, #f6ecf0 120px, var(--cream) 190px); padding-top: 72px; }
-  .lede { margin-top: 4px; color: var(--ink-soft); font-size: 14px; }
   .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
   .chip { height: 38px; padding: 0 14px 0 11px; font-size: 14px; }
   .chip i { color: var(--pink-deep); transition: color .9s var(--ease); }
@@ -178,7 +178,7 @@
       radial-gradient(80% 50% at 80% 30%, rgba(255, 215, 228, .55), transparent 70%),
       linear-gradient(180deg, var(--cream) 0%, #f6cdd9 22%, #9dbbdb 60%, #4a8db4 100%);
   }
-  .breathe .eyebrow { color: #fff; background: rgba(255,255,255,.18); border-color: rgba(255,255,255,.35); }
+  .breathe .eyebrow { color: #fff; }
   .breathe .h2 { color: #fff; }
   .orb { position: relative; width: 150px; height: 150px; margin: 22px auto 0; display: grid; place-items: center; }
   .orb::before, .orb::after {
@@ -221,40 +221,36 @@
     <button class="round intro" style="--d:1" id="bell" aria-label="Notifications, 1 new"><i class="ph ph-bell"></i><span class="dot"></span></button>
   </div>
 
-  <header class="hero" id="top">
+  <header class="hero" id="top" data-sky="16">
     <div class="hero-copy" id="heroCopy">
       <p class="greet intro" style="--d:2"><i class="ph ph-sun-horizon" id="greetIcon"></i><span id="greet">Good evening, Riya</span></p>
       <h1 class="intro" style="--d:3">Someone to listen. When you need it.</h1>
-      <p class="sub intro" style="--d:4">A safe, judgment-free space to feel a little lighter.</p>
+      <!-- <p class="sub intro" style="--d:4">A safe, judgment-free space to feel a little lighter.</p> -->
       <a class="pill big on-color intro" style="--d:5" href="LISTENR-book.html"><i class="ph ph-chat-circle-dots"></i>Start a conversation</a>
-      <a class="ghost intro" style="--d:6" href="#breathe"><i class="ph ph-wind"></i>or take a breather</a>
+      <!-- <a class="ghost intro" style="--d:6" href="#breathe"><i class="ph ph-wind"></i>or take a breather</a> -->
     </div>
   </header>
 
-  <section class="section upnext reveal" aria-labelledby="nextH">
-    <div class="head">
-      <div><span class="eyebrow"><i class="ph ph-calendar-check"></i>Up next</span><h2 class="h2" id="nextH">Your next call</h2></div>
-      <a class="more" href="LISTENR-bookings.html">All <i class="ph ph-caret-right"></i></a>
-    </div>
-    <a class="next" href="LISTENR-bookings.html?open=next" aria-label="Open your next call">
-      <span class="avatar">AN</span>
-      <div>
-        <p class="next-name">Annanya Nair</p>
-        <p class="next-meta" id="nWhen">Thu 12 Nov · 8:00 – 8:45 am</p>
+  <div class="upnext">
+    <section class="card reveal" aria-label="Up next">
+      <p class="k">Up next <span class="tag pink"><span class="live"></span><span id="nCount">in 2d</span></span></p>
+      <a class="who" href="LISTENR-bookings.html?open=next">
+        <span class="avatar">AN</span>
+        <span><span class="who-name">Annanya Nair</span><span class="who-meta" id="nWhen">Thu 12 Nov · 8:00 – 8:45 am</span></span>
+      </a>
+      <div class="acts">
+        <button class="pill join" data-msg="Join opens 10 minutes before the call" data-icon="phone"><i class="ph ph-phone"></i>Join</button>
+        <a class="ib" href="LISTENR-book.html" aria-label="Reschedule"><i class="ph ph-arrows-clockwise"></i></a>
+        <button class="ib" data-msg="Added to your calendar" data-icon="calendar-check" aria-label="Add to calendar"><i class="ph ph-calendar-plus"></i></button>
+        <a class="ib" href="LISTENR-bookings.html?open=next" aria-label="Add a note"><i class="ph ph-note-pencil"></i></a>
       </div>
-      <span class="when-tag"><span class="live"></span><span id="nCount">in 2 days</span></span>
-    </a>
-    <div class="row-actions">
-      <button class="pill join" aria-disabled="true" data-msg="Join opens 10 minutes before the call" data-icon="phone"><i class="ph ph-phone"></i>Join</button>
-      <a class="pill" href="LISTENR-book.html"><i class="ph ph-arrows-clockwise"></i>Reschedule</a>
-      <button class="pill" data-msg="Added to your calendar" data-icon="calendar-check"><i class="ph ph-calendar-plus"></i>Add to calendar</button>
-      <a class="pill" href="LISTENR-bookings.html?open=next"><i class="ph ph-note-pencil"></i>Note</a>
-    </div>
-  </section>
+    </section>
+  </div>
 
   <section class="section reveal" aria-labelledby="freeH">
+    <span class="eyebrow"><i class="ph ph-users-three"></i>Listeners</span>
     <div class="head">
-      <div><span class="eyebrow"><i class="ph ph-users-three"></i>Listeners</span><h2 class="h2" id="freeH">Free today</h2></div>
+      <h2 class="h2" id="freeH">Free today</h2>
       <a class="more" href="LISTENR-listeners.html">All <i class="ph ph-caret-right"></i></a>
     </div>
     <div class="strip" id="strip"></div>
@@ -371,10 +367,7 @@
     document.getElementById('nCount').textContent = 'in ' + (d ? `${d}d ${h}h` : h ? `${h}h ${mm}m` : `${mm} min`);
   }
   countdown(); setInterval(countdown, 30000);
-  document.querySelectorAll('.row-actions button.pill').forEach(b => b.addEventListener('click', () => toast(b.dataset.msg, b.dataset.icon)));
-  document.querySelectorAll('[data-soon]').forEach(a => a.addEventListener('click', e => {
-    e.preventDefault(); toast(`${a.dataset.soon} is the next screen we build`, 'sparkle');
-  }));
+  document.querySelectorAll('[data-msg]').forEach(b => b.addEventListener('click', () => toast(b.dataset.msg, b.dataset.icon)));
 
   // Free today: next slots from the coming hour; late in the evening it rolls over to tomorrow
   const PEOPLE = [['Kavya Iyer', true], ['Rohan Mehta', false], ['Diya Sharma', true], ['Tara Menon', false], ['Kabir Joshi', true], ['Sana Qureshi', false]];
@@ -403,9 +396,9 @@
     const fav = el.querySelector('.fav');
     fav.addEventListener('click', () => {
       const on = fav.getAttribute('aria-pressed') !== 'true';
-      fav.setAttribute("aria-pressed", on);
+      fav.setAttribute('aria-pressed', on);
       on ? favs.add(id) : favs.delete(id);
-      try { localStorage.setItem("listenr-favs", JSON.stringify([...favs])); } catch {}
+      try { localStorage.setItem('listenr-favs', JSON.stringify([...favs])); } catch {}
       fav.classList.remove('pop'); fav.offsetWidth; fav.classList.add('pop');
       toast(on ? `${name.split(' ')[0]} saved to favourites` : `Removed ${name.split(' ')[0]}`, 'heart');
     });

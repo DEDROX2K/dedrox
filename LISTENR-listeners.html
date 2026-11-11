@@ -163,7 +163,7 @@
     <button class="round intro" style="--d:1" id="bell" aria-label="Notifications, 1 new"><i class="ph ph-bell"></i><span class="dot"></span></button>
   </div>
 
-  <header class="band" id="band">
+  <header class="band" id="band" data-sky="10">
     <h1 class="intro" style="--d:2">Listeners</h1>
     <p class="sub intro" style="--d:3"><i class="ph ph-waveform"></i><span id="summary">Hear them before you book</span></p>
   </header>
@@ -578,6 +578,12 @@
   document.getElementById('bell').addEventListener('click', () => toast('Annanya confirmed your call', 'bell'));
   document.getElementById('summary').textContent = `${L.length} listeners · ${L.filter(l => l.online).length} online now`;
   paintFavs();
+  // A topic chosen on Home arrives as ?topic=
+  const topic = new URLSearchParams(location.search).get("topic");
+  if (topic && document.querySelector(`[data-t="${topic}"]`)) {
+    filters.topic = topic;
+    document.querySelectorAll("[data-t]").forEach(x => x.setAttribute("aria-pressed", x.dataset.t === topic));
+  }
   paintList(false);
   const deep = new URLSearchParams(location.search).get('open');
   if (deep) setTimeout(() => openSheet(deep), 500);

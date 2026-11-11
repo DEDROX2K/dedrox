@@ -119,6 +119,9 @@
   .tag.grey { color: var(--ink-soft); background: #eceef3; }
   .tag .live { width: 6px; height: 6px; border-radius: 50%; background: var(--pink-deep); animation: blink 2.4s var(--ease-soft) infinite; }
   @keyframes blink { 50% { opacity: .3; } }
+  /* The call you just booked glows softly, then settles */
+  .rows li.fresh { border-radius: 16px; animation: fresh 3.6s var(--ease-soft) .8s both; }
+  @keyframes fresh { 0%, 35% { background: var(--sea-mist); } 100% { background: transparent; } }
   .cancelled .name { color: var(--ink-soft); text-decoration: line-through; text-decoration-color: var(--ink-faint); }
   .next-actions { display: flex; gap: 8px; padding: 0 0 14px 48px; }
   .next-actions .pill { height: 36px; font-size: 13px; background: #fff; border-color: var(--line); }
@@ -185,7 +188,7 @@
     <button class="round intro" style="--d:1" id="bell" aria-label="Notifications, 1 new"><i class="ph ph-bell"></i><span class="dot"></span></button>
   </div>
 
-  <header class="band" id="band">
+  <header class="band" id="band" data-sky="10">
     <h1 class="intro" style="--d:2">Bookings</h1>
     <p class="sub intro" style="--d:3" id="summary"></p>
   </header>
@@ -244,13 +247,14 @@
     { id: 'LSN-2481', who: 'Annanya Nair', at: at(2, 8), mode: 'voice', status: 'upcoming', note: '' },
     { id: 'LSN-2507', who: 'Kabir Joshi', at: at(6, 18, 30), mode: 'video', status: 'upcoming', note: 'Want to talk about moving cities.' },
     { id: 'LSN-2533', who: 'Kavya Iyer', at: at(13, 10), mode: 'voice', status: 'upcoming', note: '' },
-    { id: 'LSN-2440', who: 'Kavya Iyer', at: at(-3, 21), mode: 'voice', status: 'done', feel: 3, reflection: 'Felt good to say it out loud.' },
-    { id: 'LSN-2398', who: 'Annanya Nair', at: at(-9, 8), mode: 'voice', status: 'done', feel: 2, reflection: '' },
-    { id: 'LSN-2361', who: 'Rohan Mehta', at: at(-16, 19), mode: 'video', status: 'cancelled' },
-    { id: 'LSN-2302', who: 'Diya Sharma', at: at(-24, 17, 30), mode: 'voice', status: 'done', feel: null, reflection: '' },
-    { id: 'LSN-2215', who: 'Annanya Nair', at: at(-38, 8), mode: 'voice', status: 'done', feel: 2, reflection: '' },
-    { id: 'LSN-2154', who: 'Tara Menon', at: at(-52, 20), mode: 'video', status: 'done', feel: 3, reflection: '' },
   ];
+  // Calls booked on the booking screen arrive here (kept on this device)
+  const newId = new URLSearchParams(location.search).get("new");
+  try {
+    JSON.parse(localStorage.getItem("listenr-booked") || "[]").forEach(b => {
+      if (!calls.some(c => c.id === b.id)) calls.push({ id: b.id, who: b.who, at: new Date(b.at), mode: b.mode, status: "upcoming", note: "", fresh: b.id === newId });
+    });
+  } catch {}
 
   const fmtT = d => `${d.getHours() % 12 || 12}:${String(d.getMinutes()).padStart(2, '0')}`;
   const ap = d => d.getHours() < 12 ? 'am' : 'pm';
@@ -280,7 +284,8 @@
 
   function rowHTML(c) {
     const trail = c.status === 'upcoming'
-      ? (c === upcoming()[0] ? `<span class="tag pink"><span class="live"></span>${untilText(c.at)}</span>` : '<i class="ph ph-caret-right"></i>')
+      ? (c.fresh ? '<span class="tag sea"><i class="ph ph-sparkle"></i>Just booked</span>'
+        : c === upcoming()[0] ? `<span class="tag pink"><span class="live"></span>${untilText(c.at)}</span>` : '<i class="ph ph-caret-right"></i>')
       : c.status === 'cancelled' ? '<span class="tag grey">Cancelled</span>'
       : c.feel == null ? '<span class="tag sea"><i class="ph ph-smiley"></i>Rate</span>'
       : `<span class="tag pink"><i class="ph ph-${FEELS[c.feel][0]}"></i>${FEELS[c.feel][1]}</span>`;
@@ -371,13 +376,15 @@
       } else {
         const weekEnd = new Date(now); weekEnd.setDate(now.getDate() + (7 - now.getDay())); weekEnd.setHours(0, 0, 0, 0);
         groupBy(up, c => c.at < weekEnd ? 'This week' : c.at < new Date(weekEnd.getTime() + 7 * 864e5) ? 'Next week' : 'Later').forEach(g => {
-          html += `<p class="group-label">${g.k}</p><ul class="rows">${g.items.map((c, i) => `<li class="reveal in">${rowHTML(c)}${c === up[0] ? `
+          html += `<p class="group-label">${g.k}</p><ul class="rows">${g.items.map((c, i) => `<li class="reveal in${c.fresh ? " fresh" : ""}">${rowHTML(c)}${c === up[0] ? `
             <div class="next-actions">
               <button class="pill join" data-act="join"><i class="ph ph-phone"></i>Join</button>
               <button class="pill" data-act="reschedule" data-id="${c.id}"><i class="ph ph-arrows-clockwise"></i>Reschedule</button>
             </div>` : ''}</li>`).join('')}</ul>`;
         });
       }
+    } else if (!past().length) {
+      html = `<div class="empty"><i class="ph ph-clock-counter-clockwise"></i><p>No past calls yet.<br>They’ll show here after your first chat.</p></div>`;
     } else {
       const done = calls.filter(c => c.status === 'done');
       html = `<div class="stats"><span class="stat"><i class="ph ph-check-circle"></i>${done.length} calls</span><span class="stat"><i class="ph ph-clock"></i>${Math.floor(done.length * 45 / 60)} h ${done.length * 45 % 60} min talked</span><span class="stat"><i class="ph ph-smiley"></i>${done.filter(c => c.feel >= 2).length} felt lighter</span></div>`;
@@ -441,7 +448,7 @@
     let html = `
       <div class="who">
         <span class="avatar">${initials(c.who)}</span>
-        <div><h2 id="sName">${c.who}</h2><p>${LISTENERS[c.who]} · English, Hindi</p></div>
+        <div><h2 id="sName">${c.who}</h2><p>${LISTENERS[c.who] || "Listener"} · English, Hindi</p></div>
       </div>
       <div class="status">${status}</div>
       <ul class="facts">
@@ -565,7 +572,18 @@
   new IntersectionObserver(([e]) => appbar.classList.toggle('scrolled', !e.isIntersecting), { rootMargin: '-120px 0px 0px 0px' })
     .observe(document.getElementById('band'));
   document.getElementById('bell').addEventListener('click', () => toast('Annanya confirmed your call', 'bell'));
+  // Arriving from a fresh booking: show its month, then glide down to it
+  const fresh = calls.find(c => c.fresh);
+  if (fresh) month = new Date(fresh.at.getFullYear(), fresh.at.getMonth(), 1);
   render();
+  if (fresh) {
+    history.replaceState(null, '', location.pathname);
+    setTimeout(() => {
+      const row = lists.querySelector(`.row[data-id="${fresh.id}"]`);
+      if (row) (lenis ? lenis.scrollTo(row, { offset: -140, duration: 1.6 }) : row.scrollIntoView({ block: 'center' }));
+      toast(`Booked with ${first(fresh.who)}`, 'check-circle');
+    }, 900);
+  }
   setInterval(() => { paintHeader(); }, 30000);
   const open = new URLSearchParams(location.search).get('open');
   if (open) setTimeout(() => openSheet(open === 'next' ? upcoming()[0]?.id : open), 500);
