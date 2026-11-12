@@ -73,7 +73,7 @@
   .intro { opacity: 0; transform: translate3d(0, 22px, 0); filter: blur(8px); animation: rise 1.6s var(--ease) forwards; animation-delay: calc(var(--d, 0) * 110ms + 150ms); }
   @keyframes rise { to { opacity: 1; transform: none; filter: none; } }
 
-  .logo-mark { display: inline-block; width: 26px; height: 26px; background: currentColor; -webkit-mask: url("images/LISTENR%20logo.png") center / contain no-repeat; mask: url("images/LISTENR%20logo.png") center / contain no-repeat; }
+  .logo-mark { display: inline-block; width: 45px; height: 45px; background: currentColor; -webkit-mask: url("images/LISTENR%20logo.png") center / contain no-repeat; mask: url("images/LISTENR%20logo.png") center / contain no-repeat; }
 
   /* ---------- Buttons ---------- */
   .btn {
@@ -86,8 +86,16 @@
   }
   .btn i { font-size: 19px; }
   .btn:active { transform: scale(.97); transition-duration: .2s; }
-  .btn.white { background: #fff; color: var(--orange-deep); }
-  .btn.glass { color: #fff; background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.35); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); }
+  .btn.white {     background: #df6114;
+    color: #ffd4c0; }
+    
+  .btn.glass {
+    color: #fed1bb;
+    background: rgb(255 255 255 / 6%);
+    border: 1px solid rgba(255, 255, 255, .35);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(46px);
+  }
   .btn.solid { background: var(--orange); color: #fff; }
   @media (hover: hover) {
     .btn.white:hover { transform: translateY(-2px); }
@@ -176,7 +184,7 @@
   .kicker { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: rgba(255,255,255,.9); }
   .kicker i { font-size: 18px; }
   .hero h1 {
-    margin-top: 18px;
+    margin-top: 108px;
     margin-bottom: 22px;
     font-family: "Lora", Georgia, serif;
     font-size: clamp(44px, 5.6vw, 49px);
@@ -199,7 +207,7 @@
 
   /* ---------- Sections ---------- */
   section { position: relative; }
-  .block { padding: 96px 0 0; }
+  .block { padding: 0px 0 0; }
   .eyebrow {
     display: flex; align-items: center; gap: 14px;
     font-size: 13px; letter-spacing: .06em; text-transform: uppercase;
@@ -363,7 +371,7 @@
   .finale {
     position: relative;
     margin-top: 40px;
-    min-height: calc(100vw * 1979 / 1920);
+    min-height: calc(100vw * 1000 / 1920);
     display: flex; flex-direction: column;
     background: url("images/bg15.jpg") center top / 100% 100% no-repeat, var(--page);
   }
@@ -384,16 +392,31 @@
   .fine { margin-top: 44px; font-size: 13px; color: rgba(255,255,255,.72); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
 
   /* Mild blur at the top and bottom edges of the window, so content melts away */
-  .edge { position: fixed; left: 0; right: 0; z-index: 40; height: 84px; pointer-events: none; background: rgba(251, 246, 240, .2); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+  .edge { position: fixed; left: 0; right: 0; z-index: 40; height: 84px; pointer-events: none; background: rgba(255, 202, 43, 0.061); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
   .edge.top { top: 0; -webkit-mask-image: linear-gradient(180deg, #000, transparent); mask-image: linear-gradient(180deg, #000, transparent); }
   .edge.bottom { bottom: 0; -webkit-mask-image: linear-gradient(0deg, #000, transparent); mask-image: linear-gradient(0deg, #000, transparent); }
 
-  /* A softer scrollbar: thin, warm and translucent */
-  html { scrollbar-width: thin; scrollbar-color: rgba(238, 106, 44, .4) transparent; }
-  ::-webkit-scrollbar { width: 10px; height: 10px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: rgba(238, 106, 44, .35); border-radius: 999px; border: 3px solid transparent; background-clip: padding-box; }
-  ::-webkit-scrollbar-thumb:hover { background: rgba(238, 106, 44, .55); background-clip: padding-box; }
+  /* Custom scrollbar: the native bar is hidden; a small ball glides down a transparent
+     track on the right edge. It wakes up while you scroll or hover, and can be dragged. */
+  html { scrollbar-width: none; }
+  ::-webkit-scrollbar { display: none; width: 0; height: 0; }
+  .sbar { position: fixed; z-index: 70; top: 14px; bottom: 14px; right: 4px; width: 24px; cursor: pointer; }
+  .sball {
+    position: absolute; left: 50%; top: 0;
+    width: 10px; height: 10px; margin-left: -13px;
+    border-radius: 50%;
+    background:#ffffff7a;
+    box-shadow: 0 3px 10px rgba(160, 60, 10, .25);
+    opacity: .4;
+    transform: translate3d(0, var(--y, 0px), 0);
+    transition: opacity .8s var(--ease-soft), width .6s var(--ease), height .6s var(--ease), margin .6s var(--ease);
+    cursor: grab;
+    will-change: transform;
+  }
+  .sbar.awake .sball, .sbar:hover .sball { opacity: .95; }
+  .sbar:hover .sball, .sbar.dragging .sball { width: 18px; height: 18px; margin-left: -9px; }
+  .sbar.dragging .sball { cursor: grabbing; }
+  @media (hover: none) { .sbar { display: none; } }
 
   /* Stars */
   .sky { position: absolute; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
@@ -457,6 +480,7 @@
 <body>
 
 <div class="progress" id="progress" aria-hidden="true"></div>
+<div class="sbar" id="sbar" aria-hidden="true"><span class="sball" id="sball"></span></div>
 <div class="edge top" aria-hidden="true"></div>
 <div class="edge bottom" aria-hidden="true"></div>
 <nav class="nav" id="nav" aria-label="Main">
@@ -475,7 +499,7 @@
 <header class="hero" id="top" data-sky>
   <div class="wrap hero-grid">
     <div>
-      <p class="kicker intro"><i class="ph ph-ear"></i>Listening sessions, not therapy</p>
+      <!-- <p class="kicker intro"><i class="ph ph-ear"></i>Listening sessions, not therapy</p> -->
       <h1 data-words>Someone to listen. When you need it.</h1>
       <div class="ctas intro" style="--d:3">
         <a class="btn white" href="#"><i class="ph ph-chat-circle-dots"></i>Start a conversation</a>
@@ -487,7 +511,7 @@
         <span><i class="ph ph-clock"></i>45-minute sessions</span>
       </div>
     </div>
-    <div class="orbit intro" style="--d:3">
+    <!-- <div class="orbit intro" style="--d:3">
       <div class="stage" id="stage" role="img" aria-label="Our listeners, circling slowly. Drag to turn.">
         <span class="core"></span>
         <span class="ring"></span>
@@ -495,7 +519,7 @@
         <div id="faces"></div>
       </div>
       <p class="orbit-hint" id="orbitHint"><i class="ph ph-hand-grabbing"></i>Drag to meet our listeners</p>
-    </div>
+    </div> -->
   </div>
 </header>
 
@@ -567,7 +591,7 @@
       <h2 class="h2 reveal" data-words>Questions, answered gently</h2>
       <div class="faq-grid">
         <div>
-          <details class="reveal" open><summary>What does a session feel like? <i class="ph ph-plus"></i></summary><div class="answer">You do most of the talking. Your listener doesn’t interrupt with advice or their own stories; they help you untangle your thoughts, so you leave clearer and lighter.</div></details>
+          <details class="reveal"><summary>What does a session feel like? <i class="ph ph-plus"></i></summary><div class="answer">You do most of the talking. Your listener doesn’t interrupt with advice or their own stories; they help you untangle your thoughts, so you leave clearer and lighter.</div></details>
           <details class="reveal"><summary>How many sessions do I need? <i class="ph ph-plus"></i></summary><div class="answer">As many or as few as you like. Many people book one when something feels heavy.</div></details>
           <details class="reveal"><summary>How qualified are listeners? <i class="ph ph-plus"></i></summary><div class="answer">Listeners are trained in active, non-judgmental listening. Placeholder copy for the prototype.</div></details>
         </div>
@@ -594,7 +618,7 @@
 
 <!-- Closing area: "You are not alone" drifts down into the footer over one soft glow -->
 <div class="finale">
-  <section class="block">
+  <!-- <section class="block">
     <div class="wrap">
       <p class="eyebrow reveal"><i class="ph ph-hand-heart"></i>You are not alone</p>
       <h2 class="h2 reveal" data-words>Whatever you’re carrying, it’s okay</h2>
@@ -628,13 +652,13 @@
         </div>
       </div>
     </div>
-  </section>
+  </section> -->
 
 <footer>
   <div class="wrap">
     <div class="foot" data-stagger>
       <div>
-        <a class="brand" href="#top"><span class="logo-mark"></span>Listenr</a>
+        <a class="brand" href="#top" style="font-size: 50px;"><span class="logo-mark"></span>Listenr</a>
         <p>Someone to listen, when you need it. A safe, judgment-free space to feel a little lighter.</p>
       </div>
       <div>
@@ -645,10 +669,10 @@
         <h4>Legal</h4>
         <ul><li><a href="#">Terms of service</a></li><li><a href="#">Privacy policy</a></li><li><a href="#">Disclaimer</a></li><li><a href="#">Contact us</a></li></ul>
       </div>
-      <div class="crisis">
+      <!-- <div class="crisis">
         <b><i class="ph ph-lifebuoy"></i>In crisis?</b>
         <p style="margin-top:6px">Listenr isn’t an emergency service. Call <a href="tel:112">112</a> or Tele-MANAS <a href="tel:14416">14416</a>, free and any time.</p>
-      </div>
+      </div> -->
     </div>
     <div class="fine"><span>© 2025–26 Listenr · UI prototype</span><span>Listeners and stories are made up</span></div>
   </div>
@@ -833,6 +857,7 @@
   // give a face --photo: url("…") to swap in a picture.
   (() => {
     const stage = document.getElementById('stage');
+    if (!stage) return; // orbit not on the page (e.g. commented out): skip it, let the rest run
     const holder = document.getElementById('faces');
     const hint = document.getElementById('orbitHint');
     const SHADES = [['#ffc08f', '#f47a2a'], ['#ffb27a', '#e8622a'], ['#ffd2ad', '#f28a43'], ['#ffa96b', '#df5a22'], ['#ffc9a0', '#ee6a2c'], ['#ffb98a', '#e5702f'], ['#ffd8b8', '#f39a5a'], ['#ffaa76', '#dc5524'], ['#ffc39a', '#f07a35'], ['#ffb37f', '#e76626']];
@@ -945,6 +970,46 @@
   if (lenis) lenis.on('scroll', onScroll); else addEventListener('scroll', onScroll, { passive: true });
   addEventListener('resize', onScroll);
   onScroll();
+
+  // Custom scrollbar ball: follows the page, wakes while scrolling, drag it or click the track
+  const sbar = document.getElementById('sbar');
+  const sball = document.getElementById('sball');
+  let sleepT, grab = null;
+  const maxScroll = () => document.documentElement.scrollHeight - innerHeight;
+  const travel = () => sbar.clientHeight - sball.offsetHeight;
+  function placeBall() {
+    const m = maxScroll();
+    sball.style.setProperty('--y', ((m > 0 ? scrollY / m : 0) * travel()).toFixed(1) + 'px');
+    sbar.classList.add('awake');
+    clearTimeout(sleepT);
+    sleepT = setTimeout(() => { if (!grab) sbar.classList.remove('awake'); }, 1200);
+  }
+  const scrollToRatio = (r, instant) => {
+    const y = Math.max(0, Math.min(1, r)) * maxScroll();
+    lenis ? lenis.scrollTo(y, instant ? { immediate: true } : { duration: 1.4 }) : scrollTo(0, y);
+  };
+  sball.addEventListener('pointerdown', e => {
+    e.stopPropagation();
+    grab = e.clientY - sball.getBoundingClientRect().top;
+    sbar.classList.add('dragging', 'awake');
+    try { sball.setPointerCapture(e.pointerId); } catch {}
+  });
+  sball.addEventListener('pointermove', e => {
+    if (grab == null) return;
+    const top = sbar.getBoundingClientRect().top;
+    scrollToRatio((e.clientY - top - grab) / travel(), true);
+  });
+  const letGo = () => { grab = null; sbar.classList.remove('dragging'); placeBall(); };
+  sball.addEventListener('pointerup', letGo);
+  sball.addEventListener('pointercancel', letGo);
+  sbar.addEventListener('pointerdown', e => {
+    if (e.target !== sbar) return;
+    const r = sbar.getBoundingClientRect();
+    scrollToRatio((e.clientY - r.top - sball.offsetHeight / 2) / travel());
+  });
+  if (lenis) lenis.on('scroll', placeBall); else addEventListener('scroll', placeBall, { passive: true });
+  addEventListener('resize', placeBall);
+  placeBall();
 
   // Mouse-only touches: buttons lean toward the cursor, cards tilt
   if (!reduceMotion && matchMedia('(hover: hover) and (pointer: fine)').matches) {
