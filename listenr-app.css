@@ -2,23 +2,24 @@
    Shared by every Listenr screen. Icons: Phosphor (MIT), loaded per page. */
 
 :root {
-  --page: #eceff4;
-  --cream: #f7f8fb;
+  --page: #f3eee7;
+  --cream: #fbf6f0;
   --paper: #ffffff;
-  --sea: #3a86b0;
-  --sea-deep: #2a6f96;
-  --sky: #9dbbdb;
-  --sea-soft: #d9e8f3;
-  --sea-mist: #ebf3f9;
-  --ink: #1c2431;
-  --ink-soft: #636c7b;
-  --ink-faint: #c0c6d0;
-  --line: #e2e6ee;
-  --pink: #eeb3c6;
-  --pink-deep: #c4607f;
-  --pink-soft: #fbe6ed;
-  --grey: #d8dce4;      /* placeholder avatars */
-  --grey-ink: #6b7382;
+  /* Palette shared with the website: sage green, sky blue, lavender on beige (names kept from earlier passes) */
+  --sea: #4f8560;
+  --sea-deep: #3b6b4a;
+  --sky: #a9c4e6;
+  --sea-soft: #dfe9dc;
+  --sea-mist: #e9f1e7;
+  --ink: #253038;
+  --ink-soft: #66707a;
+  --ink-faint: #c3c8cd;
+  --line: #e7e2da;
+  --pink: #c4b6e3;
+  --pink-deep: #8b77bd;
+  --pink-soft: #ede7f7;
+  --grey: #dcdfe2;      /* placeholder avatars */
+  --grey-ink: #6d757d;
   --ease: cubic-bezier(.16, 1, .3, 1);      /* long, soft expo-out */
   --ease-soft: cubic-bezier(.45, 0, .2, 1);  /* gentle in-out for swaps and loops */
   --tabbar-h: 58px;
@@ -88,11 +89,11 @@ html.kbd :focus-visible { outline: 2px solid var(--pink-deep); outline-offset: 3
     -webkit-backdrop-filter: blur(24px) saturate(180%);
     backdrop-filter: blur(4px) saturate(100%);
     border: 0.8px solid rgb(255 255 255 / 25%);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .9), inset 0 -1px 0 rgba(255, 255, 255, .25), 0 8px 28px rgba(25, 40, 60, .1);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .9), inset 0 -1px 0 rgba(255, 255, 255, .25), 0 8px 28px rgba(40, 45, 40, .1);
 }
 
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .glass { background: rgba(250, 251, 254, .95); }
+  .glass { background: rgba(253, 250, 246, .95); }
 }
 
 /* ---------- Tab bar ---------- */
@@ -151,7 +152,7 @@ html.kbd :focus-visible { outline: 2px solid var(--pink-deep); outline-offset: 3
   color: var(--ink);
   background: #ffffff;
   border: 1px solid var(--line);
-  box-shadow: 0 4px 14px rgba(25, 40, 60, .08);
+  box-shadow: 0 4px 14px rgba(40, 45, 40, .08);
   opacity: 0;
   transform: translate(-50%, 6px) scale(.92);
   filter: blur(4px);
@@ -169,7 +170,7 @@ html.kbd :focus-visible { outline: 2px solid var(--pink-deep); outline-offset: 3
   position: absolute; top: -2px; right: -5px;
   width: 9px; height: 9px; border-radius: 50%;
   background: var(--sea);
-  border: 2px solid #fbfcfe;
+  border: 2px solid #fdfaf6;
 }
 
 /* ---------- Toast ---------- */
@@ -230,7 +231,7 @@ html.kbd :focus-visible { outline: 2px solid var(--pink-deep); outline-offset: 3
   width: 46px; height: 46px; border-radius: 50%;
   display: grid; place-items: center;
   color: #fff;
-  background: rgba(40, 110, 155, .38);
+  background: rgba(79, 133, 96, .38);
   border: 1px solid rgba(255,255,255,.3);
   -webkit-backdrop-filter: blur(18px) saturate(150%);
   backdrop-filter: blur(18px) saturate(150%);
@@ -240,7 +241,7 @@ html.kbd :focus-visible { outline: 2px solid var(--pink-deep); outline-offset: 3
 .round .logo-mark { width: 26px; height: 26px; }
 .round i { font-size: 21px; }
 .round .dot { position: absolute; top: 11px; right: 12px; width: 7px; height: 7px; border-radius: 50%; background: #fff; transition: background 1.2s var(--ease-soft); }
-.appbar.scrolled .round { background: rgba(250, 251, 254, .72); color: var(--sea-deep); border-color: rgba(255,255,255,.9); }
+.appbar.scrolled .round { background: rgba(253, 250, 246, .72); color: var(--sea-deep); border-color: rgba(255,255,255,.9); }
 .appbar.scrolled .round .dot { background: var(--sea); }
 
 /* Glass pill: the old site's button, used everywhere */
@@ -313,7 +314,7 @@ html.kbd :focus-visible { outline: 2px solid var(--pink-deep); outline-offset: 3
 /* ---------- Bottom sheet (drag handle, scrim, close) ---------- */
 .scrim {
   position: fixed; inset: 0; z-index: 60;
-  background: rgba(15, 25, 40, .22);
+  background: rgba(25, 30, 30, .22);
   -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
   opacity: 0; pointer-events: none;
   transition: opacity .7s var(--ease-soft);

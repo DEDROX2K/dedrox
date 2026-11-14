@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#9dbbdb">
+<meta name="theme-color" content="#a9c4e6">
 <title>Listenr · Listeners</title>
 <meta name="description" content="UI prototype: find a listener by voice, topic and language.">
 <link rel="icon" type="image/png" sizes="32x32" href="images/listenr/favicon-32.png">
@@ -33,8 +33,9 @@
     padding: calc(84px + var(--safe-t)) 20px 72px;
     color: #fff;
     background:
-      radial-gradient(90% 70% at 90% 0%, rgba(255, 228, 238, .7) 0%, rgba(255, 228, 238,0) 70%),
-      linear-gradient(180deg, #efc0d0 0%, #5f9cc2 55%, #a9c4dc 74%, #e3e9f2 88%, var(--cream) 100%);
+      linear-gradient(180deg, rgba(251, 246, 240, 0) 45%, var(--cream) 100%),
+      url("images/bg13.jpg") center top / cover no-repeat,
+      #a9c4e6;
   }
   .band h1 { font-family: "Lora", Georgia, serif; font-size: 30px; line-height: 1.15; font-weight: 600; }
   .band .sub { margin-top: 4px; font-size: 14px; color: rgba(255,255,255,.9); display: flex; align-items: center; gap: 6px; }
@@ -105,7 +106,7 @@
   .lfoot { display: flex; align-items: center; gap: 10px; margin-top: 10px; padding-left: 64px; }
   .tag { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; padding: 4px 9px; border-radius: 999px; white-space: nowrap; }
   .tag.pink { color: var(--pink-deep); background: var(--pink-soft); }
-  .tag.grey { color: var(--ink-soft); background: #eceef3; }
+  .tag.grey { color: var(--ink-soft); background: #efebe4; }
 
   /* ---------- Voice player ---------- */
   .voice { flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px; }

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#9dbbdb">
+<meta name="theme-color" content="#a9c4e6">
 <title>Listenr · Someone to listen</title>
 <meta name="description" content="Someone to listen. When you need it. A safe, judgment-free space to feel a little lighter.">
 <link rel="icon" type="image/png" sizes="32x32" href="images/listenr/favicon-32.png">
@@ -32,23 +32,24 @@
 <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
 <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
 <style>
-  :root {
+    :root {
     --page: #fbf6f0;      /* off-white beige */
     --paper: #ffffff;
-    --orange: #3a86b0;    /* sea blue: buttons, accents (names kept from the orange pass) */
-    --orange-deep: #2a6f96;
-    --apricot: #9dbbdb;   /* sky */
-    --peach: #d9e8f3;
-    --peach-2: #eeb3c6;   /* sky pink: step connector */
-    --cream-2: #ebf3f9;   /* soft icon wells */
-    --cream-3: #fbe6ed;   /* pink tags */
-    --rust: #c4607f;      /* deep pink: icons, labels */
-    --ink: #1c2431;
-    --ink-soft: #636c7b;
-    --ink-faint: #c0c6d0;
-    --line: #e2e6ee;
-    --grey: #d8dce4;
-    --grey-ink: #6b7382;
+    /* Palette from the pastel sky: sage green, sky blue, lavender (token names kept from earlier passes) */
+    --orange: #6c72ca;    /* sage green: buttons, accents */
+    --orange-deep: #6c72ca;
+    --apricot: #a9c4e6;   /* sky blue */
+    --peach: #dfe9dc;
+    --peach-2: #c4b6e3;   /* lavender: step connector */
+    --cream-2: #e9f1e7;   /* soft sage icon wells */
+    --cream-3: #ede7f7;   /* lavender tags */
+    --rust: #8b77bd;      /* deep lavender: icons, labels */
+    --ink: #253038;
+    --ink-soft: #66707a;
+    --ink-faint: #c3c8cd;
+    --line: #e7e2da;
+    --grey: #dcdfe2;
+    --grey-ink: #6d757d;
     --ease: cubic-bezier(.16, 1, .3, 1);
     --ease-soft: cubic-bezier(.45, 0, .2, 1);
     --wrap: 1160px;
@@ -111,25 +112,37 @@
 
   /* ---------- Nav ---------- */
   .nav { position: fixed; top: 16px; left: 0; right: 0; z-index: 50; pointer-events: none; }
+  /* Over the hero: just the logo, links and button in white, no pill.
+     Past the hero: the frosted pill appears around them with a little bounce. */
   .nav .wrap {
     pointer-events: auto;
-    height: 60px;
-    display: flex; align-items: center; gap: 24px;
-    padding: 0 10px 0 18px;
+    width: min(70% - 48px, var(--wrap));
+    height: 50px;
+    display: flex; align-items: center; gap: 20px;
+    padding: 0 6px 0 16px;
     border-radius: 999px;
     color: #fff;
-    background: rgba(255,255,255,.12);
-    border: 1px solid rgba(255,255,255,.28);
-    -webkit-backdrop-filter: blur(18px) saturate(140%); backdrop-filter: blur(18px) saturate(140%);
-    transition: background 1s var(--ease-soft), color 1s var(--ease-soft), border-color 1s var(--ease-soft);
+    background: rgba(255,255,255,0);
+    border: 1px solid rgba(255,255,255,0);
+    box-shadow: 0 8px 28px rgba(25, 40, 60, 0);
+    transition: background .7s var(--ease-soft), border-color .7s var(--ease-soft), box-shadow .7s var(--ease-soft), color .7s var(--ease-soft);
   }
-  .nav.solid .wrap { color: var(--ink); background: rgba(255,255,255,.78); border-color: rgba(255,255,255,.9); box-shadow: 0 8px 28px rgba(25, 40, 60, .08); }
+  .nav.solid .wrap {
+    color: var(--ink);
+    background: rgba(255,255,255,.78);
+    border-color: rgba(255,255,255,.9);
+    box-shadow: 0 8px 28px rgba(25, 40, 60, .08);
+    -webkit-backdrop-filter: blur(18px) saturate(140%); backdrop-filter: blur(18px) saturate(140%);
+    animation: pill-in .9s cubic-bezier(.34, 1.56, .64, 1);
+  }
+  @keyframes pill-in { from { transform: translate3d(0, -14px, 0) scale(.96); } }
   .brand { display: flex; align-items: center; gap: 10px; font-family: "Lora", Georgia, serif; font-size: 20px; font-weight: 600; }
   .nav .links { display: flex; gap: 4px; margin: 0 auto; }
   .nav .links a { padding: 8px 14px; border-radius: 999px; font-size: 15px; transition: background .8s var(--ease); }
   .nav .links a:hover { background: rgba(255,255,255,.18); }
   .nav.solid .links a:hover { background: var(--cream-2); }
-  .nav .btn { height: 42px; font-size: 15px; padding: 0 18px; }
+  .nav .btn { height: 38px; font-size: 14px; padding: 0 16px 0 14px; }
+  .nav .btn.white { background: #fff; color: var(--orange-deep); }
   .nav.solid .btn.white { background: var(--orange); color: #fff; }
 
   /* ---------- Hero ---------- */
@@ -143,18 +156,18 @@
     overflow: hidden;
     background:
       url("images/bg13.jpg") center / cover no-repeat,
-      #5f9cc2;
+      #9ab8d8;
   }
   .hero::before {
     content: ""; position: absolute; inset: -20%; z-index: -1;
-    background: radial-gradient(35% 30% at 25% 30%, rgba(255,255,255,.2), transparent 70%), radial-gradient(30% 25% at 70% 65%, rgba(255, 205, 222, .3), transparent 70%);
+    /* background: radial-gradient(35% 30% at 25% 30%, rgba(255,255,255,.2), transparent 70%), radial-gradient(30% 25% at 70% 65%, rgba(255, 205, 222, .3), transparent 70%); */
     filter: blur(20px);
     animation: drift 26s var(--ease-soft) infinite alternate;
   }
   @keyframes drift { to { transform: translate3d(5%, -4%, 0) scale(1.08); } }
   /* The hero eases off into the page colour at its bottom edge */
   .hero::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; z-index: -1; height: 240px; pointer-events: none; background: linear-gradient(180deg, rgba(251, 246, 240, 0), var(--page)); }
-  .hero-grid { display: grid; grid-template-columns: 1.05fr .95fr; align-items: center; gap: 40px; text-align: left; }
+  .hero-grid { display: flex; flex-direction: column; align-items: center; text-align: center; margin-top: -40px; }
   /* Listener orbit: faces circle slowly; the one at the top is in focus, the rest
      blur and shrink as they travel round. The whole stage fades out at its edges. */
   .orbit { display: flex; flex-direction: column; align-items: center; gap: 4px; }
@@ -190,23 +203,36 @@
   .orbit-hint i { font-size: 16px; }
   .kicker { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: rgba(255,255,255,.9); }
   .kicker i { font-size: 18px; }
+  /* Centred, like the screenshot: big soft serif headline, one quiet line, one cream button */
   .hero h1 {
-    margin-top: 108px;
-    margin-bottom: 22px;
+    margin: 0;
     font-family: "Lora", Georgia, serif;
-    font-size: clamp(44px, 5.6vw, 49px);
-    line-height: 0.95;
-    /* font-weight: lighter; */
-    max-width: 16ch;
-    /* text-wrap: balance; */
-    text-shadow: 0 2px 30px rgba(20, 60, 95, .25);}
+    font-size: clamp(48px, 5vw, 96px);
+    line-height: 1;
+    font-weight: 400;
+    letter-spacing: .005em;
+    text-shadow: 0 2px 30px rgba(40, 60, 90, .18);
+  }
+  .hero .lead {
+    margin: 30px auto 0;
+    max-width: 56ch;
+    font-family: "Lora", Georgia, serif;
+    font-size: clamp(16px, 1.25vw, 20px);
+    color: rgba(255,255,255,.92);
+  }
+  .hero .ctas { display: flex; justify-content: center; gap: 12px; margin-top: 44px; flex-wrap: wrap; }
+  .btn.cream {
 
-  .hero .lead { 
-    margin-top: 18px; 
-    max-width: 56ch; 
-    font-size: 15px; 
-    color: rgba(255,255,255,.9); }
-  .hero .ctas { display: flex; gap: 12px; margin-top: 32px; flex-wrap: wrap; }
+    height: 44px;
+    padding: 0 28px;
+    font-family: "Lora", Georgia, serif;
+    font-size: 21px;
+    font-weight: bold;
+    color: rgb(117, 117, 117);
+    background: #fdf8f485;
+    box-shadow: 0 10px 30px rgba(40, 60, 90, .08);
+}
+  @media (hover: hover) { .btn.cream:hover { transform: translateY(-2px); } }
   .trust { display: flex; gap: 22px; margin-top: 36px; flex-wrap: wrap; font-size: 14px; color: rgba(255,255,255,.85); }
   .trust span { display: inline-flex; align-items: center; gap: 7px; }
   .trust i { font-size: 18px; }
@@ -251,11 +277,11 @@
   /* Stories: the sky-pink band */
   .stories {
     margin-top: 110px;
-    padding: 110px 0 120px;
+    padding: 110px 0 150px;
     color: #fff;
     background:
       radial-gradient(60% 60% at 15% 30%, rgba(255,255,255,.18), transparent 70%),
-      linear-gradient(180deg, var(--page) 0%, #f7dbe4 9%, #e3a3b8 30%, #d48aa3 100%);
+      linear-gradient(180deg, var(--page) 0%, #dbe6f0 9%, #b3c7e6 30%, #a998d4 68%, #c8bde6 86%, var(--page) 100%);
   }
   .stories .h2 { color: #fff; }
   /* A slow carousel: one card glides in every few seconds, the centre one lit */
@@ -327,7 +353,7 @@
     isolation: isolate;
     position: relative;
     overflow: hidden;
-    background: #5f9cc2;
+    background: #9ab8d8;
   }
   /* The image pans slowly behind the card */
   .closing::before {
@@ -363,9 +389,6 @@
   }
   .m-p.big { font-size: 26px; line-height: 1.35; font-style: italic; }
   .m-p b { font-weight: 600; }
-  .promises { list-style: none; width: max-content; max-width: calc(100% - 48px); margin: 56px auto 0; }
-  .promises li { font-family: "Lora", Georgia, serif; font-size: 26px; line-height: 1.5; color: var(--ink); }
-  .promises li b { font-family: "Atkinson Hyperlegible Next", sans-serif; font-weight: 700; letter-spacing: .01em; color: var(--orange); margin-right: .25em; }
   .m-just { width: min(100% - 48px, 600px); margin: 48px auto 0; text-align: center; font-family: "Lora", Georgia, serif; font-size: 21px; line-height: 1.5; color: var(--ink-soft); }
   .m-bloom { position: relative; margin-top: 20px; padding: 120px 24px 0; text-align: center; }
   .m-final { max-width: 760px; margin: 0 auto; font-family: "Lora", Georgia, serif; font-style: italic; font-weight: 400; color: #fff; font-size: clamp(28px, 3vw, 42px); line-height: 1.18; text-shadow: 0 2px 30px rgba(20, 60, 95, .25); }
@@ -388,7 +411,11 @@
 
   /* Footer: white text straight on the glow, no box or border */
   footer { margin-top: 140px; padding: 60px 0 40px; color: #fff; }
-  .foot { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1.3fr; gap: 32px; }
+  .foot { display: grid; grid-template-columns: 1.3fr .8fr .8fr 1.7fr; gap: 32px; align-items: start; }
+  /* Right column: the promises, white on the footer's glow */
+  .foot .promises { list-style: none; margin-top: 12px; display: grid; gap: 6px; }
+  .foot .promises li { font-family: "Lora", Georgia, serif; font-size: 20px; line-height: 1.35; color: #fff; }
+  .foot .promises b { font-family: "Atkinson Hyperlegible Next", sans-serif; font-weight: 700; letter-spacing: .02em; margin-right: .3em; }
   .foot .brand { color: #fff; }
   .foot p { margin-top: 10px; font-size: 14px; color: rgba(255,255,255,.88); max-width: 30ch; }
   .foot h4 { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: rgba(255,255,255,.72); font-weight: 500; }
@@ -435,10 +462,11 @@
 
   /* ---------- Narrower screens ---------- */
   @media (max-width: 980px) {
-    .hero-grid { grid-template-columns: 1fr; gap: 8px; }
+    .hero-grid { margin-top: 0; }
     .foot { grid-template-columns: 1fr 1fr; }
+    .foot-promise { grid-column: 1 / -1; }
     .nav .links { display: none; }
-    .nav .wrap { justify-content: space-between; }
+    .nav .wrap { justify-content: space-between; width: min(100% - 32px, 560px); }
   }
   @media (max-width: 640px) {
     .steps, .compare, .faq-grid, .foot { grid-template-columns: 1fr; }
@@ -501,7 +529,7 @@
       <a href="#manifesto">Manifesto</a>
       <a href="#faq">FAQ</a>
     </div>
-    <a class="btn white" href="#"><i class="ph ph-device-mobile"></i>Open the app</a>
+    <a class="btn white" href="#"><i class="ph ph-sign-in"></i>Sign in</a>
   </div>
 </nav>
 
@@ -509,15 +537,10 @@
   <div class="wrap hero-grid">
     <div>
       <!-- <p class="kicker intro"><i class="ph ph-ear"></i>Listening sessions, not therapy</p> -->
-      <h1 data-words>Someone to listen. When you need it.</h1>
+      <h1 data-words>Someone to listen.<br>when you need it.</h1>
+      <p class="lead intro" style="--d:2">A safe, judgement-free space to speak your mind and feel a little lighter.</p>
       <div class="ctas intro" style="--d:3">
-        <a class="btn white" href="#"><i class="ph ph-chat-circle-dots"></i>Start a conversation</a>
-        <a class="btn glass" href="#"><i class="ph ph-users-three"></i>Meet our listeners</a>
-      </div>
-      <div class="trust intro" style="--d:4">
-        <span><i class="ph ph-lock-simple"></i>Private, never recorded</span>
-        <span><i class="ph ph-mask-happy"></i>Stay anonymous</span>
-        <span><i class="ph ph-clock"></i>45-minute sessions</span>
+        <a class="btn cream" href="#">Talk to Listener</a>
       </div>
     </div>
     <!-- <div class="orbit intro" style="--d:3">
@@ -548,16 +571,16 @@
   <section class="stories" id="stories">
     <div class="wrap">
       <p class="eyebrow light reveal"><i class="ph ph-quotes"></i>Anonymous stories</p>
-      <h2 class="h2 reveal" data-words>What people carry, and how it felt to set it down</h2>
+      <h2 class="h2 reveal" data-words>We don't reveal our customers identities</h2>
       <div class="carousel reveal" id="carousel" aria-roledescription="carousel" aria-label="Anonymous stories">
         <div class="track" id="track">
-          <figure class="quote"><i class="ph-fill ph-quotes"></i><p>Venting out my stress to a listener made me feel like someone heard me out.</p><span>Career · anonymous</span></figure>
-          <figure class="quote"><i class="ph-fill ph-quotes"></i><p>No advice, no judgment. I just talked, and the knot finally loosened.</p><span>Relationships · anonymous</span></figure>
-          <figure class="quote"><i class="ph-fill ph-quotes"></i><p>I left the call clearer than I’ve felt in weeks.</p><span>Loneliness · anonymous</span></figure>
-          <figure class="quote"><i class="ph-fill ph-quotes"></i><p>I didn’t have the words. She just waited until I found them.</p><span>Anything else · anonymous</span></figure>
-          <figure class="quote"><i class="ph-fill ph-quotes"></i><p>Talking to someone kind at 11 pm made the night feel shorter.</p><span>Loneliness · anonymous</span></figure>
-          <figure class="quote"><i class="ph-fill ph-quotes"></i><p>It wasn’t advice I needed. It was room to think out loud.</p><span>Family · anonymous</span></figure>
-          <figure class="quote"><i class="ph-fill ph-quotes"></i><p>I finally said out loud what I’d been carrying for a year.</p><span>Grief · anonymous</span></figure>
+          <figure class="quote"><i class="ph-fill ph-quotes"></i><p>Quick and easy.</p><span>Career · anonymous</span></figure>
+          <figure class="quote"><i class="ph-fill ph-quotes"></i><p>Thanks a lot I mean it really helped me get our of the depression, I only needed someone to listen about my problems.</p><span>· anonymous</span></figure>
+          <figure class="quote"><i class="ph-fill ph-quotes"></i><p>I left the call clearer than I’ve felt in weeks.</p><span>· anonymous</span></figure>
+          <figure class="quote"><i class="ph-fill ph-quotes"></i><p>I didn’t have the words. She just waited until I found them.</p><span>· anonymous</span></figure>
+          <figure class="quote"><i class="ph-fill ph-quotes"></i><p>Talking to someone kind at 11 pm made the night feel shorter.</p><span>· anonymous</span></figure>
+          <figure class="quote"><i class="ph-fill ph-quotes"></i><p>It wasn’t advice I needed. It was room to think out loud.</p><span>· anonymous</span></figure>
+          <figure class="quote"><i class="ph-fill ph-quotes"></i><p>I finally said out loud what I’d been carrying for a year.</p><span>· anonymous</span></figure>
         </div>
       </div>
       <div class="cdots" id="cdots" role="tablist" aria-label="Choose a story"></div>
@@ -578,15 +601,7 @@
       <p class="m-p">You don’t have to pretend you’re okay here. You don’t have to make sense. You don’t have to arrive with a plan or leave with an answer.</p>
       <p class="m-p">You can talk about your career, your relationships, your worries, the things you haven’t told anyone, or absolutely nothing in particular.</p>
       <p class="m-p">We’ll make the space for it.</p>
-      <p class="m-p">What we <b>promise:</b></p>
     </div>
-    <ul class="promises" data-stagger>
-      <li class="reveal" style="color: white;"><b>NO</b>judgement.</li>
-      <li class="reveal" style="color: white;"><b>NO</b>unsolicited advice.</li>
-      <li class="reveal" style="color: white;"><b>NO</b>pressure to explain yourself.</li>
-      <li class="reveal" style="color: white;"><b>NO</b>expectation to have everything figured out.</li>
-      <li class="reveal" style="color: white;"><b>NO</b>need to pretend you’re doing fine.</li>
-    </ul>
     <!-- <p class="m-just reveal" style="color: white;">Just a private space, a person willing to listen, and the freedom to be heard.</p> -->
     <div class="m-bloom">
       <p class="m-final reveal"><span>Because life is complicated enough.</span><span>And nobody should have to carry everything on their own.</span></p>
@@ -677,6 +692,16 @@
       <div>
         <h4>Legal</h4>
         <ul><li><a href="#">Terms of service</a></li><li><a href="#">Privacy policy</a></li><li><a href="#">Disclaimer</a></li><li><a href="#">Contact us</a></li></ul>
+      </div>
+      <div class="foot-promise">
+        <h4>What we promise</h4>
+        <ul class="promises">
+          <li><b>NO</b>judgement.</li>
+          <li><b>NO</b>unsolicited advice.</li>
+          <li><b>NO</b>pressure to explain yourself.</li>
+          <li><b>NO</b>expectation to have everything figured out.</li>
+          <li><b>NO</b>need to pretend you’re doing fine.</li>
+        </ul>
       </div>
       <!-- <div class="crisis">
         <b><i class="ph ph-lifebuoy"></i>In crisis?</b>
@@ -855,9 +880,12 @@
   /* ---------- Soft motion ---------- */
   // Headings rise in word by word; the hero's plays on load, the rest as they're revealed
   document.querySelectorAll('[data-words]').forEach(el => {
-    const text = el.textContent.trim();
-    el.setAttribute('aria-label', text);
-    el.innerHTML = text.split(/\s+/).map((w, i) => `<span class="w" style="--wi:${i}" aria-hidden="true">${w}</span>`).join(' ');
+    el.setAttribute('aria-label', el.textContent.trim());
+    let i = 0; // lines split on <br>; words numbered across lines so they rise in reading order
+    el.innerHTML = el.innerHTML.split(/<br\s*\/?>/i).map(line =>
+      line.replace(/<[^>]+>/g, '').trim().split(/\s+/).filter(Boolean)
+        .map(w => `<span class="w" style="--wi:${i++}" aria-hidden="true">${w}</span>`).join(' ')
+    ).join('<br>');
   });
   requestAnimationFrame(() => document.querySelector('.hero h1').classList.add('words-in'));
 
@@ -869,7 +897,7 @@
     if (!stage) return; // orbit not on the page (e.g. commented out): skip it, let the rest run
     const holder = document.getElementById('faces');
     const hint = document.getElementById('orbitHint');
-    const SHADES = [['#bcd8ea', '#3a86b0'], ['#f7d3df', '#c4607f'], ['#cfe2f1', '#5f9cc2'], ['#fbe0e8', '#d48aa3'], ['#c3dbee', '#2a6f96'], ['#f3c6d5', '#b85475'], ['#d9e8f3', '#6fa3c7'], ['#f9dbe5', '#e3a3b8'], ['#bfd6ea', '#4a8db4'], ['#f6cfdc', '#c86f8c']];
+    const SHADES = [['#d6e7d3', '#6f9c78'], ['#dfe9f6', '#7fa3d0'], ['#e6def5', '#9b88c9'], ['#cfe2cc', '#4f8560'], ['#d7e4f4', '#6c93c4'], ['#ddd3f0', '#8b77bd'], ['#e2eedf', '#86ad8d'], ['#e4ecf7', '#97b6dc'], ['#e9e2f6', '#a998d4'], ['#d3e5d0', '#5d9068']];
     const faces = SHADES.map(([a, b]) => {
       const el = document.createElement('span');
       el.className = 'face';

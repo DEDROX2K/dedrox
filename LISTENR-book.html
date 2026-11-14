@@ -25,16 +25,16 @@
 <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
 <style>
   :root {
-    --page: #eceff4;
+    --page: #f3eee7;
     --paper: #ffffff;
-    --card: #f1f3f7;
-    --sea: #3a86b0;
-    --sea-deep: #2a6f96;
-    --sea-soft: #d9e8f3;
-    --ink: #1c2431;
-    --ink-soft: #636c7b;
-    --ink-faint: #c0c6d0;
-    --line: #e2e6ee;
+    --card: #f4efe8;
+    --sea: #4f8560;
+    --sea-deep: #3b6b4a;
+    --sea-soft: #dfe9dc;
+    --ink: #253038;
+    --ink-soft: #66707a;
+    --ink-faint: #c3c8cd;
+    --line: #e7e2da;
     --ease: cubic-bezier(.16, 1, .3, 1);
     --ease-soft: cubic-bezier(.45, 0, .2, 1);
   }
@@ -62,7 +62,7 @@
   button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; -webkit-tap-highlight-color: transparent; }
   /* No focus box on tap or click; a soft ring only when navigating by keyboard (html.kbd) */
   :focus { outline: none; }
-  html.kbd :focus-visible { outline: 2px solid #c4607f; outline-offset: 3px; }
+  html.kbd :focus-visible { outline: 2px solid #8b77bd; outline-offset: 3px; }
   .serif { font-family: "Lora", Georgia, serif; }
 
   .frame {
@@ -85,7 +85,7 @@
     left: -8%; right: -8%; top: -46px;
     height: 84px;
     border-radius: 50%;
-    background: #f0a9c0;
+    background: #c4b6e3;
     filter: blur(26px);
     opacity: .85;
     animation: glow 7s var(--ease-soft) infinite alternate;
@@ -115,7 +115,7 @@
 
   .head { padding: 28px 8px 8px; }
   .head h1 { font-size: 36px; line-height: 1.1; font-weight: 700; letter-spacing: -0.01em; }
-  .head p { margin-top: 10px; font-size: 16px; color: #2e3644; }
+  .head p { margin-top: 10px; font-size: 16px; color: #2e3a40; }
 
   .card {
     margin-top: 20px;
@@ -142,8 +142,8 @@
     display: grid; place-items: center;
     font-size: 15px;
     font-weight: 500;
-    color: #6b7382;
-    background: #d8dce4;
+    color: #6d757d;
+    background: #dcdfe2;
     opacity: .75;
     transition: opacity 1s var(--ease), transform 1s var(--ease), color 1s var(--ease);
   }
@@ -241,7 +241,7 @@
     display: flex;
     padding: 4px;
     border-radius: 999px;
-    background: #e6e8ee;
+    background: #ebe6de;
   }
   .seg button {
     position: relative; z-index: 1;
@@ -315,7 +315,7 @@
     padding: 14px 16px calc(14px + env(safe-area-inset-bottom));
     border-radius: 24px 24px 0 0;
     background: #fff;
-    box-shadow: 0 -1px 0 var(--line), 0 -8px 24px rgba(25, 40, 60, .06);
+    box-shadow: 0 -1px 0 var(--line), 0 -8px 24px rgba(40, 45, 40, .06);
     transform: translateX(-50%);
     animation: summary-in 1.2s var(--ease) .5s both;
   }
@@ -325,7 +325,7 @@
     width: 42px; height: 42px; border-radius: 13px;
     display: grid; place-items: center;
     font-size: 14px; font-weight: 500;
-    color: #6b7382; background: #d8dce4;
+    color: #6d757d; background: #dcdfe2;
   }
   .sum-txt { flex: 1; min-width: 0; line-height: 1.3; }
   .sum-name { display: block; font-size: 15px; font-weight: 700; }
@@ -344,7 +344,7 @@
     transition: transform .9s var(--ease), background .9s var(--ease);
   }
   .cta:active { transform: scale(.96); transition-duration: .2s; }
-  .cta.done { background: var(--pink-deep, #c4607f); }
+  .cta.done { background: var(--pink-deep, #8b77bd); }
 
   /* ---------- Booked: a soft dusk screen that settles in over the booking ---------- */
   .booked {
@@ -353,8 +353,7 @@
     overflow-y: auto;
     color: #fff;
     background:
-      radial-gradient(90% 55% at 85% 5%, rgba(255, 228, 238, .8) 0%, rgba(255,228,238,0) 70%),
-      linear-gradient(170deg, #f6cdd9 0%, #9dbbdb 40%, #5f9cc2 75%, #3f86ad 100%);
+      url("images/bg13.jpg") center / cover no-repeat, #a9c4e6;
     opacity: 0;
     filter: blur(10px);
     transition: opacity .9s var(--ease-soft), filter 1.1s var(--ease-soft);
@@ -373,7 +372,7 @@
   .tick circle { stroke-dasharray: 176; stroke-dashoffset: 176; opacity: .7; transition: stroke-dashoffset 1.2s var(--ease) .25s; }
   .tick path { stroke-width: 3.5; stroke-dasharray: 36; stroke-dashoffset: 36; transition: stroke-dashoffset .8s var(--ease) 1s; }
   .booked.show .tick circle, .booked.show .tick path { stroke-dashoffset: 0; }
-  .bk-title { margin-top: 18px; font-family: "Lora", Georgia, serif; font-size: 30px; font-weight: 600; line-height: 1.15; text-shadow: 0 2px 20px rgba(20, 60, 95, .2); }
+  .bk-title { margin-top: 18px; font-family: "Lora", Georgia, serif; font-size: 30px; font-weight: 600; line-height: 1.15; text-shadow: 0 2px 20px rgba(40, 60, 70, .2); }
   .bk-sub { margin-top: 6px; font-size: 15px; color: rgba(255,255,255,.9); }
   .bk-facts {
     list-style: none;
@@ -453,14 +452,14 @@
     <div class="views">
       <div class="view arc" id="arc" tabindex="0" role="slider" aria-label="Start time" aria-valuemin="6" aria-valuemax="22">
         <svg id="arcSvg" aria-hidden="true">
-          <rect id="arcWell" rx="14" fill="rgba(20, 40, 70, .045)"/>
-          <path id="arcBase" fill="none" stroke="#dde2ea" stroke-width="4" stroke-linecap="round"/>
-          <g id="arcAvail" fill="none" stroke="#bcd8ea" stroke-width="9" stroke-linecap="round"></g>
+          <rect id="arcWell" rx="14" fill="rgba(40, 50, 50, .045)"/>
+          <path id="arcBase" fill="none" stroke="#e3ddd4" stroke-width="4" stroke-linecap="round"/>
+          <g id="arcAvail" fill="none" stroke="#c9dcc6" stroke-width="9" stroke-linecap="round"></g>
           <path id="arcSel" class="window" fill="none" stroke="var(--sea)" stroke-width="9" stroke-linecap="round"/>
           <circle id="arcDot" r="12" fill="var(--sea)" stroke="#fff" stroke-width="3"/>
         </svg>
         <div id="arcLabels"></div>
-        <p class="hint" id="hint">Drag to choose · blue is free</p>
+        <p class="hint" id="hint">Drag to choose · green is free</p>
       </div>
       <div class="view list off" id="list" aria-label="Available start times"></div>
     </div>

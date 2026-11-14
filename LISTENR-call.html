@@ -46,8 +46,8 @@
   .call {
     color: #e9eef5;
     background:
-      radial-gradient(70% 45% at 50% 30%, rgba(63, 134, 173, .22), transparent 70%),
-      radial-gradient(60% 40% at 80% 100%, rgba(212, 138, 163, .12), transparent 70%),
+      radial-gradient(70% 45% at 50% 30%, rgba(79, 133, 96, .22), transparent 70%),
+      radial-gradient(60% 40% at 80% 100%, rgba(160, 140, 210, .12), transparent 70%),
       #0f1823;
   }
   .call-top {
@@ -84,14 +84,14 @@
     width: 128px; height: 128px; border-radius: 40px;
     display: grid; place-items: center;
     font-size: 38px; font-weight: 500;
-    color: #dfe6ef;
+    color: #e8e3db;
     background: #33445a;
   }
   /* Speaking: soft rings breathe out from the avatar while the listener talks */
   .big-av::before, .big-av::after {
     content: ""; position: absolute; inset: -10px;
     border-radius: 48px;
-    border: 2px solid rgba(157, 187, 219, .55);
+    border: 2px solid rgba(169, 196, 230, .55);
     opacity: 0; transform: scale(.94);
     transition: opacity .5s var(--ease-soft);
   }
@@ -99,7 +99,7 @@
   .speaking .big-av::after { opacity: 1; animation: ring 1.8s var(--ease-soft) .6s infinite; }
   @keyframes ring { 0% { transform: scale(.94); opacity: .8; } 100% { transform: scale(1.22); opacity: 0; } }
   .level { position: absolute; top: 14px; right: 14px; display: flex; gap: 3px; align-items: center; height: 18px; padding: 0 8px; border-radius: 999px; background: rgba(10, 18, 28, .45); }
-  .level span { width: 3px; height: 4px; border-radius: 2px; background: #9dbbdb; transition: height .18s var(--ease-soft); }
+  .level span { width: 3px; height: 4px; border-radius: 2px; background: #a9c4e6; transition: height .18s var(--ease-soft); }
 
   .self {
     position: absolute; right: 12px; bottom: 12px; z-index: 5; /* your preview shows even while connecting */
@@ -112,9 +112,9 @@
     cursor: grab;
     transition: transform .9s var(--ease);
   }
-  .self .sm-av { width: 46px; height: 46px; border-radius: 15px; display: grid; place-items: center; font-size: 17px; color: #dfe6ef; background: #4a5d75; }
+  .self .sm-av { width: 46px; height: 46px; border-radius: 15px; display: grid; place-items: center; font-size: 17px; color: #e8e3db; background: #4a5d75; }
   .self .tag { position: absolute; left: 8px; bottom: 8px; font-size: 11px; display: inline-flex; align-items: center; gap: 4px; }
-  .self .tag i { font-size: 12px; color: #f0a9bd; }
+  .self .tag i { font-size: 12px; color: #c4b6e3; }
   .self .tag i.on { color: #e9eef5; }
 
   .captions {
@@ -126,7 +126,7 @@
   }
   .captions.on { opacity: 1; transform: none; }
   .captions p { display: inline; padding: 3px 8px; border-radius: 8px; background: rgba(10, 18, 28, .72); box-decoration-break: clone; -webkit-box-decoration-break: clone; }
-  .captions b { color: #9dbbdb; font-weight: 500; }
+  .captions b { color: #a9c4e6; font-weight: 500; }
 
   .meta-row { display: flex; justify-content: center; gap: 8px; padding: 12px 0 0; font-size: 12px; color: rgba(233, 238, 245, .6); }
   .meta-row span { display: inline-flex; align-items: center; gap: 4px; }
@@ -147,7 +147,7 @@
   .ctl .alt { opacity: 0; transform: scale(.6); }
   .ctl[aria-pressed="true"] .main { opacity: 0; transform: scale(.6); }
   .ctl[aria-pressed="true"] .alt { opacity: 1; transform: none; }
-  .ctl.mute[aria-pressed="true"] { background: #f0a9bd; color: #3a1622; }
+  .ctl.mute[aria-pressed="true"] { background: #c4b6e3; color: #2a2040; }
   .ctl.toggle[aria-pressed="true"] { background: #e9eef5; color: #0f1823; }
   .ctl:active { transform: scale(.9); transition-duration: .2s; }
   .end {
@@ -171,13 +171,13 @@
   /* Breathe overlay inside the call */
   .breathe-mini { position: absolute; inset: 0; z-index: 4; display: grid; place-items: center; border-radius: 26px; background: rgba(15, 24, 35, .82); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); opacity: 0; pointer-events: none; transition: opacity .7s var(--ease-soft); text-align: center; }
   .breathe-mini.on { opacity: 1; pointer-events: auto; }
-  .breathe-mini .orb { width: 120px; height: 120px; margin: 0 auto 18px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, rgba(255,255,255,.5), rgba(157,187,219,.15) 70%); border: 1px solid rgba(255,255,255,.35); transform: scale(.62); transition: transform 4s cubic-bezier(.37, 0, .63, 1); }
+  .breathe-mini .orb { width: 120px; height: 120px; margin: 0 auto 18px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, rgba(255,255,255,.5), rgba(169, 196, 230,.15) 70%); border: 1px solid rgba(255,255,255,.35); transform: scale(.62); transition: transform 4s cubic-bezier(.37, 0, .63, 1); }
   .breathe-mini.inhale .orb { transform: scale(1); }
   .breathe-mini p { font-size: 15px; }
   .breathe-mini button { margin-top: 14px; font-size: 13px; color: rgba(233,238,245,.7); }
 
   /* ---------- Call ended ---------- */
-  .ended { color: #e9eef5; background: radial-gradient(70% 45% at 50% 35%, rgba(63, 134, 173, .2), transparent 70%), #0f1823; }
+  .ended { color: #e9eef5; background: radial-gradient(70% 45% at 50% 35%, rgba(79, 133, 96, .2), transparent 70%), #0f1823; }
   .ended .inner { align-items: center; justify-content: center; text-align: center; padding: 0 28px; }
   .ended .big-av { width: 96px; height: 96px; border-radius: 30px; font-size: 30px; }
   .ended h2 { margin-top: 22px; font-family: "Lora", Georgia, serif; font-size: 26px; font-weight: 600; }
@@ -193,8 +193,7 @@
   .thanks {
     color: #fff;
     background:
-      radial-gradient(90% 55% at 85% 5%, rgba(255, 228, 238, .8) 0%, rgba(255,228,238,0) 70%),
-      linear-gradient(170deg, #f6cdd9 0%, #9dbbdb 40%, #5f9cc2 75%, #3f86ad 100%);
+      url("images/bg13.jpg") center / cover no-repeat, #a9c4e6;
     overflow-y: auto;
   }
   .thanks .inner { height: auto; min-height: 100%; padding: calc(64px + var(--safe-t)) 24px calc(28px + var(--safe-b)); text-align: center; }
@@ -205,7 +204,7 @@
   .thanks.on .inner > :nth-child(4) { transition-delay: .45s; }
   .thanks.on .inner > :nth-child(5) { transition-delay: .6s; }
   .thanks .heart { font-size: 44px; color: #fff; opacity: .9; }
-  .thanks h2 { margin-top: 10px; font-family: "Lora", Georgia, serif; font-size: 28px; font-weight: 600; line-height: 1.15; text-shadow: 0 2px 20px rgba(20, 60, 95, .2); }
+  .thanks h2 { margin-top: 10px; font-family: "Lora", Georgia, serif; font-size: 28px; font-weight: 600; line-height: 1.15; text-shadow: 0 2px 20px rgba(40, 60, 70, .2); }
   .thanks .lead { margin-top: 6px; font-size: 15px; color: rgba(255,255,255,.9); }
   .panel {
     margin-top: 24px;

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#9dbbdb">
+<meta name="theme-color" content="#a9c4e6">
 <title>Listenr · Me</title>
 <meta name="description" content="UI prototype: your Listenr profile and settings.">
 <link rel="icon" type="image/png" sizes="32x32" href="images/listenr/favicon-32.png">
@@ -32,8 +32,9 @@
     padding: calc(84px + var(--safe-t)) 20px 64px;
     color: #fff;
     background:
-      radial-gradient(90% 70% at 90% 0%, rgba(255, 228, 238, .7) 0%, rgba(255,228,238,0) 70%),
-      linear-gradient(180deg, #efc0d0 0%, #5f9cc2 55%, #a9c4dc 74%, #e3e9f2 88%, var(--cream) 100%);
+      linear-gradient(180deg, rgba(251, 246, 240, 0) 45%, var(--cream) 100%),
+      url("images/bg13.jpg") center top / cover no-repeat,
+      #a9c4e6;
   }
   .me { display: flex; align-items: center; gap: 14px; }
   .me .avatar { width: 64px; height: 64px; font-size: 22px; background: rgba(255,255,255,.35); color: #fff; border: 1px solid rgba(255,255,255,.5); }
@@ -83,17 +84,17 @@
     position: absolute; top: 3px; left: 3px;
     width: 22px; height: 22px; border-radius: 50%;
     background: #fff;
-    box-shadow: 0 1px 3px rgba(25, 40, 60, .2);
+    box-shadow: 0 1px 3px rgba(40, 45, 40, .2);
     transition: transform .8s var(--ease);
   }
   .switch[aria-checked="true"] { background: var(--sea); }
   .switch[aria-checked="true"]::after { transform: translateX(18px); }
 
   /* Small segmented choice */
-  .choice { position: relative; display: flex; padding: 3px; border-radius: 999px; background: #e6e8ee; }
+  .choice { position: relative; display: flex; padding: 3px; border-radius: 999px; background: #ebe6de; }
   .choice button { position: relative; z-index: 1; height: 28px; padding: 0 11px; font-size: 12px; color: var(--ink-soft); display: inline-flex; align-items: center; gap: 4px; transition: color .7s var(--ease); }
   .choice button[aria-pressed="true"] { color: var(--ink); }
-  .choice .thumb { position: absolute; top: 3px; left: 0; height: 28px; border-radius: 999px; background: #fff; box-shadow: 0 1px 3px rgba(25, 40, 60, .1); transition: transform .8s var(--ease), width .8s var(--ease); }
+  .choice .thumb { position: absolute; top: 3px; left: 0; height: 28px; border-radius: 999px; background: #fff; box-shadow: 0 1px 3px rgba(40, 45, 40, .1); transition: transform .8s var(--ease), width .8s var(--ease); }
 
   /* Expanding helpline row */
   .more-panel { overflow: hidden; height: 0; transition: height .8s var(--ease); }

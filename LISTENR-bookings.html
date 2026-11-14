@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#9dbbdb">
+<meta name="theme-color" content="#a9c4e6">
 <title>Listenr · Bookings</title>
 <meta name="description" content="UI prototype: your upcoming and past Listenr calls.">
 <link rel="icon" type="image/png" sizes="32x32" href="images/listenr/favicon-32.png">
@@ -34,8 +34,9 @@
     color: #fff;
     isolation: isolate;
     background:
-      radial-gradient(90% 70% at 90% 0%, rgba(255, 228, 238, .7) 0%, rgba(255, 228, 238,0) 70%),
-      linear-gradient(180deg, #efc0d0 0%, #5f9cc2 55%, #a9c4dc 74%, #e3e9f2 88%, var(--cream) 100%);
+      linear-gradient(180deg, rgba(251, 246, 240, 0) 45%, var(--cream) 100%),
+      url("images/bg13.jpg") center top / cover no-repeat,
+      #a9c4e6;
   }
 
   /* ---------- Calendar (folded in from the old Calendar tab) ---------- */
@@ -80,7 +81,7 @@
     margin: 28px 20px 0;
     padding: 4px;
     border-radius: 18px;
-    background: #e9edf3;
+    background: #efeae2;
   }
   .seg button {
     position: relative; z-index: 1;
@@ -98,7 +99,7 @@
     width: calc(50% - 4px);
     border-radius: 14px;
     background: #fff;
-    box-shadow: 0 1px 3px rgba(25, 40, 60, .06);
+    box-shadow: 0 1px 3px rgba(40, 45, 40, .06);
     transition: transform .9s var(--ease);
   }
   .seg[data-view="past"] .thumb { transform: translateX(100%); }
@@ -130,7 +131,7 @@
   .tag i { font-size: 13px; }
   .tag.pink { color: var(--pink-deep); background: var(--pink-soft); }
   .tag.sea { color: var(--sea-deep); background: var(--sea-mist); }
-  .tag.grey { color: var(--ink-soft); background: #eceef3; }
+  .tag.grey { color: var(--ink-soft); background: #efebe4; }
   .tag .live { width: 6px; height: 6px; border-radius: 50%; background: var(--pink-deep); animation: blink 2.4s var(--ease-soft) infinite; }
   @keyframes blink { 50% { opacity: .3; } }
   /* The call you just booked glows softly, then settles */
@@ -187,7 +188,7 @@
   .sheet-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
   .sheet-actions .pill { background: #fff; border-color: var(--line); }
   .sheet-actions .pill.primary { background: var(--sea); border-color: var(--sea); color: #fff; }
-  .sheet-actions .pill.primary[aria-disabled="true"] { background: #a9cbe0; border-color: #a9cbe0; }
+  .sheet-actions .pill.primary[aria-disabled="true"] { background: #b9d1bd; border-color: #b9d1bd; }
   .sheet-actions .pill.danger { color: #b54a5e; }
   .sheet-actions .pill.danger.arm { background: #b54a5e; border-color: #b54a5e; color: #fff; }
   .links { display: flex; gap: 18px; margin-top: 18px; font-size: 13px; color: var(--ink-soft); }
