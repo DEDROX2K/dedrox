@@ -31,9 +31,9 @@
 
     --font: "Google Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
 
-    --gutter: clamp(14px, 1.87vw, 36px);
+    --gutter: clamp(20px, 3vw, 56px);
     --side-w: clamp(255px, 20.4vw, 382px);
-    --col-gap: clamp(24px, 2.21vw, 41px);
+    --col-gap: clamp(40px, 5vw, 104px);
     --header-h: 82px;
     --radius: 12px;
     --ease: cubic-bezier(.2, .7, .2, 1);
@@ -179,7 +179,7 @@ a.arrow-out:hover::after { transform: translate(2px, -2px); }
    -------------------------------------------------------------------------- */
 
 .bio-title {
-    margin: 0 0 clamp(24px, 4vh, 44px);
+    margin: 0 0 clamp(32px, 5vh, 56px);
     font-size: clamp(37px, 3.65vw, 65px);
     font-weight: 450;
     letter-spacing: -.025em;
@@ -189,14 +189,15 @@ a.arrow-out:hover::after { transform: translate(2px, -2px); }
 .bio-copy {
     margin: 0;
     font-size: clamp(14px, 1.06vw, 19px);
+    line-height: 1.7;
     color: var(--ink-2);
 }
 
 .bio-links {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px 27px;
-    margin: clamp(27px, 6vh, 68px) 0 clamp(20px, 3.5vh, 37px);
+    gap: 12px 28px;
+    margin: clamp(36px, 7vh, 80px) 0 clamp(28px, 5vh, 48px);
     font-size: 15px;
     color: var(--ink-2);
 }
@@ -223,7 +224,7 @@ a.arrow-out:hover::after { transform: translate(2px, -2px); }
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: clamp(24px, 4.5vh, 41px);
+    margin-bottom: clamp(36px, 6vh, 64px);
 }
 
 .filter {
@@ -271,7 +272,7 @@ a.arrow-out:hover::after { transform: translate(2px, -2px); }
     padding: 0;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: clamp(31px, 5vh, 48px) clamp(17px, 1.7vw, 34px);
+    gap: clamp(48px, 8vh, 88px) clamp(24px, 2.4vw, 44px);
 }
 
 .project-grid > li { transition: opacity .3s var(--ease), transform .3s var(--ease); }
@@ -325,7 +326,7 @@ a.arrow-out:hover::after { transform: translate(2px, -2px); }
 .card:focus-visible .card-badge { opacity: 1; transform: none; }
 
 .card-title {
-    margin: 19px 0 14px;
+    margin: 22px 0 14px;
     font-size: clamp(15px, 1.15vw, 20px);
     font-weight: 400;
     color: var(--ink);
@@ -742,7 +743,7 @@ a.arrow-out:hover::after { transform: translate(2px, -2px); }
    Responsive
    -------------------------------------------------------------------------- */
 
-@media (max-width: 1280px) {
+@media (max-width: 1600px) {
     .project-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
