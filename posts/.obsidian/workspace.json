@@ -98,8 +98,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 200
   },
   "right": {
     "id": "6c477a02ec0eb353",
@@ -206,9 +205,9 @@
   },
   "active": "8cd566f27e2545de",
   "lastOpenFiles": [
-    "Pasted image 20261123150412.png",
     "How I Designed an Alert System for a Healthcare Platform.md",
     "-.md",
+    "Pasted image 20261123150412.png",
     "stuff-todo-app.md",
     "dwell.md",
     "post-2.md",

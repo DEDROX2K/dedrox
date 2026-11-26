@@ -13,17 +13,24 @@
     <link rel="icon" href="logo.png" type="image/png">
     <meta name="theme-color" content="#ffffff">
     <link rel="preload" href="Fonts/GoogleSans-VariableFont_GRAD,opsz,wght.ttf" as="font" type="font/ttf" crossorigin>
+    <script>try{var d=document.documentElement,s=localStorage;["theme","font","size","motion"].forEach(function(k){var v=s.getItem(k);if(v&&v!=="light"&&v!=="default")d.dataset[k]=v})}catch(e){}</script>
     <link rel="stylesheet" href="site.css">
 </head>
 
 <body>
 
     <header class="site-header">
-        <a class="site-name" href="prototype.html">Raghav Prasanna</a>
+        <div class="site-id">
+            <button class="avatar-ring" type="button" data-stories aria-label="View Raghav's stories"><img src="images/bwme.png" alt="" width="44" height="44" decoding="async"></button>
+            <div class="site-id-text">
+                <a class="site-name" href="prototype.html">Raghav Prasanna<span class="verified" role="img" aria-label="Verified"></span></a>
+                <span class="site-loc">London, UK</span>
+            </div>
+        </div>
         <nav class="site-nav" aria-label="Main">
             <a href="about.html">About</a>
             <a href="threeD/CV_RESUME-RAGHAV.pdf" target="_blank" rel="noopener"><span class="arrow-out">Résumé</span></a>
-            <span class="site-clock"><span>London, UK</span><time data-clock>--:--</time></span>
+            <span class="site-clock"><time data-clock>--:--</time></span>
         </nav>
     </header>
 
@@ -32,7 +39,7 @@
         <aside class="side case-side">
             <a class="back-link" href="prototype.html">Back to home</a>
             <ul class="tags"><li>UX research</li><li>Desk research</li></ul>
-            <h1 class="case-title">Research Phase</h1>
+            <h1 class="case-title">Research phase</h1>
             <p class="case-lede">How I research a brand-new app idea before any design work starts.</p>
             <nav aria-label="On this page">
                 <ul class="toc">
@@ -48,7 +55,7 @@
                 <h2>Overview</h2>
                 <p>The purpose of this project showcase is to demonstrate my approach to desk research, specifically in the context of developing entirely new application ideas.</p>
                 <dl class="meta-list">
-                    <dt>Role &amp; Context</dt>
+                    <dt>Role &amp; context</dt>
                     <dd>UX research · Client project · 2025</dd>
                 </dl>
             </section>
