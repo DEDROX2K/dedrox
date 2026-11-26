@@ -206,6 +206,7 @@ a:hover kubai-icon { color: var(--ink); }
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     transition: background-color var(--slow) var(--ease);
+        margin-top: 30px;
 }
 
 .site-name { font-size: 16px; font-weight: 500; }
